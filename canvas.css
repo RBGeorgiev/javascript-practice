@@ -1,0 +1,58 @@
+html,
+body {
+    overflow: hidden;
+    margin: 0;
+}
+
+.controls {
+    background: #44415A;
+    color: white;
+    border-bottom: 1px black solid;
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1;
+}
+
+.controls > div {
+    width: 330px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#controlsLeft > div{
+    height: 28px;
+    display: flex;
+    align-items: center;
+}
+
+#penControls {
+    border-top: 1px white solid;
+    border-bottom: 1px white solid;
+}
+
+#controlsLeft input{
+    width: 200px;    
+}
+
+#controlsLeft label{
+    width: 140px;
+    text-align: left;
+    padding-left: 9px;
+}
+
+canvas {
+    cursor: crosshair;
+    border-bottom: 1px black solid; /* see end of canvas in case of F11 */    
+}
+
+p {
+    margin: 0px;
+    font-size: 1.1em;
+}
+
+a {
+    text-decoration: none;
+    color: #F4EA51;
+}
