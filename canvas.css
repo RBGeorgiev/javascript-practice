@@ -44,7 +44,7 @@ body {
 
 canvas {
     cursor: crosshair;
-    border-bottom: 1px black solid; /* see end of canvas in case of F11 */    
+    border: 1px black solid;
 }
 
 p {
