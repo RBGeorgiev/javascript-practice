@@ -16,14 +16,18 @@
       </div>
       <div id="penControls">
         <input type="range" id="penSize" name="penSize" min="1" max="150" value="3">
-        <label for="penSize" id="penSizeLabel">Brush Size: 3</label>
+        <label for="penSize" id="penSizeLabel">Size: 3</label>
       </div>
       <div>
-        <input type="checkbox" id="eraser" name="eraser">
+        <input type="radio" id="pen" name="tools" value="pen">
+        <label for="pen">Brush</label>
+      </div>
+      <div>
+        <input type="radio" id="eraser" name="tools" value="eraser">
         <label for="eraser">Eraser</label>
       </div>
       <div>
-        <input type="checkbox" id="bucket" name="bucket">
+        <input type="radio" id="bucket" name="tools" value="bucket">
         <label for="bucket">Paint Bucket</label>
       </div>
     </div>
