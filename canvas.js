@@ -15,13 +15,16 @@ canvas.height = window.innerHeight - document.querySelector(".controls").offsetH
 // Set background color to white
 clearCanvas()
 
+// posX & posY refresh every time a new click is made through the getPosXY() function
+// lastX & lastY DON'T refresh and always store the last click position
+let posX, posY, lastX, lastY;
 let drawing = false;
-let posX, posY;
 
 
 canvas.addEventListener("mousedown", (e) => { penStyle(e); getPosXY(e); draw(e); });
 canvas.addEventListener("mousemove", draw);
 document.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("click", drawStraightLine);
 canvas.addEventListener("click", bucketFill);
 
 canvas.addEventListener("mouseover", function (e) {
@@ -55,16 +58,36 @@ function getPosXY(e) {
     [posX, posY] = [e.offsetX, e.offsetY];
 }
 
+function drawStraightLine(e) {
+    if (e.which === 2) return;
+    if (bucket.checked) return;
+    if (!e.shiftKey) return;
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    ctx.closePath();
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+}
+
 function draw(e) {
     if (!drawing) return;
     if (e.which === 2) return;
     if (bucket.checked) return;
+    if (e.shiftKey) return;
+
     ctx.beginPath();
     ctx.moveTo(posX, posY);
     ctx.lineTo(e.offsetX, e.offsetY);
     ctx.stroke();
     ctx.closePath();
+
+    // posX & posY refresh every time a new click is made through the getPosXY() function
+    // lastX & lastY DON'T refresh and always store the last click position
     [posX, posY] = [e.offsetX, e.offsetY];
+    [lastX, lastY] = [posX, posY];
 }
 
 function stopDrawing() {
