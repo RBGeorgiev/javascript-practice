@@ -43,7 +43,7 @@ body {
 }
 
 canvas {
-    cursor: crosshair;
+    cursor: none;
     border: 1px black solid;
 }
 
@@ -55,4 +55,14 @@ p {
 a {
     text-decoration: none;
     color: #F4EA51;
+}
+
+#cursor {
+    position: absolute;
+    pointer-events: none;
+    width: 3px;
+    height: 3px;
+    border: 1px black solid;
+    box-shadow: 0 0 0 1px white;
+    border-radius: 50%;    
 }

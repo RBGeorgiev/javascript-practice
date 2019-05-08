@@ -19,7 +19,7 @@
         <label for="penSize" id="penSizeLabel">Size: 3</label>
       </div>
       <div>
-        <input type="radio" id="pen" name="tools" value="pen">
+        <input type="radio" id="pen" name="tools" value="pen" checked>
         <label for="pen">Brush</label>
       </div>
       <div>
@@ -44,11 +44,11 @@
       <div>
         <button id="clearCanvas" onClick="clearCanvas()">Clear Canvas</button>
       </div>
-
     </div>
   </div>
 
-  <canvas id="draw" width="920" height="800"></canvas>
+  <canvas id="draw"></canvas>
+  <div id="cursor"></div>
 
   <script src="canvas.js"></script>
 </body>

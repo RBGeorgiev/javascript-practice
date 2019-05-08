@@ -2,6 +2,7 @@ const canvas = document.getElementById("draw");
 const ctx = canvas.getContext("2d");
 const downloadButton = document.getElementById("downloadButton");
 const penSize = document.getElementById("penSize");
+const cursor = document.getElementById("cursor");
 
 // Disable right click menu on canvas
 canvas.oncontextmenu = function (e) {
@@ -26,7 +27,6 @@ canvas.addEventListener("mousemove", draw);
 document.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("click", drawStraightLine);
 canvas.addEventListener("click", bucketFill);
-
 canvas.addEventListener("mouseover", function (e) {
     //Fixes a bug that happens when going out of canvas bounds
     if (!drawing) return;
@@ -36,6 +36,7 @@ canvas.addEventListener("mouseover", function (e) {
 penSize.addEventListener("change", () => {
     document.getElementById("penSizeLabel").innerHTML = `Brush Size: ${penSize.value}`;
 });
+canvas.addEventListener("mousemove", updateCursor);
 
 
 function getColor(e) {
@@ -103,6 +104,16 @@ function clearCanvas() {
 function downloadImage() {
     downloadButton.href = canvas.toDataURL();
     //onClick call is directly in HTML
+}
+
+function updateCursor(e) {
+    // base cursor size on pen size slider
+    cursor.style.width = `${penSize.value}px`
+    cursor.style.height = `${penSize.value}px`
+
+    // center cursor on mouse position 
+    cursor.style.left = `${e.offsetX - penSize.value / 2}px`
+    cursor.style.top = `${e.offsetY + document.querySelector(".controls").offsetHeight - penSize.value / 2}px`
 }
 
 function bucketFill(e) {
