@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Time to Decimal Calculator</title>
+</head>
+
+<body>
+  <div>
+    <form id="time-decimal-form">
+      <h2>Time to Decimal Calculator</h2>
+      <div>
+        <label for="hours">
+          <abbr title="Hours">HH</abbr>
+        </label>
+        <input type="number" name="hours" id="hours" min="0" max="99">
+
+        <label for="minutes">
+          <abbr title="Minutes">MM</abbr>
+        </label>
+        <input type="number" name="minutes" id="minutes" min="0" max="99">
+
+        <label for="seconds">
+          <abbr title="Seconds">SS</abbr>
+        </label>
+        <input type="number" name="seconds" id="seconds" min="0" max="99">
+      </div>
+
+      <div>
+        <label for="decimals">Max decimal places</label>
+        <input type="number" name="decimals" id="decimals" min="0" max="9" value="4">
+      </div>
+
+      <input type="submit" value="Calculate" class="btn">
+    </form>
+    <div id="answer">
+      <br>
+      Hours: 0
+      <br>
+      Minutes: 0
+      <br>
+      Seconds: 0
+    </div>
+  </div>
+
+
+  <script>
+    const form = document.getElementById("time-decimal-form");
+    const answerDiv = document.getElementById("answer");
+    let hours, minutes, seconds, decimals, hoursAns, minutesAns, secondsAns;
+
+    form.onsubmit = function (e) {
+      e.preventDefault();
+
+      hours = +form.hours.value || 0;
+      minutes = +form.minutes.value || 0;
+      seconds = +form.seconds.value || 0;
+      decimals = +form.decimals.value || 0;
+
+      hoursAns = calcHours(hours, minutes, seconds)
+      minutesAns = calcMinutes(hours, minutes, seconds)
+      secondsAns = calcSeconds(hours, minutes, seconds)
+
+      answerDiv.innerHTML = `
+            <br>
+            Hours: ${round(hoursAns, decimals)} 
+            <br>
+            Minutes: ${round(minutesAns, decimals)} 
+            <br>
+            Seconds: ${round(secondsAns, decimals)}
+            `
+    }
+
+    function calcHours(hours, minutes, seconds) {
+      return hours + (minutes / 60) + (seconds / 3600);
+    }
+
+    function calcMinutes(hours, minutes, seconds) {
+      return (hours * 60) + minutes + (seconds / 60);
+    }
+
+    function calcSeconds(hours, minutes, seconds) {
+      return (hours * 3600) + (minutes * 60) + seconds;
+    }
+
+    function round(value, decimals) {
+      //using scientific notation when rounding is more accurate than alternatives
+      return Number(Math.round(value + `e${decimals}`) + `e-${decimals}`);
+    }
+  </script>
+</body>
+
+</html>
