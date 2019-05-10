@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Survey form</title>
+</head>
+
+<style>
+    body {
+        max-width: 50%;
+        min-width: 350px;
+        margin: auto;
+        text-align: center;
+        background-color: #03212e;
+        color: #181818;
+        font-family: 'Lucida Sans Unicode', Arial, sans-serif;
+        padding: 15px;
+    }
+
+    header {
+        background-color: #f4f4f4;
+        padding: 5px;
+        margin: 5px 0px;
+        cursor: default;
+    }
+
+    #description {
+        font-size: 1.1em;
+    }
+
+    main {
+        background-color: #f4f4f4;
+        padding: 5px 5px 10px 5px;
+    }
+
+    .left {
+        display: inline-block;
+        text-align: right;
+        width: 40%;
+        vertical-align: top;
+        margin-right: 10px;
+        margin-top: 0px;
+    }
+
+    .right {
+        display: inline-block;
+        text-align: left;
+        width: 50%;
+        vertical-align: middle;
+        margin-top: 0px;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+        display: inline-block;
+    }
+
+    fieldset {
+        border: 0;
+        margin: 0 10%;
+    }
+
+    .radio,
+    .checkbox {
+        position: relative;
+        top: 0px;
+        padding-bottom: 2px;
+    }
+
+    p {
+        cursor: default;
+    }
+
+    #name-label,
+    #email-label {
+        padding-bottom: 0.975em;
+    }
+
+    #submit {
+        border-color: #99BDF9;
+        background-color: #99cdf9;
+        cursor: pointer;
+        padding: 10px 20px;
+        margin: 8px -14px 8px 8px;
+        font-weight: bold;
+    }
+
+    #submit:hover {
+        background-color: #6ba9db;
+
+    }
+</style>
+
+<body>
+    <header>
+        <h1 id="title">Survey form</h1>
+    </header>
+
+    <main>
+        <p id="description">Let us know how we can improve OurService&trade;</p>
+        <form id="survey-form">
+            <fieldset>
+                <label id="name-label" for="name" class="left">* Name: </label>
+                <input type="text" name="name" id="name" placeholder="Enter your name" class="right" required>
+
+                <label id="email-label" for="email" class="left">* Email: </label>
+                <input type="email" name="email" id="email" placeholder="Enter your email" class="right" required>
+
+                <label id="number-label" for="number" class="left">* Age: </label>
+                <input type="number" name="age" id="number" placeholder="Enter your age" min="1" max="125" class="right"
+                    required>
+            </fieldset>
+
+            <fieldset>
+                <label class="left" for="currentPos">Which option best describes your current role?</label>
+                <select name="currentPos" id="dropdown" class="right">
+                    <option disabled selected value>Select an option</option>
+                    <option value="unemployed">Unemployed</option>
+                    <option value="student">Student</option>
+                    <option value="job">Full-time job</option>>
+                    <option value="learner">Full-time learner</option>>
+                    <option value="other">Other</option>>
+                    <option value="preferNo">Prefer not to say</option>>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <p class="left">* How likely are you to recommend OurService&trade; to a friend?</p>
+                <ul class="right">
+                    <li class="radio">
+                        <label>
+                            <input type="radio" name="recommend" value="definitely">Definitely
+                        </label>
+                    </li>
+                    <li class="radio">
+                        <label>
+                            <input type="radio" name="recommend" value="maybe">Maybe
+                        </label>
+                    </li>
+                    <li class="radio">
+                        <label>
+                            <input type="radio" name="recommend" value="notSure">Not Sure
+                        </label>
+                    </li>
+                </ul>
+            </fieldset>
+
+            <fieldset>
+                <label class="left" for="mostLike">What do you like most about OurService&trade;?</label>
+                <select name="mostLike" id="mostLike" class="right">
+                    <option disabled selected value>Select an option</option>
+                    <option value="challenges">Challenges</option>
+                    <option value="projects">Projects</option>
+                    <option value="community">Community</option>
+                    <option value="openSrc">Open Source</option>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <p class="left">Things that should be improved in the future?<br>(Check all that apply)</p>
+                <ul class="right">
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="1"> Front-end Projects
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="2"> Back-end Projects
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="3"> Data Visualization
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="4"> Challenges
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="5"> Open Source Community
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="6"> Gitter help rooms
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="7"> Videos
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="8"> City Meetups
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="9"> Wiki
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="10"> Forum
+                        </label>
+                    </li>
+                    <li class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pref" value="11"> Blog posts
+                        </label>
+                    </li>
+                </ul>
+            </fieldset>
+
+            <fieldset>
+                <label class="left" for="comment">Any Comments or Suggestions?</label>
+                <textarea id="comment" class="right" name="comment" placeholder="Enter your comment here" rows="4"
+                    cols="40"></textarea>
+            </fieldset>
+
+            <input type="submit" id="submit">
+        </form>
+    </main>
+
+    <script>
+        const submit = document.getElementById("submit")
+        submit.onclick = (e) => {
+            e.preventDefault();
+            alert(`Thank you for clicking the submit button! Surely it did something important.`);
+        }
+
+
+    </script>
+</body>
+
+</html>
