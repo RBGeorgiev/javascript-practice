@@ -17,10 +17,9 @@
   <div class="tab">
     <button class="tabLinks active" onclick="openTab(event, 'time-to-decimal-container')">Time to Decimal</button>
     <button class="tabLinks" onclick="openTab(event, 'decimal-to-time-container')">Decimal to Time</button>
+    <button class="tabLinks" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours Converter</button>
+    <!-- <button class="tabLinks" onclick="openTab(event, 'time-conversion')">Time Conversion Calculator</button> -->
   </div>
-
-
-
 
   <div id="time-to-decimal-container" class="tabContent" style="display: block;">
     <form id="time-to-decimal-form">
@@ -57,7 +56,7 @@
       <h2>Decimal to Time Calculator</h2>
 
       <label for="decimalTime">Decimal Time </label>
-      <input type="number" name="decimalTime" id="decimalTime" min="0" max="99999999">
+      <input type="number" name="decimalTime" id="decimalTime" step="any" min="0" max="99999999">
 
       <label for="timeUnit">Time Unit</label>
       <select name="timeUnit" id="timeUnit">
@@ -66,11 +65,27 @@
         <option value="minutes">Minutes</option>
         <option value="seconds">Seconds</option>
       </select>
-
+      <!-- <div>
+        <input type="checkbox" name="inclDays" id="inclDays">
+        <label for="inclDays">Include days in answer</label>
+      </div> -->
       <input type="submit" value="Calculate" class="btn">
 
     </form>
   </div>
+
+
+  <div id="minutes-to-hours-container" class="tabContent">
+    <form id="minutes-to-hours">
+      <h2>Minutes to Hours Converter</h2>
+      <div>
+        <label for="minutes">Enter minutes</label>
+        <input type="number" name="minutes" id="minutes" min="0" max="9999999">
+      </div>
+      <input type="submit" value="Calculate" class="btn">
+    </form>
+  </div>
+
 
 
 
@@ -87,12 +102,18 @@
   <script>
     const timeToDecimalForm = document.getElementById("time-to-decimal-form");
     const decimalToTimeForm = document.getElementById("decimal-to-time-form");
+    const minutesToHoursForm = document.getElementById("minutes-to-hours");
     const answerDiv = document.getElementById("answer");
     let hours, minutes, seconds, decimals, hoursAns, minutesAns, secondsAns;
 
     timeToDecimalForm.onsubmit = function (e) {
       e.preventDefault();
-      timeToDecimal(form)
+      timeToDecimal(this)
+    }
+
+    minutesToHoursForm.onsubmit = function (e) {
+      e.preventDefault();
+      minutesToHours(this)
     }
 
     decimalToTimeForm.onsubmit = function (e) {
@@ -118,7 +139,6 @@
           break;
       }
     }
-
 
     function timeToDecimal(form) {
       hours = +form.hours.value || 0;
@@ -160,6 +180,7 @@
 
     // ___________________________________________________________
 
+    // let inclDays = document.getElementById("inclDays");
 
     function decimalToTime(seconds) {
       let answer = []
@@ -167,6 +188,14 @@
       hours = seconds / 3600;
       minutes = hours % 1 * 60;
       seconds = minutes % 1 * 60;
+
+      // if (Math.trunc(hours) > 24 && inclDays.checked) {
+      //   days = Math.trunc(hours) / 24
+      //   answer.push(
+      //     Math.trunc(days)
+      //   );
+      //   hours = hours - Math.trunc(days) * 24
+      // }
 
       answer.push(
         Math.trunc(hours)
@@ -197,6 +226,26 @@
             ${answer.join(':')}
             `
     }
+
+
+    // ________________________________________________________
+
+    function minutesToHours(e) {
+      minutes = e.minutes.value;
+      let hoursDecimal = round(minutes / 60, 6)
+      let minutesTime = Math.round(hoursDecimal % 1 * 60)
+      let hoursTime = Math.trunc(hoursDecimal)
+
+      answerDiv.innerHTML = `     
+            <br>
+            ${hoursTime} hours and ${minutesTime} minutes
+            <br>
+            ${hoursTime}:${minutesTime.toString().padStart(2, '0')}
+            <br>
+            Decimal hours: ${hoursDecimal}
+            `
+    }
+
 
     // ________________________________________________________
 
