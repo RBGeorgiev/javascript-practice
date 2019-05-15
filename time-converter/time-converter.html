@@ -18,7 +18,7 @@
     <button class="tabLinks active" onclick="openTab(event, 'time-to-decimal-container')">Time to Decimal</button>
     <button class="tabLinks" onclick="openTab(event, 'decimal-to-time-container')">Decimal to Time</button>
     <button class="tabLinks" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours Converter</button>
-    <!-- <button class="tabLinks" onclick="openTab(event, 'time-conversion')">Time Conversion Calculator</button> -->
+    <button class="tabLinks" onclick="openTab(event, 'time-conversion-container')">Time Conversion Calculator</button>
   </div>
 
   <div id="time-to-decimal-container" class="tabContent" style="display: block;">
@@ -56,7 +56,7 @@
       <h2>Decimal to Time Calculator</h2>
 
       <label for="decimalTime">Decimal Time </label>
-      <input type="number" name="decimalTime" id="decimalTime" step="any" min="0" max="99999999">
+      <input type="number" name="decimalTime" id="decimalTime" step="any" min="0" max="9999999999">
 
       <label for="timeUnit">Time Unit</label>
       <select name="timeUnit" id="timeUnit">
@@ -76,7 +76,7 @@
 
 
   <div id="minutes-to-hours-container" class="tabContent">
-    <form id="minutes-to-hours">
+    <form id="minutes-to-hours-form">
       <h2>Minutes to Hours Converter</h2>
       <div>
         <label for="minutes">Enter minutes</label>
@@ -87,7 +87,60 @@
   </div>
 
 
+  <div id="time-conversion-container" class="tabContent">
+    <form id="time-conversion-form">
 
+      <h2>Time Conversion Calculator</h2>
+
+      <label for="convertValue">Value to Convert: </label>
+      <input type="number" name="convertValue" id="convertValue" step="any" min="0" max="99999999999">
+
+      <label for="convertFrom">From: </label>
+      <select name="convertFrom" id="convertFrom">
+        <option value="ns">Nanosecond (ns)</option>
+        <option value="μs">Microsecond (μs)</option>
+        <option value="ms">Millisecond (ms)</option>
+        <option value="s" selected>Second (s)</option>
+        <option value="min">Minute (min)</option>
+        <option value="h">Hour (h)</option>
+        <option value="d">Day (d)</option>
+        <option value="wk">Week (wk)</option>
+        <option value="mo">Month (mo)</option>
+        <option value="yr">Year (yr)</option>
+        <option value="dec">Decade (dec)</option>
+        <option value="c">Century (c)</option>
+        <option value="millennium">Millennium (millennium)</option>
+      </select>
+
+      <label for="convertTo">To: </label>
+      <select name="convertTo" id="convertTo">
+        <option value="ns">Nanosecond (ns)</option>
+        <option value="μs">Microsecond (μs)</option>
+        <option value="ms">Millisecond (ms)</option>
+        <option value="s">Second (s)</option>
+        <option value="min">Minute (min)</option>
+        <option value="h" selected>Hour (h)</option>
+        <option value="d">Day (d)</option>
+        <option value="wk">Week (wk)</option>
+        <option value="mo">Month (mo)</option>
+        <option value="yr">Year (yr)</option>
+        <option value="dec">Decade (dec)</option>
+        <option value="c">Century (c)</option>
+        <option value="millennium">Millennium (millennium)</option>
+      </select>
+
+      <input type="submit" value="Calculate" class="btn">
+
+      <div>
+        <p>Months in this time conversion calculator are calculated using the average of 30.416 days per month. This is
+          equal to 365 days per year divided by 12 months per year. 365 ÷ 12 = 30.416 days per month.</p>
+
+        <p>Years in this time converter are calculated as 365 days per year. This calculator does not consider the extra
+          day in a leap year which has 366 days per year.</p>
+      </div>
+
+    </form>
+  </div>
 
   <div id="answer">
     <br>
@@ -102,7 +155,8 @@
   <script>
     const timeToDecimalForm = document.getElementById("time-to-decimal-form");
     const decimalToTimeForm = document.getElementById("decimal-to-time-form");
-    const minutesToHoursForm = document.getElementById("minutes-to-hours");
+    const minutesToHoursForm = document.getElementById("minutes-to-hours-form");
+    const timeConversionForm = document.getElementById("time-conversion-form");
     const answerDiv = document.getElementById("answer");
     let hours, minutes, seconds, decimals, hoursAns, minutesAns, secondsAns;
 
@@ -114,6 +168,11 @@
     minutesToHoursForm.onsubmit = function (e) {
       e.preventDefault();
       minutesToHours(this)
+    }
+
+    timeConversionForm.onsubmit = function (e) {
+      e.preventDefault();
+      timeConversion(this)
     }
 
     decimalToTimeForm.onsubmit = function (e) {
@@ -263,6 +322,39 @@
       evt.currentTarget.className += " active";
     }
 
+
+    // ________________________________________________________
+
+    const conversionRatesForSec = {
+      ns: 0.000000001,
+      μs: 0.000001,
+      ms: 0.001,
+      s: 1,
+      min: 60,
+      h: 3600,
+      d: 86400,
+      wk: 604800,
+      mo: 2628000,
+      yr: 31536000,
+      dec: 315360000,
+      c: 3153600000,
+      millennium: 31536000000
+    }
+
+    function timeConversion(form) {
+      let convertValue = +form.convertValue.value
+      let convertFrom = form.convertFrom.value
+      let convertTo = form.convertTo.value
+
+      // Formula: Value * (convertFrom / convertTo)
+
+      let answer = convertValue * (conversionRatesForSec[convertFrom] / conversionRatesForSec[convertTo]);
+
+      answerDiv.innerHTML = `     
+            <br>
+            ${convertValue} ${convertFrom} = ${round(answer, 15)} ${convertTo}
+            `
+    }
   </script>
 </body>
 
