@@ -93,7 +93,7 @@
       <h2>Time Conversion Calculator</h2>
 
       <label for="convertValue">Value to Convert: </label>
-      <input type="number" name="convertValue" id="convertValue" step="any" min="0" max="99999999999">
+      <input type="number" name="convertValue" id="convertValue" step="any" min="0" max="999999999999999">
 
       <label for="convertFrom">From: </label>
       <select name="convertFrom" id="convertFrom">
@@ -137,6 +137,8 @@
 
         <p>Years in this time converter are calculated as 365 days per year. This calculator does not consider the extra
           day in a leap year which has 366 days per year.</p>
+
+        <p>Larger numbers might cause the result to return NaN (Not a number)</p>
       </div>
 
     </form>
@@ -352,7 +354,7 @@
 
       answerDiv.innerHTML = `     
             <br>
-            ${convertValue} ${convertFrom} = ${round(answer, 15)} ${convertTo}
+            ${convertValue} ${convertFrom} = ${answer} ${convertTo}
             `
     }
   </script>
