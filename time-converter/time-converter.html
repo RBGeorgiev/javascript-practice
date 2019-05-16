@@ -5,11 +5,7 @@
   <meta charset="UTF-8">
   <title>Time to Decimal Calculator</title>
 
-  <style>
-    .tabContent {
-      display: none;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
 <body>
@@ -137,179 +133,16 @@
 
         <p>Years in this time converter are calculated as 365 days per year. This calculator does not consider the extra
           day in a leap year which has 366 days per year.</p>
-
-        <p>Larger numbers might cause the result to return NaN (Not a number)</p>
       </div>
 
     </form>
   </div>
 
   <div id="answer">
-    <br>
-    Hours: 0
-    <br>
-    Minutes: 0
-    <br>
-    Seconds: 0
+    Answer:
   </div>
 
-
   <script>
-    const timeToDecimalForm = document.getElementById("time-to-decimal-form");
-    const decimalToTimeForm = document.getElementById("decimal-to-time-form");
-    const minutesToHoursForm = document.getElementById("minutes-to-hours-form");
-    const timeConversionForm = document.getElementById("time-conversion-form");
-    const answerDiv = document.getElementById("answer");
-    let hours, minutes, seconds, decimals, hoursAns, minutesAns, secondsAns;
-
-    timeToDecimalForm.onsubmit = function (e) {
-      e.preventDefault();
-      timeToDecimal(this)
-    }
-
-    minutesToHoursForm.onsubmit = function (e) {
-      e.preventDefault();
-      minutesToHours(this)
-    }
-
-    timeConversionForm.onsubmit = function (e) {
-      e.preventDefault();
-      timeConversion(this)
-    }
-
-    decimalToTimeForm.onsubmit = function (e) {
-      e.preventDefault();
-
-      let val = this.decimalTime.value
-
-      switch (this.timeUnit.value) {
-        case 'days':
-          val = val * 60 * 60 * 24
-          decimalToTime(val)
-          break;
-        case 'hours':
-          val = val * 60 * 60
-          decimalToTime(val)
-          break;
-        case 'minutes':
-          val = val * 60
-          decimalToTime(val)
-          break;
-        case 'seconds':
-          decimalToTime(val)
-          break;
-      }
-    }
-
-    function timeToDecimal(form) {
-      hours = +form.hours.value || 0;
-      minutes = +form.minutes.value || 0;
-      seconds = +form.seconds.value || 0;
-      decimals = +form.decimals.value || 0;
-
-      hoursAns = calcHours(hours, minutes, seconds)
-      minutesAns = calcMinutes(hours, minutes, seconds)
-      secondsAns = calcSeconds(hours, minutes, seconds)
-
-      answerDiv.innerHTML = `
-            <br>
-            Hours: ${round(hoursAns, decimals)} 
-            <br>
-            Minutes: ${round(minutesAns, decimals)} 
-            <br>
-            Seconds: ${round(secondsAns, decimals)}
-            `
-    }
-
-    function calcHours(hours, minutes, seconds) {
-      return hours + (minutes / 60) + (seconds / 3600);
-    }
-
-    function calcMinutes(hours, minutes, seconds) {
-      return (hours * 60) + minutes + (seconds / 60);
-    }
-
-    function calcSeconds(hours, minutes, seconds) {
-      return (hours * 3600) + (minutes * 60) + seconds;
-    }
-
-    function round(value, decimals) {
-      //using scientific notation when rounding is more accurate than alternatives
-      return Number(Math.round(value + `e${decimals}`) + `e-${decimals}`);
-    }
-
-
-    // ___________________________________________________________
-
-    // let inclDays = document.getElementById("inclDays");
-
-    function decimalToTime(seconds) {
-      let answer = []
-
-      hours = seconds / 3600;
-      minutes = hours % 1 * 60;
-      seconds = minutes % 1 * 60;
-
-      // if (Math.trunc(hours) > 24 && inclDays.checked) {
-      //   days = Math.trunc(hours) / 24
-      //   answer.push(
-      //     Math.trunc(days)
-      //   );
-      //   hours = hours - Math.trunc(days) * 24
-      // }
-
-      answer.push(
-        Math.trunc(hours)
-          .toString()
-          .padStart(2, '0')
-      );
-
-      answer.push(
-        Math.trunc(minutes)
-          .toString()
-          .padStart(2, '0')
-      );
-
-      answer.push(
-        Math.trunc(seconds)
-          .toString()
-          .padStart(2, '0')
-      );
-
-      answerDiv.innerHTML = `     
-            <br>
-            Hours: ${Math.trunc(hours)} 
-            <br>
-            Minutes: ${Math.trunc(minutes)} 
-            <br>
-            Seconds: ${Math.trunc(seconds)}
-            <br>
-            ${answer.join(':')}
-            `
-    }
-
-
-    // ________________________________________________________
-
-    function minutesToHours(e) {
-      minutes = e.minutes.value;
-      let hoursDecimal = round(minutes / 60, 6)
-      let minutesTime = Math.round(hoursDecimal % 1 * 60)
-      let hoursTime = Math.trunc(hoursDecimal)
-
-      answerDiv.innerHTML = `     
-            <br>
-            ${hoursTime} hours and ${minutesTime} minutes
-            <br>
-            ${hoursTime}:${minutesTime.toString().padStart(2, '0')}
-            <br>
-            Decimal hours: ${hoursDecimal}
-            `
-    }
-
-
-    // ________________________________________________________
-
     function openTab(evt, cityName) {
       let i, tabContent, tabLinks;
       tabContent = document.getElementsByClassName("tabContent");
@@ -323,41 +156,9 @@
       document.getElementById(cityName).style.display = "block";
       evt.currentTarget.className += " active";
     }
-
-
-    // ________________________________________________________
-
-    const conversionRatesForSec = {
-      ns: 0.000000001,
-      μs: 0.000001,
-      ms: 0.001,
-      s: 1,
-      min: 60,
-      h: 3600,
-      d: 86400,
-      wk: 604800,
-      mo: 2628000,
-      yr: 31536000,
-      dec: 315360000,
-      c: 3153600000,
-      millennium: 31536000000
-    }
-
-    function timeConversion(form) {
-      let convertValue = +form.convertValue.value
-      let convertFrom = form.convertFrom.value
-      let convertTo = form.convertTo.value
-
-      // Formula: Value * (convertFrom / convertTo)
-
-      let answer = convertValue * (conversionRatesForSec[convertFrom] / conversionRatesForSec[convertTo]);
-
-      answerDiv.innerHTML = `     
-            <br>
-            ${convertValue} ${convertFrom} = ${answer} ${convertTo}
-            `
-    }
   </script>
+
+  <script type="module" src="./src/event-handlers.js"></script>
 </body>
 
 </html>
