@@ -7,7 +7,7 @@ export default function minutesToHours(e) {
     let minutesTime = Math.round(hoursDecimal % 1 * 60)
     let hoursTime = Math.trunc(hoursDecimal)
 
-    ConstantsList.answerDiv.innerHTML = `   
+    ConstantsList.answerDiv_MinHour.innerHTML = `   
             Answer:  
             <br>
             ${hoursTime} hours and ${minutesTime} minutes

@@ -8,7 +8,7 @@ export default function timeConversion(form) {
     // Formula: Value * (convertFrom / convertTo)
     let answer = convertValue * (ConstantsList.secondConversionRates[convertFrom] / ConstantsList.secondConversionRates[convertTo]);
 
-    ConstantsList.answerDiv.innerHTML = ` 
+    ConstantsList.answerDiv_TimeConv.innerHTML = ` 
             Answer:    
             <br>
             ${convertValue} ${convertFrom} = ${answer} ${convertTo}

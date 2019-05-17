@@ -13,7 +13,7 @@ export default function timeToDecimal(form) {
     minutesAns = calcMinutes(hours, minutes, seconds)
     secondsAns = calcSeconds(hours, minutes, seconds)
 
-    ConstantsList.answerDiv.innerHTML = `
+    ConstantsList.answerDiv_TimeDec.innerHTML = `
             Answer:
             <br>
             Hours: ${round(hoursAns, decimals)} 

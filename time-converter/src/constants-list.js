@@ -4,7 +4,11 @@ class ConstantsList {
         this.decimalToTimeForm = document.getElementById("decimal-to-time-form");
         this.minutesToHoursForm = document.getElementById("minutes-to-hours-form");
         this.timeConversionForm = document.getElementById("time-conversion-form");
-        this.answerDiv = document.getElementById("answer");
+
+        this.answerDiv_TimeDec = document.getElementById("answer-time-dec");
+        this.answerDiv_DecTime = document.getElementById("answer-dec-time");
+        this.answerDiv_MinHour = document.getElementById("answer-min-hour");
+        this.answerDiv_TimeConv = document.getElementById("answer-time-conv");
 
         this.secondConversionRates = {
             ns: 0.000000001,

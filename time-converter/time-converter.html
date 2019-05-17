@@ -9,147 +9,242 @@
 </head>
 
 <body>
+  <main>
+    <div class="tabs">
+      <button class="tab-links active" onclick="openTab(event, 'time-to-decimal-container')">Time to Decimal</button>
+      <button class="tab-links" onclick="openTab(event, 'decimal-to-time-container')">Decimal to Time</button>
+      <button class="tab-links" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours
+        Converter</button>
+      <button class="tab-links" onclick="openTab(event, 'time-conversion-container')">Time Conversion
+        Calculator</button>
+    </div>
 
-  <div class="tab">
-    <button class="tabLinks active" onclick="openTab(event, 'time-to-decimal-container')">Time to Decimal</button>
-    <button class="tabLinks" onclick="openTab(event, 'decimal-to-time-container')">Decimal to Time</button>
-    <button class="tabLinks" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours Converter</button>
-    <button class="tabLinks" onclick="openTab(event, 'time-conversion-container')">Time Conversion Calculator</button>
-  </div>
+    <div id="time-to-decimal-container" class="tab-content" style="display: block;">
 
-  <div id="time-to-decimal-container" class="tabContent" style="display: block;">
-    <form id="time-to-decimal-form">
       <h2>Time to Decimal Calculator</h2>
-      <div>
-        <label for="hours">
-          <abbr title="Hours">HH</abbr>
-        </label>
-        <input type="number" name="hours" id="hours" min="0" max="999">
 
-        <label for="minutes">
-          <abbr title="Minutes">MM</abbr>
-        </label>
-        <input type="number" name="minutes" id="minutes" min="0" max="59">
+      <div class="content-wrapper">
+        <div class="form-wrapper">
+          <form id="time-to-decimal-form">
+            <div>
+              <label for="hours">
+                <abbr title="Hours">HH</abbr>
+              </label>
+              <input type="number" name="hours" id="hours" min="0" max="999">
 
-        <label for="seconds">
-          <abbr title="Seconds">SS</abbr>
-        </label>
-        <input type="number" name="seconds" id="seconds" min="0" max="59">
+              <label for="minutes">
+                <abbr title="Minutes">MM</abbr>
+              </label>
+              <input type="number" name="minutes" id="minutes" min="0" max="59">
+
+              <label for="seconds">
+                <abbr title="Seconds">SS</abbr>
+              </label>
+              <input type="number" name="seconds" id="seconds" min="0" max="59">
+            </div>
+
+            <div>
+              <label for="decimals">Max decimal places</label>
+              <input type="number" name="decimals" id="decimals" min="0" max="9" value="4">
+            </div>
+
+            <div>
+              <input type="submit" value="Calculate" class="btn">
+            </div>
+          </form>
+
+          <div id="answer-time-dec">
+            Answer:
+          </div>
+        </div>
+
+        <div class="info-wrapper">
+          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
+            laoreet
+            dolore. Magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+            suscipit
+            lobortis nisl
+            dolore te feugait nulla facilisi.</p>
+
+          <p>ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+            molestie
+            consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui
+            blandit
+            praesent luptatum zzril delenit augue duis</p>
+        </div>
       </div>
-
-      <div>
-        <label for="decimals">Max decimal places</label>
-        <input type="number" name="decimals" id="decimals" min="0" max="9" value="4">
-      </div>
-      <input type="submit" value="Calculate" class="btn">
-    </form>
-  </div>
+    </div>
 
 
-  <div id="decimal-to-time-container" class="tabContent">
-    <form id="decimal-to-time-form">
+    <div id="decimal-to-time-container" class="tab-content">
 
       <h2>Decimal to Time Calculator</h2>
 
-      <label for="decimalTime">Decimal Time </label>
-      <input type="number" name="decimalTime" id="decimalTime" step="any" min="0" max="9999999999">
+      <div class="content-wrapper">
+        <div class="form-wrapper">
+          <form id="decimal-to-time-form">
+            <div>
+              <label for="decimalTime">Decimal Time </label>
+              <input type="number" name="decimalTime" id="decimalTime" step="any" min="0" max="9999999999">
+            </div>
 
-      <label for="timeUnit">Time Unit</label>
-      <select name="timeUnit" id="timeUnit">
-        <option value="days">Days</option>
-        <option value="hours">Hours</option>
-        <option value="minutes">Minutes</option>
-        <option value="seconds">Seconds</option>
-      </select>
-      <!-- <div>
+            <div>
+              <label for="timeUnit">Time Unit</label>
+              <select name="timeUnit" id="timeUnit">
+                <option value="days">Days</option>
+                <option value="hours">Hours</option>
+                <option value="minutes">Minutes</option>
+                <option value="seconds">Seconds</option>
+              </select>
+            </div>
+            <!-- <div>
         <input type="checkbox" name="inclDays" id="inclDays">
         <label for="inclDays">Include days in answer</label>
       </div> -->
-      <input type="submit" value="Calculate" class="btn">
+            <div>
+              <input type="submit" value="Calculate" class="btn">
+            </div>
+          </form>
 
-    </form>
-  </div>
+          <div id="answer-dec-time">
+            Answer:
+          </div>
+        </div>
 
+        <div class="info-wrapper">
+          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
+            laoreet
+            dolore. Magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+            suscipit
+            lobortis nisl
+            dolore te feugait nulla facilisi.</p>
 
-  <div id="minutes-to-hours-container" class="tabContent">
-    <form id="minutes-to-hours-form">
-      <h2>Minutes to Hours Converter</h2>
-      <div>
-        <label for="minutes">Enter minutes</label>
-        <input type="number" name="minutes" id="minutes" min="0" max="9999999">
+          <p>ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+            molestie
+            consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui
+            blandit
+            praesent luptatum zzril delenit augue duis</p>
+        </div>
       </div>
-      <input type="submit" value="Calculate" class="btn">
-    </form>
-  </div>
+    </div>
 
 
-  <div id="time-conversion-container" class="tabContent">
-    <form id="time-conversion-form">
+    <div id="minutes-to-hours-container" class="tab-content">
+
+      <h2>Minutes to Hours Converter</h2>
+
+      <div class="content-wrapper">
+        <div class="form-wrapper">
+          <form id="minutes-to-hours-form">
+            <div>
+              <label for="minutes">Enter minutes</label>
+              <input type="number" name="minutes" id="minutes" min="0" max="9999999">
+            </div>
+
+            <div>
+              <input type="submit" value="Calculate" class="btn">
+            </div>
+          </form>
+
+          <div id="answer-min-hour">
+            Answer:
+          </div>
+        </div>
+
+        <div class="info-wrapper">
+          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
+            laoreet
+            dolore. Magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+            suscipit
+            lobortis nisl
+            dolore te feugait nulla facilisi.</p>
+
+          <p>ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+            molestie
+            consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui
+            blandit
+            praesent luptatum zzril delenit augue duis</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="time-conversion-container" class="tab-content">
 
       <h2>Time Conversion Calculator</h2>
 
-      <label for="convertValue">Value to Convert: </label>
-      <input type="number" name="convertValue" id="convertValue" step="any" min="0" max="999999999999999">
+      <div class="content-wrapper">
+        <div class="form-wrapper">
+          <form id="time-conversion-form">
+            <label for="convertValue">Value to Convert: </label>
+            <input type="number" name="convertValue" id="convertValue" step="any" min="0" max="999999999999999">
 
-      <label for="convertFrom">From: </label>
-      <select name="convertFrom" id="convertFrom">
-        <option value="ns">Nanosecond (ns)</option>
-        <option value="μs">Microsecond (μs)</option>
-        <option value="ms">Millisecond (ms)</option>
-        <option value="s" selected>Second (s)</option>
-        <option value="min">Minute (min)</option>
-        <option value="h">Hour (h)</option>
-        <option value="d">Day (d)</option>
-        <option value="wk">Week (wk)</option>
-        <option value="mo">Month (mo)</option>
-        <option value="yr">Year (yr)</option>
-        <option value="dec">Decade (dec)</option>
-        <option value="c">Century (c)</option>
-        <option value="millennium">Millennium (millennium)</option>
-      </select>
+            <label for="convertFrom">From: </label>
+            <select name="convertFrom" id="convertFrom">
+              <option value="ns">Nanosecond (ns)</option>
+              <option value="μs">Microsecond (μs)</option>
+              <option value="ms">Millisecond (ms)</option>
+              <option value="s" selected>Second (s)</option>
+              <option value="min">Minute (min)</option>
+              <option value="h">Hour (h)</option>
+              <option value="d">Day (d)</option>
+              <option value="wk">Week (wk)</option>
+              <option value="mo">Month (mo)</option>
+              <option value="yr">Year (yr)</option>
+              <option value="dec">Decade (dec)</option>
+              <option value="c">Century (c)</option>
+              <option value="millennium">Millennium (millennium)</option>
+            </select>
 
-      <label for="convertTo">To: </label>
-      <select name="convertTo" id="convertTo">
-        <option value="ns">Nanosecond (ns)</option>
-        <option value="μs">Microsecond (μs)</option>
-        <option value="ms">Millisecond (ms)</option>
-        <option value="s">Second (s)</option>
-        <option value="min">Minute (min)</option>
-        <option value="h" selected>Hour (h)</option>
-        <option value="d">Day (d)</option>
-        <option value="wk">Week (wk)</option>
-        <option value="mo">Month (mo)</option>
-        <option value="yr">Year (yr)</option>
-        <option value="dec">Decade (dec)</option>
-        <option value="c">Century (c)</option>
-        <option value="millennium">Millennium (millennium)</option>
-      </select>
+            <label for="convertTo">To: </label>
+            <select name="convertTo" id="convertTo">
+              <option value="ns">Nanosecond (ns)</option>
+              <option value="μs">Microsecond (μs)</option>
+              <option value="ms">Millisecond (ms)</option>
+              <option value="s">Second (s)</option>
+              <option value="min">Minute (min)</option>
+              <option value="h" selected>Hour (h)</option>
+              <option value="d">Day (d)</option>
+              <option value="wk">Week (wk)</option>
+              <option value="mo">Month (mo)</option>
+              <option value="yr">Year (yr)</option>
+              <option value="dec">Decade (dec)</option>
+              <option value="c">Century (c)</option>
+              <option value="millennium">Millennium (millennium)</option>
+            </select>
 
-      <input type="submit" value="Calculate" class="btn">
+            <div>
+              <input type="submit" value="Calculate" class="btn">
+            </div>
+          </form>
 
-      <div>
-        <p>Months in this time conversion calculator are calculated using the average of 30.416 days per month. This is
-          equal to 365 days per year divided by 12 months per year. 365 ÷ 12 = 30.416 days per month.</p>
+          <div id="answer-time-conv">
+            Answer:
+          </div>
 
-        <p>Years in this time converter are calculated as 365 days per year. This calculator does not consider the extra
-          day in a leap year which has 366 days per year.</p>
+        </div>
+
+        <div class="info-wrapper">
+          <p>Months in this time conversion calculator are calculated using the average of 30.416 days per month. This
+            is
+            equal to 365 days per year divided by 12 months per year. 365 ÷ 12 = 30.416 days per month.</p>
+
+          <p>Years in this time converter are calculated as 365 days per year. This calculator does not consider the
+            extra
+            day in a leap year which has 366 days per year.</p>
+        </div>
       </div>
-
-    </form>
-  </div>
-
-  <div id="answer">
-    Answer:
-  </div>
+    </div>
+  </main>
 
   <script>
     function openTab(evt, cityName) {
       let i, tabContent, tabLinks;
-      tabContent = document.getElementsByClassName("tabContent");
+      tabContent = document.getElementsByClassName("tab-content");
       for (i = 0; i < tabContent.length; i++) {
         tabContent[i].style.display = "none";
       }
-      tabLinks = document.getElementsByClassName("tabLinks");
+      tabLinks = document.getElementsByClassName("tab-links");
       for (i = 0; i < tabLinks.length; i++) {
         tabLinks[i].className = tabLinks[i].className.replace(" active", "");
       }

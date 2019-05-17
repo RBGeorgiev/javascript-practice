@@ -34,7 +34,7 @@ export default function decimalToTime(seconds) {
             .padStart(2, '0')
     );
 
-    ConstantsList.answerDiv.innerHTML = ` 
+    ConstantsList.answerDiv_DecTime.innerHTML = ` 
             Answer:    
             <br>
             Hours: ${Math.trunc(hours)} 
