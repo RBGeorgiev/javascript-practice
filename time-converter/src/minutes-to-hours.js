@@ -8,12 +8,15 @@ export default function minutesToHours(e) {
     let hoursTime = Math.trunc(hoursDecimal)
 
     ConstantsList.answerDiv_MinHour.innerHTML = `   
-            Answer:  
+            <h3>Answer:</h3> 
+            <br>            
+            = ${hoursTime}: ${minutesTime.toString().padStart(2, '0')}
             <br>
-            ${hoursTime} hours and ${minutesTime} minutes
             <br>
-            ${hoursTime}:${minutesTime.toString().padStart(2, '0')}
+            ${hoursTime} hours: ${minutesTime} minutes
             <br>
-            Decimal hours: ${hoursDecimal}
+            or
+            <br>
+            ${hoursDecimal} decimal hours
             `
 }

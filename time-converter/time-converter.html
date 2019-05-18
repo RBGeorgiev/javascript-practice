@@ -13,7 +13,7 @@
     <div class="tabs">
       <button class="tab-links active" onclick="openTab(event, 'time-to-decimal-container')">Time to Decimal</button>
       <button class="tab-links" onclick="openTab(event, 'decimal-to-time-container')">Decimal to Time</button>
-      <button class="tab-links" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours
+      <button class="tab-links" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours and Minutes
         Converter</button>
       <button class="tab-links" onclick="openTab(event, 'time-conversion-container')">Time Conversion
         Calculator</button>
@@ -35,12 +35,12 @@
               <label for="minutes">
                 <abbr title="Minutes">MM</abbr>
               </label>
-              <input type="number" name="minutes" id="minutes" min="0" max="59">
+              <input type="number" name="minutes" id="minutes" min="0" max="99">
 
               <label for="seconds">
                 <abbr title="Seconds">SS</abbr>
               </label>
-              <input type="number" name="seconds" id="seconds" min="0" max="59">
+              <input type="number" name="seconds" id="seconds" min="0" max="99">
             </div>
 
             <div>
@@ -53,8 +53,8 @@
             </div>
           </form>
 
-          <div id="answer-time-dec">
-            Answer:
+          <div class="answer" id="answer-time-dec">
+            <h3>Answer:</h3>
           </div>
         </div>
 
@@ -93,21 +93,18 @@
               <select name="timeUnit" id="timeUnit">
                 <option value="days">Days</option>
                 <option value="hours">Hours</option>
-                <option value="minutes">Minutes</option>
+                <option value="minutes" selected>Minutes</option>
                 <option value="seconds">Seconds</option>
               </select>
             </div>
-            <!-- <div>
-        <input type="checkbox" name="inclDays" id="inclDays">
-        <label for="inclDays">Include days in answer</label>
-      </div> -->
+
             <div>
               <input type="submit" value="Calculate" class="btn">
             </div>
           </form>
 
-          <div id="answer-dec-time">
-            Answer:
+          <div class="answer" id="answer-dec-time">
+            <h3>Answer:</h3>
           </div>
         </div>
 
@@ -131,7 +128,7 @@
 
     <div id="minutes-to-hours-container" class="tab-content">
 
-      <h2>Minutes to Hours Converter</h2>
+      <h2>Minutes to Hours and Minutes Converter</h2>
 
       <div class="content-wrapper">
         <div class="form-wrapper">
@@ -146,8 +143,8 @@
             </div>
           </form>
 
-          <div id="answer-min-hour">
-            Answer:
+          <div class="answer" id="answer-min-hour">
+            <h3>Answer:</h3>
           </div>
         </div>
 
@@ -218,8 +215,8 @@
             </div>
           </form>
 
-          <div id="answer-time-conv">
-            Answer:
+          <div class="answer" id="answer-time-conv">
+            <h3>Answer:</h3>
           </div>
 
         </div>

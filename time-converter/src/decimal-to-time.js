@@ -1,48 +1,29 @@
 import ConstantsList from "./constants-list.js"
-// let inclDays = document.getElementById("inclDays");
 
-export default function decimalToTime(seconds) {
-    let answer = []
+function formatNumber(number) {
+    return Math.trunc(number)
+        .toString()
+        .padStart(2, '0');
+}
 
-    let hours = seconds / 3600;
+export default function decimalToTime(sec) {
+    let hours = sec / 3600;
     let minutes = hours % 1 * 60;
-    seconds = minutes % 1 * 60;
+    let seconds = minutes % 1 * 60;
 
-    // if (Math.trunc(hours) > 24 && inclDays.checked) {
-    //   days = Math.trunc(hours) / 24
-    //   answer.push(
-    //     Math.trunc(days)
-    //   );
-    //   hours = hours - Math.trunc(days) * 24
-    // }
-
-    answer.push(
-        Math.trunc(hours)
-            .toString()
-            .padStart(2, '0')
-    );
-
-    answer.push(
-        Math.trunc(minutes)
-            .toString()
-            .padStart(2, '0')
-    );
-
-    answer.push(
-        Math.trunc(seconds)
-            .toString()
-            .padStart(2, '0')
-    );
+    let days = Math.trunc(hours) / 24
+    let hoursWithDays = hours - Math.trunc(days) * 24
 
     ConstantsList.answerDiv_DecTime.innerHTML = ` 
-            Answer:    
+            <h3>Answer:</h3>   
             <br>
-            Hours: ${Math.trunc(hours)} 
+            = ${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}
             <br>
-            Minutes: ${Math.trunc(minutes)} 
             <br>
-            Seconds: ${Math.trunc(seconds)}
+            ${formatNumber(hours)} hours: ${formatNumber(minutes)} minutes: ${formatNumber(seconds)} seconds
             <br>
-            ${answer.join(':')}
+            or
+            <br>
+            ${Math.trunc(days)} days, ${formatNumber(hoursWithDays)} hours: ${formatNumber(minutes)} minutes: ${formatNumber(seconds)} seconds
             `
 }

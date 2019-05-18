@@ -9,8 +9,10 @@ export default function timeConversion(form) {
     let answer = convertValue * (ConstantsList.secondConversionRates[convertFrom] / ConstantsList.secondConversionRates[convertTo]);
 
     ConstantsList.answerDiv_TimeConv.innerHTML = ` 
-            Answer:    
+            <h3>Answer:</h3>   
             <br>
-            ${convertValue} ${convertFrom} = ${answer} ${convertTo}
+            ${convertValue} ${convertFrom} = 
+            <br>
+            ${answer} ${convertTo}
             `
 }
