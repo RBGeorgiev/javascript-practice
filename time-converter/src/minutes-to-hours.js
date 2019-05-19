@@ -13,14 +13,10 @@ export default function minutesToHours(e) {
 
     ConstantsList.answerDiv_MinHour.innerHTML = `   
             <h3>Answer:</h3> 
-            <br>            
-            = ${formatNumber(hoursTime)}:${formatNumber(minutesTime)}
             <br>
-            <br>
-            ${hoursTime} hours: ${minutesTime} minutes
-            <br>
-            or
-            <br>
-            ${hoursDecimal} decimal hours
+            <p>= ${formatNumber(hoursTime)}:${formatNumber(minutesTime)}</p>
+            <p>${hoursTime} hours: ${minutesTime} minutes</p>            
+            <p>or</p>            
+            <p>${hoursDecimal} decimal hours</p>
             `
 }

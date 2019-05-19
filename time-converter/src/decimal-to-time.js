@@ -18,13 +18,9 @@ export default function decimalToTime(sec) {
     ConstantsList.answerDiv_DecTime.innerHTML = ` 
             <h3>Answer:</h3>   
             <br>
-            = ${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}
-            <br>
-            <br>
-            ${formatNumber(hours)} hours: ${formatNumber(minutes)} minutes: ${formatNumber(seconds)} seconds
-            <br>
-            or
-            <br>
-            ${Math.trunc(days)} days, ${formatNumber(hoursWithDays)} hours: ${formatNumber(minutes)} minutes: ${formatNumber(seconds)} seconds
+            <p>= ${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}</p>
+            <p>${formatNumber(hours)} hours: ${formatNumber(minutes)} minutes: ${formatNumber(seconds)} seconds</p>
+            <p>or</p>
+            <p>${Math.trunc(days)} days, ${formatNumber(hoursWithDays)} hours: ${formatNumber(minutes)} minutes: ${formatNumber(seconds)} seconds</p>
             `
 }

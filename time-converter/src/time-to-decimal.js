@@ -16,14 +16,10 @@ export default function timeToDecimal(form) {
     ConstantsList.answerDiv_TimeDec.innerHTML = `
             <h3>Answer:</h3>
             <br>
-            ${round(hoursAns, decimals)} hours
-            <br>
-            or
-            <br>
-            ${round(minutesAns, decimals)} minutes
-            <br>
-            or
-            <br>
-            ${round(secondsAns, decimals)} seconds
+            <p>${round(hoursAns, decimals)} hours</p>
+            <p>or</p>
+            <p>${round(minutesAns, decimals)} minutes</p>
+            <p>or</p>
+            <p>${round(secondsAns, decimals)} seconds</p>
             `
 }

@@ -13,8 +13,7 @@ export default function timeConversion(form) {
     ConstantsList.answerDiv_TimeConv.innerHTML = ` 
             <h3>Answer:</h3>   
             <br>
-            ${convertValue} ${convertFrom} = 
-            <br>
-            ${answer} ${convertTo}
+            <p>${convertValue} ${convertFrom} = </p>
+            <p>${answer} ${convertTo}</p>
             `
 }
