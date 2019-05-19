@@ -1,16 +1,20 @@
-import round from './round.js'
-import ConstantsList from "./constants-list.js"
+import round from './round.js';
+import ConstantsList from "./constants-list.js";
+import formatNumber from "./format-number.js";
 
 export default function minutesToHours(e) {
-    let minutes = e.minutes.value;
-    let hoursDecimal = round(minutes / 60, 6)
-    let minutesTime = Math.round(hoursDecimal % 1 * 60)
-    let hoursTime = Math.trunc(hoursDecimal)
+    let minutes, hoursDecimal, minutesTime, hoursTime;
+
+    minutes = e.minutes.value;
+    //decimal hours rounded to only 6 decimal places
+    hoursDecimal = round(minutes / 60, 6);
+    minutesTime = round(hoursDecimal % 1 * 60, 0);
+    hoursTime = Math.trunc(hoursDecimal);
 
     ConstantsList.answerDiv_MinHour.innerHTML = `   
             <h3>Answer:</h3> 
             <br>            
-            = ${hoursTime}: ${minutesTime.toString().padStart(2, '0')}
+            = ${formatNumber(hoursTime)}:${formatNumber(minutesTime)}
             <br>
             <br>
             ${hoursTime} hours: ${minutesTime} minutes

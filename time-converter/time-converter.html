@@ -19,7 +19,8 @@
         Calculator</button>
     </div>
 
-    <div id="time-to-decimal-container" class="tab-content" style="display: block;">
+
+    <div class="tab-content" id="time-to-decimal-container" style="display: block;">
 
       <h2>Time to Decimal Calculator</h2>
 
@@ -76,7 +77,7 @@
     </div>
 
 
-    <div id="decimal-to-time-container" class="tab-content">
+    <div class="tab-content" id="decimal-to-time-container">
 
       <h2>Decimal to Time Calculator</h2>
 
@@ -91,10 +92,10 @@
             <div>
               <label for="timeUnit">Time Unit</label>
               <select name="timeUnit" id="timeUnit">
-                <option value="days">Days</option>
-                <option value="hours">Hours</option>
-                <option value="minutes" selected>Minutes</option>
-                <option value="seconds">Seconds</option>
+                <option value="d">Days</option>
+                <option value="h">Hours</option>
+                <option value="min" selected>Minutes</option>
+                <option value="s">Seconds</option>
               </select>
             </div>
 
@@ -126,7 +127,7 @@
     </div>
 
 
-    <div id="minutes-to-hours-container" class="tab-content">
+    <div class="tab-content" id="minutes-to-hours-container">
 
       <h2>Minutes to Hours and Minutes Converter</h2>
 
@@ -166,7 +167,7 @@
     </div>
 
 
-    <div id="time-conversion-container" class="tab-content">
+    <div class="tab-content" id="time-conversion-container">
 
       <h2>Time Conversion Calculator</h2>
 
@@ -218,7 +219,6 @@
           <div class="answer" id="answer-time-conv">
             <h3>Answer:</h3>
           </div>
-
         </div>
 
         <div class="info-wrapper">
@@ -235,18 +235,21 @@
   </main>
 
   <script>
-    function openTab(evt, cityName) {
-      let i, tabContent, tabLinks;
+    function openTab(event, tabId) {
+      let tabContent, tabLinks;
+
       tabContent = document.getElementsByClassName("tab-content");
-      for (i = 0; i < tabContent.length; i++) {
+      for (let i = 0; i < tabContent.length; i++) {
         tabContent[i].style.display = "none";
       }
+
       tabLinks = document.getElementsByClassName("tab-links");
-      for (i = 0; i < tabLinks.length; i++) {
+      for (let i = 0; i < tabLinks.length; i++) {
         tabLinks[i].className = tabLinks[i].className.replace(" active", "");
       }
-      document.getElementById(cityName).style.display = "block";
-      evt.currentTarget.className += " active";
+
+      document.getElementById(tabId).style.display = "block";
+      event.currentTarget.className += " active";
     }
   </script>
 

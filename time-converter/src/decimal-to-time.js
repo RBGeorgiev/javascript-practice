@@ -1,18 +1,19 @@
-import ConstantsList from "./constants-list.js"
+import ConstantsList from "./constants-list.js";
+import formatNumber from "./format-number.js";
+import round from "./round.js";
 
-function formatNumber(number) {
-    return Math.trunc(number)
-        .toString()
-        .padStart(2, '0');
-}
 
 export default function decimalToTime(sec) {
-    let hours = sec / 3600;
-    let minutes = hours % 1 * 60;
-    let seconds = minutes % 1 * 60;
+    let hours, minutes, seconds, days, hoursWithDays;
 
-    let days = Math.trunc(hours) / 24
-    let hoursWithDays = hours - Math.trunc(days) * 24
+    hours = sec / 3600;
+    //rounding minutes to 10 decimal places to get rid of floating point errors
+    minutes = round(hours % 1 * 60, 10);
+    //rounding seconds to 0 decimal places to get rid of floating point errors
+    seconds = round(minutes % 1 * 60, 0);
+
+    days = Math.trunc(hours) / 24;
+    hoursWithDays = hours - Math.trunc(days) * 24;
 
     ConstantsList.answerDiv_DecTime.innerHTML = ` 
             <h3>Answer:</h3>   

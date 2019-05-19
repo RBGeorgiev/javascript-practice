@@ -1,6 +1,6 @@
 # Time converter/calculator
 
-Simple time calculator. Planning to add more ways to convert time in the future.
+Simple time calculator. Mostly used as practice for tabs and forms.
 
 - [x] Time to Decimal
 - [x] Decimal to Time
