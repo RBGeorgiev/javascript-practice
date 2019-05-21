@@ -1,6 +1,6 @@
-import Paddle from "./paddle.js";
-import InputHandler from "./input.js";
-import Ball from "./ball.js"
+
+
+import Game from "./game.js";
 
 const canvas = document.getElementById("gameScreen");
 const ctx = canvas.getContext("2d");
@@ -9,9 +9,9 @@ const ctx = canvas.getContext("2d");
 canvas.width = 900;
 canvas.height = 700;
 
-let paddle = new Paddle(canvas.width, canvas.height);
-let ball = new Ball(canvas.width, canvas.height, paddle);
-new InputHandler(paddle);
+let game = new Game(canvas.width, canvas.height);
+game.start();
+
 
 let lastTime = 0, deltaTime;
 
@@ -20,12 +20,10 @@ function gameLoop(timestamp) {
     deltaTime = timestamp - lastTime;
     lastTime = timestamp;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    paddle.update(deltaTime);
-    paddle.draw(ctx);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ball.update(deltaTime);
-    ball.draw(ctx);
+    game.update(deltaTime);
+    game.draw(ctx);
 
     // requestAnimationFrame executes on next available screen repaint, instead of on predetermined delay (e.g. every 50ms). This stops errors in time stamps if slow computers bottleneck. 
     window.requestAnimationFrame(gameLoop);
