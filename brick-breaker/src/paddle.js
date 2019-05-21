@@ -3,10 +3,11 @@ export default class Paddle {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
 
-        this.width = 200;
+        this.width = 150;
         this.height = 25;
 
-        this.speed = 20;
+        this.maxSpeed = 0.7;
+        this.speed = 0;
 
         this.position = {
             x: (gameWidth - this.width) / 2,
@@ -20,15 +21,21 @@ export default class Paddle {
     }
 
     moveLeft() {
-        this.position.x -= this.speed;
+        this.speed = -this.maxSpeed;
     }
 
     moveRight() {
-        this.position.x += this.speed;
+        this.speed = this.maxSpeed;
+    }
+
+    stop() {
+        this.speed = 0;
     }
 
     update(deltaTime) {
-        if (this.position.x + this.width > this.gameWidth) this.position.x = this.gameWidth - this.width
+        this.position.x += this.speed * deltaTime;
+
         if (this.position.x < 0) this.position.x = 0;
+        if (this.position.x + this.width > this.gameWidth) this.position.x = this.gameWidth - this.width;
     }
 }
