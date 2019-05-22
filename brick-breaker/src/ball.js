@@ -14,7 +14,7 @@ export default class Ball {
 
         this.position = {
             x: 100,
-            y: 75
+            y: 425
         }
     }
 

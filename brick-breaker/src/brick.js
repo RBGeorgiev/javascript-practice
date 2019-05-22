@@ -33,7 +33,7 @@ export default class Brick {
                 && this.game.ball.position.x < this.position.x + this.width
             ) {
                 this.game.ball.speed.y = -this.game.ball.speed.y;
-                this.game.ball.position.y = this.position.y - this.game.ball.radius;
+                // this.game.ball.position.y = this.position.y - this.game.ball.radius;
                 this.hit = true;
             }
 
@@ -45,7 +45,7 @@ export default class Brick {
                 && this.game.ball.position.x < this.position.x + this.width
             ) {
                 this.game.ball.speed.y = -this.game.ball.speed.y;
-                this.game.ball.position.y = this.position.y + this.game.ball.radius + this.height;
+                // this.game.ball.position.y = this.position.y + this.game.ball.radius + this.height;
                 this.hit = true;
             }
 
@@ -57,7 +57,7 @@ export default class Brick {
                 && this.game.ball.position.y < this.position.y + this.height
             ) {
                 this.game.ball.speed.x = -this.game.ball.speed.x;
-                this.game.ball.position.x = this.position.x - this.game.ball.radius;
+                // this.game.ball.position.x = this.position.x - this.game.ball.radius;
                 this.hit = true;
             }
 
@@ -69,7 +69,7 @@ export default class Brick {
                 && this.game.ball.position.y < this.position.y + this.height
             ) {
                 this.game.ball.speed.x = -this.game.ball.speed.x;
-                this.game.ball.position.x = this.position.x + this.width + this.game.ball.radius;
+                // this.game.ball.position.x = this.position.x + this.width + this.game.ball.radius;
                 this.hit = true;
             }
         }
