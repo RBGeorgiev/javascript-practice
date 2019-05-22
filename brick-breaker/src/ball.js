@@ -3,7 +3,7 @@ export default class Ball {
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
 
-        this.paddle = game.paddle;
+        this.game = game;
 
         this.radius = 10;
 
@@ -22,7 +22,6 @@ export default class Ball {
         ctx.fillStyle = "blue"
         ctx.beginPath();
         ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
-        ctx.closePath();
         ctx.fill();
     }
 
@@ -32,12 +31,12 @@ export default class Ball {
 
         //add paddle collision 
         if (
-            this.position.y > this.paddle.position.y - this.radius
-            && this.position.x > this.paddle.position.x
-            && this.position.x < this.paddle.position.x + this.paddle.width
+            this.position.y > this.game.paddle.position.y - this.radius
+            && this.position.x > this.game.paddle.position.x
+            && this.position.x < this.game.paddle.position.x + this.game.paddle.width
         ) {
             this.speed.y = -this.speed.y;
-            this.position.y = this.paddle.position.y - this.radius;
+            this.position.y = this.game.paddle.position.y - this.radius;
         }
 
         //add bottom wall collision (temporary)
