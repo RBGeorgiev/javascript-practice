@@ -1,5 +1,5 @@
 export default class Brick {
-    constructor(game) {
+    constructor(game, position) {
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
 
@@ -8,61 +8,70 @@ export default class Brick {
         this.width = 70;
         this.height = 30;
 
-        this.position = {
-            x: 280,
-            y: 100
-        }
+        this.position = position;
+
+        this.hit = false;
     }
 
 
     draw(ctx) {
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+        if (!this.hit) {
+            ctx.fillStyle = "red";
+            ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+            ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
+        }
     }
 
-    update(deltaTime) {
-        // top side collision
-        if (
-            this.game.ball.position.y > this.position.y - this.game.ball.radius
-            && this.game.ball.position.y < this.position.y
-            && this.game.ball.position.x > this.position.x
-            && this.game.ball.position.x < this.position.x + this.width
-        ) {
-            this.game.ball.speed.y = -this.game.ball.speed.y;
-            this.game.ball.position.y = this.position.y - this.game.ball.radius;
-        }
+    update() {
+        if (!this.hit) {
 
-        // bottom side collision
-        if (
-            this.game.ball.position.y < this.position.y + this.height + this.game.ball.radius
-            && this.game.ball.position.y > this.position.y
-            && this.game.ball.position.x > this.position.x
-            && this.game.ball.position.x < this.position.x + this.width
-        ) {
-            this.game.ball.speed.y = -this.game.ball.speed.y;
-            this.game.ball.position.y = this.position.y + this.game.ball.radius + this.height
-        }
+            // top side collision
+            if (
+                this.game.ball.position.y > this.position.y - this.game.ball.radius
+                && this.game.ball.position.y < this.position.y
+                && this.game.ball.position.x > this.position.x
+                && this.game.ball.position.x < this.position.x + this.width
+            ) {
+                this.game.ball.speed.y = -this.game.ball.speed.y;
+                this.game.ball.position.y = this.position.y - this.game.ball.radius;
+                this.hit = true;
+            }
 
-        // left side collision
-        if (
-            this.game.ball.position.x > this.position.x - this.game.ball.radius
-            && this.game.ball.position.x < this.position.x
-            && this.game.ball.position.y > this.position.y
-            && this.game.ball.position.y < this.position.y + this.height
-        ) {
-            this.game.ball.speed.x = -this.game.ball.speed.x;
-            this.game.ball.position.x = this.position.x - this.game.ball.radius
-        }
+            // bottom side collision
+            if (
+                this.game.ball.position.y < this.position.y + this.height + this.game.ball.radius
+                && this.game.ball.position.y > this.position.y
+                && this.game.ball.position.x > this.position.x
+                && this.game.ball.position.x < this.position.x + this.width
+            ) {
+                this.game.ball.speed.y = -this.game.ball.speed.y;
+                this.game.ball.position.y = this.position.y + this.game.ball.radius + this.height;
+                this.hit = true;
+            }
 
-        //right side collision
-        if (
-            this.game.ball.position.x < this.position.x + this.width + this.game.ball.radius
-            && this.game.ball.position.x > this.position.x
-            && this.game.ball.position.y > this.position.y
-            && this.game.ball.position.y < this.position.y + this.height
-        ) {
-            this.game.ball.speed.x = -this.game.ball.speed.x;
-            this.game.ball.position.x = this.position.x + this.width + this.game.ball.radius;
+            // left side collision
+            if (
+                this.game.ball.position.x > this.position.x - this.game.ball.radius
+                && this.game.ball.position.x < this.position.x
+                && this.game.ball.position.y > this.position.y
+                && this.game.ball.position.y < this.position.y + this.height
+            ) {
+                this.game.ball.speed.x = -this.game.ball.speed.x;
+                this.game.ball.position.x = this.position.x - this.game.ball.radius;
+                this.hit = true;
+            }
+
+            //right side collision
+            if (
+                this.game.ball.position.x < this.position.x + this.width + this.game.ball.radius
+                && this.game.ball.position.x > this.position.x
+                && this.game.ball.position.y > this.position.y
+                && this.game.ball.position.y < this.position.y + this.height
+            ) {
+                this.game.ball.speed.x = -this.game.ball.speed.x;
+                this.game.ball.position.x = this.position.x + this.width + this.game.ball.radius;
+                this.hit = true;
+            }
         }
     }
 }
