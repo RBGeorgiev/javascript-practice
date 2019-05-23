@@ -1,7 +1,8 @@
 import Paddle from "./paddle.js";
 import InputHandler from "./input.js";
 import Ball from "./ball.js";
-import { levelCreator, levelTest } from "./level-creator.js";
+import levelLoader from "./level-loader.js";
+import levels from "./levels.js"
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -11,6 +12,9 @@ export default class Game {
         this.paused = false;
         this.won = false;
         this.lives = 3;
+
+        this.levels = levels
+        this.currentLevel = 0;
     }
 
     start() {
@@ -18,7 +22,9 @@ export default class Game {
         this.ball = new Ball(this);
         this.bricks = [];
 
-        levelCreator(this, levelTest);
+
+        levelLoader(this, this.levels[this.currentLevel]);
+
 
         new InputHandler(this.paddle, this);
     }
@@ -56,6 +62,13 @@ export default class Game {
 
         // won overlay placeholder
         if (this.bricks.length === 0) {
+            // if there is a next level
+            if (this.currentLevel + 1 < this.levels.length) {
+                // start next level
+                this.currentLevel++;
+                this.start();
+                return;
+            }
             this.won = true;
             ctx.fillStyle = "rgba(0, 55, 0, 0.6)";
             ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
