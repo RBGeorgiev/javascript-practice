@@ -15,6 +15,7 @@ export default class Brick {
 
 
     draw(ctx) {
+        //if brick is hit don't draw
         if (!this.hit) {
             ctx.fillStyle = "red";
             ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
@@ -23,8 +24,8 @@ export default class Brick {
     }
 
     update() {
+        // if brick is hit remove collision
         if (!this.hit) {
-
             // top side collision
             if (
                 this.game.ball.position.y > this.position.y - this.game.ball.radius

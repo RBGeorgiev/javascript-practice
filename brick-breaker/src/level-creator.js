@@ -10,6 +10,10 @@ export function levelCreator(game, level) {
     })
 }
 
+// export let levelTest = [
+//     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+// ]
+
 export let levelTest = [
     [1, 0, 1, 0, 1, 0, 1, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 1, 0, 1],

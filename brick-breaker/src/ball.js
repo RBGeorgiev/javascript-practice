@@ -9,7 +9,7 @@ export default class Ball {
 
         this.speed = {
             x: 0.5,
-            y: 0.5
+            y: -0.5
         }
 
         this.position = {

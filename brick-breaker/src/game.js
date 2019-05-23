@@ -7,25 +7,37 @@ export default class Game {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
+
+        this.paused = false;
     }
 
     start() {
         this.paddle = new Paddle(this);
         this.ball = new Ball(this);
-        this.bricks = []
+        this.bricks = [];
 
         levelCreator(this, levelTest);
 
-        new InputHandler(this.paddle);
+        new InputHandler(this.paddle, this);
+    }
+
+    togglePause() {
+        this.paused = !this.paused;
     }
 
     draw(ctx) {
         this.paddle.draw(ctx);
         this.ball.draw(ctx);
         this.bricks.forEach(brick => brick.draw(ctx));
+
+        if (this.paused) {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+            ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
+        }
     }
 
     update(deltaTime) {
+        if (this.paused) return
         this.paddle.update(deltaTime);
         this.ball.update(deltaTime);
         this.bricks.forEach(brick => brick.update());

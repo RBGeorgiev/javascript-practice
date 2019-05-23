@@ -1,5 +1,5 @@
 export default class InputHandler {
-    constructor(paddle) {
+    constructor(paddle, game) {
         document.addEventListener("keydown", e => {
             switch (e.keyCode) {
                 case 37:
@@ -22,6 +22,14 @@ export default class InputHandler {
                 case 39:
                     if (paddle.speed > 0) // fixes a bug causing paddle to stop if moving left
                         paddle.stop()
+                    break;
+            }
+        })
+
+        document.addEventListener("keydown", e => {
+            switch (e.keyCode) {
+                case 32:
+                    game.togglePause();
                     break;
             }
         })
