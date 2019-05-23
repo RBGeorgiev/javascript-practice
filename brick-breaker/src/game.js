@@ -9,6 +9,8 @@ export default class Game {
         this.gameHeight = gameHeight;
 
         this.paused = false;
+        this.won = false;
+        this.lives = 3;
     }
 
     start() {
@@ -26,14 +28,15 @@ export default class Game {
     }
 
     update(deltaTime) {
-        if (this.paused) return
+        if (this.paused || this.won || this.lives === 0) return;
         this.paddle.update(deltaTime);
         this.ball.update(deltaTime);
 
+        //filter out hit bricks
         this.bricks = this.bricks.filter(brick => !brick.hit);
-        this.bricks.forEach(brick => brick.update());
 
-        console.log(this.bricks)
+        // draw bricks
+        this.bricks.forEach(brick => brick.update());
     }
 
     draw(ctx) {
@@ -46,13 +49,28 @@ export default class Game {
         if (this.paused) {
             ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
             ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
+            ctx.font = '50px serif';
+            ctx.textAlign = "center"
+            ctx.fillText("PAUSED", this.gameWidth / 2, this.gameHeight / 2)
         }
 
         // won overlay placeholder
         if (this.bricks.length === 0) {
-            this.paused = true;
-            ctx.fillStyle = "rgba(255, 255, 0, 0.6)";
+            this.won = true;
+            ctx.fillStyle = "rgba(0, 55, 0, 0.6)";
             ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
+            ctx.font = '50px serif';
+            ctx.textAlign = "center"
+            ctx.fillText("YOU WON", this.gameWidth / 2, this.gameHeight / 2)
+        }
+
+        // lost overlay placeholder
+        if (this.lives === 0) {
+            ctx.fillStyle = "rgba(55, 0, 0, 0.6)";
+            ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
+            ctx.font = '50px serif';
+            ctx.textAlign = "center"
+            ctx.fillText("YOU LOST", this.gameWidth / 2, this.gameHeight / 2)
         }
     }
 }

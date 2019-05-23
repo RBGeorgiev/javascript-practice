@@ -7,6 +7,10 @@ export default class Ball {
 
         this.radius = 10;
 
+        this.resetBall()
+    }
+
+    resetBall() {
         this.speed = {
             x: 0.5,
             y: -0.5
@@ -39,22 +43,22 @@ export default class Ball {
             this.position.y = this.game.paddle.position.y - this.radius;
         }
 
-        //add bottom wall collision (temporary)
+        //bottom wall removes life
         if (this.position.y > this.gameHeight - this.radius) {
-            this.speed.y = -this.speed.y;
-            this.position.y = this.gameHeight - this.radius; //fixes edge case bug where ball would go into the wall or disappear
+            this.game.lives--;
+            this.resetBall();
         }
-        //add right wall collision
+        //right wall collision
         if (this.position.x > this.gameWidth - this.radius) {
             this.speed.x = -this.speed.x;
             this.position.x = this.gameWidth - this.radius; //fixes edge case bug where ball would go into the wall or disappear
         }
-        //add top wall collision
+        //top wall collision
         if (this.position.y < this.radius) {
             this.speed.y = -this.speed.y;
             this.position.y = this.radius; //fixes edge case bug where ball would go into the wall and/or disappear
         }
-        //add left wall collision
+        //left wall collision
         if (this.position.x < this.radius) {
             this.speed.x = -this.speed.x;
             this.position.x = this.radius; //fixes edge case bug where ball would go into the wall or disappear
