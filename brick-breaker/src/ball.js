@@ -33,16 +33,6 @@ export default class Ball {
         this.position.x += this.speed.x * deltaTime;
         this.position.y += this.speed.y * deltaTime;
 
-        //add paddle collision 
-        if (
-            this.position.y > this.game.paddle.position.y - this.radius
-            && this.position.x > this.game.paddle.position.x
-            && this.position.x < this.game.paddle.position.x + this.game.paddle.width
-        ) {
-            this.speed.y = -this.speed.y;
-            this.position.y = this.game.paddle.position.y - this.radius;
-        }
-
         //bottom wall removes life
         if (this.position.y > this.gameHeight - this.radius) {
             this.game.lives--;
@@ -51,17 +41,17 @@ export default class Ball {
         //right wall collision
         if (this.position.x > this.gameWidth - this.radius) {
             this.speed.x = -this.speed.x;
-            this.position.x = this.gameWidth - this.radius; //fixes edge case bug where ball would go into the wall or disappear
+            this.position.x = this.gameWidth - this.radius; //fixes bug where ball would go into the wall or disappear
         }
         //top wall collision
         if (this.position.y < this.radius) {
             this.speed.y = -this.speed.y;
-            this.position.y = this.radius; //fixes edge case bug where ball would go into the wall and/or disappear
+            this.position.y = this.radius; //fixes bug where ball would go into the wall and/or disappear
         }
         //left wall collision
         if (this.position.x < this.radius) {
             this.speed.x = -this.speed.x;
-            this.position.x = this.radius; //fixes edge case bug where ball would go into the wall or disappear
+            this.position.x = this.radius; //fixes bug where ball would go into the wall or disappear
         }
     }
 }

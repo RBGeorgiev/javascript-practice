@@ -1,3 +1,5 @@
+import { verticalCollision, horizontalCollision } from "./collision-check.js";
+
 export default class Brick {
     constructor(game, position) {
         this.gameWidth = game.gameWidth;
@@ -13,7 +15,6 @@ export default class Brick {
         this.hit = false;
     }
 
-
     draw(ctx) {
         //if brick is hit don't draw
         if (!this.hit) {
@@ -26,51 +27,12 @@ export default class Brick {
     update() {
         // if brick is hit remove collision
         if (!this.hit) {
-            // top side collision
-            if (
-                this.game.ball.position.y > this.position.y - this.game.ball.radius
-                && this.game.ball.position.y < this.position.y
-                && this.game.ball.position.x > this.position.x
-                && this.game.ball.position.x < this.position.x + this.width
-            ) {
+            if (verticalCollision(this, this.game.ball)) {
                 this.game.ball.speed.y = -this.game.ball.speed.y;
-                // this.game.ball.position.y = this.position.y - this.game.ball.radius;
                 this.hit = true;
             }
-
-            // bottom side collision
-            if (
-                this.game.ball.position.y < this.position.y + this.height + this.game.ball.radius
-                && this.game.ball.position.y > this.position.y
-                && this.game.ball.position.x > this.position.x
-                && this.game.ball.position.x < this.position.x + this.width
-            ) {
-                this.game.ball.speed.y = -this.game.ball.speed.y;
-                // this.game.ball.position.y = this.position.y + this.game.ball.radius + this.height;
-                this.hit = true;
-            }
-
-            // left side collision
-            if (
-                this.game.ball.position.x > this.position.x - this.game.ball.radius
-                && this.game.ball.position.x < this.position.x
-                && this.game.ball.position.y > this.position.y
-                && this.game.ball.position.y < this.position.y + this.height
-            ) {
+            if (horizontalCollision(this, this.game.ball)) {
                 this.game.ball.speed.x = -this.game.ball.speed.x;
-                // this.game.ball.position.x = this.position.x - this.game.ball.radius;
-                this.hit = true;
-            }
-
-            //right side collision
-            if (
-                this.game.ball.position.x < this.position.x + this.width + this.game.ball.radius
-                && this.game.ball.position.x > this.position.x
-                && this.game.ball.position.y > this.position.y
-                && this.game.ball.position.y < this.position.y + this.height
-            ) {
-                this.game.ball.speed.x = -this.game.ball.speed.x;
-                // this.game.ball.position.x = this.position.x + this.width + this.game.ball.radius;
                 this.hit = true;
             }
         }
