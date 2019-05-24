@@ -41,7 +41,17 @@ export default class Paddle {
 
         //add paddle collision 
         if (verticalCollision(this, this.game.ball)) {
+            let paddleCenter = this.position.x + this.width / 2;
+            // equals the number of pixels from the paddle center to the collision. Negative values = left of center, positive values = right of center
+            let collisionRelativeToCenter = this.game.ball.position.x - paddleCenter;
+            // equals a value between -1 and 1 depending on where the ball hit from the center
+            let normalizedRelativeIntersectionX = (collisionRelativeToCenter / (this.width / 2));
+
+            this.game.ball.speed.x = 0.5 * normalizedRelativeIntersectionX;
             this.game.ball.speed.y = -this.game.ball.speed.y;
+
+            // fix bug of ball from going inside paddle
+            this.game.ball.position.y = this.position.y - this.game.ball.radius;
         }
         if (horizontalCollision(this, this.game.ball)) {
             this.game.ball.speed.x = -this.game.ball.speed.x;
