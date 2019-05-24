@@ -16,25 +16,26 @@ export default class Brick {
     }
 
     draw(ctx) {
-        //if brick is hit don't draw
-        if (!this.hit) {
-            ctx.fillStyle = "red";
-            ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-            ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
-        }
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+        ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
     }
 
     update() {
-        // if brick is hit remove collision
-        if (!this.hit) {
-            if (verticalCollision(this, this.game.ball)) {
-                this.game.ball.speed.y = -this.game.ball.speed.y;
-                this.hit = true;
-            }
-            if (horizontalCollision(this, this.game.ball)) {
-                this.game.ball.speed.x = -this.game.ball.speed.x;
-                this.hit = true;
-            }
+        if (verticalCollision(this, this.game.ball)) {
+            this.game.ball.speed.y = -this.game.ball.speed.y;
+            this.hit = true;
+            //filter out the hit brick from the current level array
+            this.game.bricks = this.game.bricks.filter(brick => !brick.hit);
+            this.game.score++;
+            return; // fixes bug causing score to count twice if ball hits brick corner
+        }
+        if (horizontalCollision(this, this.game.ball)) {
+            this.game.ball.speed.x = -this.game.ball.speed.x;
+            this.hit = true;
+            //filter out the hit brick from the current level array 
+            this.game.bricks = this.game.bricks.filter(brick => !brick.hit);
+            this.game.score++;
         }
     }
 }

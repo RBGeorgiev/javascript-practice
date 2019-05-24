@@ -12,6 +12,7 @@ export default class Game {
         this.paused = false;
         this.won = false;
         this.lives = 3;
+        this.score = 0;
 
         this.levels = levels
         this.currentLevel = 0;
@@ -27,6 +28,12 @@ export default class Game {
         new InputHandler(this.paddle, this);
     }
 
+    displayScore(ctx) {
+        ctx.font = '40px serif';
+        ctx.textAlign = "center"
+        ctx.fillText(`${this.score}`, this.gameWidth - 35, 45)
+    }
+
     togglePause() {
         this.paused = !this.paused;
     }
@@ -35,9 +42,6 @@ export default class Game {
         if (this.paused || this.won || this.lives === 0) return;
         this.paddle.update(deltaTime);
         this.ball.update(deltaTime);
-
-        //filter out hit bricks
-        this.bricks = this.bricks.filter(brick => !brick.hit);
 
         // draw bricks
         this.bricks.forEach(brick => brick.update());
@@ -48,6 +52,8 @@ export default class Game {
         this.ball.draw(ctx);
 
         this.bricks.forEach(brick => brick.draw(ctx));
+
+        this.displayScore(ctx)
 
         // paused overlay placeholder
         if (this.paused) {
