@@ -25,12 +25,15 @@ export default class Ball {
     }
 
     startMoving() {
-        this.speed = {
-            x: 0.3,
-            y: -0.5
-        }
+        if (this.waitingToStart) {
 
-        this.waitingToStart = false;
+            this.speed = {
+                x: 0.3,
+                y: -0.5
+            }
+
+            this.waitingToStart = false;
+        }
     }
 
     draw(ctx) {
@@ -42,7 +45,10 @@ export default class Ball {
         if (this.waitingToStart && this.game.lives !== 0) {
             ctx.font = '50px serif';
             ctx.textAlign = "center"
-            ctx.fillText("Press Up Arrow key to Start", this.gameWidth / 2, this.gameHeight / 2)
+            ctx.fillText(`Press Up Arrow key to Start`, this.gameWidth / 2, this.gameHeight / 2)
+
+            ctx.fillStyle = "red"
+            ctx.fillText(`Press Enter to Restart the game`, this.gameWidth / 2, this.gameHeight / 2 + 50)
         }
     }
 

@@ -28,6 +28,17 @@ export default class Game {
         new InputHandler(this.paddle, this);
     }
 
+    restart() {
+        this.paused = false;
+        this.won = false;
+        this.lives = 3;
+        this.score = 0;
+
+        this.currentLevel = 0;
+
+        this.start();
+    }
+
     displayScore(ctx) {
         ctx.font = '40px serif';
         ctx.textAlign = "center"

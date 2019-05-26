@@ -41,5 +41,14 @@ export default class InputHandler {
                     break;
             }
         })
+
+        document.addEventListener("keydown", e => {
+            switch (e.keyCode) {
+                case 13:
+                    game.restart();
+                    break;
+            }
+        })
+
     }
 }
