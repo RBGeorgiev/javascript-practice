@@ -7,19 +7,30 @@ export default class Ball {
 
         this.radius = 10;
 
+        this.waitingToStart = true;
+
         this.resetBall()
     }
 
     resetBall() {
         this.speed = {
-            x: 0.5,
-            y: -0.5
+            x: 0,
+            y: 0
         }
 
         this.position = {
-            x: 100,
-            y: 425
+            x: this.game.paddle.position.x + this.game.paddle.width / 2,
+            y: this.game.paddle.position.y - 20
         }
+    }
+
+    startMoving() {
+        this.speed = {
+            x: 0.3,
+            y: -0.5
+        }
+
+        this.waitingToStart = false;
     }
 
     draw(ctx) {
@@ -27,15 +38,26 @@ export default class Ball {
         ctx.beginPath();
         ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
+
+        if (this.waitingToStart && this.game.lives !== 0) {
+            ctx.font = '50px serif';
+            ctx.textAlign = "center"
+            ctx.fillText("Press Up Arrow key to Start", this.gameWidth / 2, this.gameHeight / 2)
+        }
     }
 
     update(deltaTime) {
+        if (this.waitingToStart) {
+            this.position.x = this.game.paddle.position.x + this.game.paddle.width / 2
+        }
+
         this.position.x += this.speed.x * deltaTime;
         this.position.y += this.speed.y * deltaTime;
 
         //bottom wall removes life
         if (this.position.y > this.gameHeight - this.radius) {
             this.game.lives--;
+            this.waitingToStart = true;
             this.resetBall();
         }
         //right wall collision

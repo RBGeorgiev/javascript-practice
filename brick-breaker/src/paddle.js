@@ -50,7 +50,7 @@ export default class Paddle {
             this.game.ball.speed.x = 0.5 * normalizedRelativeIntersectionX;
             this.game.ball.speed.y = -this.game.ball.speed.y;
 
-            // fix bug of ball from going inside paddle
+            // fixes bug where ball would go inside paddle
             this.game.ball.position.y = this.position.y - this.game.ball.radius;
         }
         if (horizontalCollision(this, this.game.ball)) {

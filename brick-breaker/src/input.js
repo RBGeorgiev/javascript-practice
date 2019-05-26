@@ -33,5 +33,13 @@ export default class InputHandler {
                     break;
             }
         })
+
+        document.addEventListener("keydown", e => {
+            switch (e.keyCode) {
+                case 38:
+                    game.ball.startMoving();
+                    break;
+            }
+        })
     }
 }
