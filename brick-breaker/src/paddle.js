@@ -19,11 +19,6 @@ export default class Paddle {
         }
     }
 
-    draw(ctx) {
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    }
-
     moveLeft() {
         this.speed = -this.maxSpeed;
     }
@@ -41,6 +36,7 @@ export default class Paddle {
 
         //add paddle collision 
         if (verticalCollision(this, this.game.ball)) {
+            // makes ball bounce differently depending on where on the paddle it hits
             let paddleCenter = this.position.x + this.width / 2;
             // equals the number of pixels from the paddle center to the collision. Negative values = left of center, positive values = right of center
             let collisionRelativeToCenter = this.game.ball.position.x - paddleCenter;
@@ -60,5 +56,10 @@ export default class Paddle {
         //stop paddle from going off screen
         if (this.position.x < 0) this.position.x = 0;
         if (this.position.x + this.width > this.gameWidth) this.position.x = this.gameWidth - this.width;
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 }

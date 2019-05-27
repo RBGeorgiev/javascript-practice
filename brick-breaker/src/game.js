@@ -9,52 +9,43 @@ export default class Game {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
 
-        this.paused = false;
-        this.won = false;
-        this.lives = 3;
-        this.score = 0;
+        this.levels = levels;
 
-        this.levels = levels
-        this.currentLevel = 0;
+        this.init();
     }
 
-    start() {
+    init() {
+        this.currentLevel = 0;
+        this.lives = 3;
+        this.score = 0;
+        this.paused = false;
+        this.won = false;
+        this.lost = false;
+
+        this.startLevel();
+    }
+
+    startLevel() {
         this.paddle = new Paddle(this);
         this.ball = new Ball(this);
         this.bricks = [];
 
-        levelLoader(this, this.levels[this.currentLevel]);
-
         new InputHandler(this.paddle, this);
-    }
 
-    restart() {
-        this.paused = false;
-        this.won = false;
-        this.lives = 3;
-        this.score = 0;
-
-        this.currentLevel = 0;
-
-        this.start();
-    }
-
-    displayScore(ctx) {
-        ctx.font = '40px serif';
-        ctx.textAlign = "center"
-        ctx.fillText(`${this.score}`, this.gameWidth - 35, 45)
+        levelLoader(this, this.levels[this.currentLevel]);
     }
 
     togglePause() {
+        if (this.won || this.lost) return;
         this.paused = !this.paused;
     }
 
     update(deltaTime) {
-        if (this.paused || this.won || this.lives === 0) return;
+        if (this.paused || this.won || this.lost) return;
         this.paddle.update(deltaTime);
         this.ball.update(deltaTime);
 
-        // draw bricks
+        // check brick collision
         this.bricks.forEach(brick => brick.update());
     }
 
@@ -62,43 +53,63 @@ export default class Game {
         this.paddle.draw(ctx);
         this.ball.draw(ctx);
 
+        // draw bricks
         this.bricks.forEach(brick => brick.draw(ctx));
 
-        this.displayScore(ctx)
+        this.displayScore(ctx);
 
-        // paused overlay placeholder
+        // game pause overlay
         if (this.paused) {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-            ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
-            ctx.font = '50px serif';
-            ctx.textAlign = "center"
-            ctx.fillText("PAUSED", this.gameWidth / 2, this.gameHeight / 2)
+            this.pauseScreen(ctx);
         }
 
-        // won overlay placeholder
+        // next level check and game win overlay
         if (this.bricks.length === 0) {
             // if there is a next level
             if (this.currentLevel + 1 < this.levels.length) {
-                // start next level
+                // startLevel next level
                 this.currentLevel++;
-                this.start();
+                this.startLevel();
                 return;
             }
             this.won = true;
-            ctx.fillStyle = "rgba(0, 55, 0, 0.6)";
-            ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
-            ctx.font = '50px serif';
-            ctx.textAlign = "center"
-            ctx.fillText("YOU WON", this.gameWidth / 2, this.gameHeight / 2)
+            this.winScreen(ctx);
         }
 
-        // lost overlay placeholder
+        // game lose overlay
         if (this.lives === 0) {
-            ctx.fillStyle = "rgba(55, 0, 0, 0.6)";
-            ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
-            ctx.font = '50px serif';
-            ctx.textAlign = "center"
-            ctx.fillText("YOU LOST", this.gameWidth / 2, this.gameHeight / 2)
+            this.lost = true;
+            this.gameOverScreen(ctx);
         }
+    }
+
+    displayScore(ctx) {
+        ctx.font = '40px serif';
+        ctx.textAlign = "center"
+        ctx.fillText(`${this.score}`, this.gameWidth - ctx.measureText(`${this.score}`).width / 2 - 20, 45)
+    }
+
+    pauseScreen(ctx) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+        ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.font = '50px serif';
+        ctx.textAlign = "center"
+        ctx.fillText("PAUSED", this.gameWidth / 2, this.gameHeight / 2)
+    }
+
+    winScreen(ctx) {
+        ctx.fillStyle = "rgba(0, 55, 0, 0.6)";
+        ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.font = '50px serif';
+        ctx.textAlign = "center"
+        ctx.fillText("YOU WON", this.gameWidth / 2, this.gameHeight / 2)
+    }
+
+    gameOverScreen(ctx) {
+        ctx.fillStyle = "rgba(55, 0, 0, 0.6)";
+        ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.font = '50px serif';
+        ctx.textAlign = "center";
+        ctx.fillText("YOU LOST", this.gameWidth / 2, this.gameHeight / 2);
     }
 }

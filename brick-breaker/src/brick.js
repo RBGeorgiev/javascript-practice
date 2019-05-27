@@ -15,12 +15,6 @@ export default class Brick {
         this.hit = false;
     }
 
-    draw(ctx) {
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-        ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
-    }
-
     update() {
         if (verticalCollision(this, this.game.ball)) {
             this.game.ball.speed.y = -this.game.ball.speed.y;
@@ -36,6 +30,13 @@ export default class Brick {
             //filter out the hit brick from the current level array 
             this.game.bricks = this.game.bricks.filter(brick => !brick.hit);
             this.game.score++;
+            return;
         }
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+        ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
     }
 }
