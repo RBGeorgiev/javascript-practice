@@ -9,7 +9,7 @@ export default class Ball {
 
         this.waitingToStart = true;
 
-        this.resetBall()
+        this.resetBall();
     }
 
     resetBall() {
@@ -26,19 +26,17 @@ export default class Ball {
 
     startMoving() {
         if (this.waitingToStart) {
-
             this.speed = {
                 x: 0.3,
                 y: -0.5
             }
-
             this.waitingToStart = false;
         }
     }
 
     update(deltaTime) {
         if (this.waitingToStart) {
-            this.position.x = this.game.paddle.position.x + this.game.paddle.width / 2
+            this.position.x = this.game.paddle.position.x + this.game.paddle.width / 2;
         }
 
         this.position.x += this.speed.x * deltaTime;
@@ -68,7 +66,7 @@ export default class Ball {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "blue"
+        ctx.fillStyle = "blue";
         ctx.beginPath();
         ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
