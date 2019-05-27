@@ -56,7 +56,11 @@ export default class Game {
         // draw bricks
         this.bricks.forEach(brick => brick.draw(ctx));
 
+        this.startDisplay(ctx)
+
         this.displayScore(ctx);
+
+        this.displayLives(ctx);
 
         // game pause overlay
         if (this.paused) {
@@ -83,10 +87,27 @@ export default class Game {
         }
     }
 
+    startDisplay(ctx) {
+        if (this.ball.waitingToStart && this.lives !== 0) {
+            ctx.font = '50px serif';
+            ctx.textAlign = "center"
+
+            ctx.fillStyle = "red"
+            ctx.fillText(`Level ${this.currentLevel + 1}`, this.gameWidth / 2, this.gameHeight / 2 - 50)
+
+            ctx.font = '30px serif';
+            ctx.fillStyle = "blue"
+            ctx.fillText(`Press Up Arrow key to Start`, this.gameWidth / 2, this.gameHeight / 2)
+
+            ctx.fillStyle = "red"
+            ctx.fillText(`Press Enter to Restart the game`, this.gameWidth / 2, this.gameHeight / 2 + 50)
+        }
+    }
+
     displayScore(ctx) {
-        ctx.font = '40px serif';
+        ctx.font = '30px serif';
         ctx.textAlign = "center"
-        ctx.fillText(`${this.score}`, this.gameWidth - ctx.measureText(`${this.score}`).width / 2 - 20, 45)
+        ctx.fillText(`Score: ${this.score}`, this.gameWidth - ctx.measureText(`Score: ${this.score}`).width / 2 - 20, 40)
     }
 
     pauseScreen(ctx) {
@@ -111,5 +132,12 @@ export default class Game {
         ctx.font = '50px serif';
         ctx.textAlign = "center";
         ctx.fillText("YOU LOST", this.gameWidth / 2, this.gameHeight / 2);
+    }
+
+    displayLives(ctx) {
+        ctx.fillStyle = "red";
+        ctx.font = '30px serif';
+        ctx.textAlign = "center"
+        ctx.fillText(`Lives: ${this.lives}`, ctx.measureText(`Lives: ${this.score}`).width - 30, 40)
     }
 }
