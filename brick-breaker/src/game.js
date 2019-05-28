@@ -13,7 +13,6 @@ export default class Game {
         this.ball = new Ball(this);
         new InputHandler(this.paddle, this);
 
-        this.bricks = [];
         this.levels = levels;
 
         this.init();
@@ -23,6 +22,8 @@ export default class Game {
         this.currentLevel = 0;
         this.lives = 3;
         this.score = 0;
+        this.bricks = [];
+
         this.paused = false;
         this.won = false;
         this.lost = false;
