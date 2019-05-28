@@ -6,6 +6,24 @@
     <title>Brick Breaker</title>
 
     <style>
+        h1 {
+            text-align: center;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            justify-items: end;
+        }
+
+        div {
+            width: 300px;
+            background: lightgrey;
+            padding: 5px 5px 0px 25px;
+            border: 1px black solid;
+            border-right: none;
+        }
+
         canvas {
             border: 1px black solid;
         }
@@ -13,7 +31,18 @@
 </head>
 
 <body>
-    <canvas id="gameScreen"></canvas>
+    <h1>Brick Breaker</h1>
+    <main>
+        <div>
+            <h2>Controls:</h2>
+            <p>Use Left Arrow and Right Arrow, or A and D, to Move the paddle</p>
+            <p>Press Up Arrow or W to make the ball start moving</p>
+            <p>Press P to Pause/Unpause</p>
+            <p>Press Enter to restart the game</p>
+        </div>
+        <canvas id="gameScreen"></canvas>
+    </main>
+
 
     <script type="module" src="./src/index.js"></script>
 </body>
