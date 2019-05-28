@@ -7,12 +7,12 @@ export default class Ball {
 
         this.radius = 10;
 
-        this.waitingToStart = true;
-
         this.resetBall();
     }
 
     resetBall() {
+        this.waitingToStart = true;
+
         this.speed = {
             x: 0,
             y: 0
@@ -45,7 +45,6 @@ export default class Ball {
         //bottom wall removes life
         if (this.position.y > this.gameHeight - this.radius) {
             this.game.lives--;
-            this.waitingToStart = true;
             this.resetBall();
         }
         //right wall collision

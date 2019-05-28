@@ -2,9 +2,9 @@ let level1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
 ]
 
-let level2 = [
-    [0, 0, 0, 0, 1, 0, 0, 0, 1, 0]
-]
+// let level2 = [
+//     [0, 0, 0, 0, 1, 0, 0, 0, 1, 0]
+// ]
 
 // let level3 = [
 //     [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
@@ -14,7 +14,7 @@ let level2 = [
 //     [0, 0, 0, 0, 1, 0, 0, 0, 1, 0]
 // ]
 
-let levels = [level1, level2];
+let levels = [level1];
 export default levels
 
 // export let level2 = [

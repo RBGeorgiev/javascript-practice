@@ -33,7 +33,6 @@ export default class Game {
     startLevel() {
         levelLoader(this, this.levels[this.currentLevel]);
         this.ball.resetBall();
-        this.ball.waitingToStart = true;
         this.paddle.resetPaddle();
     }
 
@@ -121,23 +120,36 @@ export default class Game {
     }
 
     winScreen(ctx) {
-        ctx.fillStyle = "rgba(0, 55, 0, 0.6)";
+        ctx.fillStyle = "rgba(0, 55, 0, 0.8)";
         ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
-        ctx.font = '50px serif';
-        ctx.textAlign = "center";
-        ctx.fillText("YOU WON", this.gameWidth / 2, this.gameHeight / 2);
-        ctx.font = '30px serif';
-        ctx.fillText("Press Enter to play again", this.gameWidth / 2, this.gameHeight / 2 + 50);
 
+        ctx.textAlign = "center";
+
+        ctx.font = '50px serif';
+        ctx.fillStyle = "white";
+        ctx.fillText("YOU WON", this.gameWidth / 2, this.gameHeight / 2);
+
+        ctx.font = '30px serif';
+        ctx.fillStyle = "lightgrey";
+        ctx.fillText(`Final score: ${this.score}`, this.gameWidth / 2, this.gameHeight / 2 - 65);
+
+        ctx.fillText("Press Enter to play again", this.gameWidth / 2, this.gameHeight / 2 + 50);
     }
 
     gameOverScreen(ctx) {
-        ctx.fillStyle = "rgba(55, 0, 0, 0.6)";
+        ctx.fillStyle = "rgba(55, 0, 0, 0.9)";
         ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
-        ctx.font = '50px serif';
+
         ctx.textAlign = "center";
+
+        ctx.font = '50px serif';
+        ctx.fillStyle = "white";
         ctx.fillText("YOU LOST", this.gameWidth / 2, this.gameHeight / 2);
+
         ctx.font = '30px serif';
+        ctx.fillStyle = "lightgrey";
+        ctx.fillText(`Final score: ${this.score}`, this.gameWidth / 2, this.gameHeight / 2 - 65);
+
         ctx.fillText("Press Enter to play again", this.gameWidth / 2, this.gameHeight / 2 + 50);
     }
 
