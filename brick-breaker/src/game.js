@@ -2,7 +2,7 @@ import Paddle from "./paddle.js";
 import InputHandler from "./input.js";
 import Ball from "./ball.js";
 import levelLoader from "./level-loader.js";
-import levels from "./levels.js";
+import { levels, ezLevels } from "./levels.js";
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -13,8 +13,6 @@ export default class Game {
         this.ball = new Ball(this);
         new InputHandler(this.paddle, this);
 
-        this.levels = levels;
-
         this.init();
     }
 
@@ -23,6 +21,7 @@ export default class Game {
         this.lives = 3;
         this.score = 0;
         this.bricks = [];
+        this.levels = (document.getElementById('easy-mode').checked) ? ezLevels : levels;
 
         this.paused = false;
         this.won = false;
