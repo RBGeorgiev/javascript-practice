@@ -59,9 +59,11 @@ export default class Game {
 
         this.startScreen(ctx);
 
-        this.displayScore(ctx);
-
         this.displayLives(ctx);
+
+        this.displayLevel(ctx)
+
+        this.displayScore(ctx);
 
         // game pause overlay
         if (this.paused) {
@@ -93,15 +95,9 @@ export default class Game {
             ctx.font = '50px sans-serif';
             ctx.textAlign = "center";
 
-            ctx.fillStyle = "red";
-            ctx.fillText(`Level ${this.currentLevel + 1}`, this.gameWidth / 2, this.gameHeight / 2 - 50);
-
             ctx.font = '25px sans-serif';
             ctx.fillStyle = "blue";
-            ctx.fillText(`Press Up Arrow key to Start`, this.gameWidth / 2, this.gameHeight / 2);
-
-            ctx.fillStyle = "red";
-            ctx.fillText(`Press Enter to Restart the game`, this.gameWidth / 2, this.gameHeight / 2 + 50);
+            ctx.fillText(`Press Up Arrow key to Start`, this.gameWidth / 2, this.gameHeight / 1.3);
         }
     }
 
@@ -112,7 +108,15 @@ export default class Game {
         ctx.fillText(`Lives: ${this.lives}`, ctx.measureText(`Lives: ${this.score}`).width - 30, 40);
     }
 
+    displayLevel(ctx) {
+        ctx.fillStyle = "red";
+        ctx.font = '30px sans-serif';
+        ctx.textAlign = "center";
+        ctx.fillText(`Level ${this.currentLevel + 1}`, this.gameWidth / 2, 40);
+    }
+
     displayScore(ctx) {
+        ctx.fillStyle = "red";
         ctx.font = '30px sans-serif';
         ctx.textAlign = "center";
         ctx.fillText(`Score: ${this.score}`, this.gameWidth - ctx.measureText(`Score: ${this.score}`).width / 2 - 20, 40);
@@ -159,6 +163,4 @@ export default class Game {
 
         ctx.fillText("Press Enter to play again", this.gameWidth / 2, this.gameHeight / 2 + 50);
     }
-
-
 }
