@@ -4,7 +4,7 @@ const canvas = document.getElementById("gameScreen");
 const ctx = canvas.getContext("2d");
 
 canvas.width = 900;
-canvas.height = 700;
+canvas.height = 750;
 
 let game = new Game(canvas.width, canvas.height);
 
