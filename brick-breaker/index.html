@@ -27,7 +27,15 @@
             background: lightgrey;
             padding: 5px 5px 0px 25px;
             border: 1px black solid;
+        }
+
+        #controls {
             border-right: none;
+        }
+
+        #info {
+            justify-self: start;
+            border-left: none;
         }
 
         h2 {
@@ -48,17 +56,22 @@
 <body>
     <h1>Brick Breaker</h1>
     <main>
-        <div>
+        <div id="controls">
             <h2>Controls:</h2>
             <p>Use Left Arrow and Right Arrow, or A and D, to Move the paddle</p>
             <p>Press Up Arrow or W to make the ball start moving</p>
             <p>Press Space or P to Pause/Unpause</p>
             <p>Press Enter to restart the game</p>
-
-            <input type="checkbox" name="easy-mode" id="easy-mode">
-            <label for="easy-mode">Toggle this checkbox for easy/test levels, then press Enter to refresh</label>
         </div>
         <canvas id="gameScreen"></canvas>
+        <div id="info">
+            <h2>Info:</h2>
+            <input type="checkbox" name="easy-mode" id="easy-mode">
+            <label for="easy-mode">Toggle this checkbox for easy/test levels, then press Enter to refresh.</label>
+            <p>...</p>
+            <p>...</p>
+            <p>...</p>
+        </div>
     </main>
 
 

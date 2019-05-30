@@ -134,11 +134,14 @@ let ez1 = [
 ];
 let ez2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+];
+let ez3 = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
 ];
-
 let levels = [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10];
-let ezLevels = [ez1, ez2];
+let ezLevels = [ez1, ez2, ez3];
 
 export { levels, ezLevels };
 
