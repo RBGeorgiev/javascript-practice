@@ -21,7 +21,7 @@ export default class Brick {
             this.hit = true;
             //filter out the hit brick from the current level array
             this.game.bricks = this.game.bricks.filter(brick => !brick.hit);
-            this.game.score++;
+            this.game.score += 1 * this.game.multiplier;
             return; // fixes bug causing score to count twice if ball hits brick corner
         }
         if (horizontalCollision(this, this.game.ball)) {
@@ -29,7 +29,7 @@ export default class Brick {
             this.hit = true;
             //filter out the hit brick from the current level array 
             this.game.bricks = this.game.bricks.filter(brick => !brick.hit);
-            this.game.score++;
+            this.game.score += 1 * this.game.multiplier;
             return;
         }
     }

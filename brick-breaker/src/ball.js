@@ -45,6 +45,7 @@ export default class Ball {
         //bottom wall removes life
         if (this.position.y > this.gameHeight - this.radius) {
             this.game.lives--;
+            this.game.multiplier = 1;
             this.resetBall();
         }
         //right wall collision

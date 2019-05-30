@@ -20,6 +20,7 @@ export default class Game {
         this.currentLevel = 0;
         this.lives = 3;
         this.score = 0;
+        this.multiplier = 1;
         this.bricks = [];
         this.levels = (document.getElementById('easy-mode').checked) ? ezLevels : levels;
 
@@ -61,9 +62,11 @@ export default class Game {
 
         this.displayLives(ctx);
 
-        this.displayLevel(ctx)
+        this.displayLevel(ctx);
 
         this.displayScore(ctx);
+
+        this.displayMultiplier(ctx);
 
         // game pause overlay
         if (this.paused) {
@@ -76,6 +79,7 @@ export default class Game {
             if (this.currentLevel + 1 < this.levels.length) {
                 // startLevel next level
                 this.currentLevel++;
+                if (this.multiplier < 5) this.multiplier++;
                 this.startLevel();
                 return;
             }
@@ -120,6 +124,13 @@ export default class Game {
         ctx.font = '30px sans-serif';
         ctx.textAlign = "center";
         ctx.fillText(`Score: ${this.score}`, this.gameWidth - ctx.measureText(`Score: ${this.score}`).width / 2 - 20, 40);
+    }
+
+    displayMultiplier(ctx) {
+        ctx.fillStyle = "red";
+        ctx.font = '20px sans-serif';
+        ctx.textAlign = "center";
+        ctx.fillText(`Multiplier: x${this.multiplier}`, this.gameWidth - ctx.measureText(`Multiplier: x${this.multiplier}`).width / 2 - 20, 60);
     }
 
     pauseScreen(ctx) {
