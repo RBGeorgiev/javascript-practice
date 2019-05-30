@@ -43,8 +43,17 @@
             font-weight: bolder;
         }
 
-        p {
-            font-size: 1.5em;
+        #controls>p {
+            font-size: 1.4em;
+        }
+
+        #info {
+            font-size: 1.2em;
+        }
+
+        span {
+            font-weight: bolder;
+            text-decoration: underline;
         }
 
         canvas {
@@ -58,20 +67,23 @@
     <main>
         <div id="controls">
             <h2>Controls:</h2>
-            <p>Use Left Arrow and Right Arrow, or A and D, to Move the paddle</p>
-            <p>Press Up Arrow or W to make the ball start moving</p>
-            <p>Press Space or P to Pause/Unpause</p>
-            <p>Press Enter to restart the game</p>
+            <p>Use <span>Left Arrow</span> and <span>Right Arrow</span>, or <span>A</span> and <span>D</span>, to move
+                the paddle</p>
+            <p>Press <span>Up Arrow</span> or <span>W</span> to launch the ball</p>
+            <p>Press <span>Space</span> or <span>P</span> to Pause/Unpause</p>
+            <p>Press <span>Enter</span> to restart the game</p>
         </div>
         <canvas id="gameScreen"></canvas>
         <div id="info">
             <h2>Info:</h2>
-            <input type="checkbox" name="easy-mode" id="easy-mode">
-            <label for="easy-mode">Toggle this checkbox for easy/test levels, then press Enter to refresh.</label>
             <p>Completing a level increases the score multiplier by 1 (up to a maximum of 5). Dropping the ball,
                 however, drops the multiplier back down to 1.</p>
-            <p>...</p>
-            <p>...</p>
+            <p>__________________________</p>
+            <input type="checkbox" name="easy-mode" id="easy-mode">
+            <label for="easy-mode">Toggle this checkbox for easy/test levels, then press Enter to refresh.</label>
+            <p>The 'easy' levels are the levels I used for testing. I've included them here in case someone wants to
+                quickly see what the win screen looks like. Just move the paddle to the far left and launch the ball.
+            </p>
         </div>
     </main>
 

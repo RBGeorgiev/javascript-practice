@@ -101,7 +101,7 @@ export default class Game {
 
             ctx.font = '25px sans-serif';
             ctx.fillStyle = "blue";
-            ctx.fillText(`Press Up Arrow key to Start`, this.gameWidth / 2, this.gameHeight / 1.3);
+            ctx.fillText(`Press Up Arrow or W to launch the ball`, this.gameWidth / 2, this.gameHeight / 1.3);
         }
     }
 
