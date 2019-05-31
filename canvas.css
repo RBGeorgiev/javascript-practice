@@ -53,8 +53,21 @@ p {
 }
 
 a {
+    background: linear-gradient(#F4EA51, #FFD45E);
+    border: 1px black solid;
+    padding: 8px 70px;
     text-decoration: none;
-    color: #F4EA51;
+    color: black;
+    font-weight: bolder;
+}
+
+#clearCanvas {
+    padding: 8px 24px;
+    background: linear-gradient(white, lightgray);
+}
+
+#clearCanvas:focus {
+    outline:0;
 }
 
 #cursor {
