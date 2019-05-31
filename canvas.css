@@ -27,13 +27,14 @@ body {
     align-items: center;
 }
 
-#penControls {
-    border-top: 1px white solid;
-    border-bottom: 1px white solid;
+#controlsLeft input{
+    margin-left: 89px;
+    width: 100px;  
 }
 
-#controlsLeft input{
-    width: 200px;    
+#controlsLeft input[type="radio"]{
+    width: 15px;
+    margin-left: 175px;
 }
 
 #controlsLeft label{

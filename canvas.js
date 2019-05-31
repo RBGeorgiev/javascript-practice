@@ -34,7 +34,7 @@ canvas.addEventListener("mouseover", function (e) {
 });
 
 penSize.addEventListener("change", () => {
-    document.getElementById("penSizeLabel").innerHTML = `Brush Size: ${penSize.value}`;
+    document.getElementById("penSizeLabel").innerHTML = `Size: ${penSize.value}`;
 });
 canvas.addEventListener("mousemove", updateCursor);
 
