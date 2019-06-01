@@ -13,11 +13,14 @@ export default class Game {
         this.ball = new Ball(this);
         new InputHandler(this.paddle, this);
 
+
+
+
         this.init();
     }
 
     init() {
-        this.currentLevel = 0;
+        this.currentLevel = +document.querySelectorAll('input[type="radio"]:checked')[0].value;
         this.lives = 3;
         this.score = 0;
         this.multiplier = 1;
@@ -121,14 +124,14 @@ export default class Game {
         ctx.textAlign = "center";
         ctx.font = '30px sans-serif';
         ctx.fillStyle = "red";
-        ctx.fillText(`Score: ${this.score}`, this.gameWidth - ctx.measureText(`Score: ${this.score}`).width / 2 - 20, 40);
+        ctx.fillText(`Score: ${this.score}`, this.gameWidth - ctx.measureText(`Score: ${this.score}`).width / 2 - 20, 30);
     }
 
     displayMultiplier(ctx) {
         ctx.textAlign = "center";
         ctx.font = '20px sans-serif';
         ctx.fillStyle = "red";
-        ctx.fillText(`Multiplier: x${this.multiplier}`, this.gameWidth - ctx.measureText(`Multiplier: x${this.multiplier}`).width / 2 - 20, 60);
+        ctx.fillText(`Multiplier: x${this.multiplier}`, this.gameWidth - ctx.measureText(`Multiplier: x${this.multiplier}`).width / 2 - 20, 50);
     }
 
     pauseScreen(ctx) {

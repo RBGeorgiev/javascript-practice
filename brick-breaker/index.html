@@ -39,8 +39,9 @@
         }
 
         h2 {
-            font-size: 2em;
+            font-size: 35px;
             font-weight: bolder;
+            margin: 15px 0px 0px 0px;
         }
 
         #controls>p {
@@ -58,6 +59,16 @@
 
         canvas {
             border: 1px black solid;
+        }
+
+        form>label {
+            border: 1px black solid;
+            background: white;
+            padding: 3px;
+        }
+
+        input[type="radio"] {
+            margin: 7px
         }
     </style>
 </head>
@@ -79,11 +90,34 @@
             <p>Completing a level increases the score multiplier by 1. Dropping the ball,
                 however, drops the multiplier back down to 1.</p>
             <p>__________________________</p>
+            <form>
+                <p>Level selector</p>
+                <!-- 'this.blur()' removes focus from the button on click so arrow keys don't cycle through the buttons when trying to play the game -->
+                <label><input type="radio" name="level" value="0" onclick="this.blur();" checked>1 </label>
+                <label><input type="radio" name="level" value="1" onclick="this.blur();">2 </label>
+                <label><input type="radio" name="level" value="2" onclick="this.blur();">3 </label>
+                <label><input type="radio" name="level" value="3" onclick="this.blur();">4 </label>
+                <label><input type="radio" name="level" value="4" onclick="this.blur();"> 5 </label><br>
+                <label><input type="radio" name="level" value="5" onclick="this.blur();">6 </label>
+                <label><input type="radio" name="level" value="6" onclick="this.blur();">7 </label>
+                <label><input type="radio" name="level" value="7" onclick="this.blur();">8 </label>
+                <label><input type="radio" name="level" value="8" onclick="this.blur();">9 </label>
+                <label><input type="radio" name="level" value="9" onclick="this.blur();">10 </label>
+                <p>Select the level you would like to play, then press Enter to refresh.
+                    (Choosing a level this way will reset your score and score multiplier)</p>
+            </form>
+
+            <p>__________________________</p>
+
+
             <input type="checkbox" name="easy-mode" id="easy-mode">
             <label for="easy-mode">Toggle this checkbox for easy/test levels, then press Enter to refresh.</label>
-            <p>The 'easy' levels are the levels I used for testing. I've included them here in case someone wants to
-                quickly see what the win screen looks like. Just move the paddle to the far left and launch the ball.
+            <p>The 'easy' levels are the levels I used for testing. You can complete them by moving the paddle to the
+                far left and launching the ball.
             </p>
+
+
+
         </div>
     </main>
 
