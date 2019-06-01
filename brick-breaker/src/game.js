@@ -79,7 +79,7 @@ export default class Game {
             if (this.currentLevel + 1 < this.levels.length) {
                 // startLevel next level
                 this.currentLevel++;
-                if (this.multiplier < 5) this.multiplier++;
+                this.multiplier++;
                 this.startLevel();
                 return;
             }
@@ -96,9 +96,7 @@ export default class Game {
 
     startScreen(ctx) {
         if (this.ball.waitingToStart && this.lives !== 0 && !this.paused) {
-            ctx.font = '50px sans-serif';
             ctx.textAlign = "center";
-
             ctx.font = '25px sans-serif';
             ctx.fillStyle = "blue";
             ctx.fillText(`Press Up Arrow or W to launch the ball`, this.gameWidth / 2, this.gameHeight / 1.3);
@@ -106,38 +104,38 @@ export default class Game {
     }
 
     displayLives(ctx) {
-        ctx.fillStyle = "red";
-        ctx.font = '30px sans-serif';
         ctx.textAlign = "center";
+        ctx.font = '30px sans-serif';
+        ctx.fillStyle = "red";
         ctx.fillText(`Lives: ${this.lives}`, ctx.measureText(`Lives: ${this.score}`).width - 30, 40);
     }
 
     displayLevel(ctx) {
-        ctx.fillStyle = "red";
-        ctx.font = '30px sans-serif';
         ctx.textAlign = "center";
+        ctx.font = '30px sans-serif';
+        ctx.fillStyle = "red";
         ctx.fillText(`Level ${this.currentLevel + 1}`, this.gameWidth / 2, 40);
     }
 
     displayScore(ctx) {
-        ctx.fillStyle = "red";
-        ctx.font = '30px sans-serif';
         ctx.textAlign = "center";
+        ctx.font = '30px sans-serif';
+        ctx.fillStyle = "red";
         ctx.fillText(`Score: ${this.score}`, this.gameWidth - ctx.measureText(`Score: ${this.score}`).width / 2 - 20, 40);
     }
 
     displayMultiplier(ctx) {
-        ctx.fillStyle = "red";
-        ctx.font = '20px sans-serif';
         ctx.textAlign = "center";
+        ctx.font = '20px sans-serif';
+        ctx.fillStyle = "red";
         ctx.fillText(`Multiplier: x${this.multiplier}`, this.gameWidth - ctx.measureText(`Multiplier: x${this.multiplier}`).width / 2 - 20, 60);
     }
 
     pauseScreen(ctx) {
         ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
         ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
-        ctx.font = '50px sans-serif';
         ctx.textAlign = "center";
+        ctx.font = '50px sans-serif';
         ctx.fillText("PAUSED", this.gameWidth / 2, this.gameHeight / 2);
     }
 
@@ -146,7 +144,6 @@ export default class Game {
         ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
 
         ctx.textAlign = "center";
-
         ctx.font = '50px sans-serif';
         ctx.fillStyle = "white";
         ctx.fillText("YOU WON", this.gameWidth / 2, this.gameHeight / 2);
@@ -163,7 +160,6 @@ export default class Game {
         ctx.fillRect(0, 0, this.gameWidth, this.gameHeight);
 
         ctx.textAlign = "center";
-
         ctx.font = '50px sans-serif';
         ctx.fillStyle = "white";
         ctx.fillText("YOU LOST", this.gameWidth / 2, this.gameHeight / 2);
