@@ -25,16 +25,13 @@ class App extends React.Component {
     const COUNTRY = e.target.country.value;
     const API_CALL = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY},${COUNTRY}&units=metric&appid=${API_KEY}`);
     const DATA = await API_CALL.json();
-
-    console.log(DATA);
-
     try {
       this.setState({
         city: DATA.name,
         country: DATA.sys.country,
-        temperature: DATA.main.temp,
-        minTemp: DATA.main.temp_min,
-        maxTemp: DATA.main.temp_max,
+        temperature: Math.round(DATA.main.temp),
+        minTemp: Math.round(DATA.main.temp_min),
+        maxTemp: Math.round(DATA.main.temp_max),
         humidity: DATA.main.humidity,
         condition: DATA.weather[0].main,
         description: DATA.weather[0].description,
@@ -50,7 +47,7 @@ class App extends React.Component {
         humidity: undefined,
         condition: undefined,
         description: undefined,
-        error: DATA.message,
+        error: 'City not found.',
       })
     }
   }
