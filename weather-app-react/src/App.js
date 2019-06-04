@@ -10,7 +10,10 @@ class App extends React.Component {
     city: undefined,
     country: undefined,
     temperature: undefined,
+    minTemp: undefined,
+    maxTemp: undefined,
     humidity: undefined,
+    condition: undefined,
     description: undefined,
     error: undefined,
   }
@@ -24,14 +27,31 @@ class App extends React.Component {
 
     console.log(DATA);
 
-    this.setState({
-      city: DATA.name,
-      country: DATA.sys.country,
-      temperature: DATA.main.temp,
-      humidity: DATA.main.humidity,
-      description: DATA.weather[0].description,
-      error: undefined,
-    })
+    try {
+      this.setState({
+        city: DATA.name,
+        country: DATA.sys.country,
+        temperature: DATA.main.temp,
+        minTemp: DATA.main.temp_min,
+        maxTemp: DATA.main.temp_max,
+        humidity: DATA.main.humidity,
+        condition: DATA.weather[0].main,
+        description: DATA.weather[0].description,
+        error: undefined,
+      })
+    } catch (error) {
+      this.setState({
+        city: undefined,
+        country: undefined,
+        temperature: undefined,
+        minTemp: undefined,
+        maxTemp: undefined,
+        humidity: undefined,
+        condition: undefined,
+        description: undefined,
+        error: DATA.message,
+      })
+    }
   }
 
   render() {
@@ -39,7 +59,17 @@ class App extends React.Component {
       <div>
         <Titles />
         <Form getWeather={this.getWeather} />
-        <Weather />
+        <Weather
+          city={this.state.city}
+          country={this.state.country}
+          temperature={this.state.temperature}
+          minTemp={this.state.minTemp}
+          maxTemp={this.state.maxTemp}
+          humidity={this.state.humidity}
+          condition={this.state.condition}
+          description={this.state.description}
+          error={this.state.error}
+        />
       </div>
     );
   }
