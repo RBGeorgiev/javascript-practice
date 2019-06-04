@@ -3,7 +3,7 @@ import React from "react";
 class Weather extends React.Component {
     render() {
         return (
-            <div>
+            <div className="weather">
                 {(this.props.city && this.props.country) ? <p>City: {this.props.city}, {this.props.country}</p> : ''}
                 {this.props.temperature ? <p>Temperature: {this.props.temperature} celsius</p> : ''}
                 {(this.props.minTemp && this.props.maxTemp) ? <p>Min temp: {this.props.minTemp}, Max temp: {this.props.maxTemp}</p> : ''}

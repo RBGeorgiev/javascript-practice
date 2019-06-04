@@ -1,4 +1,5 @@
 import React from "react";
+import "./App.css"
 
 import { API_KEY } from './components/Constants';
 import Titles from './components/Titles';
@@ -56,7 +57,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="main">
         <Titles />
         <Form getWeather={this.getWeather} />
         <Weather
