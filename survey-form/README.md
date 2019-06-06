@@ -1,3 +1,4 @@
-# Practice survey form
+# Survey form example/practice
+You can see what it looks like here: https://codepen.io/BaiRado/pen/YbbWpv
 
-Doesn't do anything, it's just HTML
+A simple HTML survey form. The submit button doesn't send the data anywhere.

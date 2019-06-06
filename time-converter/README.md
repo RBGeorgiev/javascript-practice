@@ -1,8 +1,4 @@
 # Time converter/calculator
+If you'd like you can try it out here: https://01q1r.codesandbox.io/
 
-Simple time calculator. Mostly used as practice for tabs and forms.
-
-- [x] Time to Decimal
-- [x] Decimal to Time
-- [x] Minutes to Hours and Minutes
-- [x] Time Units Converter
+Simple time converter/calculator. Created mostly as practice for using tabs and forms.
