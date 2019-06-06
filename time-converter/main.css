@@ -96,3 +96,9 @@ form > div {
 .answer p {
         font-family: sans-serif; 
 }
+
+@media screen and (max-width: 1460px) {
+        .tab-links {
+                padding: 15px;
+        }
+}
