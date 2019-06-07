@@ -80,3 +80,9 @@ a {
     box-shadow: 0 0 0 1px white;
     border-radius: 50%;    
 }
+
+@media screen and (max-width: 850px){
+    a {
+        padding: 4px 20px;
+    }
+}
