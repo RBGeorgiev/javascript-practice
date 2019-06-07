@@ -41,6 +41,7 @@ body {
     width: 140px;
     text-align: left;
     padding-left: 9px;
+    user-select: none;
 }
 
 canvas {
@@ -51,6 +52,7 @@ canvas {
 p {
     margin: 0px;
     font-size: 1.1em;
+    user-select: none;
 }
 
 a {
@@ -60,11 +62,13 @@ a {
     text-decoration: none;
     color: black;
     font-weight: bolder;
+    user-select: none;
 }
 
 #clearCanvas {
     padding: 8px 24px;
     background: linear-gradient(white, lightgray);
+    user-select: none;
 }
 
 #clearCanvas:focus {
@@ -79,6 +83,10 @@ a {
     border: 1px black solid;
     box-shadow: 0 0 0 1px white;
     border-radius: 50%;    
+}
+
+.noselect {
+    user-select: none;
 }
 
 @media screen and (max-width: 850px){
