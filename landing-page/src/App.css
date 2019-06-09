@@ -1,0 +1,43 @@
+body {
+    border: 1px black solid;
+    display: flex;
+    justify-content: center;
+}
+
+header {
+    text-align: center;
+}
+
+#info-cards {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+}
+
+section {
+    display: flex;
+    margin: 50px 0;
+}
+
+.reverse {
+    flex-direction: row-reverse;
+}
+
+img {
+    height: 450px;
+    box-shadow: 10px 10px 28px 0 rgba(0,0,0,.4);
+    margin-right: 50px;
+}
+
+.reverse > img {
+    margin-right: 0;
+    margin-left: 50px;
+}
+
+.card-info > h3 {
+    font-size: 2.5em;
+}
+
+.card-info > p {
+    font-size: 1.6em;
+}
