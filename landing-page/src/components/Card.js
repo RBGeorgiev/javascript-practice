@@ -7,7 +7,7 @@ const Card = (props) => (
             <h3>{props.title}</h3>
             <p>{props.info}</p>
         </div>
-    </section>
+    </section >
 );
 
 export default Card;
