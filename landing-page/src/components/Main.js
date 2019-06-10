@@ -16,7 +16,7 @@ const Main = () => (
 
         <div id="pricing">
             <h2>Pricing</h2>
-            <p>Rent a single room cabin for 7 nights for £445</p>
+            <p>Rent a single cabin for 7 nights for £445</p>
             <p>or</p>
             <p>Rent the whole camp for £2199/night (maximum of 45 people)</p>
         </div>
