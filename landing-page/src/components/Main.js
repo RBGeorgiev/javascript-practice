@@ -22,8 +22,10 @@ const Main = () => (
         </div>
 
         <div id="contact">
-            <h2>Contact</h2>
-            <Form />
+            <div>
+                <h2>Contact</h2>
+                <Form />
+            </div>
         </div>
     </main>
 );
