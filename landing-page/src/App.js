@@ -14,8 +14,8 @@ function App() {
       <Main />
 
       <footer>
-        <h3>V2 Tattenhoe St, Milton Keynes MK4 4DA</h3>
-        <p>Camp Woodhill</p>
+        <p>V2 Tattenhoe St, Milton Keynes MK4 4DA</p>
+        <h3>Camp Woodhill</h3>
       </footer>
     </div>
   );
