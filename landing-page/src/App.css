@@ -3,7 +3,7 @@ body {
     text-align: center;
     background: #F5F4F0;
     color: #2d2b31;
-    font-family: Karla,Verdana,sans-serif;
+    font-family: 'Karla', Verdana,sans-serif;
 }
 
 header {
@@ -103,17 +103,6 @@ textarea {
     padding: 3px;
 }
 
-footer {
-    font-size: 1.5em;
-    padding: 60px 0 90px 0;
-}
-
-::selection {
-    background-color: #9bccbb;
-    color: #fff;
-    text-shadow: none;
-}
-
 button {
     border: 2px solid #5a5661;
     cursor: pointer;
@@ -121,7 +110,7 @@ button {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: .9rem;
+    font-size: .5em;
     line-height: 1.6rem;
     padding: 12px 25px;
     background-color: transparent;
@@ -143,3 +132,15 @@ button:active {
     border-color: #2d2b31;
     
 }
+
+footer {
+    font-size: 1.5em;
+    padding: 60px 0 90px 0;
+}
+
+::selection {
+    background-color: #9bccbb;
+    color: #fff;
+    text-shadow: none;
+}
+
