@@ -16,7 +16,7 @@ header {
     background-attachment: fixed;
     height: 650px;
     color: #F5F4F0;
-    text-shadow: 4px 4px #2d2b31;
+    text-shadow: 4px 4px #000;
 }
 
 header > p {
