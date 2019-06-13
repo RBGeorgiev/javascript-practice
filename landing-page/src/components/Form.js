@@ -3,6 +3,7 @@ import React from "react";
 class Form extends React.Component {
     onSubmit(e) {
         e.preventDefault();
+        alert("Thank you for submitting the form. We will get in touch with you as soon as possible.");
     }
 
     render() {
