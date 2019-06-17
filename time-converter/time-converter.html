@@ -10,221 +10,224 @@
 
 <body>
   <main>
-    <div class="tabs">
-      <button class="tab-links active" onclick="openTab(event, 'time-to-decimal-container')">Time to Decimal</button>
-      <button class="tab-links" onclick="openTab(event, 'decimal-to-time-container')">Decimal to Time</button>
-      <button class="tab-links" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours and Minutes
-        Converter</button>
-      <button class="tab-links" onclick="openTab(event, 'time-conversion-container')">Time Conversion
-        Calculator</button>
-    </div>
+    <div class="container">
+      <div class="tabs">
+        <button class="tab-links active" onclick="openTab(event, 'time-to-decimal-container')">Time to Decimal</button>
+        <button class="tab-links" onclick="openTab(event, 'decimal-to-time-container')">Decimal to Time</button>
+        <button class="tab-links" onclick="openTab(event, 'minutes-to-hours-container')">Minutes to Hours and Minutes
+          Converter</button>
+        <button class="tab-links" onclick="openTab(event, 'time-conversion-container')">Time Conversion
+          Calculator</button>
+      </div>
 
 
-    <div class="tab-content" id="time-to-decimal-container" style="display: block;">
+      <div class="tab-content" id="time-to-decimal-container" style="display: block;">
 
-      <h2>Time to Decimal Calculator</h2>
+        <h2>Time to Decimal Calculator</h2>
 
-      <div class="content-wrapper">
-        <div class="form-wrapper">
-          <form id="time-to-decimal-form">
-            <div>
-              <label for="hours">
-                <abbr title="Hours">HH</abbr>
-              </label>
-              <input type="number" name="hours" id="hours" min="0" max="999">
+        <div class="content-wrapper">
+          <div class="form-wrapper">
+            <form id="time-to-decimal-form">
+              <div>
+                <label for="hours">
+                  <abbr title="Hours">HH</abbr>
+                </label>
+                <input type="number" name="hours" id="hours" min="0" max="999">
 
-              <label for="minutes">
-                <abbr title="Minutes">MM</abbr>
-              </label>
-              <input type="number" name="minutes" id="minutes" min="0" max="99">
+                <label for="minutes">
+                  <abbr title="Minutes">MM</abbr>
+                </label>
+                <input type="number" name="minutes" id="minutes" min="0" max="99">
 
-              <label for="seconds">
-                <abbr title="Seconds">SS</abbr>
-              </label>
-              <input type="number" name="seconds" id="seconds" min="0" max="99">
+                <label for="seconds">
+                  <abbr title="Seconds">SS</abbr>
+                </label>
+                <input type="number" name="seconds" id="seconds" min="0" max="99">
+              </div>
+
+              <div>
+                <label for="decimals">Max decimal places</label>
+                <input type="number" name="decimals" id="decimals" min="0" max="9" value="4">
+              </div>
+
+              <div>
+                <input type="submit" value="Calculate" class="btn">
+              </div>
+            </form>
+
+            <div class="answer" id="answer-time-dec">
+              <h3>Answer:</h3>
             </div>
+          </div>
 
-            <div>
-              <label for="decimals">Max decimal places</label>
-              <input type="number" name="decimals" id="decimals" min="0" max="9" value="4">
-            </div>
+          <div class="info-wrapper">
+            <h3>Calculator Use</h3>
 
-            <div>
-              <input type="submit" value="Calculate" class="btn">
-            </div>
-          </form>
+            <p>Enter hours, minutes and seconds to convert from time format of hh:mm:ss (hours:minutes:seconds), to a
+              <a href="https://en.wikipedia.org/wiki/Decimal_time#Scientific_decimal_time">scientific decimal
+                format</a>.</p>
 
-          <div class="answer" id="answer-time-dec">
-            <h3>Answer:</h3>
+            <p>If you wish, you can enter how many decimal places should be displayed, up to a maximum of 9.</p>
+
           </div>
         </div>
+      </div>
 
-        <div class="info-wrapper">
-          <h3>Calculator Use</h3>
 
-          <p>Enter hours, minutes and seconds to convert from time format of hh:mm:ss (hours:minutes:seconds), to a
-            <a href="https://en.wikipedia.org/wiki/Decimal_time#Scientific_decimal_time">scientific decimal
-              format</a>.</p>
+      <div class="tab-content" id="decimal-to-time-container">
 
-          <p>If you wish, you can enter how many decimal places should be displayed, up to a maximum of 9.</p>
+        <h2>Decimal to Time Calculator</h2>
 
+        <div class="content-wrapper">
+          <div class="form-wrapper">
+            <form id="decimal-to-time-form">
+              <div>
+                <label for="decimalTime">Decimal Time </label>
+                <input type="number" name="decimalTime" id="decimalTime" step="any" min="0" max="9999999999">
+              </div>
+
+              <div>
+                <label for="timeUnit">Time Unit</label>
+                <select name="timeUnit" id="timeUnit">
+                  <option value="d">Days</option>
+                  <option value="h">Hours</option>
+                  <option value="min" selected>Minutes</option>
+                  <option value="s">Seconds</option>
+                </select>
+              </div>
+
+              <div>
+                <input type="submit" value="Calculate" class="btn">
+              </div>
+            </form>
+
+            <div class="answer" id="answer-dec-time">
+              <h3>Answer:</h3>
+            </div>
+          </div>
+
+          <div class="info-wrapper">
+            <h3>Calculator Use</h3>
+
+            <p>Convert time from a <a
+                href="https://en.wikipedia.org/wiki/Decimal_time#Scientific_decimal_time">scientific
+                decimal
+                format</a>, to time format in hh:mm:ss (hours:minutes:seconds).</p>
+
+            <p>Enter a decimal number and choose the unit in days, hours, minutes or seconds.</p>
+
+            <p>This calculator will return an answer in both hh:mm:ss (hours:minutes:seconds), and d:hh:mm:ss format
+              (days, hours:minutes:seconds).</p>
+          </div>
         </div>
       </div>
-    </div>
 
 
-    <div class="tab-content" id="decimal-to-time-container">
+      <div class="tab-content" id="minutes-to-hours-container">
 
-      <h2>Decimal to Time Calculator</h2>
+        <h2>Minutes to Hours and Minutes Converter</h2>
 
-      <div class="content-wrapper">
-        <div class="form-wrapper">
-          <form id="decimal-to-time-form">
-            <div>
-              <label for="decimalTime">Decimal Time </label>
-              <input type="number" name="decimalTime" id="decimalTime" step="any" min="0" max="9999999999">
+        <div class="content-wrapper">
+          <div class="form-wrapper">
+            <form id="minutes-to-hours-form">
+              <div>
+                <label for="minutes">Enter minutes</label>
+                <input type="number" name="minutes" id="minutes" min="0" max="9999999">
+              </div>
+
+              <div>
+                <input type="submit" value="Calculate" class="btn">
+              </div>
+            </form>
+
+            <div class="answer" id="answer-min-hour">
+              <h3>Answer:</h3>
             </div>
+          </div>
 
-            <div>
-              <label for="timeUnit">Time Unit</label>
-              <select name="timeUnit" id="timeUnit">
-                <option value="d">Days</option>
-                <option value="h">Hours</option>
-                <option value="min" selected>Minutes</option>
-                <option value="s">Seconds</option>
+          <div class="info-wrapper">
+            <h3>Calculator Use</h3>
+
+            <p>Enter the number of minutes you wish to convert to hours and minutes.</p>
+
+            <p>This calculator returns the answer in
+              both hh:mm format, and decimal hours.</p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="tab-content" id="time-conversion-container">
+
+        <h2>Time Conversion Calculator</h2>
+
+        <div class="content-wrapper">
+          <div class="form-wrapper">
+            <form id="time-conversion-form">
+              <label for="convertValue">Value to Convert: </label>
+              <input type="number" name="convertValue" id="convertValue" step="any" min="0" max="999999999999999">
+
+              <label for="convertFrom">From: </label>
+              <select name="convertFrom" id="convertFrom">
+                <option value="ns">Nanosecond (ns)</option>
+                <option value="μs">Microsecond (μs)</option>
+                <option value="ms">Millisecond (ms)</option>
+                <option value="s" selected>Second (s)</option>
+                <option value="min">Minute (min)</option>
+                <option value="h">Hour (h)</option>
+                <option value="d">Day (d)</option>
+                <option value="wk">Week (wk)</option>
+                <option value="mo">Month (mo)</option>
+                <option value="yr">Year (yr)</option>
+                <option value="dec">Decade (dec)</option>
+                <option value="c">Century (c)</option>
+                <option value="millennium">Millennium (millennium)</option>
               </select>
-            </div>
 
-            <div>
-              <input type="submit" value="Calculate" class="btn">
-            </div>
-          </form>
+              <label for="convertTo">To: </label>
+              <select name="convertTo" id="convertTo">
+                <option value="ns">Nanosecond (ns)</option>
+                <option value="μs">Microsecond (μs)</option>
+                <option value="ms">Millisecond (ms)</option>
+                <option value="s">Second (s)</option>
+                <option value="min">Minute (min)</option>
+                <option value="h" selected>Hour (h)</option>
+                <option value="d">Day (d)</option>
+                <option value="wk">Week (wk)</option>
+                <option value="mo">Month (mo)</option>
+                <option value="yr">Year (yr)</option>
+                <option value="dec">Decade (dec)</option>
+                <option value="c">Century (c)</option>
+                <option value="millennium">Millennium (millennium)</option>
+              </select>
 
-          <div class="answer" id="answer-dec-time">
-            <h3>Answer:</h3>
+              <div>
+                <input type="submit" value="Calculate" class="btn">
+              </div>
+            </form>
+
+            <div class="answer" id="answer-time-conv">
+              <h3>Answer:</h3>
+            </div>
+          </div>
+
+          <div class="info-wrapper">
+            <h3>Calculator Use</h3>
+
+            <p>Enter the time value you wish to convert and units you want to convert from .Then choose the time unit
+              you
+              want to convert to.</p>
+
+            <p>Months in this calculator are calculated using an average of 30.416 days per month. This
+              is equal to
+              365 days per year divided by 12 months per year. 365 ÷ 12 = 30.416 days per month.</p>
+
+            <p>Years in this time converter are calculated as 365 days per year. This calculator does not consider the
+              extra day in a
+              leap year.</p>
           </div>
         </div>
-
-        <div class="info-wrapper">
-          <h3>Calculator Use</h3>
-
-          <p>Convert time from a <a href="https://en.wikipedia.org/wiki/Decimal_time#Scientific_decimal_time">scientific
-              decimal
-              format</a>, to time format in hh:mm:ss (hours:minutes:seconds).</p>
-
-          <p>Enter a decimal number and choose the unit in days, hours, minutes or seconds.</p>
-
-          <p>This calculator will return an answer in both hh:mm:ss (hours:minutes:seconds), and d:hh:mm:ss format
-            (days, hours:minutes:seconds).</p>
-        </div>
       </div>
-    </div>
-
-
-    <div class="tab-content" id="minutes-to-hours-container">
-
-      <h2>Minutes to Hours and Minutes Converter</h2>
-
-      <div class="content-wrapper">
-        <div class="form-wrapper">
-          <form id="minutes-to-hours-form">
-            <div>
-              <label for="minutes">Enter minutes</label>
-              <input type="number" name="minutes" id="minutes" min="0" max="9999999">
-            </div>
-
-            <div>
-              <input type="submit" value="Calculate" class="btn">
-            </div>
-          </form>
-
-          <div class="answer" id="answer-min-hour">
-            <h3>Answer:</h3>
-          </div>
-        </div>
-
-        <div class="info-wrapper">
-          <h3>Calculator Use</h3>
-
-          <p>Enter the number of minutes you wish to convert to hours and minutes.</p>
-
-          <p>This calculator returns the answer in
-            both hh:mm format, and decimal hours.</p>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="tab-content" id="time-conversion-container">
-
-      <h2>Time Conversion Calculator</h2>
-
-      <div class="content-wrapper">
-        <div class="form-wrapper">
-          <form id="time-conversion-form">
-            <label for="convertValue">Value to Convert: </label>
-            <input type="number" name="convertValue" id="convertValue" step="any" min="0" max="999999999999999">
-
-            <label for="convertFrom">From: </label>
-            <select name="convertFrom" id="convertFrom">
-              <option value="ns">Nanosecond (ns)</option>
-              <option value="μs">Microsecond (μs)</option>
-              <option value="ms">Millisecond (ms)</option>
-              <option value="s" selected>Second (s)</option>
-              <option value="min">Minute (min)</option>
-              <option value="h">Hour (h)</option>
-              <option value="d">Day (d)</option>
-              <option value="wk">Week (wk)</option>
-              <option value="mo">Month (mo)</option>
-              <option value="yr">Year (yr)</option>
-              <option value="dec">Decade (dec)</option>
-              <option value="c">Century (c)</option>
-              <option value="millennium">Millennium (millennium)</option>
-            </select>
-
-            <label for="convertTo">To: </label>
-            <select name="convertTo" id="convertTo">
-              <option value="ns">Nanosecond (ns)</option>
-              <option value="μs">Microsecond (μs)</option>
-              <option value="ms">Millisecond (ms)</option>
-              <option value="s">Second (s)</option>
-              <option value="min">Minute (min)</option>
-              <option value="h" selected>Hour (h)</option>
-              <option value="d">Day (d)</option>
-              <option value="wk">Week (wk)</option>
-              <option value="mo">Month (mo)</option>
-              <option value="yr">Year (yr)</option>
-              <option value="dec">Decade (dec)</option>
-              <option value="c">Century (c)</option>
-              <option value="millennium">Millennium (millennium)</option>
-            </select>
-
-            <div>
-              <input type="submit" value="Calculate" class="btn">
-            </div>
-          </form>
-
-          <div class="answer" id="answer-time-conv">
-            <h3>Answer:</h3>
-          </div>
-        </div>
-
-        <div class="info-wrapper">
-          <h3>Calculator Use</h3>
-
-          <p>Enter the time value you wish to convert and units you want to convert from .Then choose the time unit you
-            want to convert to.</p>
-
-          <p>Months in this calculator are calculated using an average of 30.416 days per month. This
-            is equal to
-            365 days per year divided by 12 months per year. 365 ÷ 12 = 30.416 days per month.</p>
-
-          <p>Years in this time converter are calculated as 365 days per year. This calculator does not consider the
-            extra day in a
-            leap year.</p>
-        </div>
-      </div>
-    </div>
   </main>
 
   <script>
