@@ -212,6 +212,10 @@ footer {
         margin: 0;
     }
 
+    .card-info {
+        padding: 0 30px;
+    }
+
     #contact-info, #dates{
         display: block;
     }
