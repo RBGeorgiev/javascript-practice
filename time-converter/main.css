@@ -96,8 +96,18 @@ form > div {
         font-family: sans-serif; 
 }
 
-@media screen and (max-width: 1460px) {
-        /* .tab-links {
+@media screen and (max-width: 1023px) {
+        .container {
+                width: 750px;
+        }
+}
+
+@media screen and (max-width: 810px) {
+        .container {
+                width: 550px;
+        }
+
+        .tab-links {
                 padding: 15px;
-        } */
+        }
 }
