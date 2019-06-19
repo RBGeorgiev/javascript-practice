@@ -8,23 +8,38 @@ body {
     background: #44415A;
     color: white;
     border-bottom: 1px black solid;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-around;
-    flex-grow: 1;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
 }
 
 .controls > div {
     width: 330px;
     text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
 }
 
 #controlsLeft > div{
     height: 28px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 #controlsLeft input{
@@ -41,7 +56,10 @@ body {
     width: 140px;
     text-align: left;
     padding-left: 9px;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 canvas {
@@ -52,23 +70,38 @@ canvas {
 p {
     margin: 0px;
     font-size: 1.1em;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 a {
+    background: -webkit-gradient(linear, left top, left bottom, from(#F4EA51), to(#FFD45E));
+    background: -webkit-linear-gradient(#F4EA51, #FFD45E);
+    background: -o-linear-gradient(#F4EA51, #FFD45E);
     background: linear-gradient(#F4EA51, #FFD45E);
     border: 1px black solid;
     padding: 8px 70px;
     text-decoration: none;
     color: black;
     font-weight: bolder;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 #clearCanvas {
     padding: 8px 24px;
+    background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgray));
+    background: -webkit-linear-gradient(white, lightgray);
+    background: -o-linear-gradient(white, lightgray);
     background: linear-gradient(white, lightgray);
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 #clearCanvas:focus {
@@ -81,12 +114,16 @@ a {
     width: 3px;
     height: 3px;
     border: 1px black solid;
-    box-shadow: 0 0 0 1px white;
+    -webkit-box-shadow: 0 0 0 1px white;
+            box-shadow: 0 0 0 1px white;
     border-radius: 50%;    
 }
 
 .noselect {
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 @media screen and (max-width: 850px){
