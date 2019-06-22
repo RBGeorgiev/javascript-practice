@@ -1,14 +1,6 @@
-function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function randomFloat(min, max) {
-    return +(Math.random() * (max - min) + min).toFixed(2);
-}
-
-function turnNegative(num) {
-    return num *= Math.round(Math.random()) * 2 - 1;
-}
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+const randomFloat = (min, max) => +(Math.random() * (max - min) + min).toFixed(2);
+const turnNegative = (num) => num *= Math.round(Math.random()) * 2 - 1;
 
 function randomArrGenerator(length, min = 0, max = 100, float = false, neg = false) {
     let arr = [];
