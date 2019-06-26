@@ -68,43 +68,54 @@ class BST {
 
     remove(value) {
         const removeNode = (node, value) => {
-            // if empty
+            // if node is empty
             if (!node) return null;
-            // if node 
+            // if node value is the same as passed in value
             if (value === node.value) {
-                // if leaf
+                // if the node is a leaf, remove it
                 if (!node.right && !node.left) {
                     return null;
                 }
-                // if one child
-                // if node only on right
+                // if node has only one child
+                // if child is on the right
                 if (node.right && !node.left) {
                     return node.right;
                 }
-                // if node only on left
+                // if child is on the left
                 if (!node.right && node.left) {
                     return node.left;
                 }
-                // if two children
+                // if node has two children
                 if (node.right && node.left) {
+                    // search for smallest number on the right side
                     let tempNode = node.right;
                     while (tempNode.left) {
-                        tempNode = tempNode.left
+                        tempNode = tempNode.left;
                     }
+                    // remove smallest number node
                     removeNode(node, tempNode.value);
+                    // remove node by replacing it's value with the smallest number on the right side
                     node.value = tempNode.value;
+                    // return new node
                     return node;
                 }
             }
+            // find node to remove
             if (value < node.value) {
-                node.left = removeNode(node.left, value)
+                // set node in correct pos or remove node
+                node.left = removeNode(node.left, value);
+                // return recursively back to root
                 return node;
             }
+            // find node to remove
             if (value > node.value) {
-                node.right = removeNode(node.right, value)
+                // set node in correct pos or remove node
+                node.right = removeNode(node.right, value);
+                // return recursively back to root
                 return node;
             }
         }
+        // call the remove method starting at root
         this.root = removeNode(this.root, value);
     }
 }
