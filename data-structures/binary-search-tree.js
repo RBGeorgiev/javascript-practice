@@ -14,7 +14,7 @@ class BST {
 
     add(value) {
         let node = this.root;
-        if (!node.value) {
+        if (!node || !node.value) {
             this.root = new Node(value);
             return;
         }
@@ -65,15 +65,61 @@ class BST {
         }
         return false;
     }
+
+    remove(value) {
+        const removeNode = (node, value) => {
+            // if empty
+            if (!node) return null;
+            // if node 
+            if (value === node.value) {
+                // if leaf
+                if (!node.right && !node.left) {
+                    return null;
+                }
+                // if one child
+                // if node only on right
+                if (node.right && !node.left) {
+                    return node.right;
+                }
+                // if node only on left
+                if (!node.right && node.left) {
+                    return node.left;
+                }
+                // if two children
+                if (node.right && node.left) {
+                    let tempNode = node.right;
+                    while (tempNode.left) {
+                        tempNode = tempNode.left
+                    }
+                    removeNode(node, tempNode.value);
+                    node.value = tempNode.value;
+                    return node;
+                }
+            }
+            if (value < node.value) {
+                node.left = removeNode(node.left, value)
+                return node;
+            }
+            if (value > node.value) {
+                node.right = removeNode(node.right, value)
+                return node;
+            }
+        }
+        this.root = removeNode(this.root, value);
+    }
 }
 
 // test
-const bst = new BST(15)
+const bst = new BST(19)
 bst.add(13)
 bst.add(12)
+bst.add(17)
+bst.add(16)
+bst.add(15)
 bst.add(0)
 bst.add(-2)
-bst.add(58)
 bst.add(34)
+bst.add(58)
 bst.add(100)
 console.log(bst)
+// bst.remove(19)
