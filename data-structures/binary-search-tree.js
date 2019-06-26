@@ -51,6 +51,20 @@ class BST {
         }
         return node;
     }
+
+    contains(value) {
+        let node = this.root;
+        while (node) {
+            if (value === node.value) {
+                return true;
+            } else if (value < node.value) {
+                node = node.left;
+            } else if (value > node.value) {
+                node = node.right;
+            }
+        }
+        return false;
+    }
 }
 
 // test
