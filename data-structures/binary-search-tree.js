@@ -132,6 +132,18 @@ class BST {
         return result;
     }
 
+    // pre-order
+    dfsPreOrder() {
+        let result = [];
+        const traverse = (node) => {
+            result.push(node.value);
+            if (node.left) traverse(node.left);
+            if (node.right) traverse(node.right);
+        }
+        traverse(this.root);
+        return result;
+    }
+
 }
 
 // test
@@ -149,3 +161,4 @@ bst.add(100);
 console.log(bst);
 // bst.remove(19);
 bst.dfsInOrder();
+// bst.dfsPreOrder();
