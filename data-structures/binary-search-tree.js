@@ -118,19 +118,34 @@ class BST {
         // call the remove method starting at root
         this.root = removeNode(this.root, value);
     }
+
+    // dfs = depth first search:
+    // in-order
+    dfsInOrder() {
+        let result = [];
+        const traverse = (node) => {
+            if (node.left) traverse(node.left);
+            result.push(node.value);
+            if (node.right) traverse(node.right);
+        }
+        traverse(this.root);
+        return result;
+    }
+
 }
 
 // test
-const bst = new BST(19)
-bst.add(13)
-bst.add(12)
-bst.add(17)
-bst.add(16)
-bst.add(15)
-bst.add(0)
-bst.add(-2)
-bst.add(34)
-bst.add(58)
-bst.add(100)
-console.log(bst)
-// bst.remove(19)
+const bst = new BST(19);
+bst.add(13);
+bst.add(12);
+bst.add(17);
+bst.add(16);
+bst.add(15);
+bst.add(0);
+bst.add(-2);
+bst.add(34);
+bst.add(58);
+bst.add(100);
+console.log(bst);
+// bst.remove(19);
+bst.dfsInOrder();
