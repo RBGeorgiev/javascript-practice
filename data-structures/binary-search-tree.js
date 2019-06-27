@@ -144,6 +144,17 @@ class BST {
         return result;
     }
 
+    // post-order
+    dfsPostOrder() {
+        let result = [];
+        const traverse = (node) => {
+            if (node.left) traverse(node.left);
+            if (node.right) traverse(node.right);
+            result.push(node.value);
+        }
+        traverse(this.root);
+        return result;
+    }
 }
 
 // test
@@ -160,5 +171,7 @@ bst.add(58);
 bst.add(100);
 console.log(bst);
 // bst.remove(19);
+
 bst.dfsInOrder();
 // bst.dfsPreOrder();
+// bst.dfsPostOrder();
