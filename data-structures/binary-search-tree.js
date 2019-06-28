@@ -173,6 +173,19 @@ class BST {
 
         return result;
     }
+
+    minHeight(node = this.root) {
+        if (!node) return -1;
+
+        let left = this.minHeight(node.left);
+        let right = this.minHeight(node.right);
+
+        if (left < right) {
+            return left + 1;
+        } else {
+            return right + 1;
+        }
+    }
 }
 
 // test
