@@ -175,11 +175,17 @@ class BST {
     }
 
     minHeight(node = this.root) {
+        // if node is empty start count from -1
         if (!node) return -1;
 
+        // travel to the bottom of the tree checking every node on each side
+        // recursively get minimum height on left side node
         let left = this.minHeight(node.left);
+        // recursively get minimum height on right side node
         let right = this.minHeight(node.right);
 
+        // compare the heights of left and right side
+        // return the smaller number and move up a node adding 1 for height
         if (left < right) {
             return left + 1;
         } else {
