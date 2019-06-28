@@ -119,9 +119,10 @@ class BST {
         this.root = removeNode(this.root, value);
     }
 
-    // dfs = depth first search:
+    // Tree Traversals:
+    // Depth-first search:
     // in-order
-    dfsInOrder() {
+    inOrder() {
         let result = [];
         const traverse = (node) => {
             if (node.left) traverse(node.left);
@@ -133,7 +134,7 @@ class BST {
     }
 
     // pre-order
-    dfsPreOrder() {
+    preOrder() {
         let result = [];
         const traverse = (node) => {
             result.push(node.value);
@@ -145,7 +146,7 @@ class BST {
     }
 
     // post-order
-    dfsPostOrder() {
+    postOrder() {
         let result = [];
         const traverse = (node) => {
             if (node.left) traverse(node.left);
@@ -153,6 +154,23 @@ class BST {
             result.push(node.value);
         }
         traverse(this.root);
+        return result;
+    }
+
+    // Breadth-first search
+    levelOrder() {
+        let result = [];
+        let queue = [];
+
+        queue.push(this.root);
+
+        while (queue.length) {
+            let node = queue.pop()
+            result.push(node.value);
+            if (node.left) queue.unshift(node.left);
+            if (node.right) queue.unshift(node.right);
+        }
+
         return result;
     }
 }
@@ -172,6 +190,7 @@ bst.add(100);
 console.log(bst);
 // bst.remove(19);
 
-bst.dfsInOrder();
-// bst.dfsPreOrder();
-// bst.dfsPostOrder();
+bst.inOrder();
+// bst.preOrder();
+// bst.postOrder();
+// bst.levelOrder();
