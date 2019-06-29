@@ -205,6 +205,10 @@ class BST {
             return right + 1;
         }
     }
+
+    isBalanced() {
+        return this.minHeight() >= this.maxHeight() - 1
+    }
 }
 
 // test
@@ -226,3 +230,7 @@ bst.inOrder();
 // bst.preOrder();
 // bst.postOrder();
 // bst.levelOrder();
+
+// bst.minHeight();
+// bst.maxHeight();
+bst.isBalanced();
