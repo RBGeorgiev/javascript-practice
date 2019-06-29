@@ -192,6 +192,19 @@ class BST {
             return right + 1;
         }
     }
+
+    maxHeight(node = this.root) {
+        if (!node) return -1;
+
+        let left = this.maxHeight(node.left);
+        let right = this.maxHeight(node.right);
+
+        if (left > right) {
+            return left + 1;
+        } else {
+            return right + 1;
+        }
+    }
 }
 
 // test
