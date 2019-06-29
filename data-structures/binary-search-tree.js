@@ -175,7 +175,7 @@ class BST {
     }
 
     minHeight(node = this.root) {
-        // if node is empty start count from -1
+        // when an empty node is found start count from -1
         if (!node) return -1;
 
         // travel to the bottom of the tree checking every node on each side
@@ -194,11 +194,14 @@ class BST {
     }
 
     maxHeight(node = this.root) {
+        // when an empty node is found start count from -1
         if (!node) return -1;
 
+        // travel to the bottom of the tree checking every node on each side
         let left = this.maxHeight(node.left);
         let right = this.maxHeight(node.right);
 
+        // return the bigger number and move up a node adding 1 for height
         if (left > right) {
             return left + 1;
         } else {
@@ -206,6 +209,7 @@ class BST {
         }
     }
 
+    // tree is balanced when the difference between the min and max height is 0 or 1 
     isBalanced() {
         return this.minHeight() >= this.maxHeight() - 1
     }
