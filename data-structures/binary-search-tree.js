@@ -66,6 +66,20 @@ class BST {
         return false;
     }
 
+    find(value) {
+        let node = this.root;
+        while (node) {
+            if (value === node.value) {
+                return node;
+            } else if (value < node.value) {
+                node = node.left;
+            } else if (value > node.value) {
+                node = node.right;
+            }
+        }
+        return false;
+    }
+
     remove(value) {
         const removeNode = (node, value) => {
             // if node is empty
