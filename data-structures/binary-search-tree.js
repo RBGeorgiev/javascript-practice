@@ -12,74 +12,111 @@ class BST {
         this.root = new Node(value);
     }
 
+    // add node to tree
     add(value) {
         let node = this.root;
+        // if there is no root node
         if (!node || !node.value) {
+            // create root node
             this.root = new Node(value);
             return;
         }
+
         const searchTree = (node) => {
+            // if value < node.value, go left
             if (value < node.value) {
+                // if no left child, append new node
                 if (!node.left) {
                     node.left = new Node(value);
-                } else {
+                }
+                // if left child, look left again
+                else {
                     searchTree(node.left);
                 }
-            } else if (value > node.value) {
+            }
+            // if value > node.value, go right
+            else if (value > node.value) {
+                // if no right child, append new node
                 if (!node.right) {
                     node.right = new Node(value);
-                } else {
+                }
+                // if right child, look right again
+                else {
                     searchTree(node.right);
                 }
             }
         }
+        // call function starting with this.root
         searchTree(node);
     }
 
+    //find node with smallest value 
     min() {
         let node = this.root;
+        // smallest value node is the leftmost node in the tree
         while (node.left) {
+            // loop stops when node.left === null
             node = node.left;
         }
         return node;
     }
 
+    //find node with biggest value 
     max() {
         let node = this.root;
+        // largest value node is the rightmost node in the tree
         while (node.right) {
+            // loop stops when node.right === null
             node = node.right;
         }
         return node;
     }
 
+    // check if tree contains node
+    // contains() returns boolean, find() returns node
     contains(value) {
         let node = this.root;
         while (node) {
+            // if value === node.value, return true
             if (value === node.value) {
                 return true;
-            } else if (value < node.value) {
+            }
+            // if value < node.value, go left
+            else if (value < node.value) {
                 node = node.left;
-            } else if (value > node.value) {
+            }
+            // if value > node.value, go right
+            else if (value > node.value) {
                 node = node.right;
             }
         }
+        // if value doesn't exists in tree, return false
         return false;
     }
 
+    // find and return node by value
+    // contains() returns boolean, find() returns node
     find(value) {
         let node = this.root;
         while (node) {
+            // if value === node.value, return node
             if (value === node.value) {
                 return node;
-            } else if (value < node.value) {
+            }
+            // if value < node.value, go left
+            else if (value < node.value) {
                 node = node.left;
-            } else if (value > node.value) {
+            }
+            // if value > node.value, go right
+            else if (value > node.value) {
                 node = node.right;
             }
         }
+        // if value doesn't exists in tree, return false
         return false;
     }
 
+    //remove node from tree
     remove(value) {
         const removeNode = (node, value) => {
             // if node is empty
@@ -135,12 +172,18 @@ class BST {
 
     // Tree Traversals:
     // Depth-first search:
+
     // in-order
+    // left, root, right
+    // -2, 0, 12, 13, 15, 16, 17, 19, 34, 58, 100
     inOrder() {
         let result = [];
         const traverse = (node) => {
+            // if left child exists, go left again
             if (node.left) traverse(node.left);
+            // capture root node value
             result.push(node.value);
+            // if right child exists, go right again
             if (node.right) traverse(node.right);
         }
         traverse(this.root);
@@ -148,11 +191,16 @@ class BST {
     }
 
     // pre-order
+    // root, left, right
+    // 19, 13, 12, 0, -2, 17, 16, 15, 34, 58, 100
     preOrder() {
         let result = [];
         const traverse = (node) => {
+            // capture root node value
             result.push(node.value);
+            // if left child exists, go left again
             if (node.left) traverse(node.left);
+            // if right child exists, go right again
             if (node.right) traverse(node.right);
         }
         traverse(this.root);
@@ -160,28 +208,39 @@ class BST {
     }
 
     // post-order
+    // left, right, root
+    // -2, 0, 12, 15, 16, 17, 13, 100, 58, 34, 19
     postOrder() {
         let result = [];
         const traverse = (node) => {
+            // if left child exists, go left again
             if (node.left) traverse(node.left);
+            // if right child exists, go right again
             if (node.right) traverse(node.right);
+            // capture root node value
             result.push(node.value);
         }
         traverse(this.root);
         return result;
     }
 
-    // Breadth-first search
+    // Breadth-first search:
+    // level order - layer by layer
+    // 19, 13, 34, 12, 17, 58, 0, 16, 100, -2, 15
     levelOrder() {
         let result = [];
-        let queue = [];
+        let queue = [this.root];
 
         queue.push(this.root);
-
+        // while queue is not empty
         while (queue.length) {
-            let node = queue.pop()
+            // get last node from queue
+            let node = queue.pop();
+            // push node value to result
             result.push(node.value);
+            // add left child to queue, if it exists
             if (node.left) queue.unshift(node.left);
+            // add right child to queue, if it exists
             if (node.right) queue.unshift(node.right);
         }
 
