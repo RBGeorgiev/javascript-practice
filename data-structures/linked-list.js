@@ -45,6 +45,16 @@ class LinkedList {
         this.head.prev = null;
         return deleted.value;
     }
+
+    deleteTail() {
+        if (!this.head) {
+            return null;
+        }
+        let deleted = this.tail;
+        this.tail = this.tail.prev;
+        this.tail.next = null;
+        return deleted.value;
+    }
 }
 
 let LL = new LinkedList;
