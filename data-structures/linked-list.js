@@ -35,6 +35,21 @@ class LinkedList {
             old.prev = this.head;
         }
     }
+
+    deleteHead() {
+        if (!this.head) {
+            return null;
+        }
+        let deleted = this.head;
+        this.head = this.head.next;
+        this.head.prev = null;
+        return deleted.value;
+    }
 }
 
 let LL = new LinkedList;
+
+LL.append(11);
+LL.append(22);
+LL.append(33);
+LL.append(44);
