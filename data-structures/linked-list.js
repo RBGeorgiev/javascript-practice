@@ -6,6 +6,7 @@ class Node {
     }
 }
 
+// Doubly Linked List
 class LinkedList {
     constructor() {
         this.head = null;
@@ -39,27 +40,43 @@ class LinkedList {
     deleteHead() {
         if (!this.head) {
             return null;
+        } else {
+            let deleted = this.head;
+
+            if (this.head === this.tail) {
+                this.head = this.tail = null;
+            } else {
+                this.head = this.head.next;
+                this.head.prev = null;
+            }
+
+            return deleted.value;
         }
-        let deleted = this.head;
-        this.head = this.head.next;
-        this.head.prev = null;
-        return deleted.value;
     }
 
     deleteTail() {
         if (!this.head) {
             return null;
+        } else {
+            let deleted = this.tail;
+
+            if (this.head === this.tail) {
+                this.head = this.tail = null;
+            } else {
+                this.tail = this.tail.prev;
+                this.tail.next = null;
+            }
+
+            return deleted.value;
         }
-        let deleted = this.tail;
-        this.tail = this.tail.prev;
-        this.tail.next = null;
-        return deleted.value;
     }
 }
 
 let LL = new LinkedList;
 
-LL.append(11);
-LL.append(22);
-LL.append(33);
-LL.append(44);
+LL.append(1);
+LL.append(2);
+LL.append(3);
+LL.append(4);
+LL.prepend(0);
+LL.prepend(-1);
