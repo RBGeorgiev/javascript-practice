@@ -15,9 +15,9 @@ class LinkedList {
 
     append(value) {
         if (!this.head) {
-            this.head = new Node(value);
+            this.head = this.tail = new Node(value);
         } else {
-            let old = this.tail || this.head;
+            let old = this.tail;
             this.tail = new Node(value, old, null);
             old.next = this.tail;
         }
@@ -25,11 +25,7 @@ class LinkedList {
 
     prepend(value) {
         if (!this.head) {
-            this.head = new Node(value);
-        } else if (!this.tail) {
-            this.tail = this.head;
-            this.head = new Node(value, null, this.tail);
-            this.tail.prev = this.head;
+            this.head = this.tail = new Node(value);
         } else {
             let old = this.head;
             this.head = new Node(value, null, old);
