@@ -67,6 +67,25 @@ class LinkedList {
         }
     }
 
+    deleteValue(value) {
+        if (!this.head) {
+            return null;
+        } else if (this.head.value === value) {
+            return this.deleteHead();
+        } else if (this.tail.value === value) {
+            return this.deleteTail();
+        } else {
+            let deleted = this.search(value);
+
+            if (!deleted) return null;
+
+            deleted.prev.next = deleted.next;
+            deleted.next.prev = deleted.prev;
+
+            return deleted.value;
+        }
+    }
+
     search(value) {
         let current = this.head;
         while (current) {
