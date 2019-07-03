@@ -66,6 +66,14 @@ class LinkedList {
             return deleted.value;
         }
     }
+
+    search(value) {
+        let current = this.head;
+        while (current) {
+            if (current.value === value) return current;
+            current = current.next;
+        }
+    }
 }
 
 let LL = new LinkedList;
