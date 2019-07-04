@@ -11,25 +11,30 @@ class LinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
+        this.length = 0;
     }
 
     append(value) {
         if (!this.head) {
             this.head = this.tail = new Node(value);
+            this.length += 1;
         } else {
             let old = this.tail;
             this.tail = new Node(value, old, null);
             old.next = this.tail;
+            this.length += 1;
         }
     }
 
     prepend(value) {
         if (!this.head) {
             this.head = this.tail = new Node(value);
+            this.length += 1;
         } else {
             let old = this.head;
             this.head = new Node(value, null, old);
             old.prev = this.head;
+            this.length += 1;
         }
     }
 
@@ -46,6 +51,7 @@ class LinkedList {
                 this.head.prev = null;
             }
 
+            this.length -= 1;
             return deleted.value;
         }
     }
@@ -63,6 +69,7 @@ class LinkedList {
                 this.tail.next = null;
             }
 
+            this.length -= 1;
             return deleted.value;
         }
     }
@@ -82,6 +89,7 @@ class LinkedList {
             deleted.prev.next = deleted.next;
             deleted.next.prev = deleted.prev;
 
+            this.length -= 1;
             return deleted.value;
         }
     }
