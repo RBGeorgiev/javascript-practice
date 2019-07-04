@@ -82,7 +82,7 @@ class LinkedList {
         } else if (this.tail.value === value) {
             return this.deleteTail();
         } else {
-            let deleted = this.search(value);
+            let deleted = this.searchVal(value);
 
             if (!deleted) return null;
 
@@ -123,10 +123,22 @@ class LinkedList {
         }
     }
 
-    search(value) {
+    searchVal(value) {
         let current = this.head;
+
         while (current) {
             if (current.value === value) return current;
+            current = current.next;
+        }
+    }
+
+    searchIdx(index) {
+        let current = this.head;
+        let currentIndex = 0;
+
+        while (current) {
+            if (currentIndex === index) return current;
+            currentIndex += 1;
             current = current.next;
         }
     }
