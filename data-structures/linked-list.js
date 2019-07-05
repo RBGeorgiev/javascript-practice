@@ -95,25 +95,20 @@ class LinkedList {
     }
 
     deleteAtIdx(index) {
-        if (!this.head) {
+        // if linked list is empty or if index doesn't exist in linked list
+        if (!this.head || index < 0 || index > this.length - 1) {
             return null;
         }
-        let currentNode = this.head;
-        let currentIndex = 0;
-        if (index < 0) index = 0;
-
-        while (currentIndex !== index && currentNode) {
-            currentIndex += 1;
-            currentNode = currentNode.next;
-        }
-        if (!currentNode) {
-            return null;
-        } else if (this.head.value === currentNode.value) {
+        // if index points to first Node
+        else if (index === 0) {
             return this.deleteHead();
-        } else if (this.tail.value === currentNode.value) {
+        }
+        // if index points to last Node
+        else if (index === this.length - 1) {
             return this.deleteTail();
-        } else {
-            let deleted = currentNode;
+        }
+        else {
+            let deleted = this.searchIdx(index);
 
             deleted.prev.next = deleted.next;
             deleted.next.prev = deleted.prev;
@@ -124,6 +119,11 @@ class LinkedList {
     }
 
     searchVal(value) {
+        // if linked list is empty
+        if (!this.head) {
+            return null;
+        }
+
         let current = this.head;
 
         while (current) {
@@ -133,6 +133,11 @@ class LinkedList {
     }
 
     searchIdx(index) {
+        // if linked list is empty or if index doesn't exist in linked list
+        if (!this.head || index < 0 || index > this.length - 1) {
+            return null;
+        }
+
         let current = this.head;
         let currentIndex = 0;
 
