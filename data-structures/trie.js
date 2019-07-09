@@ -56,21 +56,30 @@ class Trie {
     }
 
     delete(word, node = this.root) {
+        // if not a string 
         if (typeof word !== 'string') return null;
 
+        // when no more letters in word
         if (word === '') {
+            // if last letter is the end of a word
             if (node.isEnd()) {
+                // set node.end to false
                 node.setEnd();
+                // return true to start backwards recursion, which deletes leaf nodes
                 return true;
             }
             // if first(manual) call was with empty string
             return null;
         }
 
+        // if current letter doesn't exist
         if (!node.chars.get(word[0])) return null;
 
+        // if true, delete leaf nodes
         if (this.delete(word.substring(1), node.chars.get(word[0]))) {
+            // if current letter doesn't have children
             if (node.chars.get(word[0]).chars.size === 0) {
+                // delete current letter and return true
                 return node.chars.delete(word[0]);
             }
         }
