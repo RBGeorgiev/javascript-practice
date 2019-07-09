@@ -72,14 +72,16 @@ class Trie {
             return null;
         }
 
-        // if current letter doesn't exist
-        if (!node.chars.get(word[0])) return null;
+        let curNode = node.chars.get(word[0]);
+
+        // if current letter/node doesn't exist
+        if (!curNode) return null;
 
         // if true, delete leaf nodes
-        if (this.delete(word.substring(1), node.chars.get(word[0]))) {
-            // if current letter doesn't have children
-            if (node.chars.get(word[0]).chars.size === 0) {
-                // delete current letter and return true
+        if (this.delete(word.substring(1), curNode)) {
+            // if current node doesn't have children
+            if (curNode.chars.size === 0) {
+                // delete current node and return true
                 return node.chars.delete(word[0]);
             }
         }
@@ -97,5 +99,5 @@ trie.add('together');
 
 trie.exists('three');
 trie.exists('motion');
-trie
+
 trie.delete('toga');
