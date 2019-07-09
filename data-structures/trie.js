@@ -4,7 +4,7 @@ class Node {
         this.end = false;
     }
     setEnd() {
-        this.end = true;
+        this.end = !this.end;
     }
 
     isEnd() {
@@ -29,11 +29,11 @@ class Trie {
             if (!node.chars.get(word[0])) node.chars.set(word[0], new Node);
             // set current Node to letter 
             node = node.chars.get(word[0]);
-            // remove first character in string
+            // remove first character in strin
             word = word.substring(1);
         }
         // mark final letter as end of word
-        node.setEnd();
+        if (!node.isEnd()) node.setEnd();
     }
 
     exists(word) {
@@ -54,6 +54,27 @@ class Trie {
         // if last letter is marked as ending a word return true
         return node.isEnd()
     }
+
+    delete(word, node = this.root) {
+        if (typeof word !== 'string') return null;
+
+        if (word === '') {
+            if (node.isEnd()) {
+                node.setEnd();
+                return true;
+            }
+            // if first(manual) call was with empty string
+            return null;
+        }
+
+        if (!node.chars.get(word[0])) return null;
+
+        if (this.delete(word.substring(1), node.chars.get(word[0]))) {
+            if (node.chars.get(word[0]).chars.size === 0) {
+                return node.chars.delete(word[0]);
+            }
+        }
+    }
 }
 
 let trie = new Trie;
@@ -68,3 +89,4 @@ trie.add('together');
 trie.exists('three');
 trie.exists('motion');
 trie
+trie.delete('toga');
