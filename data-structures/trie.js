@@ -90,19 +90,27 @@ class Trie {
     printAll() {
         let arr = [];
 
+        // go through all letters and add the words to array
         const search = function (node, string) {
+            // if node is NOT a leaf node
             if (node.chars.size !== 0) {
+                // if node ends a word
                 if (node.isEnd()) {
+                    // push word to array
                     arr.push(string);
                 }
+                // go through all letters node points to
                 for (let letter of node.chars.keys()) {
+                    // recursively go through all letters, and add current letter to string 
                     search(node.chars.get(letter), string.concat(letter));
                 }
             } else {
+                // if node is a leaf node
                 arr.push(string);
             }
         }
 
+        // call recursive function
         search(this.root, '');
         return arr;
     }
