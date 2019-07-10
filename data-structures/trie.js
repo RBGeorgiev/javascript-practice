@@ -86,6 +86,26 @@ class Trie {
             }
         }
     }
+
+    printAll() {
+        let arr = [];
+
+        const search = function (node, string) {
+            if (node.chars.size !== 0) {
+                if (node.isEnd()) {
+                    arr.push(string);
+                }
+                for (let letter of node.chars.keys()) {
+                    search(node.chars.get(letter), string.concat(letter));
+                }
+            } else {
+                arr.push(string);
+            }
+        }
+
+        search(this.root, '');
+        return arr;
+    }
 }
 
 let trie = new Trie;
@@ -101,3 +121,5 @@ trie.exists('three');
 trie.exists('motion');
 
 trie.delete('toga');
+
+trie.printAll();
