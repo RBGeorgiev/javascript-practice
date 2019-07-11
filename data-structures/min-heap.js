@@ -8,18 +8,25 @@ function MinHeap() {
 
 MinHeap.prototype = {
     add: function (num) {
+        // push num to the end of arr
         this.content.push(num);
-        if (this.content.length > 2) {
-            let i = this.content.length - 1;
-            while (this.content[i] < this.content[Math.floor(i / 2)] && i > 0) {
-                let temp = this.content[i];
-                this.content[i] = this.content[Math.floor(i / 2)];
-                this.content[Math.floor(i / 2)] = temp;
-                i = Math.floor(i / 2);
-            }
+        // get added element pos
+        let i = this.content.length - 1;
+        // bubble added element to correct pos in array
+        while (this.content[i] < this.content[Math.floor(i / 2)] && i > 0) {
+            let temp = this.content[i];
+            this.content[i] = this.content[Math.floor(i / 2)];
+            this.content[Math.floor(i / 2)] = temp;
+            i = Math.floor(i / 2);
         }
     }
 }
 
-let minHeap = new MinHHeap();
+let minHeap = new MinHeap();
 minHeap.add(3)
+
+let test = [1, 24, 13, 4, 55, 16, 7, 81, 324, 23, 42, 34]
+
+for (let i = 0; i < test.length; i++) {
+    minHeap.add(test[i])
+} 
