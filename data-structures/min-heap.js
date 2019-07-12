@@ -14,7 +14,7 @@ MinHeap.prototype = {
         // get added element pos
         let i = this.content.length - 1;
         // bubble added element to correct pos in array
-        while (this.content[i] < this.content[Math.floor(i / 2)] && i > 0) {
+        while (this.content[i] < this.content[Math.floor(i / 2)] && i > 1) {
             let temp = this.content[i];
             this.content[i] = this.content[Math.floor(i / 2)];
             this.content[Math.floor(i / 2)] = temp;
@@ -25,6 +25,7 @@ MinHeap.prototype = {
 
     // removes first value, doesn't remove all duplicate numbers 
     deleteVal: function (num) {
+        // if not a number
         if (typeof num !== 'number') return null;
 
         let idx = null;
@@ -35,29 +36,48 @@ MinHeap.prototype = {
             }
         }
         if (!idx) return null;
+        if (idx === this.content.length - 1) return this.content.pop();
+        // keep del value
         let deleted = this.content[idx];
+        // set new value and del last
         this.content[idx] = this.content.pop();
+        // idx is either even or odd
 
-        while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 0) {
+        // bubble up to correct pos
+        // while parent < child && idx > 0
+        while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 1) {
+            // temporarily store child val
             let temp = this.content[idx];
+            // child = parent
             this.content[idx] = this.content[Math.floor(idx / 2)];
+            // parent = temp(child)
             this.content[Math.floor(idx / 2)] = temp;
+            // idx = parent idx
             idx = Math.floor(idx / 2);
         }
 
+        // sink down to correct pos
+        // while parent > left child || parent > right child && idx > 0
         while (this.content[idx] > this.content[idx * 2] || this.content[idx] > this.content[idx * 2 + 1] && idx > 0) {
+            // if left child is undefined
             if (this.content[idx * 2] === undefined) break;
 
+            // if left child is smaller or right child is undefined
             if (this.content[idx * 2] < this.content[idx * 2 + 1] || this.content[idx * 2 + 1] === undefined) {
+                // temporarily store left child val
                 let temp = this.content[idx * 2];
                 this.content[idx * 2] = this.content[idx];
                 this.content[idx] = temp;
+                // idx = left child idx
                 idx = idx * 2
             }
+            // if right child is smaller
             else {
+                // temporarily store right child val
                 let temp = this.content[idx * 2 + 1];
                 this.content[idx * 2 + 1] = this.content[idx];
                 this.content[idx] = temp;
+                // idx = right child idx
                 idx = idx * 2 + 1
             }
         }
@@ -68,7 +88,7 @@ MinHeap.prototype = {
 let minHeap = new MinHeap();
 minHeap.add(3);
 
-let test = [1, 24, 13, 4, 55, 16, 7, 81, 324, 23, 42, 34]
+let test = [1, 24, 13, 4, 55, 16, 7, 81, 324, 23, 42, 34, -23]
 
 for (let i = 0; i < test.length; i++) {
     minHeap.add(test[i]);
