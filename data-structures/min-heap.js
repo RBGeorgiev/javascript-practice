@@ -23,15 +23,15 @@ MinHeap.prototype = {
     },
 
 
-    // removes first value, doesn't remove duplicate numbers 
+    // removes first value, doesn't remove all duplicate numbers 
     deleteVal: function (num) {
-        // if not a number
         if (typeof num !== 'number') return null;
 
         let idx = null;
         for (let i = 1; i < this.content.length; i++) {
             if (num === this.content[i]) {
                 idx = i;
+                break;
             }
         }
         if (!idx) return null;
@@ -46,7 +46,9 @@ MinHeap.prototype = {
         }
 
         while (this.content[idx] > this.content[idx * 2] || this.content[idx] > this.content[idx * 2 + 1] && idx > 0) {
-            if (this.content[idx * 2] < this.content[idx * 2 + 1]) {
+            if (this.content[idx * 2] === undefined) break;
+
+            if (this.content[idx * 2] < this.content[idx * 2 + 1] || this.content[idx * 2 + 1] === undefined) {
                 let temp = this.content[idx * 2];
                 this.content[idx * 2] = this.content[idx];
                 this.content[idx] = temp;
@@ -61,8 +63,6 @@ MinHeap.prototype = {
         }
         return deleted;
     }
-
-    // sort
 }
 
 let minHeap = new MinHeap();
@@ -73,5 +73,11 @@ let test = [1, 24, 13, 4, 55, 16, 7, 81, 324, 23, 42, 34]
 for (let i = 0; i < test.length; i++) {
     minHeap.add(test[i]);
 }
+
+minHeap.deleteVal(3);
+minHeap.deleteVal(324);
+minHeap.deleteVal(16);
+minHeap.deleteVal(1);
+minHeap.deleteVal(4);
 
 minHeap.content;
