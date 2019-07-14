@@ -2,6 +2,11 @@ body {
         background: rgb(226, 226, 226);
 }
 
+::selection{
+        background: rgb(48, 48, 48);  
+        color: #FFF;
+}
+
 main {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -34,12 +39,13 @@ main {
         border-bottom: 1px black solid;
 }
 
-button:focus {
+button:focus, input[type=submit]:focus {
         outline: 0;
 }
 
 .tab-links {
-        padding: 15px 50px;        
+        padding: 15px 50px;
+        background: rgb(48, 48, 48);      
         background: -webkit-gradient(linear, left top, left bottom, from(rgb(104, 104, 104)), to(rgb(48, 48, 48)));        
         background: -webkit-linear-gradient(rgb(104, 104, 104), rgb(48, 48, 48));        
         background: -o-linear-gradient(rgb(104, 104, 104), rgb(48, 48, 48));        
@@ -116,8 +122,30 @@ form > div {
         padding:20px;
 }
 
+#time-to-decimal-form input[type=number]{
+        max-width: 70px;
+}
+
 #minutes-to-hours-form > div:first-of-type {
         margin-top: 40px;
+}
+
+input[type=submit] {
+        padding: 5px 17px;
+        color: #000000;
+        background: rgb(211, 211, 211);
+        background: -webkit-gradient(linear, left top, left bottom, from(rgb(246, 247, 255)), to(rgb(211, 211, 211)));
+        background: -webkit-linear-gradient(rgb(246, 247, 255), rgb(211, 211, 211));
+        background: -o-linear-gradient(rgb(246, 247, 255), rgb(211, 211, 211));
+        background: linear-gradient(rgb(246, 247, 255), rgb(211, 211, 211));
+        border: 1px grey solid;
+}
+
+input[type=submit]:active {
+        background: -webkit-gradient(linear, left top, left bottom, from(rgb(211, 211, 211)), to(rgb(246, 247, 255)));
+        background: -webkit-linear-gradient(rgb(211, 211, 211), rgb(246, 247, 255));
+        background: -o-linear-gradient(rgb(211, 211, 211), rgb(246, 247, 255));
+        background: linear-gradient(rgb(211, 211, 211), rgb(246, 247, 255));
 }
 
 .answer {
