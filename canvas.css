@@ -62,6 +62,23 @@ body {
             user-select: none;
 }
 
+.bucket:after {
+    visibility: hidden;
+    position: absolute;
+    content: "Warning: Due to the size of the canvas, using the bucket tool to fill a large area may slow down the browser significantly!";
+    background: red;
+    z-index: 50;
+    left: 25px;
+    padding: 13px;
+    width: 160px;
+    border: 2px black solid;
+    color: black;
+}
+
+.bucket:hover:after {
+    visibility: visible;
+}
+
 canvas {
     cursor: none;
     border: 1px black solid;
