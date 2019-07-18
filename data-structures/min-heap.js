@@ -12,14 +12,9 @@ MinHeap.prototype = {
         // push num to the end of arr
         this.content.push(num);
         // get added element pos
-        let i = this.content.length - 1;
+        let idx = this.content.length - 1;
         // bubble added element to correct pos in array
-        while (this.content[i] < this.content[Math.floor(i / 2)] && i > 1) {
-            let temp = this.content[i];
-            this.content[i] = this.content[Math.floor(i / 2)];
-            this.content[Math.floor(i / 2)] = temp;
-            i = Math.floor(i / 2);
-        }
+        this.bubble(idx);
     },
 
 
@@ -44,17 +39,7 @@ MinHeap.prototype = {
         // idx is either even or odd
 
         // bubble up to correct pos
-        // while parent < child && idx > 0
-        while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 1) {
-            // temporarily store child val
-            let temp = this.content[idx];
-            // child = parent
-            this.content[idx] = this.content[Math.floor(idx / 2)];
-            // parent = temp(child)
-            this.content[Math.floor(idx / 2)] = temp;
-            // idx = parent idx
-            idx = Math.floor(idx / 2);
-        }
+        this.bubble(idx);
 
         // sink down to correct pos
         // while parent > left child || parent > right child && idx > 0
@@ -82,6 +67,19 @@ MinHeap.prototype = {
             }
         }
         return deleted;
+    },
+
+    bubble: function (idx) {
+        while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 1) {
+            // temporarily store child val
+            let temp = this.content[idx];
+            // child = parent
+            this.content[idx] = this.content[Math.floor(idx / 2)];
+            // parent = temp(child)
+            this.content[Math.floor(idx / 2)] = temp;
+            // idx = parent idx
+            idx = Math.floor(idx / 2);
+        }
     }
 }
 
