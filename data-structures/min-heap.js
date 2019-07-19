@@ -7,6 +7,7 @@ function MinHeap() {
 }
 
 MinHeap.prototype = {
+    // add number to heap
     add: function (num) {
         if (typeof num !== 'number') return null;
         // push num to the end of arr
@@ -17,31 +18,51 @@ MinHeap.prototype = {
         this.bubble(idx);
     },
 
-
     // removes first value, doesn't remove all duplicate numbers 
     deleteVal: function (num) {
         // if not a number
         if (typeof num !== 'number') return null;
+        // if matching value is the last in the array
+        if (num === this.content[this.content.length - 1]) return this.content.pop();
 
         let idx = null;
+        // look for value in the heap array
         for (let i = 1; i < this.content.length; i++) {
             if (num === this.content[i]) {
+                // if value is found get the idx of value
                 idx = i;
                 break;
             }
         }
+        // if no matching value is found
         if (!idx) return null;
-        if (idx === this.content.length - 1) return this.content.pop();
+
         // keep del value
         let deleted = this.content[idx];
         // set new value and del last
         this.content[idx] = this.content.pop();
-        // idx is either even or odd
-
-        // bubble up to correct pos
-        this.bubble(idx);
 
         // sink down to correct pos
+        this.sink(idx)
+
+        return deleted;
+    },
+
+    bubble: function (idx) {
+        // while child < parent && idx > 1
+        while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 1) {
+            // temporarily store child val
+            let temp = this.content[idx];
+            // child = parent
+            this.content[idx] = this.content[Math.floor(idx / 2)];
+            // parent = temp(child)
+            this.content[Math.floor(idx / 2)] = temp;
+            // idx = parent idx
+            idx = Math.floor(idx / 2);
+        }
+    },
+
+    sink: function (idx) {
         // while parent > left child || parent > right child && idx > 0
         while (this.content[idx] > this.content[idx * 2] || this.content[idx] > this.content[idx * 2 + 1] && idx > 0) {
             // if left child is undefined
@@ -65,20 +86,6 @@ MinHeap.prototype = {
                 // idx = right child idx
                 idx = idx * 2 + 1
             }
-        }
-        return deleted;
-    },
-
-    bubble: function (idx) {
-        while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 1) {
-            // temporarily store child val
-            let temp = this.content[idx];
-            // child = parent
-            this.content[idx] = this.content[Math.floor(idx / 2)];
-            // parent = temp(child)
-            this.content[Math.floor(idx / 2)] = temp;
-            // idx = parent idx
-            idx = Math.floor(idx / 2);
         }
     }
 }
