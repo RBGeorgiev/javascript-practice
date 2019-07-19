@@ -2,13 +2,12 @@
 // right child = i * 2 + 1
 // parent = i / 2
 
-function MinHeap() {
-    this.content = [null];
-}
-
-MinHeap.prototype = {
+class MinHeap {
+    constructor() {
+        this.content = [null];
+    }
     // add number to heap
-    add: function (num) {
+    add(num) {
         if (typeof num !== 'number') return null;
         // push num to the end of arr
         this.content.push(num);
@@ -16,10 +15,10 @@ MinHeap.prototype = {
         let idx = this.content.length - 1;
         // bubble added element to correct pos in array
         this.bubble(idx);
-    },
+    }
 
     // removes first value, doesn't remove all duplicate numbers 
-    deleteVal: function (num) {
+    deleteVal(num) {
         // if not a number
         if (typeof num !== 'number') return null;
         // if matching value is the last in the array
@@ -46,17 +45,17 @@ MinHeap.prototype = {
         this.sink(idx)
 
         return deleted;
-    },
+    }
 
-    bubble: function (idx) {
+    bubble(idx) {
         // while child < parent && idx > 1
         while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 1) {
             // swap child with parent
             idx = this.swap(idx, Math.floor(idx / 2))
         }
-    },
+    }
 
-    sink: function (idx) {
+    sink(idx) {
         // while parent > left child || parent > right child && idx > 0
         while (this.content[idx] > this.content[idx * 2] || this.content[idx] > this.content[idx * 2 + 1] && idx > 0) {
             // if left child is undefined
@@ -73,9 +72,9 @@ MinHeap.prototype = {
                 idx = this.swap(idx, idx * 2 + 1)
             }
         }
-    },
+    }
 
-    swap: function (oldIdx, newIdx) {
+    swap(oldIdx, newIdx) {
         let temp = this.content[oldIdx];
         this.content[oldIdx] = this.content[newIdx];
         this.content[newIdx] = temp
@@ -83,7 +82,7 @@ MinHeap.prototype = {
     }
 }
 
-let minHeap = new MinHeap();
+let minHeap = new MinHeap;
 minHeap.add(3);
 
 let test = [1, 24, 13, 4, 55, 16, 7, 81, 324, 23, 42, 34, -23]
@@ -99,3 +98,19 @@ minHeap.deleteVal(1);
 minHeap.deleteVal(4);
 
 minHeap.content;
+
+
+class MinHeap {
+    constructor() {
+        let content = [null];
+        function push(aaa) {
+            content.push(aaa)
+        }
+        this.see = function () {
+            return content
+        }
+    }
+    add(asd) {
+        push(asd)
+    }
+}
