@@ -51,14 +51,8 @@ MinHeap.prototype = {
     bubble: function (idx) {
         // while child < parent && idx > 1
         while (this.content[idx] < this.content[Math.floor(idx / 2)] && idx > 1) {
-            // temporarily store child val
-            let temp = this.content[idx];
-            // child = parent
-            this.content[idx] = this.content[Math.floor(idx / 2)];
-            // parent = temp(child)
-            this.content[Math.floor(idx / 2)] = temp;
-            // idx = parent idx
-            idx = Math.floor(idx / 2);
+            // swap child with parent
+            idx = this.swap(idx, Math.floor(idx / 2))
         }
     },
 
@@ -68,25 +62,24 @@ MinHeap.prototype = {
             // if left child is undefined
             if (this.content[idx * 2] === undefined) break;
 
-            // if left child is smaller or right child is undefined
+            // if left child is smaller than right child or right child is undefined
             if (this.content[idx * 2] < this.content[idx * 2 + 1] || this.content[idx * 2 + 1] === undefined) {
-                // temporarily store left child val
-                let temp = this.content[idx * 2];
-                this.content[idx * 2] = this.content[idx];
-                this.content[idx] = temp;
-                // idx = left child idx
-                idx = idx * 2
+                // swap parent with left child
+                idx = this.swap(idx, idx * 2)
             }
-            // if right child is smaller
+            // if right child is smaller than left child
             else {
-                // temporarily store right child val
-                let temp = this.content[idx * 2 + 1];
-                this.content[idx * 2 + 1] = this.content[idx];
-                this.content[idx] = temp;
-                // idx = right child idx
-                idx = idx * 2 + 1
+                // swap parent with right child
+                idx = this.swap(idx, idx * 2 + 1)
             }
         }
+    },
+
+    swap: function (oldIdx, newIdx) {
+        let temp = this.content[oldIdx];
+        this.content[oldIdx] = this.content[newIdx];
+        this.content[newIdx] = temp
+        return newIdx;
     }
 }
 
