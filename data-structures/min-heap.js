@@ -80,6 +80,17 @@ class MinHeap {
         this.content[newIdx] = temp
         return newIdx;
     }
+
+    popMin() {
+        if (this.content.length === 1) return null;
+        if (this.content.length === 2) return this.content.pop();
+        let deleted = this.content[1];
+        // set new value and del last
+        this.content[1] = this.content.pop();
+        // sink down to correct pos
+        this.sink(1);
+        return deleted;
+    }
 }
 
 let minHeap = new MinHeap;
@@ -97,20 +108,6 @@ minHeap.deleteVal(16);
 minHeap.deleteVal(1);
 minHeap.deleteVal(4);
 
+minHeap.popMin();
+
 minHeap.content;
-
-
-class MinHeap {
-    constructor() {
-        let content = [null];
-        function push(aaa) {
-            content.push(aaa)
-        }
-        this.see = function () {
-            return content
-        }
-    }
-    add(asd) {
-        push(asd)
-    }
-}
