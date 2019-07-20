@@ -15,6 +15,35 @@ class MinHeap {
         let idx = this.content.length - 1;
         // bubble added element to correct pos in array
         this.bubble(idx);
+        return num;
+    }
+
+    popMin() {
+        if (this.content.length === 1) return null;
+        if (this.content.length === 2) return this.content.pop();
+        let deleted = this.content[1];
+        // set new value and del last
+        this.content[1] = this.content.pop();
+        // sink down to correct pos
+        this.sink(1);
+        return deleted;
+    }
+
+    deleteIdx(idx) {
+        if (typeof idx !== 'number') return null;
+        // if idx exists
+        if (!this.content[idx] && this.content[idx] !== 0) return null;
+
+        if (idx === this.content.length - 1) return this.content.pop();
+        // keep del value
+        let deleted = this.content[idx];
+        // set new value and del last
+        this.content[idx] = this.content.pop();
+
+        // sink down to correct pos
+        this.sink(idx)
+
+        return deleted;
     }
 
     // removes first value, doesn't remove all duplicate numbers 
@@ -79,17 +108,6 @@ class MinHeap {
         this.content[oldIdx] = this.content[newIdx];
         this.content[newIdx] = temp
         return newIdx;
-    }
-
-    popMin() {
-        if (this.content.length === 1) return null;
-        if (this.content.length === 2) return this.content.pop();
-        let deleted = this.content[1];
-        // set new value and del last
-        this.content[1] = this.content.pop();
-        // sink down to correct pos
-        this.sink(1);
-        return deleted;
     }
 }
 
