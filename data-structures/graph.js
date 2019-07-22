@@ -12,6 +12,21 @@ class Graph {
         this.adjList.get(v).push(w);
         this.adjList.get(w).push(v);
     }
+
+    printGraph() {
+        let getKeys = this.adjList.keys();
+
+        for (let i of getKeys) {
+            let get_values = this.adjList.get(i);
+            let str = "";
+
+            for (let j of get_values)
+                str += j + " ";
+
+            // print the vertex and its adjacency list 
+            console.log(i + " -> " + str);
+        }
+    }
 }
 
 let graph = new Graph;
@@ -26,4 +41,4 @@ graph.addEdge(5, 2)
 graph.addEdge(2, 21)
 graph.addEdge(534, 85)
 
-graph
+graph.printGraph()
