@@ -5,10 +5,12 @@ class Graph {
     }
 
     addVertex(v) {
-        if (!this.adjList.get(v)) this.adjList.set(v, [])
+        if (!this.adjList.get(v)) this.adjList.set(v, []);
     }
 
     addEdge(v, w) {
+        if (v === w) return null;
+        if (this.adjList.get(v).includes(w)) return null;
         this.adjList.get(v).push(w);
         this.adjList.get(w).push(v);
     }
@@ -31,16 +33,22 @@ class Graph {
     bfs(start) {
         const ans = [];
         const queue = [start];
+        const visited = [start];
 
-        while (queue.length > 0) {
+        while (queue.length) {
             let cur = queue.shift();
-            ans.push(cur)
 
-            for (let i = 0; i < this.adjList.get(cur).length; i++) {
-                if (!ans.includes(this.adjList.get(cur)[i])) queue.push(this.adjList.get(cur)[i])
+            if (!ans.includes(cur)) {
+                ans.push(cur)
+
+                for (let i = 0; i < this.adjList.get(cur).length; i++) {
+                    if (!visited.includes(this.adjList.get(cur)[i])) {
+                        queue.push(this.adjList.get(cur)[i])
+                        visited.push(this.adjList.get(cur)[i])
+                    }
+                }
             }
         }
-
         return ans;
     }
 }
@@ -53,10 +61,39 @@ graph.addVertex(534)
 graph.addVertex(85)
 graph.addVertex(5)
 
-graph.addEdge(5, 2)
 graph.addEdge(2, 21)
+graph.addEdge(2, 534)
+graph.addEdge(2, 85)
+graph.addEdge(2, 5)
+
+graph.addEdge(21, 2)
+graph.addEdge(21, 534)
+graph.addEdge(21, 85)
+graph.addEdge(21, 5)
+
+graph.addEdge(534, 2)
+graph.addEdge(534, 21)
 graph.addEdge(534, 85)
+graph.addEdge(534, 5)
+
+graph.addEdge(85, 2)
+graph.addEdge(85, 21)
+graph.addEdge(85, 534)
+graph.addEdge(85, 5)
+
+graph.addEdge(5, 2)
+graph.addEdge(5, 21)
+graph.addEdge(5, 534)
 graph.addEdge(5, 85)
+
+
+
+
+// graph.addEdge(5, 2)
+// graph.addEdge(2, 21)
+// graph.addEdge(534, 85)
+// graph.addEdge(5, 85)
+// graph.addEdge(85, 2)
 
 graph.printGraph()
 
