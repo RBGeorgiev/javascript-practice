@@ -31,21 +31,17 @@ class Graph {
     }
 
     bfs(start) {
-        const ans = [];
+        if (!this.adjList.get(start)) return null;
+        const ans = [start];
         const queue = [start];
-        const visited = [start];
 
         while (queue.length) {
             let cur = queue.shift();
 
-            if (!ans.includes(cur)) {
-                ans.push(cur)
-
-                for (let i = 0; i < this.adjList.get(cur).length; i++) {
-                    if (!visited.includes(this.adjList.get(cur)[i])) {
-                        queue.push(this.adjList.get(cur)[i])
-                        visited.push(this.adjList.get(cur)[i])
-                    }
+            for (let i of this.adjList.get(cur)) {
+                if (!ans.includes(i)) {
+                    queue.push(i);
+                    ans.push(i);
                 }
             }
         }
@@ -55,46 +51,37 @@ class Graph {
 
 let graph = new Graph;
 
-graph.addVertex(2)
-graph.addVertex(21)
-graph.addVertex(534)
-graph.addVertex(85)
-graph.addVertex(5)
+graph.addVertex(2);
+graph.addVertex(21);
+graph.addVertex(534);
+graph.addVertex(85);
+graph.addVertex(5);
 
-graph.addEdge(2, 21)
-graph.addEdge(2, 534)
-graph.addEdge(2, 85)
-graph.addEdge(2, 5)
+graph.addEdge(2, 21);
+graph.addEdge(2, 534);
+graph.addEdge(2, 85);
+graph.addEdge(2, 5);
 
-graph.addEdge(21, 2)
-graph.addEdge(21, 534)
-graph.addEdge(21, 85)
-graph.addEdge(21, 5)
+graph.addEdge(21, 2);
+graph.addEdge(21, 534);
+graph.addEdge(21, 85);
+graph.addEdge(21, 5);
 
-graph.addEdge(534, 2)
-graph.addEdge(534, 21)
-graph.addEdge(534, 85)
-graph.addEdge(534, 5)
+graph.addEdge(534, 2);
+graph.addEdge(534, 21);
+graph.addEdge(534, 85);
+graph.addEdge(534, 5);
 
-graph.addEdge(85, 2)
-graph.addEdge(85, 21)
-graph.addEdge(85, 534)
-graph.addEdge(85, 5)
+graph.addEdge(85, 2);
+graph.addEdge(85, 21);
+graph.addEdge(85, 534);
+graph.addEdge(85, 5);
 
-graph.addEdge(5, 2)
-graph.addEdge(5, 21)
-graph.addEdge(5, 534)
-graph.addEdge(5, 85)
+graph.addEdge(5, 2);
+graph.addEdge(5, 21);
+graph.addEdge(5, 534);
+graph.addEdge(5, 85);
 
+graph.printGraph();
 
-
-
-// graph.addEdge(5, 2)
-// graph.addEdge(2, 21)
-// graph.addEdge(534, 85)
-// graph.addEdge(5, 85)
-// graph.addEdge(85, 2)
-
-graph.printGraph()
-
-graph.bfs(5)
+graph.bfs(5);
