@@ -5,7 +5,7 @@ class Graph {
     }
 
     addVertex(v) {
-        this.adjList.set(v, [])
+        if (!this.adjList.get(v)) this.adjList.set(v, [])
     }
 
     addEdge(v, w) {
@@ -27,6 +27,22 @@ class Graph {
             console.log(i + " -> " + str);
         }
     }
+
+    bfs(start) {
+        const ans = [];
+        const queue = [start];
+
+        while (queue.length > 0) {
+            let cur = queue.shift();
+            ans.push(cur)
+
+            for (let i = 0; i < this.adjList.get(cur).length; i++) {
+                if (!ans.includes(this.adjList.get(cur)[i])) queue.push(this.adjList.get(cur)[i])
+            }
+        }
+
+        return ans;
+    }
 }
 
 let graph = new Graph;
@@ -40,5 +56,8 @@ graph.addVertex(5)
 graph.addEdge(5, 2)
 graph.addEdge(2, 21)
 graph.addEdge(534, 85)
+graph.addEdge(5, 85)
 
 graph.printGraph()
+
+graph.bfs(5)
