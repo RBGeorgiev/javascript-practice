@@ -26,17 +26,9 @@ class Graph {
     }
 
     printGraph() {
-        let getKeys = this.adjList.keys();
-
-        for (let i of getKeys) {
-            let get_values = this.adjList.get(i);
-            let str = "";
-
-            for (let j of get_values)
-                str += j + " ";
-
+        for (let [key, val] of this.adjList) {
             // print the vertex and its adjacency list 
-            console.log(i + " -> " + str);
+            console.log(`${key} -> ${val.join(' ')}`)
         }
     }
 
