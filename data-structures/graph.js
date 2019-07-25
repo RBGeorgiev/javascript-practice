@@ -1,17 +1,27 @@
+// Undirected unweighted graph
 class Graph {
     constructor() {
         // Adjacency List
         this.adjList = new Map;
     }
 
+    // add new vertex
     addVertex(v) {
+        // if vertex doesn't already exist 
         if (!this.adjList.get(v)) this.adjList.set(v, []);
     }
 
+    // add edge between two vertices
     addEdge(u, v) {
+        // if either vertex doesn't exist
+        if (!this.adjList.get(u) || !this.adjList.get(v)) return null;
+        // if trying to connect a vertex to itself
         if (u === v) return null;
+        // if edge already exists
         if (this.adjList.get(u).includes(v)) return null;
+        // get the list for vertex u and put the vertex v denoting edge between u and v 
         this.adjList.get(u).push(v);
+        // since graph is undirected, also add an edge from v to u 
         this.adjList.get(v).push(u);
     }
 
@@ -31,15 +41,22 @@ class Graph {
     }
 
     bfs(start) {
+        // if starting vertex doesn't exist
         if (!this.adjList.get(start)) return null;
-        const ans = [start];
-        const queue = [start];
 
+        let ans = [start];
+        let queue = [start];
+
+        // run until queue is empty
         while (queue.length) {
+            // get current vertex from the front of the queue
             let cur = queue.shift();
 
+            // loop through all vertices connected to current vertex
             for (let i of this.adjList.get(cur)) {
+                // if vertex i is not already in answer
                 if (!ans.includes(i)) {
+                    // push to the end of the queue
                     queue.push(i);
                     ans.push(i);
                 }
@@ -49,14 +66,21 @@ class Graph {
     }
 
     dfs(start) {
+        // if starting vertex doesn't exist
         if (!this.adjList.get(start)) return null;
+
         let ans = [];
         let stack = [start];
 
+        // run until stack is empty
         while (stack.length) {
+            // get current vertex from the end of the stack
             let cur = stack.pop();
+
+            // if current vertex is not already in answer
             if (!ans.includes(cur)) {
                 ans.push(cur);
+                // loop through all vertices connected to current vertex
                 for (let i of this.adjList.get(cur)) stack.push(i);
             }
         }
