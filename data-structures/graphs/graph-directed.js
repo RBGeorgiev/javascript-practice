@@ -1,4 +1,4 @@
-// Undirected unweighted graph
+// Directed unweighted graph
 class Graph {
     constructor() {
         // Adjacency List
