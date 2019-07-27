@@ -57,6 +57,7 @@ class Graph {
         return ans;
     }
 
+    // dfs starting from specific vertex
     dfs(start) {
         // if starting vertex doesn't exist
         if (!this.adjList.get(start)) return null;
@@ -78,6 +79,41 @@ class Graph {
         }
         return ans;
     }
+
+    // dfs for disconnected graph
+    dfsAll() {
+        let visited = new Array(this.adjList).fill(false);
+        let i = 0
+        let ans = []
+
+        for (let v of this.adjList) {
+            if (!visited[i]) this.dfsUtil(v[0], visited, ans)
+            i++
+        }
+        return ans;
+    }
+
+    // dfs all helper method
+    dfsUtil(v, visited, ans) {
+
+        let stack = [v];
+        let j = 0
+
+        while (stack.length) {
+            let cur = stack.pop();
+
+            if (!ans.includes(cur)) {
+                ans.push(cur);
+                visited[j]
+                // loop through all vertices connected to current vertex
+                for (let i of this.adjList.get(cur)) {
+                    stack.push(i);
+                }
+            }
+            j++
+        }
+        return ans;
+    }
 }
 
 let graph = new Graph;
@@ -92,25 +128,37 @@ graph.addVertex(6);
 graph.addVertex(7);
 graph.addVertex(8);
 
-graph.addEdge(0, 3)
-graph.addEdge(0, 6)
-graph.addEdge(1, 4)
-graph.addEdge(1, 7)
-graph.addEdge(2, 1)
-graph.addEdge(2, 5)
-graph.addEdge(2, 8)
-graph.addEdge(3, 1)
+// graph.addEdge(0, 3)
+// graph.addEdge(0, 6)
+// graph.addEdge(1, 4)
+// graph.addEdge(1, 7)
+// graph.addEdge(2, 1)
+// graph.addEdge(2, 5)
+// graph.addEdge(2, 8)
+// graph.addEdge(3, 1)
+// graph.addEdge(3, 4)
+// graph.addEdge(3, 6)
+// graph.addEdge(4, 7)
+// graph.addEdge(4, 2)
+// graph.addEdge(5, 8)
+// graph.addEdge(5, 3)
+// graph.addEdge(6, 1)
+// graph.addEdge(7, 0)
+// graph.addEdge(7, 2)
+// graph.addEdge(8, 0)
+// graph.addEdge(8, 4)
+
+graph.addEdge(0, 1)
+graph.addEdge(1, 2)
+graph.addEdge(2, 0)
+
 graph.addEdge(3, 4)
-graph.addEdge(3, 6)
-graph.addEdge(4, 7)
-graph.addEdge(4, 2)
-graph.addEdge(5, 8)
+graph.addEdge(4, 5)
 graph.addEdge(5, 3)
-graph.addEdge(6, 1)
-graph.addEdge(7, 0)
-graph.addEdge(7, 2)
-graph.addEdge(8, 0)
-graph.addEdge(8, 4)
+
+graph.addEdge(6, 7)
+graph.addEdge(7, 8)
+graph.addEdge(8, 6)
 
 graph.printGraph();
 
