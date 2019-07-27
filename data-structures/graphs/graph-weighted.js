@@ -31,6 +31,53 @@ class Graph {
             console.log(`${key} -> ${val.map(el => `V:${el[0]} w:${el[1]}`).join(' | ')}`)
         }
     }
+
+    bfs(start) {
+        // if starting vertex doesn't exist
+        if (!this.adjList.get(start)) return null;
+
+        let ans = [start];
+        let queue = [start];
+
+        // run until queue is empty
+        while (queue.length) {
+            // get current vertex from the front of the queue
+            let cur = queue.shift();
+
+            // loop through all vertices connected to current vertex
+            for (let i of this.adjList.get(cur)) {
+                // if vertex i is not already in answer
+                if (!ans.includes(i[0])) {
+                    // push to the end of the queue
+                    queue.push(i[0]);
+                    ans.push(i[0]);
+                }
+            }
+        }
+        return ans;
+    }
+
+    dfs(start) {
+        // if starting vertex doesn't exist
+        if (!this.adjList.get(start)) return null;
+
+        let ans = [];
+        let stack = [[start]];
+
+        // run until stack is empty
+        while (stack.length) {
+            // get current vertex from the end of the stack
+            let cur = stack.pop()[0];
+
+            // if current vertex is not already in answer
+            if (!ans.includes(cur)) {
+                ans.push(cur);
+                // loop through all vertices connected to current vertex
+                for (let i of this.adjList.get(cur)) stack.push(i);
+            }
+        }
+        return ans;
+    }
 }
 
 let graph = new Graph;
