@@ -25,6 +25,16 @@ class Graph {
         this.adjList.get(v).push(u);
     }
 
+    // tests whether there is an edge from vertex u to vertex v
+    adjacent(u, v) {
+        // if either vertex doesn't exist
+        if (!this.adjList.get(u) || !this.adjList.get(v)) return null;
+        // if trying to test a vertex with itself
+        if (u === v) return null;
+
+        return this.adjList.get(u).includes(v);
+    }
+
     printGraph() {
         for (let [key, val] of this.adjList) {
             // print the vertex and its adjacency list 
