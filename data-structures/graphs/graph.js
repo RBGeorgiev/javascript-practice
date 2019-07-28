@@ -12,29 +12,38 @@ class Graph {
     }
 
     // add edge between two vertices
-    addEdge(u, v) {
+    addEdge(v, u) {
         // if either vertex doesn't exist
-        if (!this.adjList.get(u) || !this.adjList.get(v)) return null;
+        if (!this.adjList.get(v) || !this.adjList.get(u)) return null;
         // if trying to connect a vertex to itself
-        if (u === v) return null;
+        if (v === u) return null;
         // if edge already exists
-        if (this.adjList.get(u).includes(v)) return null;
-        // get the list for vertex u and put the vertex v denoting edge between u and v 
-        this.adjList.get(u).push(v);
-        // since graph is undirected, also add an edge from v to u 
+        if (this.adjList.get(v).includes(u)) return null;
+        // get the list for vertex v and put the vertex u denoting edge between v and u
         this.adjList.get(v).push(u);
+        // since graph is undirected, also add an edge from u to v 
+        this.adjList.get(u).push(v);
     }
 
-    // tests whether there is an edge from vertex u to vertex v
-    adjacent(u, v) {
+    // tests whether there is an edge from vertex v to vertex u
+    adjacent(v, u) {
         // if either vertex doesn't exist
-        if (!this.adjList.get(u) || !this.adjList.get(v)) return null;
+        if (!this.adjList.get(v) || !this.adjList.get(u)) return null;
         // if trying to test a vertex with itself
-        if (u === v) return null;
+        if (v === u) return null;
 
-        return this.adjList.get(u).includes(v);
+        return this.adjList.get(v).includes(u);
     }
 
+    // log all other vertices connected to v
+    neighbors(v) {
+        // if vertex doesn't exist
+        if (!this.adjList.get(v)) return null;
+        // log all connections to v
+        console.log(`${v} -> ${graph.adjList.get(v).join(' ')}`)
+    }
+
+    // log all vertices and their connections
     printGraph() {
         for (let [key, val] of this.adjList) {
             // print the vertex and its adjacency list 
