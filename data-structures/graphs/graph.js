@@ -25,6 +25,23 @@ class Graph {
         this.adjList.get(u).push(v);
     }
 
+    // removes edge between vertices u and v
+    removeEdge(u, v) {
+        // if either vertex doesn't exist
+        if (!this.adjList.get(v) || !this.adjList.get(u)) return null;
+        // if both u and v point to the same vertex
+        if (v === u) return null;
+        // if edge doesn't exist
+        if (!this.adjList.get(v).includes(u)) return null;
+
+        // since graph is undirected, also remove an edge from v to u 
+        graph.adjList.get(u).splice(graph.adjList.get(u).indexOf(v), 1)
+        // since graph is undirected, also remove an edge from u to v 
+        graph.adjList.get(v).splice(graph.adjList.get(v).indexOf(u), 1)
+
+        return this.printGraph()
+    }
+
     // tests whether there is an edge from vertex v to vertex u
     adjacent(v, u) {
         // if either vertex doesn't exist
