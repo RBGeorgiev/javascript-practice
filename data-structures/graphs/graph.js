@@ -7,8 +7,25 @@ class Graph {
 
     // add new vertex
     addVertex(v) {
+        // if vertex value isn't a number or string
+        if (typeof 1 !== 'number' || typeof 's' !== 'string') return null;
         // if vertex doesn't already exist 
         if (!this.adjList.get(v)) this.adjList.set(v, []);
+    }
+
+    removeVertex(v) {
+        // if vertex doesn't exist
+        if (!this.adjList.get(v)) return null;
+
+        // visit all vertices connected to v
+        this.adjList.get(v).forEach(el => {
+            // remove the edge between v and connected vertices
+            this.adjList.get(el).splice(this.adjList.get(el).indexOf(v), 1)
+        });
+        // delete v vertex
+        this.adjList.delete(v);
+
+        return this.printGraph();
     }
 
     // add edge between two vertices
@@ -26,7 +43,7 @@ class Graph {
     }
 
     // removes edge between vertices u and v
-    removeEdge(u, v) {
+    removeEdge(v, u) {
         // if either vertex doesn't exist
         if (!this.adjList.get(v) || !this.adjList.get(u)) return null;
         // if both u and v point to the same vertex
@@ -35,11 +52,11 @@ class Graph {
         if (!this.adjList.get(v).includes(u)) return null;
 
         // since graph is undirected, also remove an edge from v to u 
-        graph.adjList.get(u).splice(graph.adjList.get(u).indexOf(v), 1)
+        graph.adjList.get(v).splice(graph.adjList.get(v).indexOf(u), 1);
         // since graph is undirected, also remove an edge from u to v 
-        graph.adjList.get(v).splice(graph.adjList.get(v).indexOf(u), 1)
+        graph.adjList.get(u).splice(graph.adjList.get(u).indexOf(v), 1);
 
-        return this.printGraph()
+        return this.printGraph();
     }
 
     // tests whether there is an edge from vertex v to vertex u
@@ -164,25 +181,13 @@ graph.addVertex(6);
 graph.addVertex(7);
 graph.addVertex(8);
 
-// graph.addEdge(0, 3)
-// graph.addEdge(0, 6)
-// graph.addEdge(1, 4)
-// graph.addEdge(1, 7)
-// graph.addEdge(2, 1)
-// graph.addEdge(2, 5)
-// graph.addEdge(2, 8)
-// graph.addEdge(3, 1)
-// graph.addEdge(3, 4)
-// graph.addEdge(3, 6)
-// graph.addEdge(4, 7)
-// graph.addEdge(4, 2)
-// graph.addEdge(5, 8)
-// graph.addEdge(5, 3)
-// graph.addEdge(6, 1)
-// graph.addEdge(7, 0)
-// graph.addEdge(7, 2)
-// graph.addEdge(8, 0)
-// graph.addEdge(8, 4)
+graph.addVertex('a');
+graph.addVertex('b');
+graph.addVertex('c');
+
+graph.addEdge('a', 'b')
+graph.addEdge('b', 'c')
+graph.addEdge('c', 'a')
 
 graph.addEdge(0, 1)
 graph.addEdge(1, 2)
