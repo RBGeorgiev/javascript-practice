@@ -1,20 +1,28 @@
 import React from 'react';
 import './App.css';
-
 import Item from "./components/card";
-
-
-import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-
-import CardGroup from 'react-bootstrap/CardGroup'
-
+import Filter from "./components/filter";
+import CardGroup from 'react-bootstrap/CardGroup';
+import Container from 'react-bootstrap/Container';
 
 function App() {
   return (
     <div className="App">
-      <main>
+
+      {/* 
+      // <> === React.Fragment
+      <>
+        <main>
+          <Filter />
+          <Shelf />
+        </main>
+        <FloatCart />
+      </> 
+      */}
+
+      <main className="main">
+        <Filter />
+
         <Container>
           <CardGroup>
             <Item />
@@ -44,38 +52,6 @@ function App() {
             <Item />
           </CardGroup>
         </Container>
-        {/* <Container>
-          <Row>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-          </Row>
-          <Row>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-          </Row>
-          <Row>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-          </Row>
-          <Row>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-          </Row>
-          <Row>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-            <Col><Item /></Col>
-          </Row>
-        </Container> */}
       </main>
     </div >
   );

@@ -2,8 +2,15 @@
   text-align: center;
 }
 
-main {
+.main {
+  display: flex;
   background: black;
   width: 80%;
   margin: auto;
+}
+
+.filters {
+  background: lightgrey;
+    width: 200px;
+    height: 250px;
 }
