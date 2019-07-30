@@ -2,11 +2,11 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.css';
-import img_test from "../img/img_test.jpg"
+import img_test from "../img/img_test.jpg";
 
 const Item = () => {
     return (
-        <Card style={{ width: '18rem' }}>
+        <Card>
             <Card.Img variant="top" src={img_test} />
             <Card.Body>
                 <Card.Title>Item Title</Card.Title>

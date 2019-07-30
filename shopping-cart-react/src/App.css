@@ -2,6 +2,8 @@
   text-align: center;
 }
 
-.container {
+main {
   background: black;
+  width: 80%;
+  margin: auto;
 }
