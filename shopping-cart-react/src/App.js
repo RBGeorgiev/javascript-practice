@@ -1,7 +1,9 @@
 import React from 'react';
 import './App.css';
-import Item from "./components/card";
+import Product from "./components/product";
 import Filter from "./components/filter";
+import Cart from "./components/cart";
+
 import CardGroup from 'react-bootstrap/CardGroup';
 import Container from 'react-bootstrap/Container';
 
@@ -25,34 +27,35 @@ function App() {
 
         <Container>
           <CardGroup>
-            <Item />
-            <Item />
-            <Item />
-            <Item />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
           </CardGroup>
           <br />
           <CardGroup>
-            <Item />
-            <Item />
-            <Item />
-            <Item />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
           </CardGroup>
           <br />
           <CardGroup>
-            <Item />
-            <Item />
-            <Item />
-            <Item />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
           </CardGroup>
           <br />
           <CardGroup>
-            <Item />
-            <Item />
-            <Item />
-            <Item />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
           </CardGroup>
         </Container>
       </main>
+      <Cart />
     </div >
   );
 }

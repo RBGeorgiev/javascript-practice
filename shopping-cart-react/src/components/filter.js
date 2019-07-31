@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+const availableSizes = ['XS',
+    'S',
+    'M',
+    'L',
+    'XL',
+    'XXL'];
 
-class Filter extends Component {
+class Filter extends React.Component {
 
     createCheckbox = label => (
         <div className='checkboxes'>
@@ -25,4 +30,4 @@ class Filter extends Component {
     }
 }
 
-export default Filter
+export default Filter;
