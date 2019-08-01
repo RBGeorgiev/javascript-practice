@@ -11,10 +11,9 @@
             "id": 12,
             "installments": 9,
             "isFreeShipping": true,
-            "price": 10.9,
-            "sku": 12064273040195392,
-            "style": "Black with custom print",
-            "title": "Cat Tee Black T-Shirt"
+            "price": 35,
+            "sku": 52632551071381520,
+            "label": "ASOS DESIGN relaxed fit stripe shirt in navy",
         },
         {
             "availableSizes": [
@@ -26,10 +25,9 @@
             "id": 13,
             "installments": 5,
             "isFreeShipping": true,
-            "price": 29.45,
-            "sku": 51498472915966370,
-            "style": "Front print and paisley print",
-            "title": "Dark Thug Blue-Navy T-Shirt"
+            "price": 15.99,
+            "sku": 73796879136932290,
+            "label": "Bershka Join Life striped shirt with grandad collar in navy",
         },
         {
             "availableSizes": [
@@ -43,10 +41,9 @@
             "id": 14,
             "installments": 3,
             "isFreeShipping": true,
-            "price": 9,
-            "sku": 10686354557628304,
-            "style": "Front tie dye print",
-            "title": "Sphynx Tie Dye Wine T-Shirt"
+            "price": 25,
+            "sku": 90228478201975420,
+            "label": "ASOS DESIGN relaxed fit stripe shirt in burgundy",
         },
         {
             "availableSizes": [
@@ -61,10 +58,9 @@
             "id": 15,
             "installments": 5,
             "isFreeShipping": true,
-            "price": 14,
-            "sku": 11033926921508488,
-            "style": "Black T-Shirt with front print",
-            "title": "Skuul"
+            "price": 29,
+            "sku": 37043448738650050,
+            "label": "Hollister all over print short sleeve poplin shirt slim fit in pink",
         },
         {
             "availableSizes": [
@@ -77,10 +73,9 @@
             "id": 11,
             "installments": 3,
             "isFreeShipping": true,
-            "price": 13.25,
-            "sku": 39876704341265610,
-            "style": "Wine",
-            "title": "Wine Skul T-Shirt"
+            "price": 25,
+            "sku": 69190012238242856,
+            "label": "ASOS DESIGN relaxed fit shirt in zebra print",
         },
         {
             "availableSizes": [
@@ -95,10 +90,9 @@
             "id": 0,
             "installments": 9,
             "isFreeShipping": true,
-            "price": 10.9,
-            "sku": 8552515751438644,
-            "style": "Branco com listras pretas",
-            "title": "Cat Tee Black T-Shirt"
+            "price": 20,
+            "sku": 12834900997792436,
+            "label": "ASOS DESIGN relaxed viscose shirt with low revere collar in navy",
         },
         {
             "availableSizes": [
@@ -113,10 +107,9 @@
             "id": 1,
             "installments": 9,
             "isFreeShipping": true,
-            "price": 10.9,
-            "sku": 18644119330491310,
-            "style": "Preta com listras brancas",
-            "title": "Sphynx Tie Dye Grey T-Shirt"
+            "price": 28,
+            "sku": 90165189982444850,
+            "label": "ASOS DESIGN regular fit foil print aztec shirt",
         },
         {
             "availableSizes": [
@@ -129,10 +122,9 @@
             "id": 2,
             "installments": 7,
             "isFreeShipping": true,
-            "price": 14.9,
-            "sku": 11854078013954528,
-            "style": "Branco com listras pretas",
-            "title": "Danger Knife Grey"
+            "price": 25,
+            "sku": 51668584864043710,
+            "label": "ASOS DESIGN relaxed viscose short sleeve shirt with piping",
         },
         {
             "availableSizes": [
@@ -145,10 +137,9 @@
             "id": 3,
             "installments": 7,
             "isFreeShipping": true,
-            "price": 14.9,
-            "sku": 876661122392077,
-            "style": "Preto com listras brancas",
-            "title": "White DGK Script Tee"
+            "price": 28,
+            "sku": 37031236670418230,
+            "label": "ASOS DESIGN oversized cape shirt in black and white check",
         },
         {
             "availableSizes": [
@@ -160,10 +151,9 @@
             "id": 4,
             "installments": 12,
             "isFreeShipping": false,
-            "price": 25.9,
-            "sku": 9197907543445676,
-            "style": "Branco com listras pretas",
-            "title": "Born On The Streets"
+            "price": 22,
+            "sku": 83152582934101550,
+            "label": "ASOS DESIGN skinny fit denim western shirt in black",
         },
         {
             "availableSizes": [
@@ -177,10 +167,9 @@
             "id": 5,
             "installments": 9,
             "isFreeShipping": false,
-            "price": 10.9,
-            "sku": 10547961582846888,
-            "style": "Preto",
-            "title": "Tso 3D Short Sleeve T-Shirt A"
+            "price": 25.9,
+            "sku": 75895439853676100,
+            "label": "ASOS DESIGN oversized poplin shirt with double pockets and d ring",
         },
         {
             "availableSizes": [
@@ -193,10 +182,9 @@
             "id": 6,
             "installments": 0,
             "isFreeShipping": true,
-            "price": 49.9,
-            "sku": 6090484789343891,
-            "style": "Branco",
-            "title": "Man Tie Dye Cinza Grey T-Shirt"
+            "price": 18.9,
+            "sku": 98389993983162350,
+            "label": "boohooMAN long sleeve check shirt in green",
         },
         {
             "availableSizes": [
@@ -208,10 +196,9 @@
             "id": 7,
             "installments": 4,
             "isFreeShipping": true,
-            "price": 22.5,
-            "sku": 18532669286405344,
-            "style": "Preto com listras brancas",
-            "title": "Crazy Monkey Black T-Shirt"
+            "price": 25.5,
+            "sku": 22391423569438164,
+            "label": "ASOS DESIGN regular fit utility shirt in khaki",
         },
         {
             "availableSizes": [
@@ -223,10 +210,9 @@
             "id": 8,
             "installments": 4,
             "isFreeShipping": false,
-            "price": 18.7,
-            "sku": 5619496040738316,
-            "style": "Azul escuro",
-            "title": "Tso 3D Black T-Shirt"
+            "price": 28.7,
+            "sku": 51324179306932460,
+            "label": "Only & Sons slim fit shirt in white",
         },
         {
             "availableSizes": [
@@ -239,10 +225,9 @@
             "id": 9,
             "installments": 5,
             "isFreeShipping": true,
-            "price": 134.9,
-            "sku": 11600983276356164,
-            "style": "",
-            "title": "Crazy Monkey Grey"
+            "price": 85,
+            "sku": 53564279788794560,
+            "label": "Tommy Hilfiger icon logo organic stretch denim shirt in mid wash",
         },
         {
             "availableSizes": [
@@ -255,10 +240,9 @@
             "id": 10,
             "installments": 9,
             "isFreeShipping": true,
-            "price": 49,
-            "sku": 27250082398145996,
-            "style": "",
-            "title": "On The Streets Black T-Shirt"
+            "price": 65,
+            "sku": 38730807745026470,
+            "label": "AllSaints short sleeve poplin shirt in light grey",
         }
     ]
 }

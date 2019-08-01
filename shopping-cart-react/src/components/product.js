@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import img_test from "../img/img_test.jpg";
+import img_test from "../img/12834900997792436.jpg";
 
 const Product = () => {
     return (
