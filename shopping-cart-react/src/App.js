@@ -4,7 +4,6 @@ import Product from "./components/product";
 import Filter from "./components/filter";
 import Cart from "./components/cart";
 
-import CardGroup from 'react-bootstrap/CardGroup';
 import Container from 'react-bootstrap/Container';
 
 function App() {
@@ -26,33 +25,25 @@ function App() {
         <Filter />
 
         <Container>
-          <CardGroup>
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-          </CardGroup>
+          <Product />
+          <Product />
+          <Product />
+          <Product />
           <br />
-          <CardGroup>
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-          </CardGroup>
+          <Product />
+          <Product />
+          <Product />
+          <Product />
           <br />
-          <CardGroup>
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-          </CardGroup>
+          <Product />
+          <Product />
+          <Product />
+          <Product />
           <br />
-          <CardGroup>
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-          </CardGroup>
+          <Product />
+          <Product />
+          <Product />
+          <Product />
         </Container>
       </main>
       <Cart />

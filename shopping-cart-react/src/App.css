@@ -3,14 +3,28 @@
 }
 
 .main {
-  display: flex;
   background: black;
   width: 80%;
   margin: auto;
 }
 
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .filters {
+  display: flex;
   background: lightgrey;
-    width: 200px;
-    height: 250px;
+  height: 100px;
+}
+
+article {
+  width: 25%;
+  color: white;
+}
+
+img {
+  width: 100%;
+  height: auto;
 }
