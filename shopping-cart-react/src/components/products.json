@@ -5,155 +5,25 @@
                 "S",
                 "XS"
             ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "4 MSL",
-            "id": 12,
-            "installments": 9,
-            "isFreeShipping": true,
+            "id": 0,
+            "name": "Relaxed Fit Stripe Shirt In Navy",
             "price": 35,
-            "sku": 52632551071381520,
-            "label": "ASOS DESIGN relaxed fit stripe shirt in navy",
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 52632551071381520
         },
         {
             "availableSizes": [
                 "M"
             ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "",
-            "id": 13,
-            "installments": 5,
-            "isFreeShipping": true,
-            "price": 15.99,
-            "sku": 73796879136932290,
-            "label": "Bershka Join Life striped shirt with grandad collar in navy",
-        },
-        {
-            "availableSizes": [
-                "X",
-                "L",
-                "XL"
-            ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "GPX Poly 1",
-            "id": 14,
-            "installments": 3,
-            "isFreeShipping": true,
-            "price": 25,
-            "sku": 90228478201975420,
-            "label": "ASOS DESIGN relaxed fit stripe shirt in burgundy",
-        },
-        {
-            "availableSizes": [
-                "X",
-                "L",
-                "XL",
-                "XXL"
-            ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "Treino 2014",
-            "id": 15,
-            "installments": 5,
-            "isFreeShipping": true,
-            "price": 29,
-            "sku": 37043448738650050,
-            "label": "Hollister all over print short sleeve poplin shirt slim fit in pink",
-        },
-        {
-            "availableSizes": [
-                "X",
-                "L"
-            ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "",
-            "id": 11,
-            "installments": 3,
-            "isFreeShipping": true,
-            "price": 25,
-            "sku": 69190012238242856,
-            "label": "ASOS DESIGN relaxed fit shirt in zebra print",
-        },
-        {
-            "availableSizes": [
-                "X",
-                "L",
-                "XL",
-                "XXL"
-            ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "14/15 s/nº",
-            "id": 0,
-            "installments": 9,
-            "isFreeShipping": true,
-            "price": 20,
-            "sku": 12834900997792436,
-            "label": "ASOS DESIGN relaxed viscose shirt with low revere collar in navy",
-        },
-        {
-            "availableSizes": [
-                "X",
-                "L",
-                "XL",
-                "XXL"
-            ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "14/15 s/nº",
             "id": 1,
-            "installments": 9,
-            "isFreeShipping": true,
-            "price": 28,
-            "sku": 90165189982444850,
-            "label": "ASOS DESIGN regular fit foil print aztec shirt",
-        },
-        {
-            "availableSizes": [
-                "X",
-                "L"
-            ],
-            "currencyFormat": "£",
+            "name": "Striped Shirt With Grandad Collar In Navy",
+            "price": 15.99,
             "currencyId": "GBP",
-            "description": "14/15 s/nº",
-            "id": 2,
-            "installments": 7,
-            "isFreeShipping": true,
-            "price": 25,
-            "sku": 51668584864043710,
-            "label": "ASOS DESIGN relaxed viscose short sleeve shirt with piping",
-        },
-        {
-            "availableSizes": [
-                "X",
-                "L"
-            ],
             "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "2014 s/nº",
-            "id": 3,
-            "installments": 7,
             "isFreeShipping": true,
-            "price": 28,
-            "sku": 37031236670418230,
-            "label": "ASOS DESIGN oversized cape shirt in black and white check",
-        },
-        {
-            "availableSizes": [
-                "XL"
-            ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "14/15 s/nº - Jogador",
-            "id": 4,
-            "installments": 12,
-            "isFreeShipping": false,
-            "price": 22,
-            "sku": 83152582934101550,
-            "label": "ASOS DESIGN skinny fit denim western shirt in black",
+            "sku": 73796879136932290
         },
         {
             "availableSizes": [
@@ -161,88 +31,186 @@
                 "L",
                 "XL"
             ],
-            "currencyFormat": "£",
+            "id": 2,
+            "name": "Relaxed Fit Stripe Shirt In Burgundy",
+            "price": 25,
             "currencyId": "GBP",
-            "description": "14/15 + Camiseta 1º Mundial",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 90228478201975420
+        },
+        {
+            "availableSizes": [
+                "X",
+                "L",
+                "XL",
+                "XXL"
+            ],
+            "id": 3,
+            "name": "Hollister Short Sleeve Poplin Shirt Slim Fit In Pink",
+            "price": 29,
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 37043448738650050
+        },
+        {
+            "availableSizes": [
+                "X",
+                "L"
+            ],
+            "id": 4,
+            "name": "Relaxed Fit Shirt In Zebra Print",
+            "price": 25,
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 69190012238242856
+        },
+        {
+            "availableSizes": [
+                "X",
+                "L",
+                "XL",
+                "XXL"
+            ],
             "id": 5,
-            "installments": 9,
+            "name": "Relaxed Viscose Shirt With Low Revere Collar In Navy",
+            "price": 20,
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 12834900997792436
+        },
+        {
+            "availableSizes": [
+                "X",
+                "L",
+                "XL",
+                "XXL"
+            ],
+            "id": 6,
+            "name": "Regular Fit Foil Print Aztec Shirt",
+            "price": 28,
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 90165189982444850
+        },
+        {
+            "availableSizes": [
+                "X",
+                "L"
+            ],
+            "id": 7,
+            "name": "Relaxed Viscose Short Sleeve Shirt With Piping",
+            "price": 25,
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 51668584864043710
+        },
+        {
+            "availableSizes": [
+                "X",
+                "L"
+            ],
+            "id": 8,
+            "name": "Oversized Cape Shirt In Black And White Check",
+            "price": 28,
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 37031236670418230
+        },
+        {
+            "availableSizes": [
+                "XL"
+            ],
+            "id": 9,
+            "name": "Skinny Fit Denim Western Shirt In Black",
+            "price": 22,
+            "currencyId": "GBP",
+            "currencyFormat": "£",
             "isFreeShipping": false,
+            "sku": 83152582934101550
+        },
+        {
+            "availableSizes": [
+                "X",
+                "L",
+                "XL"
+            ],
+            "id": 10,
+            "name": "Oversized Poplin Shirt With Double Pockets And D Ring",
             "price": 25.9,
-            "sku": 75895439853676100,
-            "label": "ASOS DESIGN oversized poplin shirt with double pockets and d ring",
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": false,
+            "sku": 75895439853676100
         },
         {
             "availableSizes": [
                 "XL",
                 "XXL"
             ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "Goleiro 13/14",
-            "id": 6,
-            "installments": 0,
-            "isFreeShipping": true,
+            "id": 11,
+            "name": "boohooMAN Long Sleeve Check Shirt In Green",
             "price": 18.9,
-            "sku": 98389993983162350,
-            "label": "boohooMAN long sleeve check shirt in green",
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 98389993983162350
         },
         {
             "availableSizes": [
                 "S"
             ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "1977 Infantil",
-            "id": 7,
-            "installments": 4,
-            "isFreeShipping": true,
+            "id": 12,
+            "name": "Regular Fit Utility Shirt In Khaki",
             "price": 25.5,
-            "sku": 22391423569438164,
-            "label": "ASOS DESIGN regular fit utility shirt in khaki",
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 22391423569438164
         },
         {
             "availableSizes": [
                 "XL"
             ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "",
-            "id": 8,
-            "installments": 4,
-            "isFreeShipping": false,
+            "id": 13,
+            "name": "Slim Fit Shirt In White",
             "price": 28.7,
-            "sku": 51324179306932460,
-            "label": "Only & Sons slim fit shirt in white",
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": false,
+            "sku": 51324179306932460
         },
         {
             "availableSizes": [
                 "L",
                 "XL"
             ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "",
-            "id": 9,
-            "installments": 5,
-            "isFreeShipping": true,
+            "id": 14,
+            "name": "Tommy Hilfiger Icon Logo Organic Stretch Denim Shirt In Mid Wash",
             "price": 85,
-            "sku": 53564279788794560,
-            "label": "Tommy Hilfiger icon logo organic stretch denim shirt in mid wash",
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 53564279788794560
         },
         {
             "availableSizes": [
                 "L",
                 "XL"
             ],
-            "currencyFormat": "£",
-            "currencyId": "GBP",
-            "description": "",
-            "id": 10,
-            "installments": 9,
-            "isFreeShipping": true,
+            "id": 15,
+            "name": "AllSaints Short Sleeve Poplin Shirt In Light Grey",
             "price": 65,
-            "sku": 38730807745026470,
-            "label": "AllSaints short sleeve poplin shirt in light grey",
+            "currencyId": "GBP",
+            "currencyFormat": "£",
+            "isFreeShipping": true,
+            "sku": 38730807745026470
         }
     ]
 }
