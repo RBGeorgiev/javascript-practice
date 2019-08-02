@@ -1,10 +1,8 @@
 import React from 'react';
 import './App.css';
-import Product from "./components/product";
 import Filter from "./components/filter";
 import Cart from "./components/cart";
-
-import Container from 'react-bootstrap/Container';
+import ProductList from "./components/product-list"
 
 function App() {
   return (
@@ -23,28 +21,7 @@ function App() {
 
       <main className="main">
         <Filter />
-
-        <Container>
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <br />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <br />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <br />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-        </Container>
+        <ProductList />
       </main>
       <Cart />
     </div >

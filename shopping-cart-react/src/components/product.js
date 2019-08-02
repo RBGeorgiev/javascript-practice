@@ -1,17 +1,18 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import img_test from "../img/12834900997792436.jpg";
 
-const Product = () => {
+const Product = ({ product }) => {
     return (
         <article>
             <a href="#">
-                <img src={img_test} />
+                <img src={require(`../img/${product.sku}.jpg`)} />
 
-                <h4>Product Title</h4>
+                <h4>{product.currencyFormat}{product.price.toFixed(2)}</h4>
                 <p>
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
+                    {product.name}
+                </p>
+                <p>
+                    {(product.isFreeShipping) ? 'Free Shipping' : ''}
                 </p>
             </a>
         </article>
