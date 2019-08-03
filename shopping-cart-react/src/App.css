@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background: #fafafa;
+  color: #1b1a20;
 }
 
 .main {
@@ -21,23 +23,23 @@
 article {
   width: 25%;
   padding: 5px;
-  color: white;
 }
 
 .shelf-item-container {
-  color: black;
-  border: 1px white solid;
+  border: 1px #fafafa solid;
+  margin-bottom: 25px;
 }
 
 .shelf-item-container:hover {
-  border: 1px grey solid;
+  border: 1px #c7c7c7 solid;
 }
 .shelf-item-container:hover .shelf-item-buy-btn {
-  background: orange;
+  background: rgb(255, 201, 24);
+  color: #1b1a20;
 }
 
 .shelf-item-card {
-text-decoration: none;
+  text-decoration: none;
 }
 
 .shelf-item-container img {
@@ -47,8 +49,26 @@ text-decoration: none;
 
 .shelf-item-name {
   height: 50px;
+  font-size: 1.2em;
+}
+
+.shelf-item-price {
+  font-size: 30px;
+  font-weight: 500;
+  padding: 4px;
 }
 
 .shelf-item-buy-btn {
-  background: darkgrey;
+  background: #1b1a20;
+  color: #ececec;
+  padding: 4px;
+}
+
+.shelf-item-shipping {
+  position: absolute;
+  color: #ececec;
+  padding: 5px;
+  font-size: .6em;
+  background-color: #1b1a20;
+  cursor: default;
 }
