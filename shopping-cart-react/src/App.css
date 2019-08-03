@@ -3,7 +3,6 @@
 }
 
 .main {
-  background: black;
   width: 80%;
   margin: auto;
 }
@@ -25,7 +24,31 @@ article {
   color: white;
 }
 
-img {
+.shelf-item-container {
+  color: black;
+  border: 1px white solid;
+}
+
+.shelf-item-container:hover {
+  border: 1px grey solid;
+}
+.shelf-item-container:hover .shelf-item-buy-btn {
+  background: orange;
+}
+
+.shelf-item-card {
+text-decoration: none;
+}
+
+.shelf-item-container img {
   width: 100%;
   height: auto;
+}
+
+.shelf-item-name {
+  height: 50px;
+}
+
+.shelf-item-buy-btn {
+  background: darkgrey;
 }

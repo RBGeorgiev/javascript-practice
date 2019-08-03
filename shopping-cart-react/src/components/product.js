@@ -3,18 +3,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 const Product = ({ product }) => {
     return (
-        <article>
-            <a href="#">
-                <img src={require(`../img/${product.sku}.jpg`)} />
+        <article className="shelf-item-container">
 
-                <h4>{product.currencyFormat}{product.price.toFixed(2)}</h4>
-                <p>
-                    {product.name}
-                </p>
-                <p>
-                    {(product.isFreeShipping) ? 'Free Shipping' : ''}
-                </p>
-            </a>
+            <img src={require(`../img/${product.sku}.jpg`)} />
+
+            <div className="shelf-item-name">{product.name}</div>
+            <div className="shelf-item-price">{product.currencyFormat}{product.price.toFixed(2)}</div>
+            <span>{(product.isFreeShipping) ? 'Free Shipping' : ''}</span>
+            <div className="shelf-item-buy-btn">Add to cart</div>
+
         </article>
     )
 }
