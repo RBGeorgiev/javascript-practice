@@ -15,8 +15,8 @@
 }
 
 .filters {
-  display: flex;
-  background: lightgrey;
+  background: #e1e1e1;
+  border-bottom: 1px #1b1a20 solid;
   height: 100px;
 }
 
@@ -71,4 +71,38 @@ article {
   font-size: .6em;
   background-color: #1b1a20;
   cursor: default;
+}
+
+.checkboxes {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 35px;
+  height: 35px;
+  font-size: .8em;
+  margin-bottom: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  line-height: 35px;
+  text-align: center;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35px;
+  height: 35px;
+  font-size: .8em;
+  border-radius: 50%;
+  line-height: 35px;
+  text-align: center;
+  color: #1b1a20;
+  background-color: #ececec;
+  border: 1px solid transparent;
 }

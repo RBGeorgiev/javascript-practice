@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Filter from "./components/filter";
 import Cart from "./components/cart";
-import ProductList from "./components/product-list"
+import ProductList from "./components/product-list";
 
 function App() {
   return (
@@ -19,8 +19,8 @@ function App() {
       </> 
       */}
 
+      <Filter />
       <main className="main">
-        <Filter />
         <ProductList />
       </main>
       <Cart />

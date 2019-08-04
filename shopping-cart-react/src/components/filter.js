@@ -1,4 +1,5 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 
 const availableSizes = ['XS',
     'S',
@@ -23,8 +24,10 @@ class Filter extends React.Component {
     render() {
         return (
             <div className="filters">
-                <h4 className="title">Sizes:</h4>
-                {this.createCheckboxes()}
+                <Container>
+                    <h4 className="title">Sizes: </h4>
+                    {this.createCheckboxes()}
+                </Container>
             </div>
         );
     }
