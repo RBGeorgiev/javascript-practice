@@ -76,8 +76,6 @@ article {
 .checkboxes {
   display: inline-block;
   position: relative;
-  cursor: pointer;
-  font-size: 22px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -94,15 +92,18 @@ article {
 
 .checkmark {
   position: absolute;
+  cursor: pointer;
   top: 0;
   left: 0;
   width: 35px;
   height: 35px;
   font-size: .8em;
   border-radius: 50%;
-  line-height: 35px;
-  text-align: center;
   color: #1b1a20;
-  background-color: #ececec;
+  background-color: #fafafa;
   border: 1px solid transparent;
+}
+
+.checkmark:hover {
+    border: 1px solid #1b1a20;
 }
