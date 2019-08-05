@@ -1,15 +1,16 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
+import { connect } from 'react-redux';
 
-const availableSizes = ['XS',
+const availableSizes = [
+    'XS',
     'S',
     'M',
     'L',
     'XL',
-    'XXL'];
+    'XXL'
+];
 
 class Filter extends React.Component {
-
     createCheckbox = label => (
         <div className='checkboxes'>
             <label>
@@ -24,13 +25,18 @@ class Filter extends React.Component {
     render() {
         return (
             <div className="filters">
-                <Container>
-                    <h4 className="title">Sizes:</h4>
-                    {this.createCheckboxes()}
-                </Container>
-            </div>
+                <p>{this.props.items}</p>
+                <h4 className="title">Sizes:</h4>
+                {this.createCheckboxes()}
+            </div >
         );
     }
 }
 
-export default Filter;
+const mapStateToProps = (state) => {
+    return {
+        items: state.items
+    }
+}
+
+export default connect(mapStateToProps)(Filter);

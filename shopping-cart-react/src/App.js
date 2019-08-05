@@ -4,6 +4,8 @@ import Filter from "./components/filter";
 import Cart from "./components/cart";
 import ProductList from "./components/product-list";
 
+import store from './store/'
+
 function App() {
   return (
     <div className="App">
@@ -19,7 +21,7 @@ function App() {
       </> 
       */}
 
-      <Filter />
+      <Filter store={store} />
       <main className="main">
         <ProductList />
       </main>
