@@ -73,7 +73,7 @@ article {
   cursor: default;
 }
 
-/* .checkboxes {
+.checkboxes {
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -109,4 +109,9 @@ article {
 
 .checkmark:hover {
     border: 1px solid #1b1a20;
-} */
+}
+
+.checkboxes label input:checked~.checkmark {
+    background-color: #1b1a20;
+    color: #ececec;
+}

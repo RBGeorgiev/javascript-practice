@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { updateFilters } from '../store/update-filters'
 
@@ -11,15 +11,8 @@ const availableSizes = [
     'XXL'
 ];
 
-class Filter extends React.Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            isGoing: false,
-            numberOfGuests: 2
-        };
-    }
+class Filter extends React.Component {
 
     componentDidMount() {
         this.selectedCheckboxes = new Set();
@@ -41,7 +34,7 @@ class Filter extends React.Component {
     createCheckbox = label => (
         <div className='checkboxes'>
             <label>
-                <input type="checkbox" value={label} checked={this.state.checked} onChange={this.handleInputChange} />
+                <input type="checkbox" value={label} onChange={this.handleInputChange} />
                 <span className="checkmark">{label}</span>
             </label>
         </div>
