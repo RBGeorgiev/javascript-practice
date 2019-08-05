@@ -4,9 +4,20 @@ import Container from 'react-bootstrap/Container';
 import AllProducts from "./products"
 
 
-let products = AllProducts.products
+import { connect } from 'react-redux';
 
-const ProductList = () => {
+
+const ProductList = (props) => {
+
+    const products = AllProducts.products.filter(el => {
+        for (let size of props.items) {
+            if (!el.availableSizes.includes(size)) {
+                return false
+            }
+        }
+        return true
+    });
+
     return (
         <Container >
             {products.map(p => {
@@ -16,4 +27,10 @@ const ProductList = () => {
     )
 };
 
-export default ProductList;
+const mapStateToProps = (state) => {
+    return {
+        items: state.items
+    }
+}
+
+export default connect(mapStateToProps)(ProductList);

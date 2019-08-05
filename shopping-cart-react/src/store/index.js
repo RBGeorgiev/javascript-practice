@@ -3,7 +3,7 @@ import { createStore } from 'redux'
 const UPDATE_FILTER = 'UPDATE_FILTER';
 
 const initialState = {
-    items: ['test', 'test', 'test', 'test', 'test']
+    items: []
 }
 
 const reducer = (state = initialState, action) => {

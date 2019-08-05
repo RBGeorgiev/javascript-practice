@@ -17,7 +17,7 @@
 .filters {
   background: #e1e1e1;
   border-bottom: 1px #1b1a20 solid;
-  height: 100px;
+  /* height: 100px; */
 }
 
 article {
@@ -73,7 +73,7 @@ article {
   cursor: default;
 }
 
-.checkboxes {
+/* .checkboxes {
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -109,4 +109,4 @@ article {
 
 .checkmark:hover {
     border: 1px solid #1b1a20;
-}
+} */

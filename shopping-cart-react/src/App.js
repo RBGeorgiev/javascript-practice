@@ -23,7 +23,7 @@ function App() {
 
       <Filter store={store} />
       <main className="main">
-        <ProductList />
+        <ProductList store={store} />
       </main>
       <Cart />
     </div >
