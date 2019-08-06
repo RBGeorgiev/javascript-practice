@@ -14,7 +14,7 @@ class ProductList extends React.Component {
     }
 
     handleClick(product) {
-        this.cartProducts.add(product.name);
+        this.cartProducts.add(product);
 
         this.props.updateCart(Array.from(this.cartProducts));
     }

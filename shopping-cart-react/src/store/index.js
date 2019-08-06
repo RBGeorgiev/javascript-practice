@@ -2,7 +2,7 @@ import { createStore } from 'redux'
 
 const initialState = {
     filters: [],
-    cart: ['test cart']
+    cart: []
 }
 
 const reducer = (state = initialState, action) => {
