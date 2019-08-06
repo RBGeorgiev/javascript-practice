@@ -1,23 +1,27 @@
 import { createStore } from 'redux'
 
-const UPDATE_FILTER = 'UPDATE_FILTER';
-
 const initialState = {
-    items: []
+    filters: [],
+    cart: ['test cart']
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case UPDATE_FILTER:
+        case 'UPDATE_FILTER':
             return {
                 ...state,
-                items: action.payload
+                filters: action.payload
             };
+        case 'ADD_TO_CART':
+            return {
+                ...state,
+                cart: action.payload
+            }
         default:
             return state;
     }
 }
 
-const store = createStore(reducer)
+const store = createStore(reducer);
 
 export default store;

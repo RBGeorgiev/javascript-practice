@@ -3,34 +3,49 @@ import Product from "./product";
 import Container from 'react-bootstrap/Container';
 import AllProducts from "./products"
 
-
 import { connect } from 'react-redux';
+import { updateCart } from '../store/update-cart'
 
 
-const ProductList = (props) => {
+class ProductList extends React.Component {
 
-    const products = AllProducts.products.filter(el => {
-        for (let size of props.items) {
-            if (!el.availableSizes.includes(size)) {
-                return false
+    componentDidMount() {
+        this.cartProducts = new Set();
+    }
+
+    handleClick(product) {
+        this.cartProducts.add(product.name);
+
+        this.props.updateCart(Array.from(this.cartProducts));
+    }
+
+    render() {
+        const filteredProducts = AllProducts.products.filter(el => {
+            for (let size of this.props.filters) {
+                if (!el.availableSizes.includes(size)) {
+                    return false
+                }
             }
-        }
-        return true
-    });
+            return true
+        });
 
-    return (
-        <Container >
-            {products.map(p => {
-                return <Product product={p} key={p.id} />;
-            })}
-        </Container >
-    )
+        return (
+            <Container >
+                {
+                    filteredProducts.map(product => {
+                        return <Product store={this.props.store} product={product} key={product.id} onClick={() => this.handleClick(product)} />;
+                    })
+                }
+            </Container >
+        )
+    }
 };
 
 const mapStateToProps = (state) => {
     return {
-        items: state.items
+        filters: state.filters,
+        cart: state.cart
     }
 }
 
-export default connect(mapStateToProps)(ProductList);
+export default connect(mapStateToProps, { updateCart })(ProductList);

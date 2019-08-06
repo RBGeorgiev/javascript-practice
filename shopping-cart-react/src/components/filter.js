@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { updateFilters } from '../store/update-filters'
 
@@ -10,7 +10,6 @@ const availableSizes = [
     'XL',
     'XXL'
 ];
-
 
 class Filter extends React.Component {
 
@@ -54,7 +53,7 @@ class Filter extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        items: state.items
+        filters: state.filters
     }
 }
 
