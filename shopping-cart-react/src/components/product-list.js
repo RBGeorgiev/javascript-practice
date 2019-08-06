@@ -10,11 +10,17 @@ import { updateCart } from '../store/update-cart'
 class ProductList extends React.Component {
 
     componentDidMount() {
-        this.cartProducts = new Set();
+        this.cartProducts = new Array();
     }
 
     handleClick(product) {
-        this.cartProducts.add(product);
+        if (this.cartProducts.includes(product)) {
+            let idx = this.cartProducts.indexOf(product);
+            this.cartProducts[idx].quantity++;
+        } else {
+            product.quantity = 1
+            this.cartProducts.push(product);
+        }
 
         this.props.updateCart(Array.from(this.cartProducts));
     }

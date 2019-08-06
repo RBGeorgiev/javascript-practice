@@ -10,7 +10,7 @@ class Cart extends React.Component {
                 <p>Price: {item.currencyFormat}{item.price}</p>
                 <p>Free Shipping: {(item.isFreeShipping) ? 'Yes' : 'No'}</p>
                 <p>Available Sizes: {item.availableSizes}</p>
-                <p>Quantity: </p>
+                <p>Quantity: {item.quantity}</p>
             </div >
 
         )
