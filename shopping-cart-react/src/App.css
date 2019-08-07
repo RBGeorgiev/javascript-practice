@@ -109,10 +109,24 @@ article {
 }
 
 .checkmark:hover {
-    border: 1px solid #1b1a20;
+  border: 1px solid #1b1a20;
 }
 
 .checkbox-container label input:checked~.checkmark {
-    background-color: #1b1a20;
-    color: #ececec;
+  background-color: #1b1a20;
+  color: #ececec;
+}
+
+.cart{
+  position: fixed;
+  top: 0;
+  right: -450px;
+  right: 0px;
+  width: 450px;
+  height: 100%;
+  background-color: #1b1a20;
+  box-sizing: border-box;
+  -webkit-transition: right .2s;
+  transition: right .2s;
+  color: #ececec;
 }

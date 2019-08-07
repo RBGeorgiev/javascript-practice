@@ -35,13 +35,13 @@ class ProductList extends React.Component {
         });
 
         return (
-            <Container >
+            <Container>
                 {
                     filteredProducts.map(product => {
                         return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.handleClick(product)} />;
                     })
                 }
-            </Container >
+            </Container>
         )
     }
 };
