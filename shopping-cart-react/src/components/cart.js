@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 class Cart extends React.Component {
     createCartItem(item) {
         return (
-            <div className="cart-item">
-                <img height='200px' src={require(`../img/${item.sku}.jpg`)}></img>
+            <div key={item.sku} className="cart-item">
+                <img height='200px' src={require(`../img/${item.sku}.jpg`)} alt={item.name} />
                 <p>Name: {item.name}</p>
                 <p>Price: {item.currencyFormat}{item.price}</p>
                 <p>Free Shipping: {(item.isFreeShipping) ? 'Yes' : 'No'}</p>

@@ -12,7 +12,6 @@ const availableSizes = [
 ];
 
 class Filter extends React.Component {
-
     componentDidMount() {
         this.selectedCheckboxes = new Set();
     }
@@ -31,7 +30,7 @@ class Filter extends React.Component {
 
 
     createCheckbox = label => (
-        <div className='checkboxes'>
+        < div key={label} className='checkbox-container' >
             <label>
                 <input type="checkbox" value={label} onChange={this.handleInputChange} />
                 <span className="checkmark">{label}</span>
@@ -45,7 +44,9 @@ class Filter extends React.Component {
         return (
             <div className="filters">
                 <h4 className="title">Sizes:</h4>
-                {this.createCheckboxes()}
+                <div className='checkboxes'>
+                    {this.createCheckboxes()}
+                </div>
             </div >
         );
     }

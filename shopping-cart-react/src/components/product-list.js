@@ -8,9 +8,8 @@ import { updateCart } from '../store/update-cart'
 
 
 class ProductList extends React.Component {
-
     componentDidMount() {
-        this.cartProducts = new Array();
+        this.cartProducts = [];
     }
 
     handleClick(product) {
@@ -29,17 +28,17 @@ class ProductList extends React.Component {
         const filteredProducts = AllProducts.products.filter(el => {
             for (let size of this.props.filters) {
                 if (!el.availableSizes.includes(size)) {
-                    return false
+                    return false;
                 }
             }
-            return true
+            return true;
         });
 
         return (
             <Container >
                 {
                     filteredProducts.map(product => {
-                        return <Product store={this.props.store} product={product} key={product.id} onClick={() => this.handleClick(product)} />;
+                        return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.handleClick(product)} />;
                     })
                 }
             </Container >
