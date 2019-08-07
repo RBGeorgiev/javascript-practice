@@ -35,7 +35,7 @@ article {
   cursor: pointer;
 }
 .shelf-item-container:hover .shelf-item-buy-btn {
-  background: rgb(255, 201, 24);
+  background: #FFC918;
   color: #1b1a20;
 }
 
@@ -129,4 +129,34 @@ article {
   -webkit-transition: right .2s;
   transition: right .2s;
   color: #ececec;
+}
+
+.cart-item {
+  display: flex;
+  margin: 15px;
+  text-align: left;
+  height: 150px;
+}
+
+.cart-item img {
+  height: 100%;
+  padding-right: 10px;
+}
+
+.cart-item p {
+  font-size: 1.2em;
+  font-weight: bolder;
+}
+
+.cart-item-desc {
+  color: #c2c2c2;
+}
+
+.cart-item-price {
+  display:flex;
+  flex-direction: column-reverse;
+  color: #FFC918;
+  vertical-align: bottom;
+  font-size: 1.6em;
+  font-weight: 900;
 }

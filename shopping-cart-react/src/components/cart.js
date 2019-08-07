@@ -5,12 +5,18 @@ class Cart extends React.Component {
     createCartItem(item) {
         return (
             <div key={item.sku} className="cart-item">
-                <img height='200px' src={require(`../img/${item.sku}.jpg`)} alt={item.name} />
-                <p>Name: {item.name}</p>
-                <p>Price: {item.currencyFormat}{item.price}</p>
-                <p>Free Shipping: {(item.isFreeShipping) ? 'Yes' : 'No'}</p>
-                <p>Available Sizes: {item.availableSizes}</p>
-                <p>Quantity: {item.quantity}</p>
+                <img src={require(`../img/${item.sku}.jpg`)} alt={item.name} />
+                <div className="cart-item-details">
+                    <p>{item.name}</p>
+                    <div className="cart-item-desc">
+                        Free Shipping: {(item.isFreeShipping) ? 'Yes' : 'No'}
+                        <br />
+                        Available Sizes: {item.availableSizes.join(' ')}
+                        <br />
+                        Quantity: {item.quantity}
+                    </div>
+                </div>
+                <div className="cart-item-price">{item.currencyFormat}{item.price}</div>
             </div >
 
         )
