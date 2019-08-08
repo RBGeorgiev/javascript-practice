@@ -13,6 +13,7 @@ class ProductList extends React.Component {
     }
 
     handleClick(product) {
+        this.cartProducts = [...this.props.cart];
         if (this.cartProducts.includes(product)) {
             let idx = this.cartProducts.indexOf(product);
             this.cartProducts[idx].quantity++;
