@@ -8,10 +8,6 @@ import { updateCart } from '../store/update-cart'
 
 
 class ProductList extends React.Component {
-    componentDidMount() {
-        this.cartProducts = [];
-    }
-
     handleClick(product) {
         this.cartProducts = [...this.props.cart];
         if (this.cartProducts.includes(product)) {
