@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { updateCart } from '../store/update-cart'
 import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
 
 
 class Cart extends React.Component {
@@ -20,15 +19,14 @@ class Cart extends React.Component {
                     <div className="cart-item-name">{item.name}</div>
                     <div className="cart-item-desc">
                         Free Shipping: {(item.isFreeShipping) ? 'Yes' : 'No'}
-
-                        <Form.Group controlId="exampleForm.ControlSelect1">
-                            <Form.Label>Select size:</Form.Label>
-                            <Form.Control as="select" size="sm">
+                        <div className="cart-item-size">
+                            <span>Size: </span>
+                            <select>
                                 {item.availableSizes.map(el => <option key={el}>{el}</option>)}
-                            </Form.Control>
-                        </Form.Group>
+                            </select>
+                        </div>
 
-                        Quantity: {item.quantity}
+                        {item.quantity}
                     </div>
                 </div>
                 <div className="cart-item-price">
