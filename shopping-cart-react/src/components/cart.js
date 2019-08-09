@@ -26,7 +26,11 @@ class Cart extends React.Component {
                             </select>
                         </div>
 
-                        {item.quantity}
+                        <span>Qty: </span>
+                        <select>
+                            {Array(10).fill().map((el, i) => <option key={i + 1}>{i + 1}</option>)}
+                        </select>
+                        {/*{item.quantity}*/}
                     </div>
                 </div>
                 <div className="cart-item-price">

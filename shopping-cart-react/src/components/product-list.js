@@ -12,9 +12,9 @@ class ProductList extends React.Component {
         this.cartProducts = [...this.props.cart];
         if (this.cartProducts.includes(product)) {
             let idx = this.cartProducts.indexOf(product);
-            this.cartProducts[idx].quantity++;
+            // this.cartProducts[idx].quantity++;
         } else {
-            product.quantity = 1
+            // product.quantity = 1
             this.cartProducts.push(product);
         }
 
