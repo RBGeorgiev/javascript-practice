@@ -49,6 +49,9 @@ class Cart extends React.Component {
                 {this.props.cart.length > 0 &&
                     this.props.cart.map(item => this.createCartItem(item))
                 }
+                <div className="cart-footer" onClick={console.log(this.props.cart)}>
+                    Total: {this.props.cart.reduce((tot, cur) => tot += cur.price, 0).toFixed(2)}
+                </div>
             </div>
         )
     }
