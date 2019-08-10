@@ -129,7 +129,6 @@ article {
   -webkit-transition: right .2s;
   transition: right .2s;
   color: #ececec;
-  overflow: auto;
 }
 
 .cart-item {
@@ -173,4 +172,27 @@ article {
   vertical-align: bottom;
   font-size: 1.4em;
   font-weight: 900;
+}
+
+.cart-shelf-container {
+  position: relative;
+  min-height: 280px;
+  padding-bottom: 200px;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2em;
+  box-sizing: border-box;
+  padding: 5%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 200px;
+  z-index: 2;
+  background-color: #1b1a20;
+  border: 1px white solid;
 }
