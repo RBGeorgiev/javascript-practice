@@ -183,8 +183,6 @@ article {
 }
 
 .cart-footer {
-  display: flex;
-  justify-content: space-between;
   font-size: 2em;
   box-sizing: border-box;
   padding: 5%;
@@ -194,7 +192,13 @@ article {
   height: 200px;
   z-index: 2;
   background-color: #1b1a20;
-  border: 1px white solid;
+  border-top: 1px #c2c2c2 solid;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10%;
 }
 
 /* cart scrollbar */
@@ -202,6 +206,7 @@ article {
   -webkit-appearance: none;
   width: 10px;
 }
+
 .cart-shelf-container::-webkit-scrollbar-thumb {
   border-radius: 4px;
   border: 1px solid #c2c2c2;

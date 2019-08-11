@@ -43,6 +43,8 @@ class Cart extends React.Component {
     }
 
     render() {
+        let totalCost = this.props.cart.reduce((tot, cur) => tot += cur.price, 0).toFixed(2);
+
         return (
             <div className="cart">
                 <div className="cart-shelf-container">
@@ -52,8 +54,11 @@ class Cart extends React.Component {
                     }
                 </div>
                 <div className="cart-footer">
-                    <span>Total: </span>
-                    <span>{this.props.cart.reduce((tot, cur) => tot += cur.price, 0).toFixed(2)}</span>
+                    <div className="cart-total">
+                        <span>Total: </span>
+                        <span>{totalCost}</span>
+                    </div>
+                    <Button className="cart-buy-btn" variant="dark" size="lg" block onClick={() => alert(`Checkout - Total: ${totalCost}`)}>CHECKOUT</Button>
                 </div>
             </div>
         )
