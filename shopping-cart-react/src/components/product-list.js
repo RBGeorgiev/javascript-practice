@@ -9,20 +9,17 @@ import { updateCart } from '../store/update-cart'
 
 class ProductList extends React.Component {
     handleClick(product) {
-        this.cartProducts = [...this.props.cart];
-
-        // // add quantity on click
-        // if (this.cartProducts.includes(product)) {
-        //     let idx = this.cartProducts.indexOf(product);
-        //     this.cartProducts[idx].quantity++;
-        // } else {
-        //     product.quantity = 1
-        //     this.cartProducts.push(product);
-        // }
-        if (!this.cartProducts.includes(product)) {
-            this.cartProducts.push(product);
+        // add item to cart or increase quantity if it's already present
+        if (this.props.cart.includes(product)) {
+            let idx = this.props.cart.indexOf(product);
+            // stop adding quantity after 10
+            if (this.props.cart[idx].quantity < 10) this.props.cart[idx].quantity++;
+        } else {
+            product.quantity = 1;
+            this.props.cart.push(product);
         }
-        this.props.updateCart(Array.from(this.cartProducts));
+
+        this.props.updateCart(Array.from(this.props.cart));
     }
 
     render() {

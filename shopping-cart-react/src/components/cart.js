@@ -11,6 +11,14 @@ class Cart extends React.Component {
         this.props.updateCart(Array.from(this.props.cart));
     }
 
+    changeQuantity(e, item) {
+        let idx = this.props.cart.indexOf(item);
+
+        this.props.cart[idx].quantity = e.target.value;
+
+        this.props.updateCart(Array.from(this.props.cart));
+    }
+
     createCartItem(item) {
         return (
             <div key={item.sku} className="cart-item">
@@ -24,11 +32,11 @@ class Cart extends React.Component {
                                 {item.availableSizes.map(el => <option key={el} value={el}>{el}</option>)}
                             </select>
                             <span>Qty: </span>
-                            <select>
+                            <select value={item.quantity} onChange={(e) => this.changeQuantity(e, item)}>
                                 {Array(10).fill().map((el, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                             </select>
                         </div>
-                        {/*{item.quantity}*/}
+                        <div>{item.quantity}</div>
                     </div>
                 </div>
                 <div className="cart-item-price">
