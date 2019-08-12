@@ -38,8 +38,11 @@ class Cart extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="cart-item-price">
-                    {item.currencyFormat}{item.price.toFixed(2)}
+                <div className="cart-item-right">
+                    <div className="cart-item-price">
+                        <span className="price-quantity">{item.quantity}x </span>
+                        {item.currencyFormat}{item.price.toFixed(2)}
+                    </div>
                     <Button className="cart-item-delete-btn" variant="outline-secondary" size="sm" onClick={() => this.removeItem(item)}>X</Button>
                 </div>
             </ div >
