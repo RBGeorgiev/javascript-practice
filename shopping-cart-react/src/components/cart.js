@@ -36,7 +36,6 @@ class Cart extends React.Component {
                                 {Array(10).fill().map((el, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                             </select>
                         </div>
-                        <div>{item.quantity}</div>
                     </div>
                 </div>
                 <div className="cart-item-price">
@@ -49,7 +48,7 @@ class Cart extends React.Component {
     }
 
     render() {
-        let totalPrice = this.props.cart.reduce((tot, cur) => tot += cur.price, 0).toFixed(2);
+        let totalPrice = this.props.cart.reduce((tot, cur) => tot += cur.price * cur.quantity, 0).toFixed(2);
 
         return (
             <div className="cart">
