@@ -18,18 +18,16 @@ class Cart extends React.Component {
                 <div className="cart-item-details">
                     <div className="cart-item-name">{item.name}</div>
                     <div className="cart-item-desc">
-                        Free Shipping: {(item.isFreeShipping) ? 'Yes' : 'No'}
                         <div className="cart-item-size">
                             <span>Size: </span>
                             <select>
-                                {item.availableSizes.map(el => <option key={el}>{el}</option>)}
+                                {item.availableSizes.map(el => <option key={el} value={el}>{el}</option>)}
+                            </select>
+                            <span>Qty: </span>
+                            <select>
+                                {Array(10).fill().map((el, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                             </select>
                         </div>
-
-                        <span>Qty: </span>
-                        <select>
-                            {Array(10).fill().map((el, i) => <option key={i + 1}>{i + 1}</option>)}
-                        </select>
                         {/*{item.quantity}*/}
                     </div>
                 </div>
@@ -43,7 +41,7 @@ class Cart extends React.Component {
     }
 
     render() {
-        let totalCost = this.props.cart.reduce((tot, cur) => tot += cur.price, 0).toFixed(2);
+        let totalPrice = this.props.cart.reduce((tot, cur) => tot += cur.price, 0).toFixed(2);
 
         return (
             <div className="cart">
@@ -54,11 +52,11 @@ class Cart extends React.Component {
                     }
                 </div>
                 <div className="cart-footer">
-                    <div className="cart-total">
+                    <div className="cart-total-container">
                         <span>Total: </span>
-                        <span>{totalCost}</span>
+                        <span className="cart-total-price">£{totalPrice}</span>
                     </div>
-                    <Button className="cart-buy-btn" variant="dark" size="lg" block onClick={() => alert(`Checkout - Total: ${totalCost}`)}>CHECKOUT</Button>
+                    <Button className="cart-buy-btn" variant="dark" size="lg" block onClick={() => alert(`Checkout - Total: £${totalPrice}`)}>CHECKOUT</Button>
                 </div>
             </div>
         )

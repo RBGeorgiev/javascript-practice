@@ -163,6 +163,10 @@ article {
   font-size: 0.8em;
 }
 
+.cart-item-desc select{
+  margin-right: 15px;
+}
+
 .cart-item-price {
   display:flex;
   flex-direction: column-reverse;
@@ -195,10 +199,15 @@ article {
   border-top: 1px #c2c2c2 solid;
 }
 
-.cart-total {
+.cart-total-container {
   display: flex;
   justify-content: space-between;
   padding-bottom: 10%;
+}
+
+.cart-total-price {
+  color: #FFC918;
+  font-weight: 900;
 }
 
 /* cart scrollbar */
