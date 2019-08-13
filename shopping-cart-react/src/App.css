@@ -131,6 +131,37 @@ article {
   color: #ececec;
 }
 
+.cart-header {
+  padding: 10px;
+  margin: 30px;
+  font-size: 1.4em;
+}
+
+.cart-image {
+  display: inline-block;
+  background-image: url("./cart-icon.png");
+  width: 32px;
+  height: 100%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+}
+
+.cart-image-quantity {
+  display: inline-block;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 20%;
+  font-weight: 700;
+  font-size: .7em;
+  line-height: 18px;
+  background-color: #FFC918;
+  color: #0c0b10;
+  bottom: -10px;
+  right: -15px;
+}
+
 .cart-item {
   display: flex;
   justify-content: space-between;
@@ -182,7 +213,7 @@ article {
   line-height: 86%;
  }
 
-.price-quantity {
+.cart-item-quantity {
   color: #c2c2c2;
   font-size: 0.7em;
   line-height: 26px;

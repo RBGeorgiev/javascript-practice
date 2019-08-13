@@ -40,7 +40,7 @@ class Cart extends React.Component {
                 </div>
                 <div className="cart-item-right">
                     <div className="cart-item-price">
-                        <span className="price-quantity">{item.quantity}x </span>
+                        <span className="cart-item-quantity">{item.quantity}x </span>
                         {item.currencyFormat}{item.price.toFixed(2)}
                     </div>
                     <Button className="cart-item-delete-btn" variant="outline-secondary" size="sm" onClick={() => this.removeItem(item)}>X</Button>
@@ -56,7 +56,12 @@ class Cart extends React.Component {
         return (
             <div className="cart">
                 <div className="cart-shelf-container">
-                    <p>Shopping Cart</p>
+                    <div className="cart-header">
+                        <span className="cart-image">
+                            <span className="cart-image-quantity">5</span>
+                        </span>
+                        <span>Shopping Cart</span>
+                    </div>
                     {this.props.cart.length > 0 &&
                         this.props.cart.map(item => this.createCartItem(item))
                     }
