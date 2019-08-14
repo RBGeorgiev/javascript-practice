@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { updateFilters } from '../store/update-filters'
+import { updateOrder } from '../store/update-order'
 import Container from 'react-bootstrap/Container';
 
 const availableSizes = [
@@ -41,13 +42,25 @@ class Filter extends React.Component {
 
     createCheckboxes = () => availableSizes.map(this.createCheckbox);
 
+    handleOrderChange = (e) => {
+        this.props.updateOrder(e.target.value);
+    }
+
     render() {
+        console.log(this.props);
         return (
             <Container className="filters">
                 <div>
                     <h4 className="title">Sizes:</h4>
                     {this.createCheckboxes()}
-                </div >
+                </div>
+                <div>
+                    <select onChange={this.handleOrderChange}>
+                        <option key="default" value="default" defaultValue>Order by Price</option>
+                        <option key="low-to-high" value="low-to-high">Lowest to Highest</option>
+                        <option key="high-to-low" value="high-to-low">Highest to Lowest</option>
+                    </select>
+                </div>
             </Container>
         );
     }
@@ -59,4 +72,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { updateFilters })(Filter);
+export default connect(mapStateToProps, { updateFilters, updateOrder })(Filter);

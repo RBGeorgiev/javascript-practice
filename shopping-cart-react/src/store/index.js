@@ -2,7 +2,8 @@ import { createStore } from 'redux'
 
 const initialState = {
     filters: [],
-    cart: []
+    cart: [],
+    order: 'default'
 }
 
 const reducer = (state = initialState, action) => {
@@ -12,10 +13,15 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 filters: action.payload
             };
-        case 'ADD_TO_CART':
+        case 'UPDATE_CART':
             return {
                 ...state,
                 cart: action.payload
+            };
+        case 'UPDATE_ORDER':
+            return {
+                ...state,
+                order: action.payload
             }
         default:
             return state;

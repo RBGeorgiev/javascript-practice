@@ -22,8 +22,18 @@ class ProductList extends React.Component {
         this.props.updateCart(Array.from(this.props.cart));
     }
 
+    sortProducts(products, order) {
+        switch (order) {
+            case 'low-to-high':
+                return products = products.sort((a, b) => a.price - b.price);
+            case 'high-to-low':
+                return products.sort((a, b) => b.price - a.price);
+        }
+        return products;
+    }
+
     render() {
-        const filteredProducts = AllProducts.products.filter(el => {
+        let filteredProducts = AllProducts.products.filter(el => {
             for (let size of this.props.filters) {
                 if (!el.availableSizes.includes(size)) {
                     return false;
@@ -31,6 +41,8 @@ class ProductList extends React.Component {
             }
             return true;
         });
+
+        filteredProducts = this.sortProducts(filteredProducts, this.props.order);
 
         return (
             <Container>
@@ -47,7 +59,8 @@ class ProductList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         filters: state.filters,
-        cart: state.cart
+        cart: state.cart,
+        order: state.order
     }
 }
 
