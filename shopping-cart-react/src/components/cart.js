@@ -14,7 +14,7 @@ class Cart extends React.Component {
     changeQuantity(e, item) {
         let idx = this.props.cart.indexOf(item);
 
-        this.props.cart[idx].quantity = e.target.value;
+        this.props.cart[idx].quantity = +e.target.value;
 
         this.props.updateCart(Array.from(this.props.cart));
     }
@@ -52,13 +52,14 @@ class Cart extends React.Component {
 
     render() {
         let totalPrice = this.props.cart.reduce((tot, cur) => tot += cur.price * cur.quantity, 0).toFixed(2);
+        let totalQuantity = this.props.cart.reduce((tot, cur) => tot += cur.quantity, 0)
 
         return (
             <div className="cart">
                 <div className="cart-shelf-container">
                     <div className="cart-header">
                         <span className="cart-image">
-                            <span className="cart-image-quantity">5</span>
+                            <span className="cart-image-quantity">{totalQuantity}</span>
                         </span>
                         <span>Shopping Cart</span>
                     </div>
