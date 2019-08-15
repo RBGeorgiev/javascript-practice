@@ -56,6 +56,7 @@ class Cart extends React.Component {
 
         return (
             <div className="cart">
+                <span className="cart-open-btn">X</span>
                 <div className="cart-shelf-container">
                     <div className="cart-header">
                         <span className="cart-image">
