@@ -121,7 +121,6 @@ article {
   position: fixed;
   top: 0;
   right: -450px;
-  right: 0px;
   width: 450px;
   height: 100%;
   background: #1b1a20;
@@ -129,6 +128,10 @@ article {
   -webkit-transition: right .2s;
   transition: right .2s;
   color: #ececec;
+}
+
+.cart-open {
+  right: 0px;
 }
 
 .cart-open-btn {

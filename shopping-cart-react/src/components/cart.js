@@ -5,6 +5,14 @@ import Button from 'react-bootstrap/Button'
 
 
 class Cart extends React.Component {
+    state = {
+        cartOpen: false
+    };
+
+    toggleCart = () => {
+        this.setState({ cartOpen: !this.state.cartOpen })
+    }
+
     removeItem(item) {
         let idx = this.props.cart.indexOf(item);
         this.props.cart.splice(idx, 1);
@@ -55,8 +63,8 @@ class Cart extends React.Component {
         let totalQuantity = this.props.cart.reduce((tot, cur) => tot += cur.quantity, 0)
 
         return (
-            <div className="cart">
-                <span className="cart-open-btn">X</span>
+            <div className={`cart${(this.state.cartOpen) ? " cart-open" : ""}`}>
+                <span className="cart-open-btn" onClick={this.toggleCart}>X</span>
                 <div className="cart-shelf-container">
                     <div className="cart-header">
                         <span className="cart-image">
