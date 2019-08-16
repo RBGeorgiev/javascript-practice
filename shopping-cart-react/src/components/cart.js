@@ -64,7 +64,12 @@ class Cart extends React.Component {
 
         return (
             <div className={`cart${(this.state.cartOpen) ? " cart-open" : ""}`}>
-                <span className="cart-open-btn" onClick={this.toggleCart}>X</span>
+                <span className="cart-open-btn" onClick={this.toggleCart}>
+                    {(this.state.cartOpen) ? 'X' :
+                        <span className="cart-image">
+                            <span className="cart-image-quantity">{totalQuantity}</span>
+                        </span>}
+                </span>
                 <div className="cart-shelf-container">
                     <div className="cart-header">
                         <span className="cart-image">
