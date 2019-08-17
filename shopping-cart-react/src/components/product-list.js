@@ -46,13 +46,16 @@ class ProductList extends React.Component {
         filteredProducts = this.sortProducts(filteredProducts, this.props.order);
 
         return (
-            <Container>
-                {
-                    filteredProducts.map(product => {
-                        return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.handleClick(product)} />;
-                    })
-                }
-            </Container>
+            <>
+                <span>{filteredProducts.length} products found</span>
+                <Container>
+                    {
+                        filteredProducts.map(product => {
+                            return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.handleClick(product)} />;
+                        })
+                    }
+                </Container>
+            </>
         )
     }
 };
