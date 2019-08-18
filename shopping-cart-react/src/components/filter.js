@@ -50,6 +50,9 @@ class Filter extends React.Component {
         return (
             <Container className="filters">
                 <div>
+                    -- product(s) found
+                </div>
+                <div>
                     <h4 className="title">Sizes:</h4>
                     {this.createCheckboxes()}
                 </div>

@@ -1,14 +1,16 @@
 import React from "react";
 import Product from "./product";
 import Container from 'react-bootstrap/Container';
-import AllProducts from "./products"
 
 import { connect } from 'react-redux';
-import { updateCart } from '../store/update-cart'
+import { updateCart } from '../store/update-cart';
 
+import AllProducts from "./products";
+import filterSizes from "./filter-sizes";
+import sortByPrice from './sort-by-price';
 
 class ProductList extends React.Component {
-    handleClick(product) {
+    addToCart(product) {
         // add item to cart or increase quantity if it's already present
         if (this.props.cart.includes(product)) {
             let idx = this.props.cart.indexOf(product);
@@ -22,40 +24,18 @@ class ProductList extends React.Component {
         this.props.updateCart(Array.from(this.props.cart));
     }
 
-    sortProducts(products, order) {
-        switch (order) {
-            case 'low-to-high':
-                return products = products.sort((a, b) => a.price - b.price);
-            case 'high-to-low':
-                return products.sort((a, b) => b.price - a.price);
-            default:
-                return products;
-        }
-    }
-
     render() {
-        let filteredProducts = AllProducts.products.filter(el => {
-            for (let size of this.props.filters) {
-                if (!el.availableSizes.includes(size)) {
-                    return false;
-                }
-            }
-            return true;
-        });
-
-        filteredProducts = this.sortProducts(filteredProducts, this.props.order);
+        let filteredProducts = filterSizes(AllProducts.products, this.props.filters);
+        filteredProducts = sortByPrice(filteredProducts, this.props.order);
 
         return (
-            <>
-                <span>{filteredProducts.length} products found</span>
-                <Container>
-                    {
-                        filteredProducts.map(product => {
-                            return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.handleClick(product)} />;
-                        })
-                    }
-                </Container>
-            </>
+            <Container>
+                {
+                    filteredProducts.map(product => {
+                        return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.addToCart(product)} />;
+                    })
+                }
+            </Container>
         )
     }
 };
