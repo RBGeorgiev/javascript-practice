@@ -15,13 +15,17 @@
 }
 
 .filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   color: #1b1a20;    
-  justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 25px;
   padding-top: 35px;
   height: 100px;
 }
+
+.filters div:nth-child(1) { justify-self: start; }
+.filters div:nth-child(3) { justify-self: end; }
 
 article {
   width: 25%;
