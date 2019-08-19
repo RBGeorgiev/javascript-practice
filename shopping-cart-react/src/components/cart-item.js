@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, onClick }) => {
     return (
         <div key={item.sku} className="cart-item">
             <img src={require(`../img/${item.sku}.jpg`)} alt={item.name} />
@@ -25,7 +25,7 @@ const CartItem = ({ item }) => {
                     <span className="cart-item-quantity">{item.quantity}x </span>
                     {item.currencyFormat}{item.price.toFixed(2)}
                 </div>
-                <Button className="cart-item-delete-btn" variant="outline-secondary" size="sm" onClick={() => this.removeItem(item)}>X</Button>
+                <Button className="cart-item-delete-btn" variant="outline-secondary" size="sm" onClick={onClick}>X</Button>
             </div>
         </ div >
 
