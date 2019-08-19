@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateCart } from '../store/update-cart'
-import Button from 'react-bootstrap/Button'
+import { updateCart } from '../store/update-cart';
+import Button from 'react-bootstrap/Button';
+import CartItem from './cart-item';
 
 
 class Cart extends React.Component {
@@ -27,37 +28,6 @@ class Cart extends React.Component {
         this.props.updateCart(Array.from(this.props.cart));
     }
 
-    createCartItem(item) {
-        return (
-            <div key={item.sku} className="cart-item">
-                <img src={require(`../img/${item.sku}.jpg`)} alt={item.name} />
-                <div className="cart-item-details">
-                    <div className="cart-item-name">{item.name}</div>
-                    <div className="cart-item-desc">
-                        <div className="cart-item-size">
-                            <span>Size: </span>
-                            <select>
-                                {item.availableSizes.map(el => <option key={el} value={el}>{el}</option>)}
-                            </select>
-                            <span>Qty: </span>
-                            <select value={item.quantity} onChange={(e) => this.changeQuantity(e, item)}>
-                                {Array(10).fill().map((el, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="cart-item-right">
-                    <div className="cart-item-price">
-                        <span className="cart-item-quantity">{item.quantity}x </span>
-                        {item.currencyFormat}{item.price.toFixed(2)}
-                    </div>
-                    <Button className="cart-item-delete-btn" variant="outline-secondary" size="sm" onClick={() => this.removeItem(item)}>X</Button>
-                </div>
-            </ div >
-
-        )
-    }
-
     render() {
         let totalPrice = this.props.cart.reduce((tot, cur) => tot += cur.price * cur.quantity, 0).toFixed(2);
         let totalQuantity = this.props.cart.reduce((tot, cur) => tot += cur.quantity, 0)
@@ -70,6 +40,7 @@ class Cart extends React.Component {
                             <span className="cart-image-quantity">{totalQuantity}</span>
                         </span>}
                 </span>
+
                 <div className="cart-shelf-container">
                     <div className="cart-header">
                         <span className="cart-image">
@@ -77,10 +48,14 @@ class Cart extends React.Component {
                         </span>
                         <span>Shopping Cart</span>
                     </div>
+
                     {this.props.cart.length > 0 &&
-                        this.props.cart.map(item => this.createCartItem(item))
+                        this.props.cart.map(item =>
+                            <CartItem item={item} />
+                        )
                     }
                 </div>
+
                 <div className="cart-footer">
                     <div className="cart-total-container">
                         <span>Total: </span>
