@@ -51,7 +51,7 @@ class Cart extends React.Component {
 
                     {this.props.cart.length > 0 &&
                         this.props.cart.map(item =>
-                            <CartItem item={item} onClick={() => this.removeItem(item)} />
+                            <CartItem item={item} removeItem={() => this.removeItem(item)} changeQuantity={(e) => this.changeQuantity(e, item)} />
                         )
                     }
                 </div>
