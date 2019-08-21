@@ -49,14 +49,16 @@ class Cart extends React.Component {
                         <span>Shopping Cart</span>
                     </div>
 
-                    {this.props.cart.length === 0 &&
-                        <div>
-                            You don't have any items in your cart.
-                        </div>}
-                    {this.props.cart.length > 0 &&
-                        this.props.cart.map(item =>
-                            <CartItem item={item} removeItem={() => this.removeItem(item)} changeQuantity={(e) => this.changeQuantity(e, item)} />
-                        )
+                    {
+                        (!this.props.cart.length)
+                            ?
+                            <div>
+                                You don't have any items in your cart.
+                            </div>
+                            :
+                            this.props.cart.map(item =>
+                                <CartItem item={item} removeItem={() => this.removeItem(item)} changeQuantity={(e) => this.changeQuantity(e, item)} />
+                            )
                     }
                 </div>
 
