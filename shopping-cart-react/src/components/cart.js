@@ -4,6 +4,7 @@ import { updateCart } from '../store/update-cart';
 import Button from 'react-bootstrap/Button';
 import CartItem from './cart-item';
 import CartIcon from './cart-icon';
+import CartHeader from './cart-header';
 
 
 class Cart extends React.Component {
@@ -42,10 +43,7 @@ class Cart extends React.Component {
                 </span>
 
                 <div className="cart-shelf-container">
-                    <div className="cart-header">
-                        <CartIcon totalQuantity={totalQuantity} />
-                        <span>Shopping Cart</span>
-                    </div>
+                    <CartHeader totalQuantity={totalQuantity} />
 
                     {
                         (!this.props.cart.length)
