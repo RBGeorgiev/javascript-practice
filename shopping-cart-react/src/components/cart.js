@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { updateCart } from '../store/update-cart';
 import Button from 'react-bootstrap/Button';
 import CartItem from './cart-item';
+import CartIcon from './cart-icon';
 
 
 class Cart extends React.Component {
@@ -35,17 +36,14 @@ class Cart extends React.Component {
         return (
             <div className={`cart${(this.state.cartOpen) ? " cart-open" : ""}`}>
                 <span className="cart-open-btn" onClick={this.toggleCart}>
-                    {(this.state.cartOpen) ? 'X' :
-                        <span className="cart-image">
-                            <span className="cart-image-quantity">{totalQuantity}</span>
-                        </span>}
+                    {
+                        (!!this.state.cartOpen) ? 'X' : <CartIcon totalQuantity={totalQuantity} />
+                    }
                 </span>
 
                 <div className="cart-shelf-container">
                     <div className="cart-header">
-                        <span className="cart-image">
-                            <span className="cart-image-quantity">{totalQuantity}</span>
-                        </span>
+                        <CartIcon totalQuantity={totalQuantity} />
                         <span>Shopping Cart</span>
                     </div>
 
