@@ -59,7 +59,7 @@ class Filter extends React.Component {
         return (
             <Container className="filters">
                 <div>
-                    -- product(s) found
+                    {this.props.products.length} product(s) found
                 </div>
                 <div>
                     <h4 className="title">Sizes:</h4>
@@ -77,4 +77,10 @@ class Filter extends React.Component {
     }
 }
 
-export default connect(null, { filterProducts })(Filter);
+const mapStateToProps = (state) => {
+    return {
+        products: state.products
+    }
+}
+
+export default connect(mapStateToProps, { filterProducts })(Filter);
