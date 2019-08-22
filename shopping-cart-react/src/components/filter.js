@@ -1,10 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateFilters } from '../store/update-filters'
-import { updateOrder } from '../store/update-order'
+import { filterProducts } from '../store/filter-products'
 import Container from 'react-bootstrap/Container';
-
-import { FilterProducts } from '../store/filter-products'
 
 const availableSizes = [
     'XS',
@@ -18,7 +15,7 @@ const availableSizes = [
 class Filter extends React.Component {
     state = {
         size: [],
-        order: 'default',
+        order: 'default'
     }
 
     componentDidMount() {
@@ -36,10 +33,16 @@ class Filter extends React.Component {
 
         this.state.size = Array.from(this.selectedCheckboxes);
         this.filter()
-        // this.props.updateFilters(Array.from(this.selectedCheckboxes));
-
     }
 
+    handleOrderChange = (e) => {
+        this.state.order = e.target.value;
+        this.filter()
+    }
+
+    filter() {
+        this.props.filterProducts(this.state.size, this.state.order);
+    }
 
     createCheckbox = label => (
         < div key={label} className='checkbox-container' >
@@ -51,16 +54,6 @@ class Filter extends React.Component {
     );
 
     createCheckboxes = () => availableSizes.map(this.createCheckbox);
-
-    handleOrderChange = (e) => {
-        this.state.order = e.target.value;
-        this.filter()
-        // this.props.updateOrder(e.target.value);
-    }
-
-    filter() {
-        this.props.FilterProducts(this.state.size, this.state.order);
-    }
 
     render() {
         return (
@@ -84,11 +77,4 @@ class Filter extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        filters: state.filters,
-        order: state.order
-    }
-}
-
-export default connect(mapStateToProps, { updateFilters, updateOrder, FilterProducts })(Filter);
+export default connect(null, { filterProducts })(Filter);

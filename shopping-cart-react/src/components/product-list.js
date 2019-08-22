@@ -36,9 +36,7 @@ class ProductList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         products: state.products,
-        filters: state.filters,
-        cart: state.cart,
-        order: state.order
+        cart: state.cart
     }
 }
 
