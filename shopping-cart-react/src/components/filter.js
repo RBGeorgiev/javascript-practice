@@ -4,6 +4,8 @@ import { updateFilters } from '../store/update-filters'
 import { updateOrder } from '../store/update-order'
 import Container from 'react-bootstrap/Container';
 
+import { FilterProducts } from '../store/filter-products'
+
 const availableSizes = [
     'XS',
     'S',
@@ -14,6 +16,11 @@ const availableSizes = [
 ];
 
 class Filter extends React.Component {
+    state = {
+        size: [],
+        order: 'default',
+    }
+
     componentDidMount() {
         this.selectedCheckboxes = new Set();
     }
@@ -27,7 +34,10 @@ class Filter extends React.Component {
             this.selectedCheckboxes.add(val);
         }
 
-        this.props.updateFilters(Array.from(this.selectedCheckboxes));
+        this.state.size = Array.from(this.selectedCheckboxes);
+        this.filter()
+        // this.props.updateFilters(Array.from(this.selectedCheckboxes));
+
     }
 
 
@@ -43,7 +53,13 @@ class Filter extends React.Component {
     createCheckboxes = () => availableSizes.map(this.createCheckbox);
 
     handleOrderChange = (e) => {
-        this.props.updateOrder(e.target.value);
+        this.state.order = e.target.value;
+        this.filter()
+        // this.props.updateOrder(e.target.value);
+    }
+
+    filter() {
+        this.props.FilterProducts(this.state.size, this.state.order);
     }
 
     render() {
@@ -70,8 +86,9 @@ class Filter extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        filters: state.filters
+        filters: state.filters,
+        order: state.order
     }
 }
 
-export default connect(mapStateToProps, { updateFilters, updateOrder })(Filter);
+export default connect(mapStateToProps, { updateFilters, updateOrder, FilterProducts })(Filter);

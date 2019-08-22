@@ -5,10 +5,6 @@ import Container from 'react-bootstrap/Container';
 import { connect } from 'react-redux';
 import { updateCart } from '../store/update-cart';
 
-import AllProducts from "./products";
-import filterSizes from "./filter-sizes";
-import sortByPrice from './sort-by-price';
-
 class ProductList extends React.Component {
     addToCart(product) {
         // add item to cart or increase quantity if it's already present
@@ -25,13 +21,10 @@ class ProductList extends React.Component {
     }
 
     render() {
-        let filteredProducts = filterSizes(AllProducts.products, this.props.filters);
-        filteredProducts = sortByPrice(filteredProducts, this.props.order);
-
         return (
             <Container>
                 {
-                    filteredProducts.map(product => {
+                    this.props.products.map(product => {
                         return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.addToCart(product)} />;
                     })
                 }
@@ -42,6 +35,7 @@ class ProductList extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        products: state.products,
         filters: state.filters,
         cart: state.cart,
         order: state.order

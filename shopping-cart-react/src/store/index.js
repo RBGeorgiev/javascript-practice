@@ -1,6 +1,8 @@
-import { createStore } from 'redux'
+import { createStore } from 'redux';
+import AllProducts from "../components/products";
 
 const initialState = {
+    products: AllProducts.products,
     filters: [],
     cart: [],
     order: 'default'
@@ -22,7 +24,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 order: action.payload
-            }
+            };
+        case 'FILTER_PRODUCTS':
+            return {
+                ...state,
+                products: action.payload
+            };
         default:
             return state;
     }
