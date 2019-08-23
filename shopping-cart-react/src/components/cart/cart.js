@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateCart } from '../store/update-cart';
+import { updateCart } from '../../store/update-cart/update-cart';
 import Button from 'react-bootstrap/Button';
 import CartItem from './cart-item';
 import CartIcon from './cart-icon';
@@ -44,7 +44,6 @@ class Cart extends React.Component {
 
                 <div className="cart-shelf-container">
                     <CartHeader totalQuantity={totalQuantity} />
-
                     {
                         (!this.props.cart.length)
                             ?

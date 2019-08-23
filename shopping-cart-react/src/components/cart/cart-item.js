@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 const CartItem = ({ item, removeItem, changeQuantity }) => {
     return (
         <div key={item.sku} className="cart-item">
-            <img src={require(`../img/${item.sku}.jpg`)} alt={item.name} />
+            <img src={require(`../../img/${item.sku}.jpg`)} alt={item.name} />
 
             <div className="cart-item-details">
                 <div className="cart-item-name">{item.name}</div>

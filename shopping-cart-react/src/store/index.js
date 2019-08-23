@@ -1,5 +1,5 @@
 import { createStore } from 'redux';
-import AllProducts from "../components/products";
+import AllProducts from "./all-products";
 
 const initialState = {
     products: AllProducts.products,

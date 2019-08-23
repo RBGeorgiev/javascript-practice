@@ -3,7 +3,7 @@ import Product from "./product";
 import Container from 'react-bootstrap/Container';
 
 import { connect } from 'react-redux';
-import { updateCart } from '../store/update-cart';
+import { updateCart } from '../../store/update-cart/update-cart';
 
 class ProductList extends React.Component {
     addToCart(product) {

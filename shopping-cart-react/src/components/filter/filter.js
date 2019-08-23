@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { filterProducts } from '../store/filter-products'
+import { filterProducts } from '../../store/filter-products/filter-products'
 import Container from 'react-bootstrap/Container';
 
 const availableSizes = [

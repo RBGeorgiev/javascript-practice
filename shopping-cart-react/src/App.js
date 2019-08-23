@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import Filter from "./components/filter";
-import Cart from "./components/cart";
-import ProductList from "./components/product-list";
+import Filter from "./components/filter/filter";
+import Cart from "./components/cart/cart";
+import ProductList from "./components/product-list/product-list";
 
 import store from './store';
 
