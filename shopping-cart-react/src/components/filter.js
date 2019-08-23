@@ -31,13 +31,17 @@ class Filter extends React.Component {
             this.selectedCheckboxes.add(val);
         }
 
-        this.state.size = Array.from(this.selectedCheckboxes);
-        this.filter()
+        this.setState(
+            { size: Array.from(this.selectedCheckboxes) },
+            () => this.filter()
+        );
     }
 
     handleOrderChange = (e) => {
-        this.state.order = e.target.value;
-        this.filter()
+        this.setState(
+            { order: e.target.value },
+            () => this.filter()
+        );
     }
 
     filter() {
