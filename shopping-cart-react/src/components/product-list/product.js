@@ -13,7 +13,6 @@ const Product = (props) => {
             <div className="shelf-item-name">{props.product.name}</div>
             <div className="shelf-item-price">{props.product.currencyFormat}{props.product.price.toFixed(2)}</div>
             <div className="shelf-item-buy-btn">Add to cart</div>
-
         </article>
     )
 }

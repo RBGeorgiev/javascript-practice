@@ -25,7 +25,7 @@ class ProductList extends React.Component {
             <Container>
                 {
                     this.props.products.map(product => {
-                        return <Product store={this.props.store} product={product} key={product.sku} onClick={() => this.addToCart(product)} />;
+                        return <Product key={product.sku} store={this.props.store} product={product} onClick={() => this.addToCart(product)} />;
                     })
                 }
             </Container>

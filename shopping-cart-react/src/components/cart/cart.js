@@ -52,7 +52,7 @@ class Cart extends React.Component {
                             </div>
                             :
                             this.props.cart.map(item =>
-                                <CartItem item={item} removeItem={() => this.removeItem(item)} changeQuantity={(e) => this.changeQuantity(e, item)} />
+                                <CartItem key={item.sku} item={item} removeItem={() => this.removeItem(item)} changeQuantity={(e) => this.changeQuantity(e, item)} />
                             )
                     }
                 </div>
