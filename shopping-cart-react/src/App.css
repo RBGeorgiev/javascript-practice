@@ -57,14 +57,13 @@ article {
 }
 
 .shelf-item-name {
-  height: 50px;
+  height: 60px;
   font-size: 1.2em;
 }
 
 .shelf-item-price {
-  font-size: 30px;
+  font-size: 2em;
   font-weight: 500;
-  padding: 4px;
 }
 
 .shelf-item-buy-btn {
@@ -136,6 +135,7 @@ article {
   -webkit-transition: right .2s;
   transition: right .2s;
   color: #ececec;
+  z-index: 20;
 }
 
 .cart-open {
@@ -292,4 +292,28 @@ article {
 .cart-shelf-container::-webkit-scrollbar-thumb {
   border-radius: 4px;
   border: 1px solid #c2c2c2;
+}
+
+@media only screen and (max-width: 1366px) {
+  .shelf-item-name {
+    font-size: 1em;
+  }
+  .shelf-item-buy-btn {
+    padding: 5px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  article {
+    width: 33.33%;
+  }
+  .filters {
+    padding-top: 0px;
+  }  
+}
+
+@media only screen and (max-width: 640px) {
+    article {
+    width: 50%;
+  }
 }
