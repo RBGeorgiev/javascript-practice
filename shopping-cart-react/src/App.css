@@ -124,7 +124,7 @@ article {
   color: #ececec;
 }
 
-.cart{
+.cart {
   position: fixed;
   top: 0;
   right: -450px;
@@ -135,7 +135,7 @@ article {
   -webkit-transition: right .2s;
   transition: right .2s;
   color: #ececec;
-  z-index: 20;
+  z-index: 5;
 }
 
 .cart-open {
@@ -313,7 +313,18 @@ article {
 }
 
 @media only screen and (max-width: 640px) {
-    article {
+  article {
     width: 50%;
+  }
+  .cart { 
+    width: 100%;
+    right: -100%;
+  }
+  .cart-open {
+    right: 0px;
+  }
+  .cart-open .cart-open-btn {
+    left: 0px;
+    z-index: 6;
   }
 }
