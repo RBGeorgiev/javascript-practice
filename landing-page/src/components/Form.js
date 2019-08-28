@@ -1,6 +1,15 @@
 import React from "react";
+import DatePicker from 'react-date-picker';
 
 class Form extends React.Component {
+    state = {
+        startDate: new Date(),
+        endDate: new Date(Date.now() + 1000/*ms*/ * 60/*sec*/ * 60/*min*/ * 24/*hour*/ * 7/*day*/)
+    }
+
+    setStartDate = startDate => this.setState({ startDate })
+    setEndDate = endDate => this.setState({ endDate })
+
     onSubmit(e) {
         e.preventDefault();
         alert("Thank you for submitting the form. We will get in touch with you as soon as possible.");
@@ -16,14 +25,24 @@ class Form extends React.Component {
 
                 <div id="dates">
                     <label htmlFor="start">Start date </label>
-                    <input type="date" id="start" name="start-date"
-                        value="2019-07-22"
-                        min="2019-07-01" max="2019-12-31" required></input>
+                    <DatePicker
+                        id="start"
+                        format="dd-MM-y"
+                        value={this.state.startDate}
+                        minDate={new Date()}
+                        onChange={this.setStartDate}
+                        required
+                    />
 
                     <label className="style-right" htmlFor="end">End date </label>
-                    <input type="date" id="end" name="end-date"
-                        value="2019-07-26"
-                        min="2019-07-01" max="2019-12-31" required></input>
+                    <DatePicker
+                        id="end"
+                        format="dd-MM-y"
+                        value={this.state.endDate}
+                        minDate={this.state.startDate}
+                        onChange={this.setEndDate}
+                        required
+                    />
                 </div>
 
                 <label htmlFor="message">Message </label>
