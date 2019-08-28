@@ -97,8 +97,27 @@ input {
     color: #2d2b31;
     font-family: Verdana,sans-serif;
     font-size: 1.5rem;
-    padding: 3px;
     outline: 0;
+}
+
+#dates .react-date-picker__inputGroup__input:invalid {
+    background: none;
+}
+
+#dates .react-date-picker__wrapper {
+    border: none;
+}
+
+#dates .react-date-picker { 
+    border-bottom: 2px solid #5a5661;
+}
+
+#dates .react-calendar__month-view__weekdays {
+    font-size: 0.5em;
+}
+
+abbr[title] {
+    text-decoration: none;
 }
 
 #contact-info {
