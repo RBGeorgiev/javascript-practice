@@ -1,10 +1,13 @@
 import React from "react";
 import DatePicker from 'react-date-picker';
 
+// get date a week from now
+const initDate = (w = 1) => new Date(Date.now() + 1000/*ms*/ * 60/*sec*/ * 60/*min*/ * 24/*hour*/ * 7/*day*/ * w/*week*/)
+
 class Form extends React.Component {
     state = {
-        startDate: new Date(),
-        endDate: new Date(Date.now() + 1000/*ms*/ * 60/*sec*/ * 60/*min*/ * 24/*hour*/ * 7/*day*/)
+        startDate: initDate(),
+        endDate: null
     }
 
     setStartDate = startDate => this.setState({ startDate })
@@ -24,22 +27,23 @@ class Form extends React.Component {
                 </div >
 
                 <div id="dates">
-                    <label htmlFor="start">Start date </label>
+                    <label>Start date </label>
                     <DatePicker
-                        id="start"
                         format="dd-MM-y"
                         value={this.state.startDate}
-                        minDate={new Date()}
+                        minDate={initDate()}
+                        maxDate={initDate(53)} /* maxDate = initDate + 1 year */
                         onChange={this.setStartDate}
                         required
                     />
 
-                    <label className="style-right" htmlFor="end">End date </label>
+                    <label className="style-right">End date </label>
                     <DatePicker
                         id="end"
                         format="dd-MM-y"
                         value={this.state.endDate}
                         minDate={this.state.startDate}
+                        maxDate={initDate(53)} /* maxDate = initDate + 1 year */
                         onChange={this.setEndDate}
                         required
                     />
