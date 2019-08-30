@@ -3,9 +3,11 @@ import AllProducts from "./all-products";
 import saveToLocalState from './persist/save-to-local'
 import loadFromLocalState from './persist/load-from-local'
 
+const persistedState = loadFromLocalState();
+
 const initialState = {
     products: AllProducts.products,
-    cart: []
+    cart: persistedState || []
 }
 
 const reducer = (state = initialState, action) => {
@@ -25,10 +27,8 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-const persistedState = loadFromLocalState();
+const store = createStore(reducer);
 
-const store = createStore(reducer, persistedState);
-
-store.subscribe(() => saveToLocalState(store.getState()));
+store.subscribe(() => saveToLocalState(store.getState().cart));
 
 export default store;

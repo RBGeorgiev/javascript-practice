@@ -1,7 +1,7 @@
 export default function loadFromLocalStorage() {
     try {
         const serializedState = localStorage.getItem('state');
-        if (!serializedState) return undefined;
+        if (serializedState === null) return undefined;
         return JSON.parse(serializedState);
     } catch (e) {
         console.log(e);
