@@ -222,24 +222,42 @@ footer {
     header {
         font-size: 2.5em;
     }
-
+    
     section {
         display: block;
     }
-
+    
     img {
         margin: 0;
     }
-
+    
     .card-info {
         padding: 0 30px;
     }
-
+    
     #contact-info, #dates{
         display: block;
     }
-
+    
+    #dates .react-date-picker {
+        display: block;
+    }
+    
     input {
         margin-bottom: 15px;
+    }
+}
+@media screen and (max-width: 500px){
+    section {
+        width: 100%;
+    }
+
+    img{
+        height: auto;
+        width: inherit;
+    }
+
+    .reverse > img {
+        margin-left: 0;
     }
 }
