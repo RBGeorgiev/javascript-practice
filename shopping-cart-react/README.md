@@ -11,3 +11,4 @@ This project was practice working with React, as well a learning experience on u
 * Filter products by available sizes
 * Sort products by highest to lowest and lowest to highest price
 * Responsive design
+* Products persist in floating cart after page reloads
