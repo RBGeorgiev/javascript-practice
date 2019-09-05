@@ -1,0 +1,150 @@
+html,
+body {
+    overflow: hidden;
+    margin: 0;
+}
+
+.controls {
+    background: #44415A;
+    color: white;
+    border-bottom: 1px black solid;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+}
+
+.controls > div {
+    width: 330px;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+}
+
+#controlsLeft > div{
+    height: 28px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+#controlsLeft input{
+    margin-left: 89px;
+    width: 100px;  
+}
+
+#controlsLeft input[type="radio"]{
+    width: 15px;
+    margin-left: 175px;
+}
+
+#controlsLeft label{
+    width: 140px;
+    text-align: left;
+    padding-left: 9px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.bucket:after {
+    visibility: hidden;
+    position: absolute;
+    content: "Warning: Due to the size of the canvas, using the bucket tool to fill a large area may slow down the browser significantly!";
+    background: red;
+    z-index: 50;
+    left: 25px;
+    padding: 13px;
+    width: 160px;
+    border: 2px black solid;
+    color: black;
+}
+
+.bucket:hover:after {
+    visibility: visible;
+}
+
+canvas {
+    cursor: none;
+    border: 1px black solid;
+}
+
+p {
+    margin: 0px;
+    font-size: 1.1em;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+a {
+    background: -webkit-gradient(linear, left top, left bottom, from(#F4EA51), to(#FFD45E));
+    background: -webkit-linear-gradient(#F4EA51, #FFD45E);
+    background: -o-linear-gradient(#F4EA51, #FFD45E);
+    background: linear-gradient(#F4EA51, #FFD45E);
+    border: 1px black solid;
+    padding: 8px 70px;
+    text-decoration: none;
+    color: black;
+    font-weight: bolder;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+#clearCanvas {
+    padding: 8px 24px;
+    background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgray));
+    background: -webkit-linear-gradient(white, lightgray);
+    background: -o-linear-gradient(white, lightgray);
+    background: linear-gradient(white, lightgray);
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+#clearCanvas:focus {
+    outline:0;
+}
+
+#cursor {
+    position: absolute;
+    pointer-events: none;
+    width: 3px;
+    height: 3px;
+    border: 1px black solid;
+    -webkit-box-shadow: 0 0 0 1px white;
+            box-shadow: 0 0 0 1px white;
+    border-radius: 50%;    
+}
+
+.noselect {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+@media screen and (max-width: 850px){
+    a {
+        padding: 4px 20px;
+    }
+}

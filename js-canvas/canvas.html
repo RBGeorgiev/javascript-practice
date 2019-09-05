@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+  <link rel="stylesheet" type="text/css" href="canvas.css" />
+</head>
+
+<body>
+  <div class="controls">
+    <div id="controlsLeft">
+      <div>
+        <input type="color" value="#000000" id="colorSelector" name="colorSelector">
+        <label for="colorSelector">Select Color</label>
+      </div>
+      <div id="penControls">
+        <input type="range" id="penSize" name="penSize" min="1" max="150" value="3">
+        <label for="penSize" id="penSizeLabel">Size: 3</label>
+      </div>
+      <div class="bucket">
+        <input type="radio" id="bucket" name="tools" value="bucket">
+        <label for="bucket">Paint Bucket</label>
+      </div>
+      <div>
+        <input type="radio" id="pen" name="tools" value="pen" checked>
+        <label for="pen">Brush</label>
+      </div>
+      <div>
+        <input type="radio" id="eraser" name="tools" value="eraser">
+        <label for="eraser">Eraser</label>
+      </div>
+    </div>
+
+    <div id="controlsMiddle">
+      <div>
+        <a href="" id="downloadButton" onClick="downloadImage()" download="my_drawing">Download Image</a>
+      </div>
+      <p>Left click to draw right click to erase</p>
+      <p>Shift + Left click to draw a straight line</p>
+    </div>
+
+    <div id="controlsRight">
+      <div>
+        <button id="clearCanvas" onClick="clearCanvas()">Clear Canvas</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="draw"></canvas>
+  <div id="cursor"></div>
+
+  <script src="canvas.js"></script>
+</body>
+
+</html>
