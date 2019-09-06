@@ -1,24 +1,47 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+
+function Key(props) {
+  return (
+    <li className="key">
+      {props.note}
+    </li>
+  )
+}
+
+function Octave() {
+  let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+  return (
+    <ul>
+      {notes.map(n => <Key note={n} />)}
+    </ul>
+  )
+}
+
+function Keyboard() {
+  return (
+    <div className="keyboard">
+      <Key note="A" />
+      <Key note="A#" />
+      <Key note="B" />
+      <Octave />
+      <Octave />
+      <Octave />
+      <Octave />
+      <Octave />
+      <Octave />
+      <Octave />
+      <Key note="C" />
+    </div>
+  )
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Piano app</h1>
+      <Keyboard />
     </div>
   );
 }
