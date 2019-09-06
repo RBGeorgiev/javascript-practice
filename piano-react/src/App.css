@@ -1,0 +1,49 @@
+.App {
+  font-family: sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+.keyboard {
+  display: flex;
+  justify-content: center;
+  background: rgb(20, 20, 20);
+  margin: auto;
+  padding: 20px 0px 5px;
+}
+
+.octave {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.key {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  user-select: none;
+  list-style: none;
+  background: #f4f4f4;
+  color: #363636;
+  border: 1px #888 solid;
+  border-right: none;
+  border-radius: 0 0 7% 7%;
+  width: 36px;
+  height: 125px;
+}
+
+.key:hover {
+  background: #81ffd6;
+}
+
+.black {
+  background: #363636;
+  color: #f4f4f4;
+  margin: 0 -15px;
+  width: 28px;
+  height: 80px;
+  z-index: 2;
+}

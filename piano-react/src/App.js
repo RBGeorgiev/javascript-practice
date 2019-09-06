@@ -4,7 +4,7 @@ import './App.css';
 
 function Key(props) {
   return (
-    <li className="key">
+    <li className={props.className}>
       {props.note}
     </li>
   )
@@ -13,8 +13,8 @@ function Key(props) {
 function Octave() {
   let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
   return (
-    <ul>
-      {notes.map(n => <Key note={n} />)}
+    <ul className="octave">
+      {notes.map(n => <Key note={n} className={(n.length === 1) ? 'key' : 'key black'} />)}
     </ul>
   )
 }
@@ -22,9 +22,12 @@ function Octave() {
 function Keyboard() {
   return (
     <div className="keyboard">
-      <Key note="A" />
-      <Key note="A#" />
-      <Key note="B" />
+      <ul className="octave">
+        <Key note="A" className="key" />
+        <Key note="A#" className="key black" />
+        <Key note="B" className="key" />
+      </ul>
+
       <Octave />
       <Octave />
       <Octave />
@@ -32,7 +35,10 @@ function Keyboard() {
       <Octave />
       <Octave />
       <Octave />
-      <Key note="C" />
+
+      <ul className="octave">
+        <Key note="C" className="key" />
+      </ul>
     </div>
   )
 }
