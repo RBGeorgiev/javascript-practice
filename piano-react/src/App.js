@@ -10,16 +10,17 @@ function Key(props) {
   )
 }
 
-function Octave() {
+function Octave({ pitch }) {
   let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
   return (
     <ul className="octave">
-      {notes.map(n => <Key note={n} className={(n.length === 1) ? 'key' : 'key black'} />)}
+      {notes.map(n => <Key key={n + pitch} note={n} className={(n.length === 1) ? 'key' : 'key black'} />)}
     </ul>
   )
 }
 
 function Keyboard() {
+  const pitchNum = [1, 2, 3, 4, 5, 6, 7];
   return (
     <div className="keyboard">
       <ul className="octave">
@@ -28,13 +29,7 @@ function Keyboard() {
         <Key note="B" className="key" />
       </ul>
 
-      <Octave />
-      <Octave />
-      <Octave />
-      <Octave />
-      <Octave />
-      <Octave />
-      <Octave />
+      {pitchNum.map(n => <Octave key={n} pitch={n} />)}
 
       <ul className="octave">
         <Key note="C" className="key" />
