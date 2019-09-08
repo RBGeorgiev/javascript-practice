@@ -4,14 +4,14 @@ import Tone from 'tone';
 
 
 const synth = new Tone.Synth().toMaster();
-function playNote() {
-  synth.triggerAttackRelease("C4", '4n');
+function playNote(note) {
+  synth.triggerAttackRelease(note, '4n');
 }
 
 
 function Key(props) {
   return (
-    <li className={props.className} onClick={() => playNote()}>
+    <li className={props.className} onClick={() => playNote(props.note)}>
       {props.note}
     </li>
   )
@@ -21,7 +21,7 @@ function Octave({ pitch }) {
   let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
   return (
     <ul className="octave">
-      {notes.map(n => <Key key={n + pitch} note={n} className={(n.length === 1) ? 'key' : 'key black'} />)}
+      {notes.map(n => <Key key={n + pitch} note={n + pitch} className={(n.length === 1) ? 'key' : 'key black'} />)}
     </ul>
   )
 }
