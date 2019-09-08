@@ -1,10 +1,17 @@
 import React from 'react';
 import './App.css';
+import Tone from 'tone';
+
+
+const synth = new Tone.Synth().toMaster();
+function playNote() {
+  synth.triggerAttackRelease("C4", '4n');
+}
 
 
 function Key(props) {
   return (
-    <li className={props.className}>
+    <li className={props.className} onClick={() => playNote()}>
       {props.note}
     </li>
   )
