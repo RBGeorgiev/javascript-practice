@@ -3,7 +3,10 @@ import './App.css';
 import Tone from 'tone';
 
 
-const synth = new Tone.Synth().toMaster();
+const synth = new Tone.Synth();
+const vol = new Tone.Volume(-12);
+synth.chain(vol, Tone.Master);
+
 function playNote(note) {
   synth.triggerAttack(note);
 }
