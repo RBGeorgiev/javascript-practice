@@ -5,13 +5,17 @@ import Tone from 'tone';
 
 const synth = new Tone.Synth().toMaster();
 function playNote(note) {
-  synth.triggerAttackRelease(note, '4n');
+  synth.triggerAttack(note);
+}
+
+function releaseNote() {
+  synth.triggerRelease();
 }
 
 
 function Key(props) {
   return (
-    <li className={props.className} onClick={() => playNote(props.note)}>
+    <li className={props.className} onMouseDown={() => playNote(props.note)} onMouseUp={() => releaseNote()}>
       {props.note}
     </li>
   )
