@@ -4,8 +4,11 @@ import Tone from 'tone';
 
 
 const synth = new Tone.Synth();
-const vol = new Tone.Volume(-12);
-synth.chain(vol, Tone.Master);
+synth.toMaster();
+
+function changeVol(vol) {
+  synth.volume.value = vol;
+}
 
 function playNote(note) {
   synth.triggerAttack(note);
@@ -15,6 +18,25 @@ function releaseNote() {
   synth.triggerRelease();
 }
 
+
+function VolumeSlider() {
+  let handleChange = (e) => {
+    changeVol(e.target.value);
+  }
+
+  return (
+    <label>Volume
+    <input
+        className='volume'
+        type="range"
+        min="-35" max="15"
+        defaultValue='0'
+        onChange={handleChange}
+        step="1"
+      />
+    </label>
+  );
+}
 
 function Key(props) {
   return (
@@ -64,6 +86,7 @@ function App() {
     <div className="App">
       <h1>Piano app</h1>
       <Keyboard />
+      <VolumeSlider />
     </div>
   );
 }
