@@ -3,8 +3,7 @@ import './App.css';
 import Tone from 'tone';
 
 
-const synth = new Tone.Synth();
-synth.toMaster();
+const synth = new Tone.Synth().toMaster();
 
 function changeVol(vol) {
   synth.volume.value = vol;
@@ -42,9 +41,11 @@ function VolumeSlider() {
 
 function Key(props) {
   return (
-    <li className={props.className} onMouseDown={() => playNote(props.note)} onMouseUp={() => releaseNote()}>
-      {props.note}
-    </li>
+    <li
+      className={props.className}
+      onMouseDown={() => playNote(props.note)}
+      onMouseUp={() => releaseNote()}
+    />
   )
 }
 
@@ -87,8 +88,8 @@ function App() {
   return (
     <div className="App">
       <h1>Piano app</h1>
-      <Keyboard />
       <VolumeSlider />
+      <Keyboard />
     </div>
   );
 }
