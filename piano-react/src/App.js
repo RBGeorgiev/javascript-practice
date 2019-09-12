@@ -4,19 +4,37 @@ import Tone from 'tone';
 
 
 const synth = new Tone.Synth().toMaster();
+let sustain = true;
 
 function changeVol(vol) {
   synth.volume.value = vol;
 }
 
-function playNote(note) {
-  synth.triggerAttack(note);
+function playNote(note, duration) {
+  if (duration === null) {
+    synth.triggerAttack(note)
+  } else {
+    synth.triggerAttackRelease(note, duration)
+  }
 }
 
 function releaseNote() {
   synth.triggerRelease();
 }
 
+
+function SustainCheckbox() {
+  return (
+    <label>
+      Fixed note duration
+    <input
+        type="checkbox"
+        defaultChecked={sustain}
+        onChange={() => sustain = !sustain}
+      />
+    </label>
+  );
+}
 
 function VolumeSlider() {
   let handleChange = (e) => {
@@ -35,7 +53,6 @@ function VolumeSlider() {
         step="1"
       />
     </div>
-
   );
 }
 
@@ -43,8 +60,8 @@ function Key(props) {
   return (
     <li
       className={props.className}
-      onMouseDown={() => playNote(props.note)}
-      onMouseUp={() => releaseNote()}
+      onMouseDown={() => (sustain) ? playNote(props.note, '3n') : playNote(props.note, null)}
+      onMouseUp={() => (sustain) ? null : releaseNote()}
     />
   )
 }
@@ -89,6 +106,7 @@ function App() {
     <div className="App">
       <h1>Piano app</h1>
       <VolumeSlider />
+      <SustainCheckbox />
       <Keyboard />
     </div>
   );
