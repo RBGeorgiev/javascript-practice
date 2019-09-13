@@ -25,13 +25,12 @@ function releaseNote() {
 
 function SustainCheckbox() {
   return (
-    <label className='container'>
+    <label className='checkboxContainer'>
       Fixed note duration
       <input
         type="checkbox"
         defaultChecked={sustain}
         onChange={() => sustain = !sustain}
-        className='checkmark'
       />
       <span className='checkmark'></span>
     </label>

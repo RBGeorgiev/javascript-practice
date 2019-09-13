@@ -56,7 +56,7 @@ h1 {
 }
 
 /* custom checkbox */
-.container {
+.checkboxContainer {
   display: block;
   position: relative;
   padding-left: 35px;
@@ -68,7 +68,7 @@ h1 {
   user-select: none;
 }
 
-.container input {
+.checkboxContainer input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -85,11 +85,11 @@ h1 {
   background-color: #eee;
 }
 
-.container:hover input ~ .checkmark {
+.checkboxContainer:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
-.container input:checked ~ .checkmark {
+.checkboxContainer input:checked ~ .checkmark {
   background-color: #3071a9;
 }
 
@@ -99,11 +99,11 @@ h1 {
   display: none;
 }
 
-.container input:checked ~ .checkmark:after {
+.checkboxContainer input:checked ~ .checkmark:after {
   display: block;
 }
 
-.container .checkmark:after {
+.checkboxContainer .checkmark:after {
   left: 9px;
   top: 5px;
   width: 5px;
