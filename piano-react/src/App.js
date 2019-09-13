@@ -25,13 +25,15 @@ function releaseNote() {
 
 function SustainCheckbox() {
   return (
-    <label>
+    <label className='container'>
       Fixed note duration
-    <input
+      <input
         type="checkbox"
         defaultChecked={sustain}
         onChange={() => sustain = !sustain}
+        className='checkmark'
       />
+      <span className='checkmark'></span>
     </label>
   );
 }
@@ -105,8 +107,10 @@ function App() {
   return (
     <div className="App">
       <h1>Piano app</h1>
-      <VolumeSlider />
-      <SustainCheckbox />
+      <div className="controls">
+        <VolumeSlider />
+        <SustainCheckbox />
+      </div>
       <Keyboard />
     </div>
   );
