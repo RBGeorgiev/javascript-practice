@@ -1,106 +1,8 @@
 import React from 'react';
 import './App.css';
-import Tone from 'tone';
-
-
-const synth = new Tone.Synth().toMaster();
-let sustain = true;
-
-function changeVol(vol) {
-  synth.volume.value = vol;
-}
-
-function playNote(note, duration) {
-  if (duration === null) {
-    synth.triggerAttack(note)
-  } else {
-    synth.triggerAttackRelease(note, duration)
-  }
-}
-
-function releaseNote() {
-  synth.triggerRelease();
-}
-
-
-function SustainCheckbox() {
-  return (
-    <label className='checkboxContainer'>
-      Fixed note duration
-      <input
-        type="checkbox"
-        defaultChecked={sustain}
-        onChange={() => sustain = !sustain}
-      />
-      <span className='checkmark'></span>
-    </label>
-  );
-}
-
-function VolumeSlider() {
-  let handleChange = (e) => {
-    changeVol(e.target.value);
-  }
-
-  return (
-    <div className='volumeController'>
-      <label>Volume</label>
-      <input
-        className='volumeSlider'
-        type="range"
-        min="-35" max="15"
-        defaultValue='0'
-        onChange={handleChange}
-        step="1"
-      />
-    </div>
-  );
-}
-
-function Key(props) {
-  return (
-    <li
-      className={props.className}
-      onMouseDown={() => (sustain) ? playNote(props.note, '3n') : playNote(props.note, null)}
-      onMouseUp={() => (sustain) ? null : releaseNote()}
-    />
-  )
-}
-
-function Octave({ pitch }) {
-  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-  const createKey = (n) =>
-    <Key
-      key={n + pitch}
-      note={n + pitch}
-      className={(n.length === 1) ? 'key' : 'key black'}
-    />
-
-  const createOctave = (pitch) => {
-    // pitch 0 has only 3 notes: 'A0', 'A#0', 'B0'
-    if (pitch === 0) return notes.slice(-3).map(n => createKey(n));
-    // pitch 8 has only 1 note: 'C8'
-    if (pitch === 8) return notes.slice(0, 1).map(n => createKey(n));
-    // all other pitches include all notes
-    return notes.map(n => createKey(n));
-  }
-
-  return (
-    <ul className="octave">
-      {createOctave(pitch)}
-    </ul>
-  )
-}
-
-function Keyboard() {
-  const pitchNum = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  return (
-    <div className="keyboard">
-      {pitchNum.map(n => <Octave key={n} pitch={n} />)}
-    </div>
-  )
-}
+import VolumeSlider from './components/volume-slider'
+import NoteSustainCheckbox from './components/note-sustain'
+import Keyboard from './components/keyboard'
 
 function App() {
   return (
@@ -108,7 +10,7 @@ function App() {
       <h1>Piano app</h1>
       <div className="controls">
         <VolumeSlider />
-        <SustainCheckbox />
+        <NoteSustainCheckbox />
       </div>
       <Keyboard />
     </div>
