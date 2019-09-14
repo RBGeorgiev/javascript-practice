@@ -1,9 +1,5 @@
 import React from 'react';
-import { synth } from './tone-config'
-
-function changeVol(vol) {
-    synth.volume.value = vol;
-}
+import changeVol from './tone/change-volume'
 
 export default function VolumeSlider() {
     let handleChange = (e) => {

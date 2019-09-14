@@ -1,18 +1,6 @@
 import React from 'react';
-import { synth } from './tone-config';
 import { sustain } from './note-sustain';
-
-function playNote(note, duration) {
-    if (duration === null) {
-        synth.triggerAttack(note);
-    } else {
-        synth.triggerAttackRelease(note, duration);
-    }
-}
-
-function releaseNote() {
-    synth.triggerRelease();
-}
+import { playNote, releaseNote } from './tone/play-note'
 
 export default function Key(props) {
     return (
