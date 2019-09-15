@@ -1,11 +1,6 @@
 import React from 'react';
-import changeVol from './tone/change-volume'
 
-export default function VolumeSlider() {
-    let handleChange = (e) => {
-        changeVol(e.target.value);
-    }
-
+export default function VolumeSlider({ onChange }) {
     return (
         <div className='volumeController'>
             <label>Volume</label>
@@ -14,7 +9,7 @@ export default function VolumeSlider() {
                 type="range"
                 min="-35" max="15"
                 defaultValue='0'
-                onChange={handleChange}
+                onChange={onChange}
                 step="1"
             />
         </div>
