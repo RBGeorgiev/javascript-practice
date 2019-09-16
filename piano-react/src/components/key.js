@@ -3,10 +3,10 @@ import { playNote, releaseNote } from './tone/play-note'
 
 export default function Key(props) {
     return (
-        <li
-            className={props.className}
-            onMouseDown={() => (props.sustain) ? playNote(props.note, '3n') : playNote(props.note, null)}
-            onMouseUp={() => (props.sustain) ? null : releaseNote()}
-        />
+        (props.sustain)
+            ?
+            <li className={props.className} onMouseDown={() => playNote(props.note, '3n')} />
+            :
+            <li className={props.className} onMouseDown={() => playNote(props.note, null)} onMouseUp={() => releaseNote()} />
     )
 }
