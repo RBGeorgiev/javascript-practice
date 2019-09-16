@@ -1,7 +1,7 @@
 import React from 'react';
 import Key from './key';
 
-export default function Octave({ pitch }) {
+export default function Octave({ pitch, sustain }) {
     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
     const createKey = (n) =>
@@ -9,6 +9,7 @@ export default function Octave({ pitch }) {
             key={n + pitch}
             note={n + pitch}
             className={(n.length === 1) ? 'key' : 'key black'}
+            sustain={sustain}
         />
 
     const createOctave = (pitch) => {

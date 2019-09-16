@@ -1,15 +1,13 @@
 import React from 'react';
 
-export let sustain = true;
-
-export default function NoteSustainCheckbox() {
+export default function Checkbox(props) {
     return (
         <label className='checkboxContainer'>
-            Enable fixed note duration
+            {props.label}
             <input
                 type="checkbox"
-                defaultChecked={sustain}
-                onChange={() => sustain = !sustain}
+                defaultChecked={props.sustain}
+                onChange={props.onChange}
             />
             <span className='checkmark'></span>
         </label>
