@@ -10,8 +10,8 @@ h1 {
   display: flex;
   justify-content: center;
   background: rgb(20, 20, 20);
-  margin: auto;
   padding: 20px 0px 5px;
+  overflow: auto;
 }
 
 .octave {
