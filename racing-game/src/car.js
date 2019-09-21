@@ -36,6 +36,8 @@ export default class Car {
     }
 
     update(deltaTime) {
+        console.log(this.speed)
+        if (this.speed === 0) this.rotate = 0
         this.pos.x += (this.applyAcc() * this.mod) * Math.cos(Math.PI / 180 * (this.angle += this.rotate)) * deltaTime;
         this.pos.y += (this.applyAcc() * this.mod) * Math.sin(Math.PI / 180 * (this.angle += this.rotate)) * deltaTime;
     }
