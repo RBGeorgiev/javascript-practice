@@ -1,15 +1,15 @@
 export default class Car {
     constructor(game) {
         this.size = {
-            width: 40,
-            height: 20
+            width: 20,
+            height: 10
         };
 
         this.game = game;
 
         this.pos = {
-            x: (this.game.gameWidth - this.size.width) / 2,
-            y: (this.game.gameHeight - this.size.height) / 2
+            x: 357,
+            y: 130
         }
 
         this.maxSpeed = 100
@@ -85,13 +85,8 @@ function keyUp_handler(e, car) {
             (car.acc > 0) ? car.acc = -1 : car.mod = 0;
             break;
         case 37:
-            if (car.rotate < 0) {
-                car.rotate = 0;
-                car.driftAngle = 0;
-            }
-            break;
         case 39:
-            if (car.rotate > 0) {
+            if (car.rotate !== 0) {
                 car.rotate = 0;
                 car.driftAngle = 0;
             }

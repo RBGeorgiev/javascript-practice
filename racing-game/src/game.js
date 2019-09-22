@@ -1,4 +1,5 @@
 import Car from './car.js';
+import Map from './map.js'
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -6,6 +7,11 @@ export default class Game {
         this.gameHeight = gameHeight;
 
         this.car = new Car(this);
+        this.map = new Map
+
+        document.addEventListener('mousedown', (e) => {
+            console.log(`ctx.lineTo(${e.offsetX}, ${e.offsetY});`)
+        });
     }
 
     draw(ctx) {
@@ -13,7 +19,8 @@ export default class Game {
         ctx.rect(0, 0, this.gameWidth, this.gameHeight);
         ctx.fill();
 
-        this.car.draw(ctx)
+        this.map.draw(ctx);
+        this.car.draw(ctx);
     }
 
     update(deltaTime) {
