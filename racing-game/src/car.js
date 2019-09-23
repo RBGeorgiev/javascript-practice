@@ -12,28 +12,12 @@ export default class Car {
             y: 130,
         }
 
-        this.vertices = [
-            // top right
-            {
-                x: this.pos.x + this.size.width / 2,
-                y: this.pos.y
-            },
-            // top left
-            {
-                x: this.pos.x - this.size.width / 2,
-                y: this.pos.y
-            },
-            // bottom right
-            {
-                x: this.pos.x + this.size.width / 2,
-                y: this.pos.y + this.size.height
-            },
-            // bottom left
-            {
-                x: this.pos.x - this.size.width / 2,
-                y: this.pos.y + this.size.height
-            }
-        ];
+        this.axis = {
+            x: this.pos.x + this.size.width / 2,
+            y: this.pos.y + this.size.height / 2
+        }
+
+        this.positionVertices();
 
         this.sensRadius = 1000;
         this.sensRadian = 0.7;
@@ -98,11 +82,6 @@ export default class Car {
             },
         ];
 
-        this.axis = {
-            x: this.pos.x + this.size.width / 2,
-            y: this.pos.y + this.size.height / 2
-        }
-
         this.maxSpeed = 100
         this.speed = 0;
         this.acc = 0;
@@ -120,8 +99,40 @@ export default class Car {
         document.addEventListener('keyup', (e) => keyUp_handler(e, this));
     }
 
-    rotateVertex() {
-        let theta = this.rotate / 100
+    moveAxis(deltaTime) {
+        this.angle += this.rotate
+
+        this.axis.x += (this.applyAcc() * this.mod) * Math.cos(Math.PI / 180 * (this.angle * this.moving)) * deltaTime;
+        this.axis.y += (this.applyAcc() * this.mod) * Math.sin(Math.PI / 180 * (this.angle * this.moving)) * deltaTime;
+    }
+
+    positionVertices() {
+        this.vertices = [
+            // top right
+            {
+                x: this.axis.x,
+                y: this.axis.y - this.size.height / 2
+            },
+            // top left
+            {
+                x: this.axis.x - this.size.width,
+                y: this.axis.y - this.size.height / 2
+            },
+            // bottom right
+            {
+                x: this.axis.x,
+                y: this.axis.y + this.size.height / 2
+            },
+            // bottom left
+            {
+                x: this.axis.x - this.size.width,
+                y: this.axis.y + this.size.height / 2
+            }
+        ];
+    }
+
+    rotateVertices() {
+        let theta = Math.PI / 180 * this.angle
         let cx = this.axis.x
         let cy = this.axis.y
 
@@ -170,28 +181,29 @@ export default class Car {
         ctx.stroke();
     }
 
-    draw(ctx) {
-        this.resetDrift();
-        ctx.save();
+    drawAxis(ctx) {
         ctx.beginPath();
-        ctx.translate(this.pos.x + this.size.width / 2, this.pos.y + this.size.height / 2);
-        ctx.rotate(this.applyDrift() + this.angle * Math.PI / 180);
-        ctx.rect(-this.size.width, -this.size.height / 2, this.size.width, this.size.height);
-        ctx.fillStyle = 'red';
-        ctx.fill();
-        ctx.restore();
-
-        ctx.beginPath();
-        // ctx.rect(this.pos.x - this.size.width / 2, this.pos.y - this.size.height / 2, this.size.width, this.size.height);
-
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 9;
         ctx.rect(this.axis.x, this.axis.y, 1, 1);
         ctx.stroke();
+    }
 
+    draw(ctx) {
+        this.resetDrift();
+        // ctx.save();
+        // ctx.beginPath();
+        // ctx.translate(this.pos.x + this.size.width / 2, this.pos.y + this.size.height / 2);
+        // ctx.rotate(this.applyDrift() + this.angle * Math.PI / 180);
+        // ctx.rect(-this.size.width, -this.size.height / 2, this.size.width, this.size.height);
+        // ctx.fillStyle = 'red';
+        // ctx.fill();
+        // ctx.restore();
 
+        this.drawAxis(ctx)
+        ctx.beginPath();
         ctx.strokeStyle = "yellow";
-        ctx.lineWidth = 9;
+        ctx.lineWidth = 2;
         // this.drawSensors(ctx, this.pos.x, this.pos.y);
         this.drawVertices(ctx);
 
@@ -199,9 +211,9 @@ export default class Car {
 
     update(deltaTime) {
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
-        this.pos.x += (this.applyAcc() * this.mod) * Math.cos(Math.PI / 180 * (this.angle += this.rotate * this.moving)) * deltaTime;
-        this.pos.y += (this.applyAcc() * this.mod) * Math.sin(Math.PI / 180 * (this.angle += this.rotate * this.moving)) * deltaTime;
-        this.rotateVertex()
+        this.moveAxis(deltaTime);
+        this.positionVertices();
+        this.rotateVertices();
     }
 
     applyAcc() {
@@ -269,12 +281,12 @@ function keyDown_handler(e, car) {
             break;
 
         case 37: //LEFT
-            car.rotate = -3;
+            car.rotate = -6;
             car.driftAngle = -1;
             break;
 
         case 39: //RIGHT
-            car.rotate = 3;
+            car.rotate = 6;
             car.driftAngle = 1;
             break;
     }
