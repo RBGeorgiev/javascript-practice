@@ -255,8 +255,13 @@ function keyUp_handler(e, car) {
             (car.acc > 0) ? car.acc = -1 : car.mod = 0;
             break;
         case 37:
+            if (car.rotate < 0) {
+                car.rotate = 0;
+                car.driftAngle = 0;
+            }
+            break;
         case 39:
-            if (car.rotate !== 0) {
+            if (car.rotate > 0) {
                 car.rotate = 0;
                 car.driftAngle = 0;
             }
