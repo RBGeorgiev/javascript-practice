@@ -8,10 +8,6 @@ export default class Game {
 
         this.car = new Car(this);
         this.map = new Map
-
-        document.addEventListener('mousedown', (e) => {
-            console.log(`ctx.lineTo(${e.offsetX}, ${e.offsetY});`)
-        });
     }
 
     draw(ctx) {
