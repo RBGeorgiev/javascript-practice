@@ -55,6 +55,11 @@ export default class Car {
 
     positionVertices() {
         this.vertices = [
+            // center
+            {
+                x: this.axis.x - this.size.width / 2,
+                y: this.axis.y
+            },
             // top right
             {
                 x: this.axis.x,
@@ -117,62 +122,63 @@ export default class Car {
     positionSensors() {
         this.sensRadius = 1000;
         this.sensRadian = 0.7;
+        const center = this.vertices[0]
 
         this.sensors = [
             // top
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x,
                 y2: this.axis.y - this.sensRadius
             },
             // right
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x + this.sensRadius,
                 y2: this.axis.y + this.size.height / 2
             },
             // bottom
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x,
                 y2: this.axis.y + this.sensRadius
             },
             // left
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x - this.sensRadius,
                 y2: this.axis.y + this.size.height / 2
             },
             // top right
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x + this.sensRadius * Math.cos(this.sensRadian),
                 y2: this.axis.y + this.sensRadius * Math.sin(-this.sensRadian)
             },
 
             // top left
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x - this.sensRadius * Math.cos(this.sensRadian),
                 y2: this.axis.y - this.sensRadius * Math.sin(this.sensRadian)
             },
             // bottom right           
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x + this.sensRadius * Math.cos(this.sensRadian),
                 y2: this.axis.y + this.sensRadius * Math.sin(this.sensRadian)
             },
             // bottom left
             {
-                x1: this.axis.x - this.size.width / 2,
-                y1: this.axis.y,
+                x1: center.x,
+                y1: center.y,
                 x2: this.axis.x - this.sensRadius * Math.cos(this.sensRadian),
                 y2: this.axis.y - this.sensRadius * Math.sin(-this.sensRadian)
             },
@@ -205,7 +211,7 @@ export default class Car {
         ctx.beginPath();
         ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
-        this.drawSensors(ctx, this.axis.x, this.axis.y);
+        this.drawSensors(ctx);
         this.drawVertices(ctx);
 
     }
