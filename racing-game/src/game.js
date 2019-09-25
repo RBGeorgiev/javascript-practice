@@ -7,7 +7,7 @@ export default class Game {
         this.gameHeight = gameHeight;
 
         this.car = new Car(this);
-        this.map = new Map
+        this.map = new Map;
     }
 
     draw(ctx) {
