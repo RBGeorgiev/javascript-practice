@@ -84,13 +84,13 @@ export default class Car {
     }
 
     rotateVertices() {
-        let theta = Math.PI / 180 * this.angle
-        let cx = this.axis.x
-        let cy = this.axis.y
+        let theta = Math.PI / 180 * this.angle;
+        let cx = this.axis.x;
+        let cy = this.axis.y;
 
         for (let i = 0; i < this.vertices.length; i++) {
-            let x = this.vertices[i].x
-            let y = this.vertices[i].y
+            let x = this.vertices[i].x;
+            let y = this.vertices[i].y;
             // cx, cy - center of square coordinates
             // x, y - coordinates of a corner point of the square
             // theta is the angle of rotation
@@ -104,8 +104,8 @@ export default class Car {
             let rotatedY = tempX * Math.sin(theta) + tempY * Math.cos(theta);
 
             // translate back
-            this.vertices[i].x = rotatedX + cx
-            this.vertices[i].y = rotatedY + cy
+            this.vertices[i].x = rotatedX + cx;
+            this.vertices[i].y = rotatedY + cy;
         }
     }
 
@@ -185,6 +185,33 @@ export default class Car {
         ];
     }
 
+    rotateSensors() {
+        let theta = Math.PI / 180 * this.angle;
+        let cx = this.axis.x;
+        let cy = this.axis.y;
+
+        for (let i = 0; i < this.sensors.length; i++) {
+            let x = this.sensors[i].x2;
+            let y = this.sensors[i].y2;
+            // cx, cy - center of square coordinates
+            // x, y - coordinates of a corner point of the square
+            // theta is the angle of rotation
+
+            // translate point to origin
+            let tempX = x - cx;
+            let tempY = y - cy;
+
+            // now apply rotation
+            let rotatedX = tempX * Math.cos(theta) - tempY * Math.sin(theta);
+            let rotatedY = tempX * Math.sin(theta) + tempY * Math.cos(theta);
+
+            // translate back
+            this.sensors[i].x2 = rotatedX + cx;
+            this.sensors[i].y2 = rotatedY + cy;
+        }
+    }
+
+
     drawSensors(ctx) {
         const sens = this.sensors;
         ctx.beginPath();
@@ -221,7 +248,8 @@ export default class Car {
         this.moveAxis(deltaTime);
         this.positionVertices();
         this.rotateVertices();
-        this.positionSensors()
+        this.positionSensors();
+        this.rotateSensors();
     }
 
     applyAcc() {
