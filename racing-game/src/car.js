@@ -240,7 +240,6 @@ export default class Car {
         ctx.lineWidth = 2;
         this.drawSensors(ctx);
         this.drawVertices(ctx);
-
     }
 
     update(deltaTime) {
@@ -281,6 +280,39 @@ export default class Car {
         // caps min and max speed
         return Math.max(min, Math.min(number, max));
     }
+
+    moveForward() {
+        if (this.mod !== -1) {
+            this.mod = 1;
+            this.acc = 1;
+        }
+    }
+
+    moveBack() {
+        if (this.mod !== 1) {
+            this.mod = -1;
+            this.acc = 1;
+        }
+    }
+
+    stopMoving() {
+        (this.acc > 0) ? this.acc = -1 : this.mod = 0;
+    }
+
+    turnLeft() {
+        this.rotate = -6;
+        this.driftAngle = -1;
+    }
+
+    turnRight() {
+        this.rotate = 6;
+        this.driftAngle = 1;
+    }
+
+    stopTurning() {
+        this.rotate = 0;
+        this.driftAngle = 0;
+    }
 }
 
 
@@ -288,18 +320,16 @@ function keyUp_handler(e, car) {
     switch (e.keyCode) {
         case 38: //UP
         case 40: //DOWN
-            (car.acc > 0) ? car.acc = -1 : car.mod = 0;
+            car.stopMoving();
             break;
-        case 37:
+        case 37: //LEFT
             if (car.rotate < 0) {
-                car.rotate = 0;
-                car.driftAngle = 0;
+                car.stopTurning();
             }
             break;
-        case 39:
+        case 39: //RIGHT
             if (car.rotate > 0) {
-                car.rotate = 0;
-                car.driftAngle = 0;
+                car.stopTurning();
             }
             break;
     }
@@ -308,27 +338,19 @@ function keyUp_handler(e, car) {
 function keyDown_handler(e, car) {
     switch (e.keyCode) {
         case 38: //UP
-            if (car.mod !== -1) {
-                car.mod = 1;
-                car.acc = 1;
-            }
+            car.moveForward();
             break;
 
         case 40: //DOWN
-            if (car.mod !== 1) {
-                car.mod = -1;
-                car.acc = 1;
-            }
+            car.moveBack();
             break;
 
         case 37: //LEFT
-            car.rotate = -6;
-            car.driftAngle = -1;
+            car.turnLeft();
             break;
 
         case 39: //RIGHT
-            car.rotate = 6;
-            car.driftAngle = 1;
+            car.turnRight();
             break;
     }
 }
