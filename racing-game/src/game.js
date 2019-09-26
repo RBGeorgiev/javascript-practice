@@ -1,5 +1,6 @@
 import Car from './car.js';
-import Map from './map.js'
+import Map from './map-draw.js';
+import { map1 } from './map1.js';
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -15,7 +16,7 @@ export default class Game {
         ctx.rect(0, 0, this.gameWidth, this.gameHeight);
         ctx.fill();
 
-        this.map.draw(ctx);
+        this.map.draw(ctx, map1);
         this.car.draw(ctx);
     }
 
