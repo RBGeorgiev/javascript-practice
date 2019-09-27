@@ -1,7 +1,11 @@
+import { map1 } from './map1.js';
+
 export default function Map() {
-    this.draw = function (ctx, map) {
-        let outer = map.outerLines,
-            inner = map.innerLines;
+    this.map = map1
+
+    this.draw = function (ctx) {
+        let outer = this.map.outerLines,
+            inner = this.map.innerLines;
 
         ctx.beginPath();
 

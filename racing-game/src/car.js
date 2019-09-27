@@ -1,8 +1,8 @@
 export default class Car {
     constructor(game) {
         this.size = {
-            width: 40,
-            height: 20
+            width: 20,
+            height: 10
         };
 
         this.game = game;
@@ -120,8 +120,8 @@ export default class Car {
     }
 
     positionSensors() {
-        this.sensRadius = 1000;
-        this.sensRadian = 0.7;
+        const sensRadius = 1000;
+        const sensRadian = 0.7;
         const center = this.vertices[0]
 
         this.sensors = [
@@ -130,13 +130,13 @@ export default class Car {
                 x1: center.x,
                 y1: center.y,
                 x2: this.axis.x,
-                y2: this.axis.y - this.sensRadius
+                y2: this.axis.y - sensRadius
             },
             // right
             {
                 x1: center.x,
                 y1: center.y,
-                x2: this.axis.x + this.sensRadius,
+                x2: this.axis.x + sensRadius,
                 y2: this.axis.y + this.size.height / 2
             },
             // bottom
@@ -144,43 +144,43 @@ export default class Car {
                 x1: center.x,
                 y1: center.y,
                 x2: this.axis.x,
-                y2: this.axis.y + this.sensRadius
+                y2: this.axis.y + sensRadius
             },
             // left
             {
                 x1: center.x,
                 y1: center.y,
-                x2: this.axis.x - this.sensRadius,
+                x2: this.axis.x - sensRadius,
                 y2: this.axis.y + this.size.height / 2
             },
             // top right
             {
                 x1: center.x,
                 y1: center.y,
-                x2: this.axis.x + this.sensRadius * Math.cos(this.sensRadian),
-                y2: this.axis.y + this.sensRadius * Math.sin(-this.sensRadian)
+                x2: this.axis.x + sensRadius * Math.cos(sensRadian),
+                y2: this.axis.y + sensRadius * Math.sin(-sensRadian)
             },
 
             // top left
             {
                 x1: center.x,
                 y1: center.y,
-                x2: this.axis.x - this.sensRadius * Math.cos(this.sensRadian),
-                y2: this.axis.y - this.sensRadius * Math.sin(this.sensRadian)
+                x2: this.axis.x - sensRadius * Math.cos(sensRadian),
+                y2: this.axis.y - sensRadius * Math.sin(sensRadian)
             },
             // bottom right           
             {
                 x1: center.x,
                 y1: center.y,
-                x2: this.axis.x + this.sensRadius * Math.cos(this.sensRadian),
-                y2: this.axis.y + this.sensRadius * Math.sin(this.sensRadian)
+                x2: this.axis.x + sensRadius * Math.cos(sensRadian),
+                y2: this.axis.y + sensRadius * Math.sin(sensRadian)
             },
             // bottom left
             {
                 x1: center.x,
                 y1: center.y,
-                x2: this.axis.x - this.sensRadius * Math.cos(this.sensRadian),
-                y2: this.axis.y - this.sensRadius * Math.sin(-this.sensRadian)
+                x2: this.axis.x - sensRadius * Math.cos(sensRadian),
+                y2: this.axis.y - sensRadius * Math.sin(-sensRadian)
             },
         ];
     }
