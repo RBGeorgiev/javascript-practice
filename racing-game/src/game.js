@@ -76,11 +76,21 @@ export default class Game {
     }
 
     drawCollisions(ctx) {
-        let collisions = this.collisions
+        let collisions = this.collisions,
+            sens = this.car.sensors[0];
+
         for (let i = 0; i < collisions.length; i++) {
+            // Short-circuit evaluation fixes a game breaking error where collisions[i] returned null
+            let col = collisions[i] || sens,
+                x = col.x,
+                y = col.y;
+
             ctx.beginPath();
-            ctx.arc(collisions[i].x, collisions[i].y, 3, 0, 2 * Math.PI);
+            ctx.arc(x, y, 3, 0, 2 * Math.PI);
             ctx.stroke();
+            ctx.fillStyle = 'white'
+            ctx.font = "10px Arial";
+            ctx.fillText(`x: ${Math.round(x - sens.x1)}, y: ${Math.round(y - sens.y1)}`, x, y)
         }
     }
 }
