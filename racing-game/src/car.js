@@ -1,8 +1,8 @@
 export default class Car {
     constructor(game) {
         this.size = {
-            width: 20,
-            height: 10
+            width: 40,
+            height: 20
         };
 
         this.game = game;
@@ -18,6 +18,8 @@ export default class Car {
         }
 
         this.positionVertices();
+
+        this.positionSides()
 
         this.positionSensors();
 
@@ -48,9 +50,49 @@ export default class Car {
     drawAxis(ctx) {
         ctx.beginPath();
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 9;
+        ctx.lineWidth = 6;
         ctx.rect(this.axis.x, this.axis.y, 1, 1);
         ctx.stroke();
+    }
+
+    positionSides() {
+        let vert = this.vertices
+        this.sides = [
+            {
+                x1: vert[1].x, // top left
+                y1: vert[1].y,
+                x2: vert[2].x, // top right
+                y2: vert[2].y
+            },
+            {
+                x1: vert[2].x, // top right
+                y2: vert[2].y,
+                x2: vert[3].x, // bottom right
+                y2: vert[3].y
+            },
+            {
+                x1: vert[3].x, // bottom right
+                y1: vert[3].y,
+                x2: vert[4].x, // bottom left
+                y2: vert[4].y
+            },
+            {
+                x1: vert[4].x, // bottom left
+                y1: vert[4].y,
+                x2: vert[1].x, // top left
+                y2: vert[1].y
+            },
+
+        ]
+    }
+
+    drawSides(ctx) {
+        let sides = this.sides
+        for (let i = 0; i < sides.length; i++) {
+            ctx.moveTo(sides[i].x1, sides[i].y1)
+            ctx.lineTo(sides[i].x2, sides[i].y2)
+        }
+        ctx.stroke()
     }
 
     positionVertices() {
@@ -60,14 +102,14 @@ export default class Car {
                 x: this.axis.x - this.size.width / 2,
                 y: this.axis.y
             },
-            // top right
-            {
-                x: this.axis.x,
-                y: this.axis.y - this.size.height / 2
-            },
             // top left
             {
                 x: this.axis.x - this.size.width,
+                y: this.axis.y - this.size.height / 2
+            },
+            // top right
+            {
+                x: this.axis.x,
                 y: this.axis.y - this.size.height / 2
             },
             // bottom right
@@ -238,8 +280,9 @@ export default class Car {
         ctx.beginPath();
         ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
-        this.drawSensors(ctx);
         this.drawVertices(ctx);
+        this.drawSides(ctx);
+        this.drawSensors(ctx);
     }
 
     update(deltaTime) {
@@ -247,6 +290,7 @@ export default class Car {
         this.moveAxis(deltaTime);
         this.positionVertices();
         this.rotateVertices();
+        this.positionSides();
         this.positionSensors();
         this.rotateSensors();
     }
