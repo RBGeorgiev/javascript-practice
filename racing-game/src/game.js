@@ -36,8 +36,11 @@ export default class Game {
             track = [...outer, ...inner],
             ans = [];
 
+        // loop through each sensor
         for (let i = 0; i < sens.length; i++) {
             let collisions = [];
+
+            // find all collisions with sensor
             for (let j = 0; j < track.length; j++) {
                 let cur = lineCollision(
                     sens[i].x1,
@@ -52,20 +55,23 @@ export default class Game {
                 if (cur) collisions.push(cur)
             }
 
-
+            // find closest collision
             let closest = [Infinity, null];
 
-            let sensX = sens[i].x1
-            let sensY = sens[i].y1
             for (let k = 0; k < collisions.length; k++) {
-                let x = collisions[k].x - sensX
-                let y = collisions[k].y - sensY
+                // find distance length from start of sensor to collision
+                let sensX = sens[i].x1,
+                    sensY = sens[i].y1,
+                    colX = collisions[k].x,
+                    colY = collisions[k].y,
 
-                x = Math.pow(x, 2)
-                y = Math.pow(y, 2)
-                let tot = Math.pow((x + y), 1 / 2)
+                    x = Math.pow(colX - sensX, 2),
+                    y = Math.pow(colY - sensY, 2),
 
-                if (closest[0] > tot) {
+                    tot = Math.pow((x + y), 1 / 2);
+
+                // if distance is shorter than prev shortest distance
+                if (tot < closest[0]) {
                     closest[0] = tot
                     closest[1] = { x: collisions[k].x, y: collisions[k].y }
                 }
@@ -90,7 +96,7 @@ export default class Game {
             ctx.stroke();
             ctx.fillStyle = 'white'
             ctx.font = "10px Arial";
-            ctx.fillText(`x: ${Math.round(x - sens.x1)}, y: ${Math.round(y - sens.y1)}`, x, y)
+            ctx.fillText(`x: ${Math.round(x - sens.x1)}, y: ${Math.round(y - sens.y1)}`, x + 5, y - 5)
         }
     }
 }
