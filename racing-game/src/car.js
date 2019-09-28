@@ -265,7 +265,7 @@ export default class Car {
         ctx.stroke();
     }
 
-    draw(ctx) {
+    draw(ctx, crash) {
         this.resetDrift();
         // ctx.save();
         // ctx.beginPath();
@@ -278,11 +278,11 @@ export default class Car {
 
         this.drawAxis(ctx)
         ctx.beginPath();
-        ctx.strokeStyle = "yellow";
+        (crash) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
         this.drawVertices(ctx);
-        this.drawSides(ctx);
         this.drawSensors(ctx);
+        this.drawSides(ctx);
     }
 
     update(deltaTime) {
@@ -290,9 +290,9 @@ export default class Car {
         this.moveAxis(deltaTime);
         this.positionVertices();
         this.rotateVertices();
-        this.positionSides();
         this.positionSensors();
         this.rotateSensors();
+        this.positionSides();
     }
 
     applyAcc() {
