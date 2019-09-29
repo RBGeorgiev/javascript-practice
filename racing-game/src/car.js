@@ -32,19 +32,16 @@ export default class Car {
         this.rotate = 0;
         this.moving = 0;
 
-        this.maxDrift = 14
-        this.drift = 0
-        this.driftAngle = 0
-
         document.addEventListener('keydown', (e) => keyDown_handler(e, this));
         document.addEventListener('keyup', (e) => keyUp_handler(e, this));
     }
 
     moveAxis(deltaTime) {
         this.angle += this.rotate * this.moving;
+        let acceleration = this.applyAcc() * this.mod;
 
-        this.axis.x += (this.applyAcc() * this.mod) * Math.cos(Math.PI / 180 * this.angle) * deltaTime;
-        this.axis.y += (this.applyAcc() * this.mod) * Math.sin(Math.PI / 180 * this.angle) * deltaTime;
+        this.axis.x += acceleration * Math.cos(Math.PI / 180 * this.angle) * deltaTime;
+        this.axis.y += acceleration * Math.sin(Math.PI / 180 * this.angle) * deltaTime;
     }
 
     drawAxis(ctx) {
@@ -266,16 +263,6 @@ export default class Car {
     }
 
     draw(ctx, crash) {
-        this.resetDrift();
-        // ctx.save();
-        // ctx.beginPath();
-        // ctx.translate(this.pos.x + this.size.width / 2, this.pos.y + this.size.height / 2);
-        // ctx.rotate(this.applyDrift() + this.angle * Math.PI / 180);
-        // ctx.rect(-this.size.width, -this.size.height / 2, this.size.width, this.size.height);
-        // ctx.fillStyle = 'red';
-        // ctx.fill();
-        // ctx.restore();
-
         this.drawAxis(ctx)
         ctx.beginPath();
         (crash) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
@@ -286,7 +273,6 @@ export default class Car {
     }
 
     update(deltaTime) {
-        console.log(this.moving, this.speed);
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
         this.moveAxis(deltaTime);
         this.positionVertices();
@@ -300,25 +286,6 @@ export default class Car {
         this.speed += this.acc;
         this.speed = this.clamp(this.speed, 0, this.maxSpeed);
         return this.speed / 100;
-    }
-
-    applyDrift() {
-        this.drift += this.driftAngle * this.moving;
-        this.drift = this.clamp(this.drift, -this.maxDrift, this.maxDrift);
-        // return 0;
-        return this.drift / 10;
-    }
-
-    resetDrift() {
-        if (this.rotate === 0) {
-            if (this.drift > 0) {
-                this.driftAngle = -1;
-            } else if (this.drift < 0) {
-                this.driftAngle = 1;
-            } else if (this.drift === 0) {
-                this.driftAngle = 0;
-            }
-        }
     }
 
     clamp(number, min, max) {
@@ -345,18 +312,15 @@ export default class Car {
     }
 
     turnLeft() {
-        this.rotate = -6;
-        this.driftAngle = -1;
+        this.rotate = -5;
     }
 
     turnRight() {
-        this.rotate = 6;
-        this.driftAngle = 1;
+        this.rotate = 5;
     }
 
     stopTurning() {
         this.rotate = 0;
-        this.driftAngle = 0;
     }
 }
 

@@ -11,7 +11,7 @@ export default class Game {
         this.car = new Car(this);
         this.map = new Map;
 
-        this.collisions = [];
+        this.sensorCollisions = [];
 
         this.track = [
             ...this.map.map.outerLines,
@@ -84,11 +84,11 @@ export default class Game {
             }
             ans.push(closest[1])
         }
-        this.collisions = ans;
+        this.sensorCollisions = ans;
     }
 
     drawSensorCollisions(ctx) {
-        let collisions = this.collisions,
+        let collisions = this.sensorCollisions,
             sens = this.car.sensors[0];
 
         for (let i = 0; i < collisions.length; i++) {
