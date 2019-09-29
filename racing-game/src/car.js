@@ -1,8 +1,8 @@
 export default class Car {
     constructor(game) {
         this.size = {
-            width: 40,
-            height: 20
+            width: 20,
+            height: 10
         };
 
         this.game = game;
@@ -29,8 +29,8 @@ export default class Car {
 
         this.mod = 0;
         this.angle = 0;
-        this.rotate = 0
-        this.moving = 0
+        this.rotate = 0;
+        this.moving = 0;
 
         this.maxDrift = 14
         this.drift = 0
@@ -41,10 +41,10 @@ export default class Car {
     }
 
     moveAxis(deltaTime) {
-        this.angle += this.rotate
+        this.angle += this.rotate * this.moving;
 
-        this.axis.x += (this.applyAcc() * this.mod) * Math.cos(Math.PI / 180 * (this.angle * this.moving)) * deltaTime;
-        this.axis.y += (this.applyAcc() * this.mod) * Math.sin(Math.PI / 180 * (this.angle * this.moving)) * deltaTime;
+        this.axis.x += (this.applyAcc() * this.mod) * Math.cos(Math.PI / 180 * this.angle) * deltaTime;
+        this.axis.y += (this.applyAcc() * this.mod) * Math.sin(Math.PI / 180 * this.angle) * deltaTime;
     }
 
     drawAxis(ctx) {
@@ -286,6 +286,7 @@ export default class Car {
     }
 
     update(deltaTime) {
+        console.log(this.moving, this.speed);
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
         this.moveAxis(deltaTime);
         this.positionVertices();
