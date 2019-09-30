@@ -1,6 +1,6 @@
 import Car from './car.js';
 import Map from './map-draw.js';
-import lineCollision from './collision.js'
+import lineCollision from './collision.js';
 
 
 export default class Game {
@@ -17,8 +17,6 @@ export default class Game {
             ...this.map.map.outerLines,
             ...this.map.map.innerLines
         ];
-
-        this.crash = false;
     }
 
     draw(ctx) {
@@ -27,14 +25,14 @@ export default class Game {
         ctx.fill();
 
         this.map.draw(ctx);
-        this.car.draw(ctx, this.crash);
+        this.car.draw(ctx);
         this.drawSensorCollisions(ctx);
     }
 
     update(deltaTime) {
         this.car.update(deltaTime);
         this.SensorTrackCollision();
-        this.carTrackCollision();
+        this.car.carTrackCollision(this.track);
     }
 
     SensorTrackCollision() {
@@ -104,28 +102,5 @@ export default class Game {
             ctx.font = "10px Arial";
             ctx.fillText(`x: ${Math.round(x - sens.x1)}, y: ${Math.round(y - sens.y1)}`, x + 5, y - 5)
         }
-    }
-
-    carTrackCollision() {
-        let carSides = this.car.sides,
-            track = this.track;
-
-        for (let i = 0; i < carSides.length; i++) {
-            for (let j = 0; j < track.length; j++) {
-                let crash = lineCollision(
-                    carSides[i].x1,
-                    carSides[i].y1,
-                    carSides[i].x2,
-                    carSides[i].y2,
-                    track[j].x1,
-                    track[j].y1,
-                    track[j].x2,
-                    track[j].y2,
-                )
-
-                if (crash) return this.crash = true;
-            }
-        }
-        return this.crash = false;
     }
 }

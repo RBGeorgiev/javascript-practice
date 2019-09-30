@@ -1,3 +1,5 @@
+import lineCollision from './collision.js';
+
 export default class Car {
     constructor(game) {
         this.size = {
@@ -31,6 +33,7 @@ export default class Car {
         this.angle = 0;
         this.rotate = 0;
         this.moving = 0;
+        this.crashed = false;
 
         document.addEventListener('keydown', (e) => keyDown_handler(e, this));
         document.addEventListener('keyup', (e) => keyUp_handler(e, this));
@@ -262,10 +265,10 @@ export default class Car {
         ctx.stroke();
     }
 
-    draw(ctx, crash) {
+    draw(ctx) {
         this.drawAxis(ctx)
         ctx.beginPath();
-        (crash) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
+        (this.crashed) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
         this.drawVertices(ctx);
         this.drawSensors(ctx);
@@ -274,6 +277,7 @@ export default class Car {
 
     update(deltaTime) {
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
+        if (this.crashed) return;
         this.moveAxis(deltaTime);
         this.positionVertices();
         this.rotateVertices();
@@ -291,6 +295,28 @@ export default class Car {
     clamp(number, min, max) {
         // caps min and max speed
         return Math.max(min, Math.min(number, max));
+    }
+
+    carTrackCollision(track) {
+        const carSides = this.sides;
+
+        for (let i = 0; i < carSides.length; i++) {
+            for (let j = 0; j < track.length; j++) {
+                let crash = lineCollision(
+                    carSides[i].x1,
+                    carSides[i].y1,
+                    carSides[i].x2,
+                    carSides[i].y2,
+                    track[j].x1,
+                    track[j].y1,
+                    track[j].x2,
+                    track[j].y2,
+                )
+
+                if (crash) return this.crashed = true;
+            }
+        }
+        return this.crashed = false;
     }
 
     moveForward() {
