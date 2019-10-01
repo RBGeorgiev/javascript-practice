@@ -36,9 +36,6 @@ export default class Car {
         this.crashed = false;
 
         this.sensorCollisions = [];
-
-        document.addEventListener('keydown', (e) => keyDown_handler(e, this));
-        document.addEventListener('keyup', (e) => keyUp_handler(e, this));
     }
 
     moveAxis(deltaTime) {
@@ -421,45 +418,5 @@ export default class Car {
 
     stopTurning() {
         this.rotate = 0;
-    }
-}
-
-
-function keyUp_handler(e, car) {
-    switch (e.keyCode) {
-        case 38: //UP
-        case 40: //DOWN
-            car.stopMoving();
-            break;
-        case 37: //LEFT
-            if (car.rotate < 0) {
-                car.stopTurning();
-            }
-            break;
-        case 39: //RIGHT
-            if (car.rotate > 0) {
-                car.stopTurning();
-            }
-            break;
-    }
-}
-
-function keyDown_handler(e, car) {
-    switch (e.keyCode) {
-        case 38: //UP
-            car.moveForward();
-            break;
-
-        case 40: //DOWN
-            car.moveBack();
-            break;
-
-        case 37: //LEFT
-            car.turnLeft();
-            break;
-
-        case 39: //RIGHT
-            car.turnRight();
-            break;
     }
 }
