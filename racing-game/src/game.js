@@ -1,6 +1,5 @@
 import Car from './car.js';
-import Map from './map-draw.js';
-
+import Map from './map-loader.js';
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -9,11 +8,6 @@ export default class Game {
 
         this.car = new Car(this);
         this.map = new Map;
-
-        this.track = [
-            ...this.map.map.outerLines,
-            ...this.map.map.innerLines
-        ];
     }
 
     draw(ctx) {
@@ -26,8 +20,6 @@ export default class Game {
     }
 
     update(deltaTime) {
-        this.car.update(deltaTime);
-        this.car.sensorTrackCollision(this.track);
-        this.car.carTrackCollision(this.track);
+        this.car.update(deltaTime, this.map.track);
     }
 }

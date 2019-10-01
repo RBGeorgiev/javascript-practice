@@ -1,4 +1,4 @@
-export const map1 = {
+export const MAP_1 = {
     "outerLines": [
         {
             "x1": 347,

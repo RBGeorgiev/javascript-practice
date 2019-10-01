@@ -1,7 +1,12 @@
-import { map1 } from './map1.js';
+import { MAP_1 } from './map_1.js';
 
 export default function Map() {
-    this.map = map1
+    this.map = MAP_1
+
+    this.track = [
+        ...this.map.outerLines,
+        ...this.map.innerLines
+    ];
 
     this.draw = function (ctx) {
         let outer = this.map.outerLines,

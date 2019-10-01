@@ -272,13 +272,13 @@ export default class Car {
         ctx.beginPath();
         (this.crashed) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
-        this.drawVertices(ctx);
+        this.drawVertices(ctx)
         this.drawSensors(ctx);
         this.drawSensorCollisions(ctx);
         this.drawSides(ctx);
     }
 
-    update(deltaTime) {
+    update(deltaTime, track) {
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
         if (this.crashed) return;
         this.moveAxis(deltaTime);
@@ -287,6 +287,9 @@ export default class Car {
         this.positionSensors();
         this.rotateSensors();
         this.positionSides();
+
+        this.sensorTrackCollision(track);
+        this.carTrackCollision(track);
     }
 
     applyAcc() {
