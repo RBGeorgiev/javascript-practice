@@ -1,7 +1,7 @@
 import lineCollision from './collision.js';
 
 export default class Car {
-    constructor(game) {
+    constructor(game, genome) {
         this.size = {
             width: 20,
             height: 10
@@ -34,8 +34,28 @@ export default class Car {
         this.rotate = 0;
         this.moving = 0;
         this.crashed = false;
+        this.timeImmobile = 0;
 
         this.sensorCollisions = [];
+        this.sensorDistToCol = [];
+
+        this.brain = genome;
+        this.brain.score = 0;
+
+        this.brain.inputs = [];
+        this.brain.outputs = this.brain.activate(this.brain.inputs);
+    }
+
+    getInputs() {
+        let ans = []
+        for (let i = 0; i < this.sensorDistToCol.length; i++) {
+            ans.push(this.sensorDistToCol[i] / 500);
+        }
+        this.brain.inputs = ans;
+    }
+
+    getOutputs() {
+        this.brain.outputs = this.brain.activate(this.brain.inputs);
     }
 
     moveAxis(deltaTime) {
@@ -265,17 +285,21 @@ export default class Car {
     }
 
     draw(ctx) {
-        this.drawAxis(ctx)
+        // this.drawAxis(ctx)
         ctx.beginPath();
         (this.crashed) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
-        this.drawVertices(ctx)
-        this.drawSensors(ctx);
-        this.drawSensorCollisions(ctx);
+        // this.drawVertices(ctx)
+        // this.drawSensors(ctx);
+        // this.drawSensorCollisions(ctx);
         this.drawSides(ctx);
     }
 
     update(deltaTime, track) {
+        if (this.speed === 0 && this.moving === 0) this.timeImmobile += deltaTime;
+        if (this.speed !== 0 || this.moving !== 0) this.timeImmobile = 0;
+        if (this.timeImmobile > 1000) this.crashed = true;
+
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
         if (this.crashed) return;
         this.moveAxis(deltaTime);
@@ -287,6 +311,26 @@ export default class Car {
 
         this.sensorTrackCollision(track);
         this.carTrackCollision(track);
+
+        this.getInputs();
+        this.getOutputs()
+
+        this.brain.score += this.speed * this.mod;
+        // this.brain.score += 1 + this.speed * this.mod;
+
+        if (this.brain.outputs[0] < -0.6)
+            this.stopMoving();
+        if (this.brain.outputs[0] > -0.6 && this.brain.outputs[0] < 0.3)
+            this.moveBack();
+        if (this.brain.outputs[0] > 0.3)
+            this.moveForward();
+
+        if (this.brain.outputs[1] < -0.6)
+            this.stopTurning();
+        if (this.brain.outputs[1] > -0.6 && this.brain.outputs[0] < 0.3)
+            this.turnRight();
+        if (this.brain.outputs[1] > 0.3)
+            this.turnLeft();
     }
 
     applyAcc() {
@@ -324,7 +368,8 @@ export default class Car {
 
     sensorTrackCollision(track) {
         let sens = this.sensors,
-            ans = [];
+            dist = [],
+            sensCol = [];
 
         // loop through each sensor
         for (let i = 0; i < sens.length; i++) {
@@ -366,9 +411,11 @@ export default class Car {
                     closest[1] = { x: collisions[k].x, y: collisions[k].y }
                 }
             }
-            ans.push(closest[1])
+            dist.push(closest[0]);
+            sensCol.push(closest[1]);
         }
-        this.sensorCollisions = ans;
+        this.sensorDistToCol = dist;
+        this.sensorCollisions = sensCol;
     }
 
     drawSensorCollisions(ctx) {

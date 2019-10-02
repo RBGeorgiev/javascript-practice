@@ -21,6 +21,10 @@ export default class InputHandler {
                 case 13: // Enter
                     game.init();
                     break;
+
+                case 32: // Space
+                    game.cars = [];
+                    break;
             }
         });
 

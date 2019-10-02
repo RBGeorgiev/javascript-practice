@@ -1,6 +1,7 @@
 import Car from './car.js';
 import Map from './map-loader.js';
-import InputHandler from './input.js';
+import InputHandler from './input.js';;
+import { initNeat, startEvaluation, endEvaluation } from "./nn.js";
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -12,8 +13,25 @@ export default class Game {
     }
 
     init() {
-        this.car = new Car(this);
-        new InputHandler(this, this.car);
+        initNeat();
+        // this.car = new Car(this);
+        this.cars = startEvaluation(this);
+        new InputHandler(this, this.cars[0]);
+    }
+
+    update(deltaTime) {
+        if (this.cars.length === 0) this.cars = endEvaluation(this);
+
+        for (let i = this.cars.length - 1; i >= 0; i--) {
+            this.cars[i].update(deltaTime, this.map.track);
+            if (this.cars[i].crashed) this.cars.splice(i, 1);
+        }
+
+        // console.log(this.cars)
+        // console.log(this.cars[0].brain.score)
+        // if (this.cars.length !== 0) console.log(this.cars[0].brain.outputs)
+        // console.log(this.cars[0].brain, this.cars[1].brain)
+
     }
 
     draw(ctx) {
@@ -22,10 +40,9 @@ export default class Game {
         ctx.fill();
 
         this.map.draw(ctx);
-        this.car.draw(ctx);
+        for (let car of this.cars) {
+            car.draw(ctx);
+        }
     }
 
-    update(deltaTime) {
-        this.car.update(deltaTime, this.map.track);
-    }
 }
