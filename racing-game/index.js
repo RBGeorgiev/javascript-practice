@@ -1,5 +1,16 @@
 import Game from "./src/game.js";
 
+const slider = document.getElementById("gameSpeed");
+const output = document.getElementById("gameSpeedVal");
+
+output.innerHTML = slider.value;
+let gameSpeed = slider.value;
+
+slider.oninput = function () {
+    output.innerHTML = this.value;
+    gameSpeed = this.value;
+}
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -17,7 +28,9 @@ function gameLoop(timestamp) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    game.update(deltaTime);
+    for (let i = 0; i < gameSpeed; i++) {
+        game.update(deltaTime);
+    }
     game.draw(ctx);
 
     // requestAnimationFrame executes on next available screen repaint, instead of on predetermined delay (e.g. every 50ms). This stops errors in time stamps if slow computers bottleneck. 

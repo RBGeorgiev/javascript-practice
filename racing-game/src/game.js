@@ -10,6 +10,8 @@ export default class Game {
 
         this.init();
         this.map = new Map;
+        this.paused = false;
+        this.timer = 0
     }
 
     init() {
@@ -20,7 +22,14 @@ export default class Game {
     }
 
     update(deltaTime) {
+        if (this.paused) return;
+        if (this.timer > 60000) {
+            this.cars = [];
+            this.timer = 0
+        }
         if (this.cars.length === 0) this.cars = endEvaluation(this);
+
+        this.timer += deltaTime;
 
         for (let i = this.cars.length - 1; i >= 0; i--) {
             this.cars[i].update(deltaTime, this.map.track);

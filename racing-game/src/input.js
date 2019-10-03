@@ -25,6 +25,10 @@ export default class InputHandler {
                 case 32: // Space
                     game.cars = [];
                     break;
+
+                case 80: // 'P'
+                    game.paused = !game.paused
+                    break;
             }
         });
 
