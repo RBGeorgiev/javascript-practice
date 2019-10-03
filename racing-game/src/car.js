@@ -51,6 +51,7 @@ export default class Car {
         for (let i = 0; i < this.sensorDistToCol.length; i++) {
             ans.push(this.sensorDistToCol[i] / 500);
         }
+        ans.push(this.speed / 100)
         this.brain.inputs = ans;
     }
 
@@ -296,9 +297,24 @@ export default class Car {
     }
 
     update(deltaTime, track) {
-        if (this.speed === 0 && this.moving === 0) this.timeImmobile += deltaTime;
-        if (this.speed !== 0 || this.moving !== 0) this.timeImmobile = 0;
-        if (this.timeImmobile > 1000) this.crashed = true;
+        if (this.speed === 0) {
+            this.timeImmobile += deltaTime;
+        } else {
+            this.timeImmobile = 0;
+        }
+        if (this.rotate !== 0) {
+            this.timeSpinning += deltaTime;
+        } else {
+            this.timeSpinning = 0;
+        }
+
+
+        if (this.timeImmobile > 1000 || this.timeSpinning > 3000) {
+            this.brain.score = 0;
+            this.crashed = true;
+        }
+
+
 
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
         if (this.crashed) return;
@@ -315,14 +331,12 @@ export default class Car {
         this.getInputs();
         this.getOutputs()
 
-        this.brain.score += this.speed * this.mod;
+        this.brain.score += 1 + this.speed;
         // this.brain.score += 1 + this.speed * this.mod;
 
-        if (this.brain.outputs[0] < -0.6)
+        if (this.brain.outputs[0] < 0)
             this.stopMoving();
-        if (this.brain.outputs[0] > -0.6 && this.brain.outputs[0] < 0.3)
-            this.moveBack();
-        if (this.brain.outputs[0] > 0.3)
+        if (this.brain.outputs[0] > 0)
             this.moveForward();
 
         if (this.brain.outputs[1] < -0.6)

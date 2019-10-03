@@ -10,15 +10,9 @@ let Architect = neataptic.architect;
 
 
 
-let POP_SIZE = 150
-/** Settings */
-
-let FOOD_DETECTION = 3;
-let PLAYER_DETECTION = 3;
+let POP_SIZE = 200
 
 // GA settings - genetic algorithm
-let ITERATIONS = 1000;
-let START_HIDDEN_SIZE = 0;
 let MUTATION_RATE = 0.3;
 let ELITISM = Math.round(0.1 * POP_SIZE);
 
@@ -27,12 +21,11 @@ let USE_TRAINED_POP = false;
 // let USE_TRAINED_POP = true;
 
 
-// var myNetwork = new neataptic.Neat(8, 12, 6);
 let neat
 
 export function initNeat() {
     neat = new Neat(
-        8,
+        9,
         2,
         null,
         {
