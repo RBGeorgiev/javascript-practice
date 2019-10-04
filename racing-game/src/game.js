@@ -11,7 +11,7 @@ export default class Game {
         this.init();
         this.map = new Map;
         this.paused = false;
-        this.timer = 0
+        this.timer = 0;
     }
 
     init() {
@@ -25,22 +25,20 @@ export default class Game {
         if (this.paused) return;
         if (this.timer > 60000) {
             this.cars = [];
-            this.timer = 0
+            console.log('timer ran out')
         }
-        if (this.cars.length === 0) this.cars = endEvaluation(this);
+
+        if (this.cars.length === 0) {
+            this.cars = endEvaluation(this);
+            this.timer = 0;
+        }
 
         this.timer += deltaTime;
 
         for (let i = this.cars.length - 1; i >= 0; i--) {
-            this.cars[i].update(deltaTime, this.map.track);
+            this.cars[i].update(deltaTime, this.map);
             if (this.cars[i].crashed) this.cars.splice(i, 1);
         }
-
-        // console.log(this.cars)
-        // console.log(this.cars[0].brain.score)
-        // if (this.cars.length !== 0) console.log(this.cars[0].brain.outputs)
-        // console.log(this.cars[0].brain, this.cars[1].brain)
-
     }
 
     draw(ctx) {

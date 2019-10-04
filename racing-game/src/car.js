@@ -35,6 +35,7 @@ export default class Car {
         this.moving = 0;
         this.crashed = false;
         this.timeImmobile = 0;
+        this.gatesPassed = [];
 
         this.sensorCollisions = [];
         this.sensorDistToCol = [];
@@ -296,24 +297,23 @@ export default class Car {
         this.drawSides(ctx);
     }
 
-    update(deltaTime, track) {
+    update(deltaTime, map) {
         if (this.speed === 0) {
             this.timeImmobile += deltaTime;
         } else {
             this.timeImmobile = 0;
         }
+
         if (this.rotate !== 0) {
             this.timeSpinning += deltaTime;
         } else {
             this.timeSpinning = 0;
         }
 
-
         if (this.timeImmobile > 1000 || this.timeSpinning > 3000) {
-            this.brain.score = 0;
+            this.brain.score = this.gatesPassed.length * 2000;
             this.crashed = true;
         }
-
 
 
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
@@ -325,14 +325,14 @@ export default class Car {
         this.rotateSensors();
         this.positionSides();
 
-        this.sensorTrackCollision(track);
-        this.carTrackCollision(track);
+        this.sensorTrackCollision(map.track);
+        this.carTrackCollision(map.track);
+        this.carGatesCollision(map.gates);
 
         this.getInputs();
         this.getOutputs()
 
-        this.brain.score += 1 + this.speed;
-        // this.brain.score += 1 + this.speed * this.mod;
+        this.brain.score += this.speed / 4;
 
         if (this.brain.outputs[0] < 0)
             this.stopMoving();
@@ -356,6 +356,34 @@ export default class Car {
     clamp(number, min, max) {
         // caps min and max speed
         return Math.max(min, Math.min(number, max));
+    }
+
+    carGatesCollision(gates) {
+        const carSides = this.sides;
+
+        for (let i = 0; i < carSides.length; i++) {
+            for (let j = 0; j < gates.length; j++) {
+                let collide = lineCollision(
+                    carSides[i].x1,
+                    carSides[i].y1,
+                    carSides[i].x2,
+                    carSides[i].y2,
+                    gates[j].x1,
+                    gates[j].y1,
+                    gates[j].x2,
+                    gates[j].y2,
+                )
+                if (collide) {
+                    const id = gates[j].id
+                    if (this.gatesPassed.includes(id)) {
+                        return;
+                    } else {
+                        this.gatesPassed.push(id);
+                        this.brain.score += 2000;
+                    }
+                }
+            }
+        }
     }
 
     carTrackCollision(track) {

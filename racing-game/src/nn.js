@@ -2,26 +2,21 @@ import Car from './car.js';
 
 let Neat = neataptic.Neat;
 let Methods = neataptic.methods;
-let Config = neataptic.config;
-let Architect = neataptic.architect;
 
-/** Turn off warnings */
-// Config.warnings = false;
-
-
-
-let POP_SIZE = 200
+let POP_SIZE = 150
 
 // GA settings - genetic algorithm
 let MUTATION_RATE = 0.3;
-let ELITISM = Math.round(0.1 * POP_SIZE);
+let ELITISM = Math.round(0.3 * POP_SIZE);
 
 // Trained population
 let USE_TRAINED_POP = false;
 // let USE_TRAINED_POP = true;
 
 
-let neat
+let neat;
+let highestScore = 0;
+let totalHighestScore = 0;
 
 export function initNeat() {
     neat = new Neat(
@@ -49,21 +44,21 @@ export function initNeat() {
             elitism: ELITISM
         }
     );
-    // console.log(neat)
-    // console.log(neat.population)
 
     if (USE_TRAINED_POP) {
         neat.population = population;
     }
 }
-// console.log(neat)
 
 //  Start the evaluation of the current generation
 export function startEvaluation(game) {
     let cars = [];
-    let highestScore = 0;
+    highestScore = 0;
 
     for (let genome in neat.population) {
+        let score = neat.population[genome].score;
+        if (score > highestScore) highestScore = score;
+        if (score > totalHighestScore) totalHighestScore = score;
         genome = neat.population[genome];
         cars.push(new Car(game, genome));
     }
@@ -73,8 +68,7 @@ export function startEvaluation(game) {
 
 // End the evaluation of the current generation 
 export function endEvaluation(game) {
-    // console.log(neat)
-    console.log('Generation:', neat.generation, '- average score:', neat.getAverage(), '- fittest score:', neat.getFittest().score);
+    console.log('Generation:', neat.generation, '| average:', neat.getAverage(), '| fittest:', neat.getFittest().score, '| highest:', highestScore, '| total highest:', totalHighestScore);
     console.log(neat.getFittest());
 
     neat.sort();
