@@ -186,26 +186,30 @@ export default class Car {
         const sensRadius = 1000;
         const sensRadian = 0.7;
         const center = this.vertices[0]
+        const topLeft = this.vertices[1]
+        const topRight = this.vertices[2]
+        const botRight = this.vertices[3]
+        const botLeft = this.vertices[4]
 
         this.sensors = [
             // top
             {
-                x1: center.x,
-                y1: center.y,
+                x1: topRight.x,
+                y1: topRight.y,
                 x2: this.axis.x,
                 y2: this.axis.y - sensRadius
             },
             // right
             {
-                x1: center.x,
-                y1: center.y,
+                x1: this.axis.x,
+                y1: this.axis.y,
                 x2: this.axis.x + sensRadius,
                 y2: this.axis.y + this.size.height / 2
             },
             // bottom
             {
-                x1: center.x,
-                y1: center.y,
+                x1: botRight.x,
+                y1: botRight.y,
                 x2: this.axis.x,
                 y2: this.axis.y + sensRadius
             },
@@ -218,30 +222,30 @@ export default class Car {
             },
             // top right
             {
-                x1: center.x,
-                y1: center.y,
+                x1: topRight.x,
+                y1: topRight.y,
                 x2: this.axis.x + sensRadius * Math.cos(sensRadian),
                 y2: this.axis.y + sensRadius * Math.sin(-sensRadian)
             },
 
             // top left
             {
-                x1: center.x,
-                y1: center.y,
+                x1: topLeft.x,
+                y1: topLeft.y,
                 x2: this.axis.x - sensRadius * Math.cos(sensRadian),
                 y2: this.axis.y - sensRadius * Math.sin(sensRadian)
             },
             // bottom right           
             {
-                x1: center.x,
-                y1: center.y,
+                x1: botRight.x,
+                y1: botRight.y,
                 x2: this.axis.x + sensRadius * Math.cos(sensRadian),
                 y2: this.axis.y + sensRadius * Math.sin(sensRadian)
             },
             // bottom left
             {
-                x1: center.x,
-                y1: center.y,
+                x1: botLeft.x,
+                y1: botLeft.y,
                 x2: this.axis.x - sensRadius * Math.cos(sensRadian),
                 y2: this.axis.y - sensRadius * Math.sin(-sensRadian)
             },

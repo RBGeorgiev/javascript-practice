@@ -1,4 +1,5 @@
 import Car from './car.js';
+import { population } from './trained-pop.js'
 
 let Neat = neataptic.Neat;
 let Methods = neataptic.methods;
@@ -11,7 +12,13 @@ let ELITISM = Math.round(0.3 * POP_SIZE);
 
 // Trained population
 let USE_TRAINED_POP = false;
-// let USE_TRAINED_POP = true;
+// Convert the json to an array of networks
+let newPop = [];
+for (let i = 0; i < POP_SIZE; i++) {
+    let json = population[i % population.length];
+    newPop[i] = neataptic.Network.fromJSON(json);
+}
+let trainedPop = newPop;
 
 
 let neat;
@@ -46,7 +53,7 @@ export function initNeat() {
     );
 
     if (USE_TRAINED_POP) {
-        neat.population = population;
+        neat.population = trainedPop;
     }
 }
 

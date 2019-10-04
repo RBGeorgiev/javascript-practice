@@ -17,6 +17,7 @@ export default class Game {
     init() {
         initNeat();
         // this.car = new Car(this);
+        // new InputHandler(this, this.car);
         this.cars = startEvaluation(this);
         new InputHandler(this, this.cars[0]);
     }
@@ -27,6 +28,8 @@ export default class Game {
             this.cars = [];
             console.log('timer ran out')
         }
+
+        // this.car.update(deltaTime, this.map)
 
         if (this.cars.length === 0) {
             this.cars = endEvaluation(this);
@@ -46,10 +49,11 @@ export default class Game {
         ctx.rect(0, 0, this.gameWidth, this.gameHeight);
         ctx.fill();
 
+        // this.car.draw(ctx)
+
         this.map.draw(ctx);
         for (let car of this.cars) {
             car.draw(ctx);
         }
     }
-
 }
