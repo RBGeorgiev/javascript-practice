@@ -182,22 +182,26 @@ export default class Car {
         ctx.stroke();
     }
 
+    degreesToRadians(degrees) {
+        return degrees * (Math.PI / 180);
+    }
+
     positionSensors() {
-        const sensRadius = 1000;
-        const sensRadian = 0.7;
-        const center = this.vertices[0]
-        const topLeft = this.vertices[1]
-        const topRight = this.vertices[2]
-        const botRight = this.vertices[3]
-        const botLeft = this.vertices[4]
+        const sensRadius = 500;
+        const radian = (deg) => this.degreesToRadians(deg)
+        // const center = this.vertices[0];
+        const topLeft = this.vertices[1];
+        const topRight = this.vertices[2];
+        const botRight = this.vertices[3];
+        const botLeft = this.vertices[4];
 
         this.sensors = [
             // top
             {
                 x1: topRight.x,
                 y1: topRight.y,
-                x2: this.axis.x,
-                y2: this.axis.y - sensRadius
+                x2: topRight.x,
+                y2: topRight.y - sensRadius
             },
             // right
             {
@@ -210,44 +214,56 @@ export default class Car {
             {
                 x1: botRight.x,
                 y1: botRight.y,
-                x2: this.axis.x,
-                y2: this.axis.y + sensRadius
+                x2: botRight.x,
+                y2: botRight.y + sensRadius
             },
-            // left
-            {
-                x1: center.x,
-                y1: center.y,
-                x2: this.axis.x - sensRadius,
-                y2: this.axis.y + this.size.height / 2
-            },
+            // // left
+            // {
+            //     x1: center.x,
+            //     y1: center.y,
+            //     x2: this.axis.x - sensRadius,
+            //     y2: this.axis.y + this.size.height / 2
+            // },
             // top right
             {
                 x1: topRight.x,
                 y1: topRight.y,
-                x2: this.axis.x + sensRadius * Math.cos(sensRadian),
-                y2: this.axis.y + sensRadius * Math.sin(-sensRadian)
+                x2: topRight.x + sensRadius * Math.cos(radian(30)),
+                y2: topRight.y + sensRadius * Math.sin(-radian(30))
+            },
+            {
+                x1: topRight.x,
+                y1: topRight.y,
+                x2: topRight.x + sensRadius * Math.cos(radian(60)),
+                y2: topRight.y + sensRadius * Math.sin(-radian(60))
             },
 
             // top left
             {
                 x1: topLeft.x,
                 y1: topLeft.y,
-                x2: this.axis.x - sensRadius * Math.cos(sensRadian),
-                y2: this.axis.y - sensRadius * Math.sin(sensRadian)
+                x2: topLeft.x - sensRadius * Math.cos(radian(45)),
+                y2: topLeft.y - sensRadius * Math.sin(radian(45))
             },
             // bottom right           
             {
                 x1: botRight.x,
                 y1: botRight.y,
-                x2: this.axis.x + sensRadius * Math.cos(sensRadian),
-                y2: this.axis.y + sensRadius * Math.sin(sensRadian)
+                x2: botRight.x + sensRadius * Math.cos(radian(30)),
+                y2: botRight.y + sensRadius * Math.sin(radian(30))
+            },
+            {
+                x1: botRight.x,
+                y1: botRight.y,
+                x2: botRight.x + sensRadius * Math.cos(radian(60)),
+                y2: botRight.y + sensRadius * Math.sin(radian(60))
             },
             // bottom left
             {
                 x1: botLeft.x,
                 y1: botLeft.y,
-                x2: this.axis.x - sensRadius * Math.cos(sensRadian),
-                y2: this.axis.y - sensRadius * Math.sin(-sensRadian)
+                x2: botLeft.x - sensRadius * Math.cos(radian(45)),
+                y2: botLeft.y - sensRadius * Math.sin(-radian(45))
             },
         ];
     }

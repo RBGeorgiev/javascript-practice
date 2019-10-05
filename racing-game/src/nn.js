@@ -27,7 +27,7 @@ let totalHighestScore = 0;
 
 export function initNeat() {
     neat = new Neat(
-        9,
+        10,
         2,
         null,
         {

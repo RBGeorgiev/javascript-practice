@@ -12,6 +12,8 @@ export default class Game {
         this.map = new Map;
         this.paused = false;
         this.timer = 0;
+
+        document.addEventListener('click', e => console.log(e.offsetX, e.offsetY))
     }
 
     init() {
