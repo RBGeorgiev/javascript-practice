@@ -35,7 +35,7 @@ export default class Car {
         this.moving = 0;
         this.crashed = false;
         this.timeImmobile = 0;
-        this.gatesPassed = [];
+        this.gatesPassed = [0];
 
         this.sensorCollisions = [];
         this.sensorDistToCol = [];
@@ -331,7 +331,7 @@ export default class Car {
         }
 
         if (this.timeImmobile > 1000 || this.timeSpinning > 3000) {
-            this.brain.score = this.gatesPassed.length * 2000;
+            this.brain.score = (this.gatesPassed.length - 1) * 1000;
             this.crashed = true;
         }
 
@@ -394,12 +394,18 @@ export default class Car {
                     gates[j].y2,
                 )
                 if (collide) {
-                    const id = gates[j].id
-                    if (this.gatesPassed.includes(id)) {
+                    const id = gates[j].id,
+                        gatesPassed = this.gatesPassed;
+                    if (gatesPassed.includes(id)) {
                         return;
                     } else {
-                        this.gatesPassed.push(id);
-                        this.brain.score += 2000;
+                        if (gatesPassed[gatesPassed.length - 1] === id - 1) {
+                            gatesPassed.push(id);
+                            this.brain.score += 1000;
+                        } else {
+                            this.brain.score = 0;
+                            this.crashed = true;
+                        }
                     }
                 }
             }
