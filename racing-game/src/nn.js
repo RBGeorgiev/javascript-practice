@@ -27,6 +27,11 @@ let totalHighestScore = 0;
 export let prevGenerationJSON = null;
 export let prevFittestJSON = null;
 
+export let genNumber = 0;
+function updateGenNumber() {
+    document.getElementById("genNumber").innerHTML = "Current generation: " + genNumber;
+}
+
 export function initNeat() {
     neat = new Neat(
         10,
@@ -80,6 +85,8 @@ export function endEvaluation(game) {
     console.log('Generation:', neat.generation, '| average:', neat.getAverage(), '| fittest:', neat.getFittest().score, '| highest:', highestScore, '| total highest:', totalHighestScore);
     console.log(neat.getFittest());
 
+    genNumber++;
+    updateGenNumber();
     prevFittestJSON = neat.getFittest().toJSON();
     prevGenerationJSON = neat.export();
 

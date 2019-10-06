@@ -1,5 +1,5 @@
 import Game from "./src/game.js";
-import { prevGenerationJSON } from "./src/nn.js"
+import { prevGenerationJSON, genNumber } from "./src/nn.js"
 
 const slider = document.getElementById("gameSpeed");
 const output = document.getElementById("gameSpeedVal");
@@ -13,7 +13,7 @@ function exportJson(el, json) {
     let data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
 
     el.setAttribute("href", "data:" + data);
-    el.setAttribute("download", "lastGen.json");
+    el.setAttribute("download", `generation_${genNumber - 1}.json`);
 }
 
 output.innerHTML = slider.value;
