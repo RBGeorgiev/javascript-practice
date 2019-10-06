@@ -24,6 +24,8 @@ let trainedPop = newPop;
 let neat;
 let highestScore = 0;
 let totalHighestScore = 0;
+export let prevGenerationJSON = null;
+export let prevFittestJSON = null;
 
 export function initNeat() {
     neat = new Neat(
@@ -78,6 +80,9 @@ export function endEvaluation(game) {
     console.log('Generation:', neat.generation, '| average:', neat.getAverage(), '| fittest:', neat.getFittest().score, '| highest:', highestScore, '| total highest:', totalHighestScore);
     console.log(neat.getFittest());
 
+    prevFittestJSON = neat.getFittest().toJSON();
+    prevGenerationJSON = neat.export();
+
     neat.sort();
     let newPopulation = [];
     // Elitism
@@ -97,5 +102,3 @@ export function endEvaluation(game) {
     neat.generation++;
     return startEvaluation(game);
 }
-
-

@@ -1,3 +1,16 @@
 body {
     text-align: center;
 }
+
+.btn {
+    background: #1b1a20;
+    color: #ececec;
+    padding: 2px 6px;
+    border: 2px rgb(179, 179, 179) solid;
+}
+
+.btn:hover {
+    background: #ffc918;
+    color: #1b1a20;
+    cursor: pointer;
+}

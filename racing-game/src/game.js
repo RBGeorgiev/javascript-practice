@@ -1,4 +1,4 @@
-import Car from './car.js';
+// import Car from './car.js';
 import Map from './map-loader.js';
 import InputHandler from './input.js';;
 import { initNeat, startEvaluation, endEvaluation } from "./nn.js";
