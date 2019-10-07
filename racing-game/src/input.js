@@ -23,11 +23,11 @@ export default class InputHandler {
                     break;
 
                 case 32: // Space
-                    game.cars = [];
+                    game.paused = !game.paused
                     break;
 
-                case 80: // 'P'
-                    game.paused = !game.paused
+                case 82: // 'R'                    
+                    game.cars = [];
                     break;
             }
         });

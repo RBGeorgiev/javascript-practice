@@ -2,6 +2,14 @@ body {
     text-align: center;
 }
 
+.controls {
+    width: 1280px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .btn {
     background: #1b1a20;
     color: #ececec;

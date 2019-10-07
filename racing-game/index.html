@@ -12,13 +12,18 @@
     <p id="genNumber">Current generation: 0</p>
     <main>
         <canvas id="gameCanvas"></canvas>
-        <div>
-            <input type="range" min="1" max="10" value="1" class="slider" id="gameSpeed">
-            <p>Game Speed: <span id="gameSpeedVal"></span></p>
+        <div class="controls">
+            <p>Space to pause</p>
+            <p>R to load next generation</p>
+            <div>
+                <label>
+                    Game Speed: <span id="gameSpeedVal"></span>
+                    <input type="range" min="1" max="10" value="1" class="slider" id="gameSpeed">
+                </label>
+            </div>
+            <a id="dlPrevGen" class="btn">Download previous generation</a>
+            <a id="dlFittest" class="btn">Download fittest from all generations</a>
         </div>
-        <p>P to pause</p>
-        <a id="dlPrevGen" class="btn">Download previous generation</a>
-        <a id="dlFittest" class="btn">Download fittest from all generations</a>
     </main>
 
     <script src="./neataptic.js" defer></script>
