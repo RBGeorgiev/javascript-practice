@@ -1,19 +1,21 @@
 import Game from "./src/game.js";
-import { prevGenerationJSON, genNumber } from "./src/nn.js"
+import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn.js"
 
 const slider = document.getElementById("gameSpeed");
 const output = document.getElementById("gameSpeedVal");
-const exportJSON = document.getElementById("exportJSON");
+const dlPrevGen = document.getElementById("dlPrevGen");
+const dlFittest = document.getElementById("dlFittest");
 
-exportJSON.onclick = function () { exportJson(this, prevGenerationJSON) }
+dlPrevGen.onclick = function () { exportJson(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
+dlFittest.onclick = function () { exportJson(this, prevFittestJSON, `fittest-gen_0-to-gen_${genNumber - 1}`) }
 
-function exportJson(el, json) {
+function exportJson(el, json, name) {
     if (json === null) return alert('There is no previous generation');
     let obj = json;
     let data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
 
     el.setAttribute("href", "data:" + data);
-    el.setAttribute("download", `generation_${genNumber - 1}.json`);
+    el.setAttribute("download", `${name}.json`);
 }
 
 output.innerHTML = slider.value;

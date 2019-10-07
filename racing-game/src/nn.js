@@ -25,7 +25,7 @@ let neat;
 let highestScore = 0;
 let totalHighestScore = 0;
 export let prevGenerationJSON = null;
-export let prevFittestJSON = null;
+export let prevFittestJSON = [];
 
 export let genNumber = 0;
 function updateGenNumber() {
@@ -87,7 +87,7 @@ export function endEvaluation(game) {
 
     genNumber++;
     updateGenNumber();
-    prevFittestJSON = neat.getFittest().toJSON();
+    prevFittestJSON.push(neat.getFittest().toJSON());
     prevGenerationJSON = neat.export();
 
     neat.sort();
