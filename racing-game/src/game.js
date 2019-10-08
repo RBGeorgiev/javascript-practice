@@ -29,7 +29,7 @@ export default class Game {
             console.log('timer ran out')
         }
 
-        // this.car.update(deltaTime, this.map)
+        // this.car.update(deltaTime)
 
         if (this.cars.length === 0) {
             this.cars = endEvaluation(this);
@@ -39,7 +39,7 @@ export default class Game {
         this.timer += deltaTime;
 
         for (let i = this.cars.length - 1; i >= 0; i--) {
-            this.cars[i].update(deltaTime, this.map);
+            this.cars[i].update(deltaTime);
             if (this.cars[i].crashed) this.cars.splice(i, 1);
         }
     }

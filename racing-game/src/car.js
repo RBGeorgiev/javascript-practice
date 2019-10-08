@@ -217,13 +217,6 @@ export default class Car {
                 x2: botRight.x,
                 y2: botRight.y + sensRadius
             },
-            // // left
-            // {
-            //     x1: center.x,
-            //     y1: center.y,
-            //     x2: this.axis.x - sensRadius,
-            //     y2: this.axis.y + this.size.height / 2
-            // },
             // top right
             {
                 x1: topRight.x,
@@ -317,7 +310,9 @@ export default class Car {
         this.drawSides(ctx);
     }
 
-    update(deltaTime, map) {
+    update(deltaTime) {
+        const map = this.game.map;
+
         if (this.speed === 0) {
             this.timeImmobile += deltaTime;
         } else {
@@ -345,6 +340,7 @@ export default class Car {
         this.rotateSensors();
         this.positionSides();
 
+        this.outOfCanvasCheck();
         this.sensorTrackCollision(map.track);
         this.carTrackCollision(map.track);
         this.carGatesCollision(map.gates);
@@ -376,6 +372,22 @@ export default class Car {
     clamp(number, min, max) {
         // caps min and max speed
         return Math.max(min, Math.min(number, max));
+    }
+
+    outOfCanvasCheck() {
+        const vert = this.vertices,
+            gameWidth = this.game.gameWidth,
+            gameHeight = this.game.gameHeight;
+        for (let i = 0; i < vert.length; i++) {
+            const x = vert[i].x,
+                y = vert[i].y;
+
+            if (x < 0 || x > gameWidth ||
+                y < 0 || y > gameHeight) {
+                this.brain.score = 0;
+                this.crashed = true;
+            }
+        }
     }
 
     carGatesCollision(gates) {
