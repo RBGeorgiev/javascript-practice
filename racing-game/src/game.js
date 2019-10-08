@@ -2,6 +2,7 @@
 import Map from './map-loader.js';
 import InputHandler from './input.js';;
 import { initNeat, startEvaluation, endEvaluation } from "./nn.js";
+import { drawCars } from '../index.js'
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -52,8 +53,11 @@ export default class Game {
         // this.car.draw(ctx)
 
         this.map.draw(ctx);
-        for (let car of this.cars) {
-            car.draw(ctx);
+
+        if (drawCars.checked) {
+            for (let car of this.cars) {
+                car.draw(ctx);
+            }
         }
     }
 }
