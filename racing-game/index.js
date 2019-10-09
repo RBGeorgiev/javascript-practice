@@ -4,7 +4,9 @@ import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn.js"
 export const drawCars = document.getElementById("drawCars"),
     drawAxis = document.getElementById("drawAxis"),
     drawVertices = document.getElementById("drawVertices"),
-    drawSides = document.getElementById("drawSides");
+    drawSides = document.getElementById("drawSides"),
+    drawSensors = document.getElementById("drawSensors"),
+    drawSensorCollisions = document.getElementById("drawSensorCollisions");
 
 const slider = document.getElementById("gameSpeed");
 const output = document.getElementById("gameSpeedVal");

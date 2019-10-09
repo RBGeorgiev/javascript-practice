@@ -1,5 +1,5 @@
 import lineCollision from './collision.js';
-import { drawAxis, drawVertices, drawSides } from '../index.js'
+import { drawAxis, drawVertices, drawSides, drawSensors, drawSensorCollisions } from '../index.js'
 
 export default class Car {
     constructor(game, genome) {
@@ -306,8 +306,8 @@ export default class Car {
         (this.crashed) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
         if (drawVertices.checked) this.drawVertices(ctx)
-        // this.drawSensors(ctx);
-        // this.drawSensorCollisions(ctx);
+        if (drawSensors.checked) this.drawSensors(ctx);
+        if (drawSensorCollisions.checked) this.drawSensorCollisions(ctx);
         if (drawSides.checked) this.drawSides(ctx);
     }
 
