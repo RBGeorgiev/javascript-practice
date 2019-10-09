@@ -1,7 +1,10 @@
 import Game from "./src/game.js";
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn.js"
 
-export const drawCars = document.getElementById("drawCars");
+export const drawCars = document.getElementById("drawCars"),
+    drawAxis = document.getElementById("drawAxis"),
+    drawVertices = document.getElementById("drawVertices"),
+    drawSides = document.getElementById("drawSides");
 
 const slider = document.getElementById("gameSpeed");
 const output = document.getElementById("gameSpeedVal");
