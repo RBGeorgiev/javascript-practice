@@ -1,37 +1,42 @@
 import Car from './car.js';
 import { population } from './trained-pop.js'
 
-let Neat = neataptic.Neat;
-let Methods = neataptic.methods;
-
-let POP_SIZE = 150
-
-// GA settings - genetic algorithm
-let MUTATION_RATE = 0.3;
-let ELITISM = Math.round(0.3 * POP_SIZE);
+const Neat = neataptic.Neat,
+    Methods = neataptic.methods,
+    POP_SIZE = 150,
+    MUTATION_RATE = 0.3,
+    ELITISM = Math.round(0.3 * POP_SIZE);
 
 // Trained population
 let USE_TRAINED_POP = false;
-// Convert the json to an array of networks
-let newPop = [];
-for (let i = 0; i < POP_SIZE; i++) {
-    let json = population[i % population.length];
-    newPop[i] = neataptic.Network.fromJSON(json);
+
+function getTrainedPopulation() {
+    let newPop = [];
+    for (let i = 0; i < POP_SIZE; i++) {
+        let json = population[i % population.length];
+        newPop[i] = neataptic.Network.fromJSON(json);
+    }
+    return newPop;
 }
-let trainedPop = newPop;
 
+// Scores
+let highestScore = 0,
+    totalHighestScore = 0;
 
-let neat;
-let highestScore = 0;
-let totalHighestScore = 0;
-export let prevGenerationJSON = null;
-export let prevFittestJSON = [];
+// Get previous generations
+export let prevGenerationJSON = null,
+    prevFittestJSON = [];
 
+// Gen number tracker
 export let genNumber = 0;
+
 function updateGenNumber() {
+    genNumber++;
     document.getElementById("genNumber").innerHTML = "Current generation: " + genNumber;
 }
 
+// NEAT init
+let neat;
 export function initNeat() {
     neat = new Neat(
         10,
@@ -60,7 +65,7 @@ export function initNeat() {
     );
 
     if (USE_TRAINED_POP) {
-        neat.population = trainedPop;
+        neat.population = getTrainedPopulation();
     }
 }
 
@@ -85,7 +90,6 @@ export function endEvaluation(game) {
     console.log('Generation:', neat.generation, '| average:', neat.getAverage(), '| fittest:', neat.getFittest().score, '| highest:', highestScore, '| total highest:', totalHighestScore);
     console.log(neat.getFittest());
 
-    genNumber++;
     updateGenNumber();
     prevFittestJSON.push(neat.getFittest().toJSON());
     prevGenerationJSON = neat.export();
