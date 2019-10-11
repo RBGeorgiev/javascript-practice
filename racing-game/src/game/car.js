@@ -1,5 +1,5 @@
 import lineCollision from './collision.js';
-import { drawAxis, drawVertices, drawSides, drawSensors, drawSensorCollisions } from '../index.js'
+import { drawAxis, drawVertices, drawSides, drawSensors, drawSensorCollisions } from '../../index.js'
 
 export default class Car {
     constructor(game, genome) {

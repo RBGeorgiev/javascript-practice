@@ -1,8 +1,8 @@
 // import Car from './car.js';
 import Map from './map-loader.js';
-import InputHandler from './input.js';;
-import { initNeat, startEvaluation, endEvaluation } from "./nn.js";
-import { drawCars } from '../index.js'
+import InputHandler from './pc_inputs.js';
+import { initNeat, startEvaluation, endEvaluation } from "../nn/nn.js";
+import { drawCars } from '../../index.js'
 
 export default class Game {
     constructor(gameWidth, gameHeight) {

@@ -1,5 +1,5 @@
-import Game from "./src/game.js";
-import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn.js"
+import Game from "./src/game/game.js";
+import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js"
 
 export const drawCars = document.getElementById("drawCars"),
     drawAxis = document.getElementById("drawAxis"),

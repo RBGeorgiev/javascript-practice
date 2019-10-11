@@ -1,4 +1,4 @@
-import Car from './car.js';
+import Car from '../game/car.js';
 import { population } from './trained-pop.js'
 
 const Neat = neataptic.Neat,
