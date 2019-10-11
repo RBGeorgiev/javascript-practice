@@ -2,7 +2,7 @@
 import Map from './map-loader.js';
 import InputHandler from './pc_inputs.js';
 import { initNeat, startEvaluation, endEvaluation } from "../nn/nn.js";
-import { drawCars } from '../../index.js'
+import { drawCarsCheckbox } from '../constants.js';
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -27,7 +27,7 @@ export default class Game {
         if (this.paused) return;
         if (this.timer > 60000) {
             this.cars = [];
-            console.log('timer ran out')
+            console.log('timer ran out');
         }
 
         // this.car.update(deltaTime)
@@ -54,7 +54,7 @@ export default class Game {
 
         this.map.draw(ctx);
 
-        if (drawCars.checked) {
+        if (drawCarsCheckbox.checked) {
             for (let car of this.cars) {
                 car.draw(ctx);
             }

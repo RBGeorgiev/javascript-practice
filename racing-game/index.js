@@ -1,24 +1,13 @@
 import Game from "./src/game/game.js";
-import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js"
+import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
+import { output, slider } from "./src/constants.js";
 
-export const drawCars = document.getElementById("drawCars"),
-    drawAxis = document.getElementById("drawAxis"),
-    drawVertices = document.getElementById("drawVertices"),
-    drawSides = document.getElementById("drawSides"),
-    drawSensors = document.getElementById("drawSensors"),
-    drawSensorCollisions = document.getElementById("drawSensorCollisions");
-
-const slider = document.getElementById("gameSpeed");
-const output = document.getElementById("gameSpeedVal");
-
-const dlPrevGen = document.getElementById("dlPrevGen");
-const dlFittest = document.getElementById("dlFittest");
 
 dlPrevGen.onclick = function () { exportJson(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
 dlFittest.onclick = function () { exportJson(this, prevFittestJSON, `fittest-gen_0-to-gen_${genNumber - 1}`) }
 
 function exportJson(el, json, name) {
-    if (json === null) return alert('There is no previous generation');
+    if (!json || json.length === 0) return alert('There is no previous generation');
     let obj = json;
     let data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
 
