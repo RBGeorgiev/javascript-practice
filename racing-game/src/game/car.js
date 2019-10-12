@@ -15,31 +15,38 @@ export default class Car {
             y: 130,
         }
 
+        this.positionCar();
+
+        this.maxSpeed = 100
+        this.speed = 0;
+        this.acc = 0;
+        this.mod = 0;
+
+        this.angle = 0;
+        this.rotate = 0;
+        this.moving = 0;
+        this.crashed = false;
+
+        this.initBrain(genome);
+    }
+
+    positionCar() {
         this.axis = {
             x: this.pos.x + this.size.width / 2,
             y: this.pos.y + this.size.height / 2
         }
 
         this.positionVertices();
-
         this.positionSides()
-
         this.positionSensors();
+    }
 
-        this.maxSpeed = 100
-        this.speed = 0;
-        this.acc = 0;
-
-        this.mod = 0;
-        this.angle = 0;
-        this.rotate = 0;
-        this.moving = 0;
-        this.crashed = false;
-        this.timeImmobile = 0;
-        this.gatesPassed = [0];
-
+    initBrain(genome) {
         this.sensorCollisions = [];
         this.sensorDistToCol = [];
+
+        this.timeImmobile = 0;
+        this.gatesPassed = [0];
 
         this.brain = genome;
         this.brain.score = 0;
