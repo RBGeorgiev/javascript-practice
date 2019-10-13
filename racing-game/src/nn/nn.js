@@ -8,11 +8,20 @@ const Neat = neataptic.Neat,
     MUTATION_RATE = 0.3,
     ELITISM = Math.round(0.3 * POP_SIZE);
 
+// Gen number tracker
+export let genNumber = 0;
+
+function updateGenNumber() {
+    document.getElementById("genNumber").innerHTML = "Current generation: " + genNumber;
+}
+
 // Trained population
 let USE_TRAINED_POP = useTrainedCheckbox.checked;
 useTrainedCheckbox.onclick = function () {
     USE_TRAINED_POP = useTrainedCheckbox.checked;
     game.init();
+    genNumber = 0;
+    updateGenNumber();
 }
 
 function getTrainedPopulation() {
@@ -32,13 +41,6 @@ let highestScore = 0,
 export let prevGenerationJSON = null,
     prevFittestJSON = [];
 
-// Gen number tracker
-export let genNumber = 0;
-
-function updateGenNumber() {
-    genNumber++;
-    document.getElementById("genNumber").innerHTML = "Current generation: " + genNumber;
-}
 
 // NEAT init
 let neat;
@@ -95,6 +97,7 @@ export function endEvaluation(game) {
     console.log('Generation:', neat.generation, '| average:', neat.getAverage(), '| fittest:', neat.getFittest().score, '| highest:', highestScore, '| total highest:', totalHighestScore);
     console.log(neat.getFittest());
 
+    genNumber++;
     updateGenNumber();
     prevFittestJSON.push(neat.getFittest().toJSON());
     prevGenerationJSON = neat.export();
