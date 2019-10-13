@@ -21,7 +21,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1280;
 canvas.height = 720;
 
-const game = new Game(canvas.width, canvas.height);
+export const game = new Game(canvas.width, canvas.height);
 
 let lastTime = 0, deltaTime;
 

@@ -1,5 +1,6 @@
 import Car from '../game/car.js';
-import { population } from './trained-pop.js'
+import { game } from '../../index.js';
+import { population } from './trained-pop.js';
 
 const Neat = neataptic.Neat,
     Methods = neataptic.methods,
@@ -8,7 +9,11 @@ const Neat = neataptic.Neat,
     ELITISM = Math.round(0.3 * POP_SIZE);
 
 // Trained population
-let USE_TRAINED_POP = false;
+let USE_TRAINED_POP = useTrainedCheckbox.checked;
+useTrainedCheckbox.onclick = function () {
+    USE_TRAINED_POP = useTrainedCheckbox.checked;
+    game.init();
+}
 
 function getTrainedPopulation() {
     let newPop = [];
