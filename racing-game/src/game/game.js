@@ -1,6 +1,6 @@
-// import Car from './car.js';
 import Map from './map-loader.js';
-import InputHandler from './pc_inputs.js';
+// import Car from './car.js';
+import { gameOptions, carControls } from './pc_inputs.js';
 import { initNeat, startEvaluation, endEvaluation } from "../nn/nn.js";
 import { drawCarsCheckbox } from '../constants.js';
 
@@ -18,9 +18,9 @@ export default class Game {
     init() {
         initNeat();
         // this.car = new Car(this);
-        // new InputHandler(this, this.car);
+        // new carControls( this.car);
         this.cars = startEvaluation(this);
-        new InputHandler(this, this.cars[0]);
+        new gameOptions(this);
     }
 
     update(deltaTime) {

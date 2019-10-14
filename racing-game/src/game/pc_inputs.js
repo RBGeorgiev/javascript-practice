@@ -1,5 +1,5 @@
-export default class InputHandler {
-    constructor(game, car) {
+export class carControls {
+    constructor(car) {
         document.addEventListener('keydown', e => {
             switch (e.keyCode) {
                 case 38: //UP
@@ -16,18 +16,6 @@ export default class InputHandler {
 
                 case 39: //RIGHT
                     car.turnRight();
-                    break;
-
-                case 13: // Enter
-                    game.init();
-                    break;
-
-                case 32: // Space
-                    game.paused = !game.paused
-                    break;
-
-                case 82: // 'R'                    
-                    game.cars = [];
                     break;
             }
         });
@@ -47,6 +35,26 @@ export default class InputHandler {
                     if (car.rotate > 0) {
                         car.stopTurning();
                     }
+                    break;
+            }
+        });
+    }
+}
+
+export class gameOptions {
+    constructor(game) {
+        document.addEventListener('keydown', e => {
+            switch (e.keyCode) {
+                case 13: // Enter
+                    game.init();
+                    break;
+
+                case 32: // Space
+                    game.paused = !game.paused
+                    break;
+
+                case 82: // 'R'                    
+                    game.cars = [];
                     break;
             }
         });
