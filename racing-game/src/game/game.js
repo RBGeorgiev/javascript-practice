@@ -13,14 +13,15 @@ export default class Game {
         this.map = new Map;
         this.paused = false;
         this.timer = 0;
+
+        new gameOptions(this);
     }
 
     init() {
         initNeat();
         // this.car = new Car(this);
-        // new carControls( this.car);
+        // new carControls(this.car);
         this.cars = startEvaluation(this);
-        new gameOptions(this);
     }
 
     update(deltaTime) {
