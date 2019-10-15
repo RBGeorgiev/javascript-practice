@@ -46,7 +46,8 @@ export default class Car {
         this.sensorDistToCol = [];
 
         this.timeImmobile = 0;
-        this.gatesPassed = [0];
+        this.lastGatePassed = 0;
+        this.lap = 0
 
         this.brain = genome;
         this.brain.score = 0;
@@ -334,7 +335,7 @@ export default class Car {
         }
 
         if (this.timeImmobile > 1000 || this.timeSpinning > 3000) {
-            this.brain.score = (this.gatesPassed.length - 1) * 1000;
+            this.brain.score = this.lastGatePassed * 1000 * this.lap;
             this.crashed = true;
         }
 
@@ -414,18 +415,22 @@ export default class Car {
                     gates[j].y2,
                 )
                 if (collide) {
-                    const id = gates[j].id,
-                        gatesPassed = this.gatesPassed;
-                    if (gatesPassed.includes(id)) {
-                        return;
-                    } else {
-                        if (gatesPassed[gatesPassed.length - 1] === id - 1) {
-                            gatesPassed.push(id);
-                            this.brain.score += 1000;
-                        } else {
-                            this.brain.score = 0;
-                            this.crashed = true;
+                    // debugger;
+                    const id = gates[j].id;
+                    if (this.lastGatePassed === id || this.lastGatePassed - (this.lap * (gates.length - 1)) === id) return;
+                    if (this.lastGatePassed - (this.lap * (gates.length - 1)) === id - 1) {
+                        // if passing gates in order      
+                        this.lastGatePassed++;
+                        this.brain.score += 1000;
+
+                        // if passing through last gate
+                        if (gates[gates.length - 1].id === this.lastGatePassed) {
+                            this.lap++;
+                            this.brain.score += 5000;
                         }
+                    } else {
+                        this.brain.score = 0;
+                        this.crashed = true;
                     }
                 }
             }
