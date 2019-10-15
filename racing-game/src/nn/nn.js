@@ -88,14 +88,16 @@ export function startEvaluation(game) {
         genome = neat.population[genome];
         cars.push(new Car(game, genome));
     }
-
+    console.log('| highest:', highestScore, '| total highest:', totalHighestScore);
     return cars;
 }
 
 // End the evaluation of the current generation 
 export function endEvaluation(game) {
-    console.log('Generation:', neat.generation, '| average:', neat.getAverage(), '| fittest:', neat.getFittest().score, '| highest:', highestScore, '| total highest:', totalHighestScore);
-    console.log(neat.getFittest());
+    console.log("______________________________")
+    console.log('Generation:', neat.generation);
+    console.log('fittest:', neat.getFittest());
+    console.log('| average:', neat.getAverage(), '| fittest:', neat.getFittest().score);
 
     genNumber++;
     updateGenNumber();
