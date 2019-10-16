@@ -427,6 +427,7 @@ export default class Car {
                         if (gates[gates.length - 1].id === this.lastGatePassed) {
                             this.lap++;
                             this.brain.score += 5000;
+                            this.game.timer = 0;
                         }
                     } else {
                         this.brain.score = 0;
