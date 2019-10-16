@@ -101,6 +101,8 @@ export function endEvaluation(game) {
 
     genNumber++;
     updateGenNumber();
+
+    if (prevFittestJSON.length === POP_SIZE) prevFittestJSON.shift();
     prevFittestJSON.push(neat.getFittest().toJSON());
     prevGenerationJSON = neat.export();
 
