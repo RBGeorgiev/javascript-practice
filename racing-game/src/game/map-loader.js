@@ -12,10 +12,9 @@ export default function Map() {
         ...this.map.gates
     ]
 
-    this.draw = function (ctx) {
+    this.drawTrack = function (ctx) {
         let outer = this.map.outerLines,
-            inner = this.map.innerLines,
-            gates = this.map.gates;
+            inner = this.map.innerLines;
 
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -29,6 +28,10 @@ export default function Map() {
         }
         ctx.strokeStyle = "#000000";
         ctx.stroke();
+    }
+
+    this.drawGates = function (ctx) {
+        let gates = this.map.gates;
 
         ctx.beginPath();
         for (let i = 0; i < gates.length; i++) {

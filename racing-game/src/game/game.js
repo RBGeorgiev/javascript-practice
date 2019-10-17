@@ -2,7 +2,7 @@ import Map from './map-loader.js';
 // import Car from './car.js';
 import { gameOptions, carControls } from './pc_inputs.js';
 import { initNeat, startEvaluation, endEvaluation } from "../nn/nn.js";
-import { drawCarsCheckbox } from '../constants.js';
+import { drawCarsCheckbox, drawGatesCheckbox } from '../constants.js';
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
@@ -53,7 +53,10 @@ export default class Game {
 
         // this.car.draw(ctx)
 
-        this.map.draw(ctx);
+        this.map.drawTrack(ctx);
+
+        if (drawGatesCheckbox.checked)
+            this.map.drawGates(ctx);
 
         if (drawCarsCheckbox.checked) {
             for (let car of this.cars) {
