@@ -322,26 +322,22 @@ export default class Car {
     update(deltaTime) {
         const map = this.game.map;
 
-        if (this.speed === 0) {
-            this.timeImmobile += deltaTime;
-        } else {
-            this.timeImmobile = 0;
-        }
+        // if immobile add to timer
+        (this.speed === 0) ? this.timeImmobile += deltaTime : this.timeImmobile = 0;
+        // if spinning in place add to timer
+        (this.rotate !== 0) ? this.timeSpinning += deltaTime : this.timeSpinning = 0;
 
-        if (this.rotate !== 0) {
-            this.timeSpinning += deltaTime;
-        } else {
-            this.timeSpinning = 0;
-        }
-
+        // if immobile or spinning for too long crash the car and give lower score
         if (this.timeImmobile > 1000 || this.timeSpinning > 3000) {
             this.brain.score = this.lastGatePassed * 1000 * this.lap;
             this.crashed = true;
         }
 
-
+        // set to 0 if car is immobile to stop it from turning in place
         (this.speed === 0) ? this.moving = 0 : this.moving = 1;
+
         if (this.crashed) return;
+        // update car position
         this.moveAxis(deltaTime);
         this.positionVertices();
         this.rotateVertices();
@@ -349,16 +345,20 @@ export default class Car {
         this.rotateSensors();
         this.positionSides();
 
+        // check collisions
         this.outOfCanvasCheck();
         this.sensorTrackCollision(map.track);
         this.carTrackCollision(map.track);
         this.carGatesCollision(map.gates);
 
+        // inputs and outputs for neural network
         this.getInputs();
         this.getOutputs()
 
+        // the faster the car is moving the bigger score it will get
         this.brain.score += this.speed / 4;
 
+        // move based on neural network outputs
         if (this.brain.outputs[0] < 0)
             this.stopMoving();
         if (this.brain.outputs[0] > 0)
