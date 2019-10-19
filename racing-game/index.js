@@ -1,11 +1,11 @@
 import Game from "./src/game/game.js";
 import { output, slider } from "./src/constants.js";
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
-import exportJson from './src/export-json.js';
+import exportPopulation from './src/export-pop.js';
 
 
-dlPrevGen.onclick = function () { exportJson(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
-dlFittest.onclick = function () { exportJson(this, prevFittestJSON, `fittest-${(genNumber - 151 < 0) ? 0 : genNumber - 151}-to-gen_${genNumber - 1}`) }
+dlPrevGen.onclick = function () { exportPopulation(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
+dlFittest.onclick = function () { exportPopulation(this, prevFittestJSON, `fittest-${(genNumber - 151 < 0) ? 0 : genNumber - 151}-to-gen_${genNumber - 1}`) }
 
 output.innerHTML = slider.value;
 let gameSpeed = slider.value;
