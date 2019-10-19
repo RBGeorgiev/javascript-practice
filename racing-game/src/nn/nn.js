@@ -1,6 +1,6 @@
 import Car from '../game/car.js';
 import { game } from '../../index.js';
-import { population } from './trained-pop.js';
+import { population } from './trained.js';
 
 const Neat = neataptic.Neat,
     Methods = neataptic.methods,
