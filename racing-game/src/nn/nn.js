@@ -2,9 +2,9 @@ import Car from '../game/car.js';
 import { game } from '../../index.js';
 import { population } from './trained.js';
 
+export const POP_SIZE = 150
 const Neat = neataptic.Neat,
     Methods = neataptic.methods,
-    POP_SIZE = 150,
     MUTATION_RATE = 0.3,
     ELITISM = Math.round(0.3 * POP_SIZE);
 

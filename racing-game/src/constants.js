@@ -7,5 +7,7 @@ export const
     drawSensorCollisionsCheckbox = document.getElementById("drawSensorCollisionsCheckbox"),
     drawGatesCheckbox = document.getElementById("drawGatesCheckbox"),
 
-    slider = document.getElementById("gameSpeed"),
-    output = document.getElementById("gameSpeedVal");
+    numberOfCars = document.getElementById("numberOfCars"),
+    numberOfCarsVal = document.getElementById("numberOfCarsVal"),
+    gameSpeed = document.getElementById("gameSpeed"),
+    gameSpeedVal = document.getElementById("gameSpeedVal");

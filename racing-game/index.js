@@ -1,5 +1,5 @@
 import Game from "./src/game/game.js";
-import { output, slider } from "./src/constants.js";
+import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal } from "./src/constants.js";
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
 import exportPopulation from './src/export-pop.js';
 
@@ -7,12 +7,18 @@ import exportPopulation from './src/export-pop.js';
 dlPrevGen.onclick = function () { exportPopulation(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
 dlFittest.onclick = function () { exportPopulation(this, prevFittestJSON, `fittest-${(genNumber - 151 < 0) ? 0 : genNumber - 151}-to-gen_${genNumber - 1}`) }
 
-output.innerHTML = slider.value;
-let gameSpeed = slider.value;
+gameSpeedVal.innerHTML = gameSpeed.value;
 
-slider.oninput = function () {
-    output.innerHTML = this.value;
-    gameSpeed = this.value;
+gameSpeedVal.oninput = function () {
+    gameSpeedVal.innerHTML = this.value;
+    gameSpeed.value = this.value;
+}
+
+numberOfCarsVal.innerHTML = numberOfCars.value;
+
+numberOfCarsVal.oninput = function () {
+    numberOfCarsVal.innerHTML = this.value;
+    numberOfCars.value = this.value;
 }
 
 const canvas = document.getElementById("gameCanvas");
@@ -32,7 +38,7 @@ function gameLoop(timestamp) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < gameSpeed; i++) {
+    for (let i = 0; i < gameSpeed.value; i++) {
         game.update(deltaTime);
     }
     game.draw(ctx);
