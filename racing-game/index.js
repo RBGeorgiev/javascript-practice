@@ -9,14 +9,14 @@ dlFittest.onclick = function () { exportPopulation(this, prevFittestJSON, `fitte
 
 gameSpeedVal.innerHTML = gameSpeed.value;
 
-gameSpeedVal.oninput = function () {
+gameSpeed.oninput = function () {
     gameSpeedVal.innerHTML = this.value;
     gameSpeed.value = this.value;
 }
 
 numberOfCarsVal.innerHTML = numberOfCars.value;
 
-numberOfCarsVal.oninput = function () {
+numberOfCars.oninput = function () {
     numberOfCarsVal.innerHTML = this.value;
     numberOfCars.value = this.value;
 }
