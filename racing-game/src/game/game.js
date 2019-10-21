@@ -1,13 +1,15 @@
 import Map from './map-loader.js';
 // import Car from './car.js';
 import { gameOptions, carControls } from './pc_inputs.js';
-import { initNeat, startEvaluation, endEvaluation } from "../nn/nn.js";
+import Neat from "../nn/nn.js";
 import { drawCarsCheckbox, drawGatesCheckbox, numberOfCars } from '../constants.js';
 
 export default class Game {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
+
+        this.neat = new Neat;
 
         this.init();
         this.map = new Map;
@@ -18,10 +20,10 @@ export default class Game {
     }
 
     init() {
-        initNeat();
+        this.neat.initNeat();
         // this.car = new Car(this);
         // new carControls(this.car);
-        this.cars = startEvaluation(this);
+        this.cars = this.neat.startEvaluation(this);
     }
 
     update(deltaTime) {
@@ -34,7 +36,7 @@ export default class Game {
         // this.car.update(deltaTime)
 
         if (this.cars.length === 0) {
-            this.cars = endEvaluation(this);
+            this.cars = this.neat.endEvaluation(this);
             this.timer = 0;
         }
 
