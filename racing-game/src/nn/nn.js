@@ -4,7 +4,9 @@ import { population } from './trained.js';
 
 
 // Gen number tracker
-export let genNumber = 0;
+export let genNumber = 0,
+    prevGenerationJSON = null,
+    prevFittestJSON = [];
 
 function updateGenNumber() {
     document.getElementById("genNumber").innerHTML = "Current generation: " + genNumber;
@@ -18,11 +20,6 @@ useTrainedCheckbox.onclick = function () {
     genNumber = 0;
     updateGenNumber();
 }
-
-// Get previous generations
-export let prevGenerationJSON = null,
-    prevFittestJSON = [];
-
 
 export default class Neat {
     constructor() {
@@ -82,6 +79,7 @@ export default class Neat {
             let score = neat.population[genome].score;
             if (score > this.highestScore) this.highestScore = score;
             if (score > this.totalHighestScore) this.totalHighestScore = score;
+
             genome = neat.population[genome];
             cars.push(new Car(game, genome));
         }

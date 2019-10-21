@@ -3,10 +3,11 @@ import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal } from "./src/co
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
 import exportPopulation from './src/export-pop.js';
 
-
+// download previous generations
 dlPrevGen.onclick = function () { exportPopulation(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
 dlFittest.onclick = function () { exportPopulation(this, prevFittestJSON, `fittest-${(genNumber - 151 < 0) ? 0 : genNumber - 151}-to-gen_${genNumber - 1}`) }
 
+// set game speed
 gameSpeedVal.innerHTML = gameSpeed.value;
 
 gameSpeed.oninput = function () {
@@ -14,6 +15,7 @@ gameSpeed.oninput = function () {
     gameSpeed.value = this.value;
 }
 
+// set number of cars to draw
 numberOfCarsVal.innerHTML = numberOfCars.value;
 
 numberOfCars.oninput = function () {
@@ -21,12 +23,14 @@ numberOfCars.oninput = function () {
     numberOfCars.value = this.value;
 }
 
+// init canvas
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = 1280;
 canvas.height = 720;
 
+// init game
 export const game = new Game(canvas.width, canvas.height);
 
 let lastTime = 0, deltaTime;
@@ -47,4 +51,5 @@ function gameLoop(timestamp) {
     window.requestAnimationFrame(gameLoop);
 }
 
+// start game loop
 window.requestAnimationFrame(gameLoop);
