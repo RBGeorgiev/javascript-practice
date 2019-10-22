@@ -1,18 +1,20 @@
 import { MAP_1 } from './map_1.js';
 
-export default function Map() {
-    this.map = MAP_1
+export default class Map {
+    constructor() {
+        this.map = MAP_1
 
-    this.track = [
-        ...this.map.outerLines,
-        ...this.map.innerLines
-    ];
+        this.track = [
+            ...this.map.outerLines,
+            ...this.map.innerLines
+        ];
 
-    this.gates = [
-        ...this.map.gates
-    ]
+        this.gates = [
+            ...this.map.gates
+        ]
+    }
 
-    this.drawTrack = function (ctx) {
+    drawTrack(ctx) {
         let outer = this.map.outerLines,
             inner = this.map.innerLines;
 
@@ -30,7 +32,7 @@ export default function Map() {
         ctx.stroke();
     }
 
-    this.drawGates = function (ctx) {
+    drawGates(ctx) {
         let gates = this.map.gates;
 
         ctx.beginPath();
