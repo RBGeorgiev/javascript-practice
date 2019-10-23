@@ -15,16 +15,11 @@ export default class Map {
     }
 
     drawTrack(ctx) {
-        const outer = this.map.outerLines,
-            inner = this.map.innerLines;
-
-        this.drawLines(ctx, outer);
-        this.drawLines(ctx, inner);
+        this.drawLines(ctx, this.track);
     }
 
     drawGates(ctx) {
-        const gates = this.map.gates;
-        this.drawLines(ctx, gates, "#18f051");
+        this.drawLines(ctx, this.gates, "#18f051");
     }
 
     drawLines(ctx, lines, color = "#000000") {
