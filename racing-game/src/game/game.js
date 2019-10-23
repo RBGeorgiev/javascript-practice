@@ -49,7 +49,8 @@ export default class Game {
     }
 
     draw(ctx) {
-        ctx.fillStyle = 'green';
+        // background color
+        ctx.fillStyle = 'grey';
         ctx.rect(0, 0, this.gameWidth, this.gameHeight);
         ctx.fill();
 
