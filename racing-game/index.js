@@ -33,13 +33,6 @@ canvas.height = 720;
 export const image = new Image();
 image.src = "./src/img/car.png";
 
-
-export function drawCar(image, x, y, scaleH, scaleV, cx, cy, rotation) {
-    ctx.setTransform(scaleH, 0, 0, scaleV, x, y); // sets scale and origin
-    ctx.rotate(rotation);
-    ctx.drawImage(image, -cx, -cy);
-}
-
 // init game
 export const game = new Game(canvas.width, canvas.height);
 
@@ -50,7 +43,6 @@ function gameLoop(timestamp) {
     deltaTime = timestamp - lastTime;
     lastTime = timestamp;
 
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < gameSpeed.value; i++) {

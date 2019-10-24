@@ -1,6 +1,6 @@
 import lineCollision from './collision.js';
 import { drawAxisCheckbox, drawVerticesCheckbox, drawSidesCheckbox, drawSensorsCheckbox, drawSensorCollisionsCheckbox } from '../constants.js';
-import { image, drawCar } from '../../index.js'
+import { image } from '../../index.js'
 
 export default class Car {
     constructor(game, genome) {
@@ -309,8 +309,26 @@ export default class Car {
         ctx.stroke();
     }
 
+    drawSprite(ctx, image, x, y, cx, cy, scale, rotation) {
+        ctx.setTransform(scale, 0, 0, scale, x, y); // sets scale and origin
+        ctx.rotate(rotation);
+        ctx.drawImage(image, -cx, -cy);
+    }
+
     draw(ctx) {
-        drawCar(image, this.axis.x, this.axis.y, this.size.height / image.width, this.size.width / image.height, this.size.width, this.size.height, this.degreesToRadians(this.angle) + Math.PI / 2);
+
+        this.drawSprite(
+            ctx,
+            image,
+            this.vertices[2].x,
+            this.vertices[2].y,
+            this.size.width,
+            this.size.height,
+            this.size.height / image.width,
+            this.degreesToRadians(this.angle) + Math.PI / 2
+        );
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         if (drawAxisCheckbox.checked) this.drawAxis(ctx);
         ctx.beginPath();
         (this.crashed) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
