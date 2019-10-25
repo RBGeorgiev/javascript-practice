@@ -309,26 +309,24 @@ export default class Car {
         ctx.stroke();
     }
 
-    drawSprite(ctx, image, x, y, cx, cy, scale, rotation) {
+    drawSprite(ctx, image, x, y, scale, angle) {
         ctx.setTransform(scale, 0, 0, scale, x, y); // sets scale and origin
+        let rotation = this.degreesToRadians(angle) + Math.PI / 2;
         ctx.rotate(rotation);
-        ctx.drawImage(image, -cx, -cy);
+        ctx.drawImage(image, 0, 0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     draw(ctx) {
-
         this.drawSprite(
             ctx,
             image,
-            this.vertices[2].x,
-            this.vertices[2].y,
-            this.size.width,
-            this.size.height,
+            this.vertices[2].x, // top right corner
+            this.vertices[2].y, // top right corner
             this.size.height / image.width,
-            this.degreesToRadians(this.angle) + Math.PI / 2
+            this.angle
         );
 
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
         if (drawAxisCheckbox.checked) this.drawAxis(ctx);
         ctx.beginPath();
         (this.crashed) ? ctx.strokeStyle = "red" : ctx.strokeStyle = "yellow";
