@@ -10,4 +10,7 @@ export const
     numberOfCars = document.getElementById("numberOfCars"),
     numberOfCarsVal = document.getElementById("numberOfCarsVal"),
     gameSpeed = document.getElementById("gameSpeed"),
-    gameSpeedVal = document.getElementById("gameSpeedVal");
+    gameSpeedVal = document.getElementById("gameSpeedVal"),
+
+    carImage = new Image();
+carImage.src = "./src/img/car.png";

@@ -30,9 +30,6 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1280;
 canvas.height = 720;
 
-export const image = new Image();
-image.src = "./src/img/car.png";
-
 // init game
 export const game = new Game(canvas.width, canvas.height);
 
