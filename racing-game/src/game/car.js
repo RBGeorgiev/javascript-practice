@@ -1,5 +1,5 @@
 import lineCollision from './collision.js';
-import { drawAxisCheckbox, drawVerticesCheckbox, drawSidesCheckbox, drawSensorsCheckbox, drawSensorCollisionsCheckbox, carImage } from '../constants.js';
+import { drawAxisCheckbox, drawVerticesCheckbox, drawSidesCheckbox, drawSpriteCheckbox, drawSensorsCheckbox, drawSensorCollisionsCheckbox, carImage } from '../constants.js';
 
 export default class Car {
     constructor(game, genome) {
@@ -317,14 +317,15 @@ export default class Car {
     }
 
     draw(ctx) {
-        this.drawSprite(
-            ctx,
-            carImage,
-            this.vertices[2].x, // top right corner
-            this.vertices[2].y, // top right corner
-            this.size.height / carImage.width,
-            this.angle
-        );
+        if (drawSpriteCheckbox.checked)
+            this.drawSprite(
+                ctx,
+                carImage,
+                this.vertices[2].x, // top right corner
+                this.vertices[2].y, // top right corner
+                this.size.height / carImage.width,
+                this.angle
+            );
 
         if (drawAxisCheckbox.checked) this.drawAxis(ctx);
         ctx.beginPath();

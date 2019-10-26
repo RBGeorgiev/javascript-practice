@@ -3,6 +3,7 @@ export const
     drawAxisCheckbox = document.getElementById("drawAxisCheckbox"),
     drawVerticesCheckbox = document.getElementById("drawVerticesCheckbox"),
     drawSidesCheckbox = document.getElementById("drawSidesCheckbox"),
+    drawSpriteCheckbox = document.getElementById("drawSpriteCheckbox"),
     drawSensorsCheckbox = document.getElementById("drawSensorsCheckbox"),
     drawSensorCollisionsCheckbox = document.getElementById("drawSensorCollisionsCheckbox"),
     drawGatesCheckbox = document.getElementById("drawGatesCheckbox"),
