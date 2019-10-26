@@ -1,17 +1,19 @@
-export const
-    drawCarsCheckbox = document.getElementById("drawCarsCheckbox"),
-    drawAxisCheckbox = document.getElementById("drawAxisCheckbox"),
-    drawVerticesCheckbox = document.getElementById("drawVerticesCheckbox"),
-    drawSidesCheckbox = document.getElementById("drawSidesCheckbox"),
-    drawSpriteCheckbox = document.getElementById("drawSpriteCheckbox"),
-    drawSensorsCheckbox = document.getElementById("drawSensorsCheckbox"),
-    drawSensorCollisionsCheckbox = document.getElementById("drawSensorCollisionsCheckbox"),
-    drawGatesCheckbox = document.getElementById("drawGatesCheckbox"),
+const el = (el) => document.getElementById(el);
 
-    numberOfCars = document.getElementById("numberOfCars"),
-    numberOfCarsVal = document.getElementById("numberOfCarsVal"),
-    gameSpeed = document.getElementById("gameSpeed"),
-    gameSpeedVal = document.getElementById("gameSpeedVal"),
+export const
+    drawAxisCheckbox = el("drawAxisCheckbox"),
+    drawCarsCheckbox = el("drawCarsCheckbox"),
+    drawGatesCheckbox = el("drawGatesCheckbox"),
+    drawSensorsCheckbox = el("drawSensorsCheckbox"),
+    drawSensorCollisionsCheckbox = el("drawSensorCollisionsCheckbox"),
+    drawSidesCheckbox = el("drawSidesCheckbox"),
+    drawSpriteCheckbox = el("drawSpriteCheckbox"),
+    drawVerticesCheckbox = el("drawVerticesCheckbox"),
+
+    numberOfCars = el("numberOfCars"),
+    numberOfCarsVal = el("numberOfCarsVal"),
+    gameSpeed = el("gameSpeed"),
+    gameSpeedVal = el("gameSpeedVal"),
 
     carImage = new Image();
 carImage.src = "./src/img/car.png";
