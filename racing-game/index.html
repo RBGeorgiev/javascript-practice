@@ -50,6 +50,17 @@
             </div>
             <div>
                 <label>
+                    <input type="radio" id="r1" name="mapCreatorTarget" value="outer" checked="checked"> Outer Lines
+                </label>
+                <label>
+                    <input type="radio" id="r2" name="mapCreatorTarget" value="inner"> Inner Lines
+                </label>
+                <label>
+                    <input type="radio" id="r3" name="mapCreatorTarget" value="gates"> Gates
+                </label>
+            </div>
+            <div>
+                <label>
                     <input type="checkbox" id="drawGatesCheckbox" name="drawGatesCheckbox">
                     Draw gates
                 </label>
@@ -73,6 +84,8 @@
             </div>
             <a id="dlPrevGen" class="btn">Download previous generation</a>
             <a id="dlFittest" class="btn">Download fittest from all generations</a>
+            <input type="text" id="dlMapName" value="map_2">
+            <a id="dlMap" class="btn">Download map</a>
         </div>
     </main>
 

@@ -52,4 +52,90 @@ function gameLoop(timestamp) {
 }
 
 // start game loop
-window.requestAnimationFrame(gameLoop);
+// window.requestAnimationFrame(gameLoop);
+
+
+// background color
+ctx.fillStyle = 'lightgrey';
+ctx.rect(0, 0, game.gameWidth, game.gameHeight);
+ctx.fill();
+
+let prevX, prevY,
+    target = document.querySelector('input[name="mapCreatorTarget"]:checked').value,
+    outerLinesArr = [],
+    innerLinesArr = [],
+    gatesArr = [];
+
+let radioButtons = document.querySelectorAll('input[name="mapCreatorTarget"]')
+for (let radio of radioButtons) {
+    radio.addEventListener("click", (e) => {
+        prevX = null;
+        prevY = null;
+        target = e.target.value;
+    })
+}
+
+canvas.addEventListener("click", (e) => {
+    let curTarget;
+
+    if (target === "outer") {
+        curTarget = outerLinesArr;
+    } else if (target === "inner") {
+        curTarget = innerLinesArr;
+    } else if (target === "gates") {
+        curTarget = gatesArr;
+    }
+
+
+    if (!prevX || !prevY) {
+        prevX = e.offsetX;
+        prevY = e.offsetY;
+        return;
+    }
+
+    let curX = e.offsetX;
+    let curY = e.offsetY;
+
+    let coordObj = {
+        x1: prevX,
+        y1: prevY,
+        x2: curX,
+        y2: curY
+    }
+    curTarget.push(coordObj)
+
+    drawLineForMap(prevX, prevY, curX, curY);
+
+    prevX = curX;
+    prevY = curY;
+    console.log(outerLinesArr)
+    console.log(innerLinesArr)
+    console.log(gatesArr)
+})
+
+function drawLineForMap(x1, y1, x2, y2) {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+}
+
+dlMap.onclick = function () {
+    let obj = {
+        "outerLines": outerLinesArr,
+        "innerLines": innerLinesArr,
+        "gates": gatesArr
+    }
+    let name = document.getElementById("dlMapName").value;
+    if (name.length < 1) name = "map_2"
+    downloadMap(this, obj, name)
+}
+
+function downloadMap(el, json, name) {
+    if (!json || json.length === 0) return alert('There is no previous generation');
+    let obj = `export const ${name.toUpperCase()} = ${encodeURIComponent(JSON.stringify(json))}`;
+    let data = "text/json;charset=utf-8," + obj;
+
+    el.setAttribute("href", "data:" + data);
+    el.setAttribute("download", `${name}.js`);
+}
