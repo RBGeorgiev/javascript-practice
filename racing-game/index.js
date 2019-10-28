@@ -80,10 +80,13 @@ canvas.addEventListener("click", (e) => {
 
     if (target === "outer") {
         curTarget = outerLinesArr;
+        ctx.strokeStyle = "purple"
     } else if (target === "inner") {
         curTarget = innerLinesArr;
+        ctx.strokeStyle = "blue"
     } else if (target === "gates") {
         curTarget = gatesArr;
+        ctx.strokeStyle = "green"
     }
 
 
@@ -106,11 +109,8 @@ canvas.addEventListener("click", (e) => {
 
     drawLineForMap(prevX, prevY, curX, curY);
 
-    prevX = curX;
-    prevY = curY;
-    console.log(outerLinesArr)
-    console.log(innerLinesArr)
-    console.log(gatesArr)
+    prevX = (target === "gates") ? null : curX;
+    prevY = (target === "gates") ? null : curY;
 })
 
 function drawLineForMap(x1, y1, x2, y2) {
