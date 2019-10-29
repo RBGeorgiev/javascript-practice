@@ -49,10 +49,7 @@ export default class Game {
     }
 
     draw(ctx) {
-        // background color
-        ctx.fillStyle = 'grey';
-        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-        ctx.fill();
+        this.drawBackground(ctx);
 
         // this.car.draw(ctx)
 
@@ -66,5 +63,22 @@ export default class Game {
                 if (this.cars[i]) this.cars[i].draw(ctx);
             }
         }
+        if (this.paused) this.drawPauseScreen(ctx);
+    }
+
+    drawBackground(ctx) {
+        ctx.fillStyle = 'grey';
+        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.fill();
+    }
+
+    drawPauseScreen(ctx) {
+        ctx.fillStyle = "rgba(0,0,0,0.5)"
+        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "125px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
     }
 }
