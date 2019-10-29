@@ -1,5 +1,5 @@
 import Game from "./src/game/game.js";
-import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal } from "./src/constants.js";
+import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal, mapCreator } from "./src/constants.js";
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
 import exportPopulation from './src/export-pop.js';
 
@@ -47,18 +47,28 @@ function gameLoop(timestamp) {
     }
     game.draw(ctx);
 
-    // requestAnimationFrame executes on next available screen repaint, instead of on predetermined delay (e.g. every 50ms). This stops errors in time stamps if slow computers bottleneck. 
-    window.requestAnimationFrame(gameLoop);
+    if (!mapCreator.checked) {
+        // requestAnimationFrame executes on next available screen repaint, instead of on predetermined delay (e.g. every 50ms). This stops errors in time stamps if slow computers bottleneck. 
+        window.requestAnimationFrame(gameLoop);
+    } else {
+        game.paused = true;
+        // background color
+        ctx.fillStyle = 'lightgrey';
+        ctx.rect(0, 0, game.gameWidth, game.gameHeight);
+        ctx.fill();
+    }
+
 }
 
 // start game loop
-// window.requestAnimationFrame(gameLoop);
+window.requestAnimationFrame(gameLoop);
 
+mapCreator.onchange = () => { if (!mapCreator.checked) window.requestAnimationFrame(gameLoop); }
 
-// background color
-ctx.fillStyle = 'lightgrey';
-ctx.rect(0, 0, game.gameWidth, game.gameHeight);
-ctx.fill();
+// // background color
+// ctx.fillStyle = 'lightgrey';
+// ctx.rect(0, 0, game.gameWidth, game.gameHeight);
+// ctx.fill();
 
 let prevX, prevY,
     target = document.querySelector('input[name="mapCreatorTarget"]:checked').value,

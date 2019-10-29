@@ -15,5 +15,7 @@ export const
     gameSpeed = el("gameSpeed"),
     gameSpeedVal = el("gameSpeedVal"),
 
+    mapCreator = el("mapCreator"),
+
     carImage = new Image();
 carImage.src = "./src/img/car.png";
