@@ -56,8 +56,10 @@ function gameLoop(timestamp) {
         ctx.fillStyle = 'lightgrey';
         ctx.rect(0, 0, game.gameWidth, game.gameHeight);
         ctx.fill();
+        // reset value to avoid bug
+        prevX = null;
+        prevY = null;
     }
-
 }
 
 // start game loop
@@ -65,10 +67,6 @@ window.requestAnimationFrame(gameLoop);
 
 mapCreator.onchange = () => { if (!mapCreator.checked) window.requestAnimationFrame(gameLoop); }
 
-// // background color
-// ctx.fillStyle = 'lightgrey';
-// ctx.rect(0, 0, game.gameWidth, game.gameHeight);
-// ctx.fill();
 
 let prevX, prevY,
     target = document.querySelector('input[name="mapCreatorTarget"]:checked').value,
