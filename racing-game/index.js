@@ -85,6 +85,7 @@ for (let radio of radioButtons) {
 }
 
 canvas.addEventListener("click", (e) => {
+    if (!mapCreator.checked) return;
     let curTarget;
 
     if (target === "outer") {
