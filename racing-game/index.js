@@ -59,6 +59,7 @@ function gameLoop(timestamp) {
         // reset value to avoid bug
         prevX = null;
         prevY = null;
+        drawCreatedMap()
     }
 }
 
@@ -88,13 +89,10 @@ canvas.addEventListener("click", (e) => {
 
     if (target === "outer") {
         curTarget = outerLinesArr;
-        ctx.strokeStyle = "purple"
     } else if (target === "inner") {
         curTarget = innerLinesArr;
-        ctx.strokeStyle = "blue"
     } else if (target === "gates") {
         curTarget = gatesArr;
-        ctx.strokeStyle = "green"
     }
 
 
@@ -115,16 +113,25 @@ canvas.addEventListener("click", (e) => {
     }
     curTarget.push(coordObj)
 
-    drawLineForMap(prevX, prevY, curX, curY);
+    drawCreatedMap()
 
     prevX = (target === "gates") ? null : curX;
     prevY = (target === "gates") ? null : curY;
 })
 
-function drawLineForMap(x1, y1, x2, y2) {
+function drawCreatedMap() {
+    drawLines(outerLinesArr, "purple");
+    drawLines(innerLinesArr, "blue");
+    drawLines(gatesArr, "green");
+}
+
+function drawLines(lines, color = "#000000") {
     ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
+    for (let i = 0; i < lines.length; i++) {
+        ctx.moveTo(lines[i].x1, lines[i].y1);
+        ctx.lineTo(lines[i].x2, lines[i].y2);
+    }
+    ctx.strokeStyle = color;
     ctx.stroke();
 }
 
