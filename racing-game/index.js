@@ -136,13 +136,22 @@ function drawLines(lines, color = "#000000") {
     ctx.stroke();
 }
 
+const dlMapName = document.getElementById("dlMapName");
+
+const cleanVal = val => val.replace(/[^\w]/g, '');
+
+dlMapName.addEventListener("input", (e) => {
+    let val = cleanVal(e.target.value)
+    dlMapName.value = val
+})
+
 dlMap.onclick = function () {
     let obj = {
         "outerLines": outerLinesArr,
         "innerLines": innerLinesArr,
         "gates": gatesArr
     }
-    let name = document.getElementById("dlMapName").value;
+    let name = dlMapName.value
     if (name.length < 1) name = "map_2"
     downloadMap(this, obj, name)
 }
