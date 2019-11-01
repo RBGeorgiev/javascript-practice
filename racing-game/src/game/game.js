@@ -9,6 +9,11 @@ export default class Game {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
 
+        this.startPos = {
+            x: 357,
+            y: 130,
+        }
+
         this.neat = new Neat;
 
         this.init();

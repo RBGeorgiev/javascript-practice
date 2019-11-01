@@ -11,8 +11,8 @@ export default class Car {
         this.game = game;
 
         this.pos = {
-            x: 357,
-            y: 130,
+            x: game.startPos.x,
+            y: game.startPos.y
         }
 
         this.positionCar();

@@ -59,6 +59,11 @@ function gameLoop(timestamp) {
         // reset value to avoid bug
         prevX = null;
         prevY = null;
+
+        ctx.beginPath();
+        ctx.fillStyle = 'red';
+        ctx.rect(game.startPos.x - 2.5, game.startPos.y + 2.5, 5, 5);
+        ctx.fill();
         drawCreatedMap()
     }
 }
