@@ -71,7 +71,10 @@ function gameLoop(timestamp) {
 // start game loop
 window.requestAnimationFrame(gameLoop);
 
-mapCreator.onchange = () => { if (!mapCreator.checked) window.requestAnimationFrame(gameLoop); }
+mapCreator.onchange = () => {
+    mapCreator.blur();
+    if (!mapCreator.checked) window.requestAnimationFrame(gameLoop);
+}
 
 
 let prevX, prevY,
