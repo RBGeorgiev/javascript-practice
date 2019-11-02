@@ -51,25 +51,30 @@ function gameLoop(timestamp) {
         // requestAnimationFrame executes on next available screen repaint, instead of on predetermined delay (e.g. every 50ms). This stops errors in time stamps if slow computers bottleneck. 
         window.requestAnimationFrame(gameLoop);
     } else {
-        game.paused = true;
-        // background color
-        ctx.fillStyle = 'lightgrey';
-        ctx.rect(0, 0, game.gameWidth, game.gameHeight);
-        ctx.fill();
-        // reset value to avoid bug
-        prevX = null;
-        prevY = null;
-
-        ctx.beginPath();
-        ctx.fillStyle = 'red';
-        ctx.rect(game.startPos.x - 2.5, game.startPos.y + 2.5, 5, 5);
-        ctx.fill();
-        drawCreatedMap()
+        openMapCreator();
     }
 }
 
 // start game loop
 window.requestAnimationFrame(gameLoop);
+
+
+function openMapCreator() {
+    game.paused = true;
+    // background color
+    ctx.fillStyle = 'lightgrey';
+    ctx.rect(0, 0, game.gameWidth, game.gameHeight);
+    ctx.fill();
+    // reset value to avoid bug
+    prevX = null;
+    prevY = null;
+
+    ctx.beginPath();
+    ctx.fillStyle = 'red';
+    ctx.rect(game.startPos.x - 2.5, game.startPos.y + 2.5, 5, 5);
+    ctx.fill();
+    drawCreatedMap();
+}
 
 mapCreator.onchange = () => {
     mapCreator.blur();
