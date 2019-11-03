@@ -1,4 +1,4 @@
-export class carControls {
+export class CarControls {
     constructor(car) {
         document.addEventListener('keydown', e => {
             switch (e.keyCode) {
@@ -41,7 +41,7 @@ export class carControls {
     }
 }
 
-export class gameOptions {
+export class GameOptions {
     constructor(game) {
         document.addEventListener('keydown', e => {
             switch (e.keyCode) {

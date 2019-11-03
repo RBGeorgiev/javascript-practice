@@ -1,6 +1,6 @@
 import Map from './map-loader.js';
 // import Car from './car.js';
-import { gameOptions, carControls } from './pc_inputs.js';
+import { GameOptions, CarControls } from './inputs.js';
 import Neat from "../nn/nn.js";
 import { drawCarsCheckbox, drawGatesCheckbox, numberOfCars } from '../constants.js';
 
@@ -21,13 +21,13 @@ export default class Game {
         this.paused = false;
         this.timer = 0;
 
-        new gameOptions(this);
+        new GameOptions(this);
     }
 
     init() {
         this.neat.initNeat();
         // this.car = new Car(this);
-        // new carControls(this.car);
+        // new CarControls(this.car);
         this.cars = this.neat.startEvaluation(this);
     }
 
