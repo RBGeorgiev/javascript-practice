@@ -1,3 +1,5 @@
+import drawLines from './draw-lines.js';
+
 let radioButtons = document.querySelectorAll('input[name="mapCreatorTarget"]');
 
 export default class MapCreator {
@@ -39,19 +41,9 @@ export default class MapCreator {
     }
 
     drawCreatedMap(ctx) {
-        this.drawLines(ctx, this.outerLinesArr, "purple");
-        this.drawLines(ctx, this.innerLinesArr, "blue");
-        this.drawLines(ctx, this.gatesArr, "green");
-    }
-
-    drawLines(ctx, lines, color = "#000000") {
-        ctx.beginPath();
-        for (let i = 0; i < lines.length; i++) {
-            ctx.moveTo(lines[i].x1, lines[i].y1);
-            ctx.lineTo(lines[i].x2, lines[i].y2);
-        }
-        ctx.strokeStyle = color;
-        ctx.stroke();
+        drawLines(ctx, this.outerLinesArr, "purple");
+        drawLines(ctx, this.innerLinesArr, "blue");
+        drawLines(ctx, this.gatesArr, "green");
     }
 
     addPath = (e) => {

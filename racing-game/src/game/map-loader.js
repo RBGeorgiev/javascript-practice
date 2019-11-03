@@ -1,4 +1,5 @@
 import { MAP_1 } from './map_1.js';
+import drawLines from '../draw-lines.js';
 
 export default class Map {
     constructor() {
@@ -15,20 +16,10 @@ export default class Map {
     }
 
     drawTrack(ctx) {
-        this.drawLines(ctx, this.track);
+        drawLines(ctx, this.track);
     }
 
     drawGates(ctx) {
-        this.drawLines(ctx, this.gates, "#18f051");
-    }
-
-    drawLines(ctx, lines, color = "#000000") {
-        ctx.beginPath();
-        for (let i = 0; i < lines.length; i++) {
-            ctx.moveTo(lines[i].x1, lines[i].y1);
-            ctx.lineTo(lines[i].x2, lines[i].y2);
-        }
-        ctx.strokeStyle = color;
-        ctx.stroke();
+        drawLines(ctx, this.gates, "#18f051");
     }
 }

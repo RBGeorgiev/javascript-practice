@@ -1,5 +1,6 @@
 import lineCollision from './collision.js';
 import { drawAxisCheckbox, drawVerticesCheckbox, drawSidesCheckbox, drawSpriteCheckbox, drawSensorsCheckbox, drawSensorCollisionsCheckbox, carImage } from '../constants.js';
+import drawLines from '../draw-lines.js';
 
 export default class Car {
     constructor(game, genome) {
@@ -117,12 +118,8 @@ export default class Car {
     }
 
     drawSides(ctx) {
-        let sides = this.sides
-        for (let i = 0; i < sides.length; i++) {
-            ctx.moveTo(sides[i].x1, sides[i].y1)
-            ctx.lineTo(sides[i].x2, sides[i].y2)
-        }
-        ctx.stroke()
+        let color = ctx.strokeStyle;
+        drawLines(ctx, this.sides, color);
     }
 
     positionVertices() {
@@ -298,14 +295,8 @@ export default class Car {
 
 
     drawSensors(ctx) {
-        const sens = this.sensors;
-        ctx.beginPath();
-
-        for (let i = 0; i < this.sensors.length; i++) {
-            ctx.moveTo(sens[i].x1, sens[i].y1);
-            ctx.lineTo(sens[i].x2, sens[i].y2);
-        }
-        ctx.stroke();
+        let color = ctx.strokeStyle;
+        drawLines(ctx, this.sensors, color);
     }
 
     drawSprite(ctx, image, x, y, scale, angle) {
