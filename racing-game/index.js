@@ -1,7 +1,8 @@
 import Game from "./src/game/game.js";
-import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal, mapCreator } from "./src/constants.js";
+import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal, mapCreatorCheckbox } from "./src/constants.js";
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
 import exportPopulation from './src/export-pop.js';
+import MapCreator from './src/map-creator.js'
 
 // download previous generations
 dlPrevGen.onclick = function () { exportPopulation(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
@@ -32,6 +33,7 @@ canvas.height = 720;
 
 // init game
 export const game = new Game(canvas.width, canvas.height);
+const mapCreator = new MapCreator(canvas, ctx)
 
 let lastTime = 0, deltaTime;
 
@@ -47,11 +49,11 @@ function gameLoop(timestamp) {
     }
     game.draw(ctx);
 
-    if (!mapCreator.checked) {
+    if (!mapCreatorCheckbox.checked) {
         // requestAnimationFrame executes on next available screen repaint, instead of on predetermined delay (e.g. every 50ms). This stops errors in time stamps if slow computers bottleneck. 
         window.requestAnimationFrame(gameLoop);
     } else {
-        openMapCreator();
+        mapCreator.openMapCreator(game, ctx);
     }
 }
 
@@ -59,94 +61,9 @@ function gameLoop(timestamp) {
 window.requestAnimationFrame(gameLoop);
 
 
-function openMapCreator() {
-    game.paused = true;
-    // background color
-    ctx.fillStyle = 'lightgrey';
-    ctx.rect(0, 0, game.gameWidth, game.gameHeight);
-    ctx.fill();
-    // reset value to avoid bug
-    prevX = null;
-    prevY = null;
-
-    ctx.beginPath();
-    ctx.fillStyle = 'red';
-    ctx.rect(game.startPos.x - 2.5, game.startPos.y + 2.5, 5, 5);
-    ctx.fill();
-    drawCreatedMap();
-}
-
-mapCreator.onchange = () => {
-    mapCreator.blur();
-    if (!mapCreator.checked) window.requestAnimationFrame(gameLoop);
-}
-
-
-let prevX, prevY,
-    target = document.querySelector('input[name="mapCreatorTarget"]:checked').value,
-    outerLinesArr = [],
-    innerLinesArr = [],
-    gatesArr = [];
-
-let radioButtons = document.querySelectorAll('input[name="mapCreatorTarget"]')
-for (let radio of radioButtons) {
-    radio.addEventListener("click", (e) => {
-        prevX = null;
-        prevY = null;
-        target = e.target.value;
-    })
-}
-
-canvas.addEventListener("click", (e) => {
-    if (!mapCreator.checked) return;
-    let curTarget;
-
-    if (target === "outer") {
-        curTarget = outerLinesArr;
-    } else if (target === "inner") {
-        curTarget = innerLinesArr;
-    } else if (target === "gates") {
-        curTarget = gatesArr;
-    }
-
-
-    if (!prevX || !prevY) {
-        prevX = e.offsetX;
-        prevY = e.offsetY;
-        return;
-    }
-
-    let curX = e.offsetX;
-    let curY = e.offsetY;
-
-    let coordObj = {
-        x1: prevX,
-        y1: prevY,
-        x2: curX,
-        y2: curY
-    }
-    curTarget.push(coordObj)
-
-    drawCreatedMap()
-
-    prevX = (target === "gates") ? null : curX;
-    prevY = (target === "gates") ? null : curY;
-})
-
-function drawCreatedMap() {
-    drawLines(outerLinesArr, "purple");
-    drawLines(innerLinesArr, "blue");
-    drawLines(gatesArr, "green");
-}
-
-function drawLines(lines, color = "#000000") {
-    ctx.beginPath();
-    for (let i = 0; i < lines.length; i++) {
-        ctx.moveTo(lines[i].x1, lines[i].y1);
-        ctx.lineTo(lines[i].x2, lines[i].y2);
-    }
-    ctx.strokeStyle = color;
-    ctx.stroke();
+mapCreatorCheckbox.onchange = () => {
+    mapCreatorCheckbox.blur();
+    if (!mapCreatorCheckbox.checked) window.requestAnimationFrame(gameLoop);
 }
 
 const dlMapName = document.getElementById("dlMapName");
@@ -159,11 +76,7 @@ dlMapName.addEventListener("input", (e) => {
 })
 
 dlMap.onclick = function () {
-    let obj = {
-        "outerLines": outerLinesArr,
-        "innerLines": innerLinesArr,
-        "gates": gatesArr
-    }
+    let obj = mapCreator.getMapObj()
     let name = dlMapName.value
     if (name.length < 1) name = "map_2"
     downloadMap(this, obj, name)
