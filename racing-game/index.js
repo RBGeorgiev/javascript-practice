@@ -53,7 +53,7 @@ function gameLoop(timestamp) {
         // requestAnimationFrame executes on next available screen repaint, instead of on predetermined delay (e.g. every 50ms). This stops errors in time stamps if slow computers bottleneck. 
         window.requestAnimationFrame(gameLoop);
     } else {
-        mapCreator.openMapCreator(game, ctx);
+        mapCreator.open(game);
     }
 }
 
