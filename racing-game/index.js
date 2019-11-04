@@ -1,8 +1,8 @@
 import Game from "./src/game/game.js";
 import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal, mapCreatorCheckbox } from "./src/constants.js";
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
-import exportPopulation from './src/export-pop.js';
-import MapCreator from './src/map-creator.js'
+import { exportPopulation, downloadMap } from './src/dl-functions.js';
+import MapCreator from './src/map-creator.js';
 
 // download previous generations
 dlPrevGen.onclick = function () { exportPopulation(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
@@ -60,35 +60,20 @@ function gameLoop(timestamp) {
 // start game loop
 window.requestAnimationFrame(gameLoop);
 
-
 mapCreatorCheckbox.onchange = () => {
+    // remove focus from checkbox after click
     mapCreatorCheckbox.blur();
+    // re-run game loop after exiting map editor
     if (!mapCreatorCheckbox.checked) window.requestAnimationFrame(gameLoop);
 }
 
-const dlMapName = document.getElementById("dlMapName");
-
+// restrict map name to letter, numbers and underscore
 const cleanVal = val => val.replace(/[^\w]/g, '');
-
-dlMapName.addEventListener("input", (e) => {
-    let val = cleanVal(e.target.value)
-    dlMapName.value = val
-})
+dlMapName.addEventListener("input", (e) => dlMapName.value = cleanVal(e.target.value));
 
 dlMap.onclick = function () {
     let obj = mapCreator.getMapObj()
     let name = dlMapName.value
     if (name.length < 1) name = "map_2"
     downloadMap(this, obj, name)
-}
-
-function downloadMap(el, json, name) {
-    if (json.outerLines.length === 0) return alert('Track is missing outer boundary');
-    if (json.innerLines.length === 0) return alert('Track is missing inner boundary');
-    if (json.gates.length === 0) return alert('Track is missing reward gates');
-    let obj = `export const ${name.toUpperCase()} = ${encodeURIComponent(JSON.stringify(json))}`;
-    let data = "text/json;charset=utf-8," + obj;
-
-    el.setAttribute("href", "data:" + data);
-    el.setAttribute("download", `${name}.js`);
 }
