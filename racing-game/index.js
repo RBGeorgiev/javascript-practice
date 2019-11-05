@@ -8,6 +8,18 @@ import MapCreator from './src/map-creator.js';
 dlPrevGen.onclick = function () { exportPopulation(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
 dlFittest.onclick = function () { exportPopulation(this, prevFittestJSON, `fittest-${(genNumber - 151 < 0) ? 0 : genNumber - 151}-to-gen_${genNumber - 1}`) }
 
+// download map from creator
+dlMap.onclick = function () {
+    let obj = mapCreator.getMapObj();
+    let name = dlMapName.value;
+    if (name.length < 1) name = "map_2";
+    downloadMap(this, obj, name);
+}
+
+// restrict map name to letter, numbers and underscore
+const cleanVal = val => val.replace(/[^\w]/g, '');
+dlMapName.addEventListener("input", (e) => dlMapName.value = cleanVal(e.target.value));
+
 // set game speed
 gameSpeedVal.innerHTML = gameSpeed.value;
 
@@ -33,7 +45,7 @@ canvas.height = 720;
 
 // init game
 export const game = new Game(canvas.width, canvas.height);
-const mapCreator = new MapCreator(canvas, ctx)
+const mapCreator = new MapCreator(canvas, ctx);
 
 let lastTime = 0, deltaTime;
 
@@ -60,20 +72,9 @@ function gameLoop(timestamp) {
 // start game loop
 window.requestAnimationFrame(gameLoop);
 
+// re-run game loop after exiting map editor
 mapCreatorCheckbox.onchange = () => {
     // remove focus from checkbox after click
     mapCreatorCheckbox.blur();
-    // re-run game loop after exiting map editor
     if (!mapCreatorCheckbox.checked) window.requestAnimationFrame(gameLoop);
-}
-
-// restrict map name to letter, numbers and underscore
-const cleanVal = val => val.replace(/[^\w]/g, '');
-dlMapName.addEventListener("input", (e) => dlMapName.value = cleanVal(e.target.value));
-
-dlMap.onclick = function () {
-    let obj = mapCreator.getMapObj()
-    let name = dlMapName.value
-    if (name.length < 1) name = "map_2"
-    downloadMap(this, obj, name)
 }
