@@ -11,6 +11,13 @@
     <h1>Racing game</h1>
     <p id="genNumber">Current generation: 0</p>
     <main>
+        <div>
+            <label>
+                <input type="checkbox" id="mapCreatorCheckbox" name="mapCreatorCheckbox">
+                Open map creator
+            </label>
+        </div>
+
         <div class="controls">
             <div>
                 <label>
@@ -50,17 +57,6 @@
             </div>
             <div>
                 <label>
-                    <input type="radio" id="r1" name="mapCreatorTarget" value="outer" checked="checked"> Outer Lines
-                </label>
-                <label>
-                    <input type="radio" id="r2" name="mapCreatorTarget" value="inner"> Inner Lines
-                </label>
-                <label>
-                    <input type="radio" id="r3" name="mapCreatorTarget" value="gates"> Gates
-                </label>
-            </div>
-            <div>
-                <label>
                     <input type="checkbox" id="drawGatesCheckbox" name="drawGatesCheckbox">
                     Draw gates
                 </label>
@@ -72,7 +68,24 @@
                 </label>
             </div>
         </div>
+
+        <div class="mapCreatorControls">
+            <div>
+                <label>
+                    <input type="radio" id="r1" name="mapCreatorTarget" value="outer" checked="checked"> Outer Lines
+                </label>
+                <label>
+                    <input type="radio" id="r2" name="mapCreatorTarget" value="inner"> Inner Lines
+                </label>
+                <label>
+                    <input type="radio" id="r3" name="mapCreatorTarget" value="gates"> Gates
+                </label>
+            </div>
+        </div>
+
+
         <canvas id="gameCanvas"></canvas>
+
         <div class="controls">
             <p>Space to pause</p>
             <p>R to load next generation</p>
@@ -84,15 +97,11 @@
             </div>
             <a id="dlPrevGen" class="btn">Download previous generation</a>
             <a id="dlFittest" class="btn">Download fittest from all generations</a>
+        </div>
 
+        <div class="mapCreatorControls">
             <div>
-                <label>
-                    <input type="checkbox" id="mapCreatorCheckbox" name="mapCreatorCheckbox">
-                    Open map creator
-                </label>
-            </div>
-            <div>
-                <span>Name can only include letters, numbers and underscore</span>
+                <p>Name can only include letters, numbers and underscore</p>
                 <input type="text" id="dlMapName" value="map_2" maxlength="16">
                 <a id="dlMap" class="btn">Download map</a>
             </div>

@@ -76,5 +76,14 @@ window.requestAnimationFrame(gameLoop);
 mapCreatorCheckbox.onchange = () => {
     // remove focus from checkbox after click
     mapCreatorCheckbox.blur();
-    if (!mapCreatorCheckbox.checked) window.requestAnimationFrame(gameLoop);
+
+
+    if (!mapCreatorCheckbox.checked) {
+        window.requestAnimationFrame(gameLoop);
+        for (let el of document.getElementsByClassName("controls")) el.style.display = "flex";
+        for (let el of document.getElementsByClassName("mapCreatorControls")) el.style.display = "none";
+    } else {
+        for (let el of document.getElementsByClassName("controls")) el.style.display = "none";
+        for (let el of document.getElementsByClassName("mapCreatorControls")) el.style.display = "block";
+    }
 }
