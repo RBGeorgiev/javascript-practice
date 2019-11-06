@@ -1,9 +1,10 @@
 import { MAP_1 } from './map_1.js';
+import { MAP_2 } from './map_2.js';
 import drawLines from '../draw-lines.js';
 
 export default class Map {
     constructor() {
-        this.map = MAP_1
+        this.map = MAP_2
 
         this.track = [
             ...this.map.outerLines,
