@@ -91,6 +91,7 @@ export default class MapCreator {
     }
 
     getMapObj() {
+        this.gatesArr.forEach((el, idx) => el.id = idx + 1);
         return {
             "outerLines": this.outerLinesArr,
             "innerLines": this.innerLinesArr,
