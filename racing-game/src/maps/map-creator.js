@@ -1,4 +1,4 @@
-import drawLines from './draw-lines.js';
+import drawLines from '../draw-lines.js';
 
 let radioButtons = document.querySelectorAll('input[name="mapCreatorTarget"]');
 

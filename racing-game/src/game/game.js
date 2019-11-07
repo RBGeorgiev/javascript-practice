@@ -1,4 +1,4 @@
-import Map from './map-loader.js';
+import Map from '../maps/map-loader.js';
 // import Car from './car.js';
 import { GameOptions, CarControls } from './inputs.js';
 import Neat from "../nn/nn.js";

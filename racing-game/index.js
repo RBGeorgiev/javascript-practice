@@ -2,7 +2,7 @@ import Game from "./src/game/game.js";
 import { gameSpeed, gameSpeedVal, numberOfCars, numberOfCarsVal, mapCreatorCheckbox } from "./src/constants.js";
 import { prevFittestJSON, prevGenerationJSON, genNumber } from "./src/nn/nn.js";
 import { exportPopulation, downloadMap } from './src/dl-functions.js';
-import MapCreator from './src/map-creator.js';
+import MapCreator from './src/maps/map-creator.js';
 
 // download previous generations
 dlPrevGen.onclick = function () { exportPopulation(this, prevGenerationJSON, `generation_${genNumber - 1}`) }
