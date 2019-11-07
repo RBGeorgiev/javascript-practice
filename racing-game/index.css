@@ -10,6 +10,10 @@ body {
     align-items: center;
 }
 
+.mapCreatorControls {
+    display: none;
+}
+
 .btn {
     background: #1b1a20;
     color: #ececec;

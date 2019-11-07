@@ -4,7 +4,7 @@ import drawLines from '../draw-lines.js';
 
 export default class Map {
     constructor() {
-        this.map = MAP_2
+        this.map = MAP_1;
 
         this.track = [
             ...this.map.outerLines,
