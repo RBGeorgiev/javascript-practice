@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
-function Square(props) {
+function Piece(props) {
+  const [pos, setPos] = useState(props.pos);
+  const [taken, setTaken] = useState(props.taken);
+  const [isWhite, setIsWhite] = useState(props.isWhite);
+  const [type, setType] = useState(props.type);
+
   return (
-    <div className={props.isWhite}>
-      {props.x}, {props.y}
+    <div>
+      {props.type}
     </div>
   )
 }
 
+function Square(props) {
+  const [piece, setPiece] = useState(null)
+
+  return (
+    <div className={props.sqColor} onClick={() => setPiece(<Piece pos={{ x: props.x, y: props.y }} taken={false} isWhite={false} tpye={"P"} />)}>
+      {/* {props.x}, {props.y} */}
+      {piece}
+    </div>
+  )
+}
 
 function Board() {
 
-  const fillBoard = () => {
+  const initBoard = () => {
     const board = [];
 
     for (let y = 0; y < 8; y++) {
@@ -22,7 +37,7 @@ function Board() {
             key={y * 8 + x}
             x={x}
             y={y}
-            isWhite={((y + x) % 2) ? "square white" : "square black"}
+            sqColor={((y + x) % 2) ? "square white" : "square black"}
           />
         )
       }
@@ -33,7 +48,7 @@ function Board() {
 
   return (
     <div className="board">
-      {fillBoard()}
+      {initBoard()}
     </div>
   )
 }
