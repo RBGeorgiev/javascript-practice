@@ -21,3 +21,13 @@ body {
 .sqBlack {
     background: brown;
 }
+
+.white {
+    color: #ffffff;
+    background: #b3b3b3;
+}
+
+.black {
+    color: #000000;
+    background: #b3b3b3;
+}
