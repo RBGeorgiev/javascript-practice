@@ -25,8 +25,6 @@ function initBoard(squareSize) {
     }
 }
 
-initBoard(70);
-
 class Piece {
     constructor(x, y, color, type) {
         this.pos = {
@@ -50,7 +48,7 @@ class Piece {
                 &&
                 this.pos.y === this.sqaures[i].pos.y) {
                 let piece = document.createElement("div");
-                piece.className = `${this.type} ${this.color}`;
+                piece.className = `piece ${this.type} ${this.color}`;
                 piece.innerHTML = `${this.color} ${this.type}`;
 
                 this.sqaures[i].appendChild(piece);
@@ -64,6 +62,59 @@ class King extends Piece {
         super(x, y, color, "king");
     }
 }
+class Queen extends Piece {
+    constructor(x, y, color) {
+        super(x, y, color, "queen");
+    }
+}
+class Rook extends Piece {
+    constructor(x, y, color) {
+        super(x, y, color, "rook");
+    }
+}
+class Bishop extends Piece {
+    constructor(x, y, color) {
+        super(x, y, color, "bishop");
+    }
+}
+class Knight extends Piece {
+    constructor(x, y, color) {
+        super(x, y, color, "knight");
+    }
+}
+class Pawn extends Piece {
+    constructor(x, y, color) {
+        super(x, y, color, "pawn");
+    }
+}
 
-let wKing = new King(4, 0, "white");
-let bKing = new King(4, 7, "black");
+function initPieces() {
+    // white
+    for (let i = 0; i < 8; i++) {
+        new Pawn(i, 1, "white");
+    }
+    new Rook(0, 0, "white");
+    new Knight(1, 0, "white");
+    new Bishop(2, 0, "white");
+    new Queen(3, 0, "white");
+    new King(4, 0, "white");
+    new Bishop(5, 0, "white");
+    new Knight(6, 0, "white");
+    new Rook(7, 0, "white");
+
+    // black
+    for (let i = 0; i < 8; i++) {
+        new Pawn(i, 6, "black");
+    }
+    new Rook(0, 7, "black");
+    new Knight(1, 7, "black");
+    new Bishop(2, 7, "black");
+    new Queen(3, 7, "black");
+    new King(4, 7, "black");
+    new Bishop(5, 7, "black");
+    new Knight(6, 7, "black");
+    new Rook(7, 7, "black");
+}
+
+initBoard(70);
+initPieces();

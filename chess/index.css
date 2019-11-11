@@ -22,12 +22,18 @@ body {
     background: brown;
 }
 
+.piece {
+    height: 100%;
+}
+
 .white {
     color: #ffffff;
     background: #b3b3b3;
+    border: 1px black solid;
 }
 
 .black {
     color: #000000;
     background: #b3b3b3;
+    border: 1px black solid;
 }
