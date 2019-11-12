@@ -27,13 +27,11 @@ body {
 }
 
 .white {
-    color: #ffffff;
-    background: #b3b3b3;
+    color: #f7c6a6;
     border: 1px black solid;
 }
 
 .black {
     color: #000000;
-    background: #b3b3b3;
     border: 1px black solid;
 }

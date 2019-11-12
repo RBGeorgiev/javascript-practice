@@ -35,7 +35,9 @@ class Piece {
         this.type = type;
         this.taken = false;
 
-        this.sqaures = document.getElementsByClassName("square");
+        this.squares = document.getElementsByClassName("square");
+
+        this.pieceElem = document.createElement("div");
 
         this.positionPiece();
     }
@@ -43,16 +45,43 @@ class Piece {
     setIsTaken = () => this.setIsTaken = true;
 
     positionPiece = () => {
-        for (let i = 0; i < this.sqaures.length; i++) {
-            if (this.pos.x === this.sqaures[i].pos.x
+        for (let i = 0; i < this.squares.length; i++) {
+            if (this.pos.x === this.squares[i].pos.x
                 &&
-                this.pos.y === this.sqaures[i].pos.y) {
-                let piece = document.createElement("div");
-                piece.className = `piece ${this.type} ${this.color}`;
-                piece.innerHTML = `${this.color} ${this.type}`;
+                this.pos.y === this.squares[i].pos.y) {
+                let pieceElem = this.pieceElem;
+                pieceElem.className = `piece ${this.type} ${this.color}`;
 
-                this.sqaures[i].appendChild(piece);
+                pieceElem.innerHTML = `${this.color} ${this.type}`;
+
+                this.squares[i].appendChild(pieceElem);
             }
+        }
+    }
+
+    getAvailableMoves() {
+        let availableMoves = [];
+        for (let i = 0; i < this.squares.length; i++) {
+            for (let j = 0; j < this.moves.length; j++) {
+                if (this.moves[j].x === this.squares[i].pos.x
+                    &&
+                    this.moves[j].y === this.squares[i].pos.y) {
+                    availableMoves.push(this.squares[i]);
+                }
+            }
+        }
+        return availableMoves;
+    }
+
+    clearColorMoves() {
+        for (const square of this.availableMoves) {
+            square.style.background = "";
+        }
+    }
+
+    colorMoves() {
+        for (const square of this.availableMoves) {
+            square.style.background = "green";
         }
     }
 }
@@ -60,8 +89,55 @@ class Piece {
 class King extends Piece {
     constructor(x, y, color) {
         super(x, y, color, "king");
+
+        this.pieceElem.piece = this;
+
+        this.moves = this.moves();
+        this.availableMoves = this.getAvailableMoves();
+    }
+
+    moves() {
+        let x = this.pos.x;
+        let y = this.pos.y;
+
+        return [
+            {
+                x: x - 1,
+                y: y
+            },
+            {
+                x: x + 1,
+                y: y
+            },
+            {
+                x: x,
+                y: y - 1
+            },
+            {
+                x: x,
+                y: y + 1
+            },
+
+            {
+                x: x - 1,
+                y: y + 1
+            },
+            {
+                x: x - 1,
+                y: y - 1
+            },
+            {
+                x: x + 1,
+                y: y - 1
+            },
+            {
+                x: x + 1,
+                y: y + 1
+            },
+        ]
     }
 }
+
 class Queen extends Piece {
     constructor(x, y, color) {
         super(x, y, color, "queen");
@@ -118,3 +194,6 @@ function initPieces() {
 
 initBoard(70);
 initPieces();
+
+document.addEventListener("mousedown", e => e.target.piece.colorMoves());
+document.addEventListener("mouseup", e => e.target.piece.clearColorMoves());
