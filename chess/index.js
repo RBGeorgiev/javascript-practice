@@ -1,5 +1,6 @@
 let boardSize = 8;
 let squareSize = 70;
+let allPieces = [];
 
 function initBoard(squareSize) {
     let board = document.getElementsByClassName("board");
@@ -31,6 +32,8 @@ function initBoard(squareSize) {
 
 class Piece {
     constructor(x, y, color, type) {
+        this.allPieces = allPieces;
+
         this.pos = {
             x,
             y
@@ -44,6 +47,16 @@ class Piece {
         this.pieceElem = document.createElement("div");
 
         this.positionPiece();
+
+        this.moves;
+        this.availableMoves;
+        this.collisions;
+    }
+
+    getMoves() {
+        this.moves = this.moves();
+        this.availableMoves = this.getAvailableMoves();
+        this.collisions = this.getCollisions();
     }
 
     setIsTaken = () => this.setIsTaken = true;
@@ -77,6 +90,21 @@ class Piece {
         return availableMoves;
     }
 
+    getCollisions() {
+        let collisions = [];
+
+        for (let i = 0; i < this.availableMoves.length; i++) {
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (this.allPieces[j].pos.x === this.availableMoves[i].pos.x
+                    &&
+                    this.allPieces[j].pos.y === this.availableMoves[i].pos.y)
+                    collisions.push(this.availableMoves[i]);
+            }
+        }
+
+        return collisions;
+    }
+
     clearColorMoves() {
         for (const square of this.availableMoves) {
             square.style.background = "";
@@ -97,9 +125,6 @@ class King extends Piece {
         this.hasMoved = false;
 
         this.pieceElem.piece = this;
-
-        this.moves = this.moves();
-        this.availableMoves = this.getAvailableMoves();
     }
 
     moves() {
@@ -151,9 +176,6 @@ class Queen extends Piece {
         super(x, y, color, "queen");
 
         this.pieceElem.piece = this;
-
-        this.moves = this.moves();
-        this.availableMoves = this.getAvailableMoves();
     }
 
     moves() {
@@ -203,9 +225,6 @@ class Rook extends Piece {
         this.hasMoved = false;
 
         this.pieceElem.piece = this;
-
-        this.moves = this.moves();
-        this.availableMoves = this.getAvailableMoves();
     }
 
     moves() {
@@ -236,9 +255,6 @@ class Bishop extends Piece {
         super(x, y, color, "bishop");
 
         this.pieceElem.piece = this;
-
-        this.moves = this.moves();
-        this.availableMoves = this.getAvailableMoves();
     }
 
     moves() {
@@ -276,9 +292,6 @@ class Knight extends Piece {
         super(x, y, color, "knight");
 
         this.pieceElem.piece = this;
-
-        this.moves = this.moves();
-        this.availableMoves = this.getAvailableMoves();
     }
 
     moves() {
@@ -333,10 +346,6 @@ class Pawn extends Piece {
         this.direction = (this.color === "white") ? 1 : -1;
 
         this.pieceElem.piece = this;
-
-        this.moves = this.moves();
-        this.availableMoves = this.getAvailableMoves();
-
     }
 
     moves() {
@@ -366,32 +375,37 @@ class Pawn extends Piece {
     }
 }
 
+
+
 function initPieces() {
     // white
     for (let i = 0; i < boardSize; i++) {
-        new Pawn(i, 1, "white");
+        allPieces.push(new Pawn(i, 1, "white"));
     }
-    new Rook(0, 0, "white");
-    new Knight(1, 0, "white");
-    new Bishop(2, 0, "white");
-    new Queen(3, 0, "white");
-    new King(4, 0, "white");
-    new Bishop(5, 0, "white");
-    new Knight(6, 0, "white");
-    new Rook(7, 0, "white");
+    allPieces.push(new Rook(0, 0, "white"));
+    allPieces.push(new Knight(1, 0, "white"));
+    allPieces.push(new Bishop(2, 0, "white"));
+    allPieces.push(new Queen(3, 0, "white"));
+    allPieces.push(new King(4, 0, "white"));
+    allPieces.push(new Bishop(5, 0, "white"));
+    allPieces.push(new Knight(6, 0, "white"));
+    allPieces.push(new Rook(7, 0, "white"));
 
     // black
     for (let i = 0; i < boardSize; i++) {
-        new Pawn(i, 6, "black");
+        allPieces.push(new Pawn(i, 6, "black"));
     }
-    new Rook(0, 7, "black");
-    new Knight(1, 7, "black");
-    new Bishop(2, 7, "black");
-    new Queen(3, 7, "black");
-    new King(4, 7, "black");
-    new Bishop(5, 7, "black");
-    new Knight(6, 7, "black");
-    new Rook(7, 7, "black");
+    allPieces.push(new Rook(0, 7, "black"));
+    allPieces.push(new Knight(1, 7, "black"));
+    allPieces.push(new Bishop(2, 7, "black"));
+    allPieces.push(new Queen(3, 7, "black"));
+    allPieces.push(new King(4, 7, "black"));
+    allPieces.push(new Bishop(5, 7, "black"));
+    allPieces.push(new Knight(6, 7, "black"));
+    allPieces.push(new Rook(7, 7, "black"));
+
+
+    allPieces.forEach(el => el.getMoves());
 }
 
 initBoard(squareSize);
