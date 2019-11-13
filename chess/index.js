@@ -51,7 +51,181 @@ class Piece {
         this.moves;
         this.availableMoves;
         this.collisions;
+        this.validMoves;
     }
+
+    checkTop() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.y + i > boardSize - 1) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y + i === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x, this.pos.y + i])
+        }
+        return arr;
+    }
+
+    checkBottom() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.y - i < 0) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y - i === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x, this.pos.y - i])
+        }
+        return arr;
+    }
+
+    checkRight() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.x + i > boardSize - 1) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x + i === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x + i, this.pos.y])
+        }
+        return arr;
+    }
+
+    checkLeft() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.x - i < 0) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x - i === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x - i, this.pos.y])
+        }
+        return arr;
+    }
+
+    checkTopLeft() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.y + i > boardSize - 1
+                ||
+                this.pos.x - i < 0
+            ) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x - i === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y + i === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x - i, this.pos.y + i])
+        }
+        return arr;
+    }
+
+    checkTopRight() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.y + i > boardSize - 1
+                ||
+                this.pos.x + i > boardSize - 1
+            ) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x + i === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y + i === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x + i, this.pos.y + i])
+        }
+        return arr;
+    }
+
+    checkBottomRight() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.y - i < 0
+                ||
+                this.pos.x + i > boardSize - 1
+            ) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x + i === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y - i === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x + i, this.pos.y - i])
+        }
+        return arr;
+    }
+
+    checkBottomLeft() {
+        let arr = [];
+        for (let i = 1; i < boardSize; i++) {
+            if (this.pos.y - i < 0
+                ||
+                this.pos.x - i < 0
+            ) return arr;
+
+            for (let j = 0; j < this.allPieces.length; j++) {
+                if (
+                    this.pos.x - i === this.allPieces[j].pos.x
+                    &&
+                    this.pos.y - i === this.allPieces[j].pos.y
+                ) {
+                    arr.push(this.allPieces[j]);
+                    return arr;
+                }
+            }
+            arr.push([this.pos.x - i, this.pos.y - i])
+        }
+        return arr;
+    }
+
 
     getMoves() {
         this.moves = this.moves();
@@ -126,6 +300,7 @@ class King extends Piece {
 
         this.pieceElem.piece = this;
     }
+    getValidMoves() { }
 
     moves() {
         let x = this.pos.x;
@@ -176,6 +351,22 @@ class Queen extends Piece {
         super(x, y, color, "queen");
 
         this.pieceElem.piece = this;
+
+    }
+
+    getValidMoves() {
+        this.validMoves = {
+            top: this.checkTop(),
+            bottom: this.checkBottom(),
+            right: this.checkRight(),
+            left: this.checkLeft(),
+            topLeft: this.checkTopLeft(),
+            topRight: this.checkTopRight(),
+            bottomRight: this.checkBottomRight(),
+            bottomLeft: this.checkBottomLeft()
+        }
+
+        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
     }
 
     moves() {
@@ -227,6 +418,17 @@ class Rook extends Piece {
         this.pieceElem.piece = this;
     }
 
+    getValidMoves() {
+        this.validMoves = {
+            top: this.checkTop(),
+            bottom: this.checkBottom(),
+            right: this.checkRight(),
+            left: this.checkLeft()
+        }
+
+        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
+    }
+
     moves() {
         let x = this.pos.x;
         let y = this.pos.y;
@@ -255,6 +457,17 @@ class Bishop extends Piece {
         super(x, y, color, "bishop");
 
         this.pieceElem.piece = this;
+    }
+
+    getValidMoves() {
+        this.validMoves = {
+            topLeft: this.checkTopLeft(),
+            topRight: this.checkTopRight(),
+            bottomRight: this.checkBottomRight(),
+            bottomLeft: this.checkBottomLeft()
+        }
+
+        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
     }
 
     moves() {
@@ -293,6 +506,8 @@ class Knight extends Piece {
 
         this.pieceElem.piece = this;
     }
+
+    getValidMoves() { }
 
     moves() {
         let x = this.pos.x;
@@ -348,6 +563,8 @@ class Pawn extends Piece {
         this.pieceElem.piece = this;
     }
 
+    getValidMoves() { }
+
     moves() {
         let x = this.pos.x;
         let y = this.pos.y;
@@ -402,10 +619,10 @@ function initPieces() {
     allPieces.push(new King(4, 7, "black"));
     allPieces.push(new Bishop(5, 7, "black"));
     allPieces.push(new Knight(6, 7, "black"));
-    allPieces.push(new Rook(7, 7, "black"));
+    allPieces.push(new Rook(4, 4, "black"));
 
 
-    allPieces.forEach(el => el.getMoves());
+    allPieces.forEach(el => { el.getMoves(); el.getValidMoves() });
 }
 
 initBoard(squareSize);
