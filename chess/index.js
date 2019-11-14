@@ -63,10 +63,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x, this.pos.y + i);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    return arr;
+                } else {
+                    arr.push([this.pos.x, this.pos.y + i]);
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x, this.pos.y + i])
+                arr.push([this.pos.x, this.pos.y + i]);
             }
         }
         return arr;
@@ -81,10 +85,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x, this.pos.y - i);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    return arr;
+                } else {
+                    arr.push([this.pos.x, this.pos.y - i]);
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x, this.pos.y - i])
+                arr.push([this.pos.x, this.pos.y - i]);
             }
         }
         return arr;
@@ -99,10 +107,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    return arr;
+                } else {
+                    arr.push([this.pos.x + i, this.pos.y]);
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x + i, this.pos.y])
+                arr.push([this.pos.x + i, this.pos.y]);
             }
         }
         return arr;
@@ -117,10 +129,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    return arr;
+                } else {
+                    arr.push([this.pos.x - i, this.pos.y]);
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x - i, this.pos.y])
+                arr.push([this.pos.x - i, this.pos.y]);
             }
         }
         return arr;
@@ -139,10 +155,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y + i);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    arr.push([this.pos.x - i, this.pos.y + i]);
+                    return arr;
+                } else {
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x - i, this.pos.y + i])
+                arr.push([this.pos.x - i, this.pos.y + i]);
             }
         }
         return arr;
@@ -161,10 +181,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y + i);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    return arr;
+                } else {
+                    arr.push([this.pos.x + i, this.pos.y + i]);
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x + i, this.pos.y + i])
+                arr.push([this.pos.x + i, this.pos.y + i]);
             }
         }
         return arr;
@@ -183,10 +207,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y - i);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    return arr;
+                } else {
+                    arr.push([this.pos.x + i, this.pos.y - i]);
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x + i, this.pos.y - i])
+                arr.push([this.pos.x + i, this.pos.y - i]);
             }
         }
         return arr;
@@ -205,10 +233,14 @@ class Piece {
             let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y - i);
 
             if (collisionObj) {
-                arr.push(collisionObj);
-                return arr;
+                if (collisionObj.color === this.color) {
+                    return arr;
+                } else {
+                    arr.push([this.pos.x - i, this.pos.y - i]);
+                    return arr;
+                }
             } else {
-                arr.push([this.pos.x - i, this.pos.y - i])
+                arr.push([this.pos.x - i, this.pos.y - i]);
             }
         }
         return arr;
@@ -670,7 +702,7 @@ function initPieces() {
     allPieces.push(new King(4, 7, "black"));
     allPieces.push(new Bishop(5, 7, "black"));
     allPieces.push(new Knight(6, 7, "black"));
-    allPieces.push(new Rook(7, 7, "black"));
+    allPieces.push(new Rook(4, 4, "black"));
 
 
     allPieces.forEach(el => { el.getMoves(); el.getValidMoves() });
