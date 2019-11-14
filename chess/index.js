@@ -156,9 +156,9 @@ class Piece {
 
             if (collisionObj) {
                 if (collisionObj.color === this.color) {
-                    arr.push([this.pos.x - i, this.pos.y + i]);
                     return arr;
                 } else {
+                    arr.push([this.pos.x - i, this.pos.y + i]);
                     return arr;
                 }
             } else {
@@ -312,14 +312,26 @@ class Piece {
     }
 
     clearColorMoves() {
-        for (const square of this.availableMoves) {
+        for (const square of this.squares) {
             square.style.background = "";
         }
     }
 
     colorMoves() {
-        for (const square of this.availableMoves) {
-            square.style.background = "green";
+        let allCoord = [];
+
+        Object.entries(this.validMoves).forEach(([key, val]) => allCoord.push(...val));
+
+        for (const square of this.squares) {
+            for (const coord of allCoord) {
+                if (
+                    square.pos.x === coord[0]
+                    &&
+                    square.pos.y === coord[1]
+                ) {
+                    square.style.background = "green";
+                }
+            }
         }
     }
 }
@@ -702,7 +714,7 @@ function initPieces() {
     allPieces.push(new King(4, 7, "black"));
     allPieces.push(new Bishop(5, 7, "black"));
     allPieces.push(new Knight(6, 7, "black"));
-    allPieces.push(new Rook(4, 4, "black"));
+    allPieces.push(new Rook(7, 7, "black"));
 
 
     allPieces.forEach(el => { el.getMoves(); el.getValidMoves() });
