@@ -54,176 +54,176 @@ class Piece {
         this.validMoves;
     }
 
-    checkTop() {
+    checkTop(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
             if (this.pos.y + i > boardSize - 1) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y + i === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x, this.pos.y + i);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x, this.pos.y + i])
             }
-            arr.push([this.pos.x, this.pos.y + i])
         }
         return arr;
     }
 
-    checkBottom() {
+    checkBottom(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
             if (this.pos.y - i < 0) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y - i === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x, this.pos.y - i);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x, this.pos.y - i])
             }
-            arr.push([this.pos.x, this.pos.y - i])
         }
         return arr;
     }
 
-    checkRight() {
+    checkRight(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
             if (this.pos.x + i > boardSize - 1) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x + i === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x + i, this.pos.y])
             }
-            arr.push([this.pos.x + i, this.pos.y])
         }
         return arr;
     }
 
-    checkLeft() {
+    checkLeft(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
             if (this.pos.x - i < 0) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x - i === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x - i, this.pos.y])
             }
-            arr.push([this.pos.x - i, this.pos.y])
         }
         return arr;
     }
 
-    checkTopLeft() {
+    checkTopLeft(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
-            if (this.pos.y + i > boardSize - 1
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
+            if (
+                this.pos.y + i > boardSize - 1
                 ||
                 this.pos.x - i < 0
             ) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x - i === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y + i === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y + i);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x - i, this.pos.y + i])
             }
-            arr.push([this.pos.x - i, this.pos.y + i])
         }
         return arr;
     }
 
-    checkTopRight() {
+    checkTopRight(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
-            if (this.pos.y + i > boardSize - 1
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
+            if (
+                this.pos.y + i > boardSize - 1
                 ||
                 this.pos.x + i > boardSize - 1
             ) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x + i === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y + i === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y + i);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x + i, this.pos.y + i])
             }
-            arr.push([this.pos.x + i, this.pos.y + i])
         }
         return arr;
     }
 
-    checkBottomRight() {
+    checkBottomRight(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
-            if (this.pos.y - i < 0
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
+            if (
+                this.pos.y - i < 0
                 ||
                 this.pos.x + i > boardSize - 1
             ) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x + i === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y - i === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y - i);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x + i, this.pos.y - i])
             }
-            arr.push([this.pos.x + i, this.pos.y - i])
         }
         return arr;
     }
 
-    checkBottomLeft() {
+    checkBottomLeft(len) {
         let arr = [];
-        for (let i = 1; i < boardSize; i++) {
-            if (this.pos.y - i < 0
+        let loopLength = len || boardSize;
+        for (let i = 1; i < loopLength; i++) {
+            if (
+                this.pos.y - i < 0
                 ||
                 this.pos.x - i < 0
             ) return arr;
 
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (
-                    this.pos.x - i === this.allPieces[j].pos.x
-                    &&
-                    this.pos.y - i === this.allPieces[j].pos.y
-                ) {
-                    arr.push(this.allPieces[j]);
-                    return arr;
-                }
+            let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y - i);
+
+            if (collisionObj) {
+                arr.push(collisionObj);
+                return arr;
+            } else {
+                arr.push([this.pos.x - i, this.pos.y - i])
             }
-            arr.push([this.pos.x - i, this.pos.y - i])
         }
         return arr;
+    }
+
+    checkCollision(x, y) {
+        for (let j = 0; j < this.allPieces.length; j++) {
+            if (
+                x === this.allPieces[j].pos.x
+                &&
+                y === this.allPieces[j].pos.y
+            ) {
+                return this.allPieces[j];
+            }
+        }
     }
 
 
@@ -300,7 +300,21 @@ class King extends Piece {
 
         this.pieceElem.piece = this;
     }
-    getValidMoves() { }
+
+    getValidMoves() {
+        this.validMoves = {
+            top: this.checkTop(2),
+            bottom: this.checkBottom(2),
+            right: this.checkRight(2),
+            left: this.checkLeft(2),
+            topLeft: this.checkTopLeft(2),
+            topRight: this.checkTopRight(2),
+            bottomRight: this.checkBottomRight(2),
+            bottomLeft: this.checkBottomLeft(2)
+        }
+
+        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
+    }
 
     moves() {
         let x = this.pos.x;
@@ -500,6 +514,7 @@ class Bishop extends Piece {
         return moves;
     }
 }
+
 class Knight extends Piece {
     constructor(x, y, color) {
         super(x, y, color, "knight");
@@ -507,7 +522,33 @@ class Knight extends Piece {
         this.pieceElem.piece = this;
     }
 
-    getValidMoves() { }
+
+    getValidMoves() {
+        let movesArr = [];
+
+        for (let i = 0; i < this.moves.length; i++) {
+            if (
+                this.moves[i].x <= 7 &&
+                this.moves[i].x >= 0 &&
+                this.moves[i].y <= 7 &&
+                this.moves[i].y >= 0
+            ) {
+                let collisionObj = this.checkCollision(this.moves[i].x, this.moves[i].y);
+
+                if (collisionObj) {
+                    movesArr.push(collisionObj);
+                } else {
+                    movesArr.push([this.moves[i].x, this.moves[i].y])
+                }
+            }
+        }
+
+        this.validMoves = {
+            knight: movesArr
+        }
+
+        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
+    }
 
     moves() {
         let x = this.pos.x;
@@ -558,12 +599,22 @@ class Pawn extends Piece {
 
         this.hasMoved = false;
 
-        this.direction = (this.color === "white") ? 1 : -1;
-
         this.pieceElem.piece = this;
     }
 
-    getValidMoves() { }
+    getValidMoves() {
+        if (this.color === "white") {
+            this.validMoves = {
+                top: (this.hasMoved) ? this.checkBottom(2) : this.checkTop(3)
+            }
+        } else {
+            this.validMoves = {
+                bottom: (this.hasMoved) ? this.checkBottom(2) : this.checkBottom(3)
+            }
+        }
+
+        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
+    }
 
     moves() {
         let x = this.pos.x;
@@ -619,7 +670,7 @@ function initPieces() {
     allPieces.push(new King(4, 7, "black"));
     allPieces.push(new Bishop(5, 7, "black"));
     allPieces.push(new Knight(6, 7, "black"));
-    allPieces.push(new Rook(4, 4, "black"));
+    allPieces.push(new Rook(7, 7, "black"));
 
 
     allPieces.forEach(el => { el.getMoves(); el.getValidMoves() });
