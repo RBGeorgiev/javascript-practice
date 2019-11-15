@@ -67,10 +67,10 @@ class Piece {
         }
     }
 
-    checkTop(len) {
+    checkTop(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (this.pos.y + i > boardSize - 1) return arr;
 
             let collisionObj = this.checkCollision(this.pos.x, this.pos.y + i);
@@ -89,10 +89,10 @@ class Piece {
         return arr;
     }
 
-    checkBottom(len) {
+    checkBottom(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (this.pos.y - i < 0) return arr;
 
             let collisionObj = this.checkCollision(this.pos.x, this.pos.y - i);
@@ -111,10 +111,10 @@ class Piece {
         return arr;
     }
 
-    checkRight(len) {
+    checkRight(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (this.pos.x + i > boardSize - 1) return arr;
 
             let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y);
@@ -133,10 +133,10 @@ class Piece {
         return arr;
     }
 
-    checkLeft(len) {
+    checkLeft(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (this.pos.x - i < 0) return arr;
 
             let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y);
@@ -155,10 +155,10 @@ class Piece {
         return arr;
     }
 
-    checkTopLeft(len) {
+    checkTopLeft(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (
                 this.pos.y + i > boardSize - 1
                 ||
@@ -181,10 +181,10 @@ class Piece {
         return arr;
     }
 
-    checkTopRight(len) {
+    checkTopRight(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (
                 this.pos.y + i > boardSize - 1
                 ||
@@ -207,10 +207,10 @@ class Piece {
         return arr;
     }
 
-    checkBottomRight(len) {
+    checkBottomRight(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (
                 this.pos.y - i < 0
                 ||
@@ -233,10 +233,10 @@ class Piece {
         return arr;
     }
 
-    checkBottomLeft(len) {
+    checkBottomLeft(steps = boardSize - 1) {
         let arr = [];
-        let loopLength = len || boardSize;
-        for (let i = 1; i < loopLength; i++) {
+
+        for (let i = 1; i <= steps; i++) {
             if (
                 this.pos.y - i < 0
                 ||
@@ -315,14 +315,14 @@ class King extends Piece {
 
     getValidMoves() {
         this.validMoves = {
-            top: this.checkTop(2),
-            bottom: this.checkBottom(2),
-            right: this.checkRight(2),
-            left: this.checkLeft(2),
-            topLeft: this.checkTopLeft(2),
-            topRight: this.checkTopRight(2),
-            bottomRight: this.checkBottomRight(2),
-            bottomLeft: this.checkBottomLeft(2)
+            top: this.checkTop(1),
+            bottom: this.checkBottom(1),
+            right: this.checkRight(1),
+            left: this.checkLeft(1),
+            topLeft: this.checkTopLeft(1),
+            topRight: this.checkTopRight(1),
+            bottomRight: this.checkBottomRight(1),
+            bottomLeft: this.checkBottomLeft(1)
         }
     }
 }
@@ -468,20 +468,29 @@ class Pawn extends Piece {
         super(x, y, color, "pawn");
 
         this.hasMoved = false;
+        this.direction = (this.color === "white") ? 1 : -1;
 
         this.pieceElem.piece = this;
     }
 
     getValidMoves() {
-        if (this.color === "white") {
-            this.validMoves = {
-                top: (this.hasMoved) ? this.checkBottom(2) : this.checkTop(3)
-            }
-        } else {
-            this.validMoves = {
-                bottom: (this.hasMoved) ? this.checkBottom(2) : this.checkBottom(3)
-            }
+        this.validMoves = {
+            pawn: (this.hasMoved) ? this.getPawnMove(1) : this.getPawnMove(2)
         }
+    }
+
+    getPawnMove(steps) {
+        let arr = [];
+
+        for (let i = 1; i <= steps; i++) {
+            let collisionObj = this.checkCollision(this.pos.x, this.pos.y + (i * this.direction));
+
+            (collisionObj)
+                ? arr
+                : arr.push([this.pos.x, this.pos.y + (i * this.direction)]);
+        }
+
+        return arr;
     }
 }
 
