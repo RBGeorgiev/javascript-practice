@@ -30,6 +30,7 @@ function initBoard(squareSize) {
     }
 }
 
+
 class Piece {
     constructor(x, y, color, type) {
         this.allPieces = allPieces;
@@ -46,12 +47,24 @@ class Piece {
 
         this.pieceElem = document.createElement("div");
 
-        this.positionPiece();
+        this.placePieceOnBoard();
 
-        this.moves;
-        this.availableMoves;
-        this.collisions;
         this.validMoves;
+    }
+
+    setIsTaken = () => this.setIsTaken = true;
+
+    //#region - direction and collision check functions
+    checkCollision(x, y) {
+        for (let j = 0; j < this.allPieces.length; j++) {
+            if (
+                x === this.allPieces[j].pos.x
+                &&
+                y === this.allPieces[j].pos.y
+            ) {
+                return this.allPieces[j];
+            }
+        }
     }
 
     checkTop(len) {
@@ -245,33 +258,16 @@ class Piece {
         }
         return arr;
     }
+    //#endregion - direction and collision check functions
 
-    checkCollision(x, y) {
-        for (let j = 0; j < this.allPieces.length; j++) {
-            if (
-                x === this.allPieces[j].pos.x
-                &&
-                y === this.allPieces[j].pos.y
-            ) {
-                return this.allPieces[j];
-            }
-        }
-    }
-
-
-    getMoves() {
-        this.moves = this.moves();
-        this.availableMoves = this.getAvailableMoves();
-        this.collisions = this.getCollisions();
-    }
-
-    setIsTaken = () => this.setIsTaken = true;
-
-    positionPiece = () => {
+    //#region - visual display functions
+    placePieceOnBoard = () => {
         for (let i = 0; i < this.squares.length; i++) {
-            if (this.pos.x === this.squares[i].pos.x
+            if (
+                this.pos.x === this.squares[i].pos.x
                 &&
-                this.pos.y === this.squares[i].pos.y) {
+                this.pos.y === this.squares[i].pos.y
+            ) {
                 let pieceElem = this.pieceElem;
                 pieceElem.className = `piece ${this.type} ${this.color}`;
 
@@ -279,41 +275,6 @@ class Piece {
 
                 this.squares[i].appendChild(pieceElem);
             }
-        }
-    }
-
-    getAvailableMoves() {
-        let availableMoves = [];
-        for (let i = 0; i < this.squares.length; i++) {
-            for (let j = 0; j < this.moves.length; j++) {
-                if (this.moves[j].x === this.squares[i].pos.x
-                    &&
-                    this.moves[j].y === this.squares[i].pos.y) {
-                    availableMoves.push(this.squares[i]);
-                }
-            }
-        }
-        return availableMoves;
-    }
-
-    getCollisions() {
-        let collisions = [];
-
-        for (let i = 0; i < this.availableMoves.length; i++) {
-            for (let j = 0; j < this.allPieces.length; j++) {
-                if (this.allPieces[j].pos.x === this.availableMoves[i].pos.x
-                    &&
-                    this.allPieces[j].pos.y === this.availableMoves[i].pos.y)
-                    collisions.push(this.availableMoves[i]);
-            }
-        }
-
-        return collisions;
-    }
-
-    clearColorMoves() {
-        for (const square of this.squares) {
-            square.style.background = "";
         }
     }
 
@@ -334,6 +295,13 @@ class Piece {
             }
         }
     }
+
+    clearColorMoves() {
+        for (const square of this.squares) {
+            square.style.background = "";
+        }
+    }
+    //#endregion - visual display functions
 }
 
 class King extends Piece {
@@ -356,51 +324,6 @@ class King extends Piece {
             bottomRight: this.checkBottomRight(2),
             bottomLeft: this.checkBottomLeft(2)
         }
-
-        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
-    }
-
-    moves() {
-        let x = this.pos.x;
-        let y = this.pos.y;
-
-        let moves = [
-            {
-                x: x - 1,
-                y: y
-            },
-            {
-                x: x + 1,
-                y: y
-            },
-            {
-                x: x,
-                y: y - 1
-            },
-            {
-                x: x,
-                y: y + 1
-            },
-
-            {
-                x: x - 1,
-                y: y + 1
-            },
-            {
-                x: x - 1,
-                y: y - 1
-            },
-            {
-                x: x + 1,
-                y: y - 1
-            },
-            {
-                x: x + 1,
-                y: y + 1
-            }
-        ]
-
-        return moves;
     }
 }
 
@@ -423,47 +346,6 @@ class Queen extends Piece {
             bottomRight: this.checkBottomRight(),
             bottomLeft: this.checkBottomLeft()
         }
-
-        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
-    }
-
-    moves() {
-        let x = this.pos.x;
-        let y = this.pos.y;
-
-        let moves = [];
-
-        for (let idx = 0; idx < boardSize; idx++) {
-            moves.push(
-
-                {
-                    x: idx,
-                    y: y
-                },
-                {
-                    x: x,
-                    y: idx
-                },
-                {
-                    x: x + idx,
-                    y: y + idx
-                },
-                {
-                    x: x - idx,
-                    y: y + idx
-                },
-                {
-                    x: x + idx,
-                    y: y - idx
-                },
-                {
-                    x: x - idx,
-                    y: y - idx
-                }
-            )
-        }
-
-        return moves;
     }
 }
 
@@ -483,30 +365,6 @@ class Rook extends Piece {
             right: this.checkRight(),
             left: this.checkLeft()
         }
-
-        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
-    }
-
-    moves() {
-        let x = this.pos.x;
-        let y = this.pos.y;
-
-        let moves = [];
-
-        for (let idx = 0; idx < boardSize; idx++) {
-            moves.push(
-                {
-                    x: idx,
-                    y: y
-                },
-                {
-                    x: x,
-                    y: idx
-                }
-            )
-        }
-
-        return moves;
     }
 }
 
@@ -524,38 +382,6 @@ class Bishop extends Piece {
             bottomRight: this.checkBottomRight(),
             bottomLeft: this.checkBottomLeft()
         }
-
-        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
-    }
-
-    moves() {
-        let x = this.pos.x;
-        let y = this.pos.y;
-
-        let moves = [];
-
-        for (let idx = 0; idx < boardSize; idx++) {
-            moves.push(
-                {
-                    x: x + idx,
-                    y: y + idx
-                },
-                {
-                    x: x - idx,
-                    y: y + idx
-                },
-                {
-                    x: x + idx,
-                    y: y - idx
-                },
-                {
-                    x: x - idx,
-                    y: y - idx
-                }
-            )
-        }
-
-        return moves;
     }
 }
 
@@ -564,25 +390,27 @@ class Knight extends Piece {
         super(x, y, color, "knight");
 
         this.pieceElem.piece = this;
+
+        this.knightMoves = this.getKnightMoves();
     }
 
 
     getValidMoves() {
         let movesArr = [];
 
-        for (let i = 0; i < this.moves.length; i++) {
+        for (let i = 0; i < this.knightMoves.length; i++) {
             if (
-                this.moves[i].x <= 7 &&
-                this.moves[i].x >= 0 &&
-                this.moves[i].y <= 7 &&
-                this.moves[i].y >= 0
+                this.knightMoves[i].x <= 7 &&
+                this.knightMoves[i].x >= 0 &&
+                this.knightMoves[i].y <= 7 &&
+                this.knightMoves[i].y >= 0
             ) {
-                let collisionObj = this.checkCollision(this.moves[i].x, this.moves[i].y);
+                let collisionObj = this.checkCollision(this.knightMoves[i].x, this.knightMoves[i].y);
 
                 if (collisionObj) {
                     movesArr.push(collisionObj);
                 } else {
-                    movesArr.push([this.moves[i].x, this.moves[i].y])
+                    movesArr.push([this.knightMoves[i].x, this.knightMoves[i].y])
                 }
             }
         }
@@ -590,11 +418,9 @@ class Knight extends Piece {
         this.validMoves = {
             knight: movesArr
         }
-
-        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
     }
 
-    moves() {
+    getKnightMoves() {
         let x = this.pos.x;
         let y = this.pos.y;
 
@@ -656,37 +482,8 @@ class Pawn extends Piece {
                 bottom: (this.hasMoved) ? this.checkBottom(2) : this.checkBottom(3)
             }
         }
-
-        console.log(this.color, this.type, `x:${this.pos.x}, y:${this.pos.y}`, this.validMoves);
-    }
-
-    moves() {
-        let x = this.pos.x;
-        let y = this.pos.y;
-
-        let moves = [];
-
-        (this.hasMoved)
-            ?
-            moves.push({
-                x: x,
-                y: y + 1 * this.direction
-            })
-            :
-            moves.push(
-                {
-                    x: x,
-                    y: y + 1 * this.direction
-                },
-                {
-                    x: x,
-                    y: y + 2 * this.direction
-                });
-
-        return moves;
     }
 }
-
 
 
 function initPieces() {
@@ -717,7 +514,7 @@ function initPieces() {
     allPieces.push(new Rook(7, 7, "black"));
 
 
-    allPieces.forEach(el => { el.getMoves(); el.getValidMoves() });
+    allPieces.forEach(el => el.getValidMoves());
 }
 
 initBoard(squareSize);
