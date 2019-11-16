@@ -279,12 +279,8 @@ class Piece {
     }
 
     colorMoves() {
-        let allCoord = [];
-
-        Object.entries(this.validMoves).forEach(([key, val]) => allCoord.push(...val));
-
         for (const square of this.squares) {
-            for (const coord of allCoord) {
+            for (const coord of this.validMoves) {
                 if (
                     square.pos.x === coord[0]
                     &&
@@ -314,16 +310,16 @@ class King extends Piece {
     }
 
     getValidMoves() {
-        this.validMoves = {
-            top: this.checkTop(1),
-            bottom: this.checkBottom(1),
-            right: this.checkRight(1),
-            left: this.checkLeft(1),
-            topLeft: this.checkTopLeft(1),
-            topRight: this.checkTopRight(1),
-            bottomRight: this.checkBottomRight(1),
-            bottomLeft: this.checkBottomLeft(1)
-        }
+        this.validMoves = [
+            ...this.checkTop(1),
+            ...this.checkBottom(1),
+            ...this.checkRight(1),
+            ...this.checkLeft(1),
+            ...this.checkTopLeft(1),
+            ...this.checkTopRight(1),
+            ...this.checkBottomRight(1),
+            ...this.checkBottomLeft(1)
+        ]
     }
 }
 
@@ -336,16 +332,16 @@ class Queen extends Piece {
     }
 
     getValidMoves() {
-        this.validMoves = {
-            top: this.checkTop(),
-            bottom: this.checkBottom(),
-            right: this.checkRight(),
-            left: this.checkLeft(),
-            topLeft: this.checkTopLeft(),
-            topRight: this.checkTopRight(),
-            bottomRight: this.checkBottomRight(),
-            bottomLeft: this.checkBottomLeft()
-        }
+        this.validMoves = [
+            ...this.checkTop(),
+            ...this.checkBottom(),
+            ...this.checkRight(),
+            ...this.checkLeft(),
+            ...this.checkTopLeft(),
+            ...this.checkTopRight(),
+            ...this.checkBottomRight(),
+            ...this.checkBottomLeft()
+        ]
     }
 }
 
@@ -359,12 +355,12 @@ class Rook extends Piece {
     }
 
     getValidMoves() {
-        this.validMoves = {
-            top: this.checkTop(),
-            bottom: this.checkBottom(),
-            right: this.checkRight(),
-            left: this.checkLeft()
-        }
+        this.validMoves = [
+            ...this.checkTop(),
+            ...this.checkBottom(),
+            ...this.checkRight(),
+            ...this.checkLeft()
+        ]
     }
 }
 
@@ -376,12 +372,12 @@ class Bishop extends Piece {
     }
 
     getValidMoves() {
-        this.validMoves = {
-            topLeft: this.checkTopLeft(),
-            topRight: this.checkTopRight(),
-            bottomRight: this.checkBottomRight(),
-            bottomLeft: this.checkBottomLeft()
-        }
+        this.validMoves = [
+            ...this.checkTopLeft(),
+            ...this.checkTopRight(),
+            ...this.checkBottomRight(),
+            ...this.checkBottomLeft()
+        ]
     }
 }
 
@@ -396,7 +392,7 @@ class Knight extends Piece {
 
 
     getValidMoves() {
-        let movesArr = [];
+        let arr = [];
 
         for (let i = 0; i < this.knightMoves.length; i++) {
             if (
@@ -408,16 +404,16 @@ class Knight extends Piece {
                 let collisionObj = this.checkCollision(this.knightMoves[i].x, this.knightMoves[i].y);
 
                 if (collisionObj) {
-                    movesArr.push(collisionObj);
+                    if (collisionObj.color !== this.color) {
+                        arr.push([this.knightMoves[i].x, this.knightMoves[i].y]);
+                    }
                 } else {
-                    movesArr.push([this.knightMoves[i].x, this.knightMoves[i].y])
+                    arr.push([this.knightMoves[i].x, this.knightMoves[i].y])
                 }
             }
         }
 
-        this.validMoves = {
-            knight: movesArr
-        }
+        this.validMoves = arr;
     }
 
     getKnightMoves() {
@@ -474,20 +470,20 @@ class Pawn extends Piece {
     }
 
     getValidMoves() {
-        this.validMoves = {
-            pawn: (this.hasMoved) ? this.getPawnMove(1) : this.getPawnMove(2)
-        }
+        this.validMoves = (this.hasMoved) ? this.getPawnMoves(1) : this.getPawnMoves(2);
     }
 
-    getPawnMove(steps) {
+    getPawnMoves(steps) {
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
             let collisionObj = this.checkCollision(this.pos.x, this.pos.y + (i * this.direction));
 
-            (collisionObj)
-                ? arr
-                : arr.push([this.pos.x, this.pos.y + (i * this.direction)]);
+            if (collisionObj) {
+                return arr;
+            } else {
+                arr.push([this.pos.x, this.pos.y + (i * this.direction)]);
+            }
         }
 
         return arr;
@@ -544,7 +540,7 @@ document.addEventListener("mousedown", e => {
         var x = event.clientX, y = event.clientY;
         let elements = allElementsFromPoint(x, y);
 
-        console.log(elements)
+        console.log(e.target.piece.validMoves, elements)
 
         e.target.piece.clearColorMoves();
         document.removeEventListener('mousemove', moveASD, true);
@@ -556,14 +552,13 @@ document.addEventListener("mousedown", e => {
 
 
 function allElementsFromPoint(x, y) {
-    var element, elements = [];
-    var old_visibility = [];
+    let element, ans = [], elements = [];
+    let old_visibility = [];
     while (true) {
         element = document.elementFromPoint(x, y);
 
-        // if (element.className === "square")
         if (element.matches(".square"))
-            console.log("from while loop", element.pos.x, element.pos.y)
+            ans.push(element.pos.x, element.pos.y)
 
         if (!element || element === document.documentElement) {
             break;
@@ -577,7 +572,7 @@ function allElementsFromPoint(x, y) {
     }
 
     elements.reverse();
-    return elements;
+    return ans;
 }
 
 
