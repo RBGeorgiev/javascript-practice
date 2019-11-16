@@ -529,5 +529,63 @@ function initPieces() {
 initBoard(squareSize);
 initPieces();
 
-document.addEventListener("mousedown", e => e.target.piece.colorMoves());
-document.addEventListener("mouseup", e => e.target.piece.clearColorMoves());
+document.addEventListener("mousedown", e => {
+    const el = e.target;
+
+    function moveASD(e) {
+        dragPiece(e, el)
+    }
+
+    e.target.piece.colorMoves();
+    document.addEventListener("mousemove", moveASD, true);
+
+
+    function reset(e) {
+        var x = event.clientX, y = event.clientY;
+        let elements = allElementsFromPoint(x, y);
+
+        console.log(elements)
+
+        e.target.piece.clearColorMoves();
+        document.removeEventListener('mousemove', moveASD, true);
+        document.removeEventListener('mouseup', reset, true);
+    }
+
+    document.addEventListener("mouseup", reset, true);
+});
+
+
+function allElementsFromPoint(x, y) {
+    var element, elements = [];
+    var old_visibility = [];
+    while (true) {
+        element = document.elementFromPoint(x, y);
+
+        // if (element.className === "square")
+        if (element.matches(".square"))
+            console.log("from while loop", element.pos.x, element.pos.y)
+
+        if (!element || element === document.documentElement) {
+            break;
+        }
+        elements.push(element);
+        old_visibility.push(element.style.visibility);
+        element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
+    }
+    for (var k = 0; k < elements.length; k++) {
+        elements[k].style.visibility = old_visibility[k];
+    }
+
+    elements.reverse();
+    return elements;
+}
+
+
+
+function dragPiece(e, el) {
+    el.style.position = "absolute";
+    el.style.height = squareSize + "px"
+    el.style.width = squareSize + "px"
+    el.style.left = (e.pageX - squareSize / 2) + "px";
+    el.style.top = (e.pageY - squareSize / 2) + "px";
+}
