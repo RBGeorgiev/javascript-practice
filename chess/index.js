@@ -41,6 +41,8 @@ class Piece {
         }
         this.color = color;
         this.type = type;
+
+        this.hasMoved = false;
         this.taken = false;
 
         this.squares = document.getElementsByClassName("square");
@@ -304,8 +306,6 @@ class King extends Piece {
     constructor(x, y, color) {
         super(x, y, color, "king");
 
-        this.hasMoved = false;
-
         this.pieceElem.piece = this;
     }
 
@@ -348,8 +348,6 @@ class Queen extends Piece {
 class Rook extends Piece {
     constructor(x, y, color) {
         super(x, y, color, "rook");
-
-        this.hasMoved = false;
 
         this.pieceElem.piece = this;
     }
@@ -463,7 +461,6 @@ class Pawn extends Piece {
     constructor(x, y, color) {
         super(x, y, color, "pawn");
 
-        this.hasMoved = false;
         this.direction = (this.color === "white") ? 1 : -1;
 
         this.pieceElem.piece = this;
@@ -550,6 +547,7 @@ document.addEventListener("mousedown", e => {
             ) {
                 piece.pos.x = elements[0];
                 piece.pos.y = elements[1];
+                piece.hasMoved = true;
                 break;
             }
         }
