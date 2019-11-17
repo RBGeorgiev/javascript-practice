@@ -260,7 +260,6 @@ class Piece {
     }
     //#endregion - direction and collision check functions
 
-    //#region - visual display functions
     placePieceOnBoard = () => {
         for (let i = 0; i < this.squares.length; i++) {
             if (
@@ -278,6 +277,7 @@ class Piece {
         }
     }
 
+    //#region - visual display functions
     colorMoves() {
         for (const square of this.squares) {
             for (const coord of this.validMoves) {
@@ -540,7 +540,23 @@ document.addEventListener("mousedown", e => {
         var x = event.clientX, y = event.clientY;
         let elements = allElementsFromPoint(x, y);
 
-        console.log(e.target.piece.validMoves, elements)
+        let piece = e.target.piece;
+        let validMoves = piece.validMoves;
+        for (let i = 0; i < validMoves.length; i++) {
+            if (
+                elements[0] === validMoves[i][0]
+                &&
+                elements[1] === validMoves[i][1]
+            ) {
+                piece.pos.x = elements[0];
+                piece.pos.y = elements[1];
+                break;
+            }
+        }
+        piece.placePieceOnBoard();
+        dragPieceEnd(e.target);
+
+        allPieces.forEach(el => el.getValidMoves());
 
         e.target.piece.clearColorMoves();
         document.removeEventListener('mousemove', moveASD, true);
@@ -575,12 +591,18 @@ function allElementsFromPoint(x, y) {
     return ans;
 }
 
-
+function dragPieceEnd(el) {
+    el.style.position = "";
+    el.style.height = "";
+    el.style.width = "";
+    el.style.left = "";
+    el.style.top = "";
+}
 
 function dragPiece(e, el) {
     el.style.position = "absolute";
-    el.style.height = squareSize + "px"
-    el.style.width = squareSize + "px"
+    el.style.height = squareSize + "px";
+    el.style.width = squareSize + "px";
     el.style.left = (e.pageX - squareSize / 2) + "px";
     el.style.top = (e.pageY - squareSize / 2) + "px";
 }
