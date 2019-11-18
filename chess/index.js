@@ -391,22 +391,27 @@ class Knight extends Piece {
 
     getValidMoves() {
         let arr = [];
+        let x = this.pos.x;
+        let y = this.pos.y;
 
         for (let i = 0; i < this.knightMoves.length; i++) {
+            let moveX = x + this.knightMoves[i].x,
+                moveY = y + this.knightMoves[i].y;
+
             if (
-                this.knightMoves[i].x <= 7 &&
-                this.knightMoves[i].x >= 0 &&
-                this.knightMoves[i].y <= 7 &&
-                this.knightMoves[i].y >= 0
+                moveX <= 7 &&
+                moveX >= 0 &&
+                moveY <= 7 &&
+                moveY >= 0
             ) {
-                let collisionObj = this.checkCollision(this.knightMoves[i].x, this.knightMoves[i].y);
+                let collisionObj = this.checkCollision(moveX, moveY);
 
                 if (collisionObj) {
                     if (collisionObj.color !== this.color) {
-                        arr.push([this.knightMoves[i].x, this.knightMoves[i].y]);
+                        arr.push([moveX, moveY]);
                     }
                 } else {
-                    arr.push([this.knightMoves[i].x, this.knightMoves[i].y])
+                    arr.push([moveX, moveY])
                 }
             }
         }
@@ -415,41 +420,38 @@ class Knight extends Piece {
     }
 
     getKnightMoves() {
-        let x = this.pos.x;
-        let y = this.pos.y;
-
         let moves = [
             {
-                x: x + 2,
-                y: y - 1
+                x: +2,
+                y: -1
             },
             {
-                x: x + 2,
-                y: y + 1
+                x: +2,
+                y: +1
             },
             {
-                x: x - 2,
-                y: y - 1
+                x: -2,
+                y: -1
             },
             {
-                x: x - 2,
-                y: y + 1
+                x: -2,
+                y: +1
             },
             {
-                x: x + 1,
-                y: y + 2
+                x: +1,
+                y: +2
             },
             {
-                x: x - 1,
-                y: y + 2
+                x: -1,
+                y: +2
             },
             {
-                x: x + 1,
-                y: y - 2
+                x: +1,
+                y: -2
             },
             {
-                x: x - 1,
-                y: y - 2
+                x: -1,
+                y: -2
             }
         ]
 
@@ -525,39 +527,45 @@ initPieces();
 document.addEventListener("mousedown", e => {
     const el = e.target;
 
-    function moveASD(e) {
-        dragPiece(e, el)
+    function movePiece(e) {
+        pieceDrag(e, el);
     }
 
     e.target.piece.colorMoves();
-    document.addEventListener("mousemove", moveASD, true);
+    document.addEventListener("mousemove", movePiece, true);
 
 
     function reset(e) {
-        var x = event.clientX, y = event.clientY;
-        let elements = allElementsFromPoint(x, y);
+        let x = event.clientX, y = event.clientY;
+        let square = getSquareFromPoint(x, y);
 
         let piece = e.target.piece;
         let validMoves = piece.validMoves;
-        for (let i = 0; i < validMoves.length; i++) {
-            if (
-                elements[0] === validMoves[i][0]
-                &&
-                elements[1] === validMoves[i][1]
-            ) {
-                piece.pos.x = elements[0];
-                piece.pos.y = elements[1];
-                piece.hasMoved = true;
-                break;
+
+        if (square) {
+            let squareX = square.pos.x;
+            let squareY = square.pos.y;
+
+            for (let i = 0; i < validMoves.length; i++) {
+                if (
+                    squareX === validMoves[i][0]
+                    &&
+                    squareY === validMoves[i][1]
+                ) {
+                    piece.pos.x = squareX;
+                    piece.pos.y = squareY;
+                    piece.hasMoved = true;
+                    break;
+                }
             }
         }
         piece.placePieceOnBoard();
-        dragPieceEnd(e.target);
+        pieceDragStop(e.target);
 
         allPieces.forEach(el => el.getValidMoves());
 
-        e.target.piece.clearColorMoves();
-        document.removeEventListener('mousemove', moveASD, true);
+        piece.clearColorMoves();
+        document.removeEventListener('mousemove', movePiece, true);
         document.removeEventListener('mouseup', reset, true);
     }
 
@@ -565,31 +573,32 @@ document.addEventListener("mousedown", e => {
 });
 
 
-function allElementsFromPoint(x, y) {
-    let element, ans = [], elements = [];
+function getSquareFromPoint(x, y) {
+    let element, elements = [];
     let old_visibility = [];
     while (true) {
         element = document.elementFromPoint(x, y);
 
-        if (element.matches(".square"))
-            ans.push(element.pos.x, element.pos.y)
+        if (element.matches(".square")) {
+            break;
+        }
 
         if (!element || element === document.documentElement) {
+            element = null;
             break;
         }
         elements.push(element);
         old_visibility.push(element.style.visibility);
         element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
     }
-    for (var k = 0; k < elements.length; k++) {
+    for (let k = 0; k < elements.length; k++) {
         elements[k].style.visibility = old_visibility[k];
     }
 
-    elements.reverse();
-    return ans;
+    return element;
 }
 
-function dragPieceEnd(el) {
+function pieceDragStop(el) {
     el.style.position = "";
     el.style.height = "";
     el.style.width = "";
@@ -597,7 +606,7 @@ function dragPieceEnd(el) {
     el.style.top = "";
 }
 
-function dragPiece(e, el) {
+function pieceDrag(e, el) {
     el.style.position = "absolute";
     el.style.height = squareSize + "px";
     el.style.width = squareSize + "px";
