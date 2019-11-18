@@ -1,6 +1,8 @@
 let boardSize = 8;
 let squareSize = 70;
 let allPieces = [];
+let capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
+let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
 function initBoard(squareSize) {
     let board = document.getElementsByClassName("board");
@@ -552,6 +554,15 @@ document.addEventListener("mousedown", e => {
                     &&
                     squareY === validMoves[i][1]
                 ) {
+                    if (square.firstChild) {
+                        square.firstChild.piece.pos.x = null;
+                        square.firstChild.piece.pos.y = null;
+                        (piece.color === "white")
+                            ?
+                            capturedByWhite.appendChild(square.firstChild)
+                            :
+                            capturedByBlack.appendChild(square.firstChild);
+                    }
                     piece.pos.x = squareX;
                     piece.pos.y = squareY;
                     piece.hasMoved = true;

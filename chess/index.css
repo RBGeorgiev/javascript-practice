@@ -13,6 +13,25 @@ body {
     border: 1px solid black;
 }
 
+.captures {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: start;
+    width: 15%;
+    margin: 0 10px;
+    border: 1px solid black;
+}
+
+.capturedByBlack {
+    background: brown;
+}
+
+.captures div {
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+}
+
 .square {
     margin: 0;
     padding: 0;
@@ -28,10 +47,8 @@ body {
 
 .white {
     color: #f7c6a6;
-    border: 1px black solid;
 }
 
 .black {
     color: #000000;
-    border: 1px black solid;
 }
