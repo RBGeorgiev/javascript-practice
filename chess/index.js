@@ -477,6 +477,18 @@ class Pawn extends Piece {
     getPawnMoves(steps) {
         let arr = [];
 
+        //attack on left 
+        let leftCollision = this.checkCollision(this.pos.x - 1, this.pos.y + this.direction)
+        if (leftCollision)
+            if (leftCollision.color !== this.color)
+                arr.push([this.pos.x - 1, this.pos.y + this.direction]);
+        //attack on right 
+        let rightCollision = this.checkCollision(this.pos.x + 1, this.pos.y + this.direction)
+        if (rightCollision)
+            if (rightCollision.color !== this.color)
+                arr.push([this.pos.x + 1, this.pos.y + this.direction]);
+
+
         for (let i = 1; i <= steps; i++) {
             let collisionObj = this.checkCollision(this.pos.x, this.pos.y + (i * this.direction));
 
