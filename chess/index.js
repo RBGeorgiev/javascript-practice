@@ -477,16 +477,15 @@ class Pawn extends Piece {
     getPawnMoves(steps) {
         let arr = [];
 
-        //attack on left 
-        let leftCollision = this.checkCollision(this.pos.x - 1, this.pos.y + this.direction)
-        if (leftCollision)
-            if (leftCollision.color !== this.color)
-                arr.push([this.pos.x - 1, this.pos.y + this.direction]);
-        //attack on right 
-        let rightCollision = this.checkCollision(this.pos.x + 1, this.pos.y + this.direction)
-        if (rightCollision)
-            if (rightCollision.color !== this.color)
-                arr.push([this.pos.x + 1, this.pos.y + this.direction]);
+        //check for an attack on the left side
+        let leftCollision = this.checkCollision(this.pos.x - 1, this.pos.y + this.direction);
+        if (leftCollision && leftCollision.color !== this.color)
+            arr.push([this.pos.x - 1, this.pos.y + this.direction]);
+
+        //check for an attack on the right side
+        let rightCollision = this.checkCollision(this.pos.x + 1, this.pos.y + this.direction);
+        if (rightCollision && rightCollision.color !== this.color)
+            arr.push([this.pos.x + 1, this.pos.y + this.direction]);
 
 
         for (let i = 1; i <= steps; i++) {
@@ -539,62 +538,15 @@ initBoard(squareSize);
 initPieces();
 
 document.addEventListener("mousedown", e => {
-    const el = e.target;
+    //if not clicking on a piece
+    if (!e.target.piece) return;
 
-    function movePiece(e) {
-        pieceDrag(e, el);
-    }
-
+    //color all valid moves 
     e.target.piece.colorMoves();
-    document.addEventListener("mousemove", movePiece, true);
-
-
-    function reset(e) {
-        let x = event.clientX, y = event.clientY;
-        let square = getSquareFromPoint(x, y);
-
-        let piece = e.target.piece;
-        let validMoves = piece.validMoves;
-
-        if (square) {
-            let squareX = square.pos.x;
-            let squareY = square.pos.y;
-
-            for (let i = 0; i < validMoves.length; i++) {
-                if (
-                    squareX === validMoves[i][0]
-                    &&
-                    squareY === validMoves[i][1]
-                ) {
-                    if (square.firstChild) {
-                        square.firstChild.piece.pos.x = null;
-                        square.firstChild.piece.pos.y = null;
-                        (piece.color === "white")
-                            ?
-                            capturedByWhite.appendChild(square.firstChild)
-                            :
-                            capturedByBlack.appendChild(square.firstChild);
-                    }
-                    piece.pos.x = squareX;
-                    piece.pos.y = squareY;
-                    piece.hasMoved = true;
-                    break;
-                }
-            }
-        }
-        piece.placePieceOnBoard();
-        pieceDragStop(e.target);
-
-        allPieces.forEach(el => el.getValidMoves());
-
-        piece.clearColorMoves();
-        document.removeEventListener('mousemove', movePiece, true);
-        document.removeEventListener('mouseup', reset, true);
-    }
-
-    document.addEventListener("mouseup", reset, true);
+    //add event listeners for drag and drop
+    document.addEventListener("mousemove", pieceDrag, true);
+    document.addEventListener("mouseup", pieceDrop, true);
 });
-
 
 function getSquareFromPoint(x, y) {
     let element, elements = [];
@@ -621,7 +573,8 @@ function getSquareFromPoint(x, y) {
     return element;
 }
 
-function pieceDragStop(el) {
+function pieceDragStop(e) {
+    let el = e.target;
     el.style.position = "";
     el.style.height = "";
     el.style.width = "";
@@ -629,10 +582,63 @@ function pieceDragStop(el) {
     el.style.top = "";
 }
 
-function pieceDrag(e, el) {
+function pieceDrag(e) {
+    let el = e.target;
     el.style.position = "absolute";
     el.style.height = squareSize + "px";
     el.style.width = squareSize + "px";
     el.style.left = (e.pageX - squareSize / 2) + "px";
     el.style.top = (e.pageY - squareSize / 2) + "px";
+}
+
+function pieceDrop(e) {
+    let x = event.clientX, y = event.clientY;
+    let square = getSquareFromPoint(x, y);
+
+    let piece = e.target.piece;
+    let validMoves = piece.validMoves;
+
+    //if dropped on a square
+    if (square) {
+        let squareX = square.pos.x;
+        let squareY = square.pos.y;
+
+        //check if valid move
+        for (let i = 0; i < validMoves.length; i++) {
+            if (
+                squareX === validMoves[i][0]
+                &&
+                squareY === validMoves[i][1]
+            ) {
+                // if landed on another piece
+                if (square.firstChild) {
+                    //capture the other piece
+                    square.firstChild.piece.pos.x = null;
+                    square.firstChild.piece.pos.y = null;
+                    (piece.color === "white")
+                        ?
+                        capturedByWhite.appendChild(square.firstChild)
+                        :
+                        capturedByBlack.appendChild(square.firstChild);
+                }
+                //point piece to new square
+                piece.pos.x = squareX;
+                piece.pos.y = squareY;
+                piece.hasMoved = true;
+                break;
+            }
+        }
+    }
+    //place piece on board and stop dragging
+    piece.placePieceOnBoard();
+    pieceDragStop(e);
+
+    //find all new valid moves for all pieces
+    allPieces.forEach(el => el.getValidMoves());
+
+    //clear valid move colors  
+    piece.clearColorMoves();
+    //remove/clean up event listeners for drag and drop
+    document.removeEventListener('mousemove', pieceDrag, true);
+    document.removeEventListener('mouseup', pieceDrop, true);
 }
