@@ -1,6 +1,8 @@
 let boardSize = 8;
 let squareSize = 70;
+let playerToMove = "white";
 let allPieces = [];
+
 let capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
 let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
@@ -538,11 +540,13 @@ initBoard(squareSize);
 initPieces();
 
 document.addEventListener("mousedown", e => {
+    let piece = e.target.piece;
     //if not clicking on a piece
-    if (!e.target.piece) return;
+    if (!piece) return;
+    if (piece.color !== playerToMove) return;
 
     //color all valid moves 
-    e.target.piece.colorMoves();
+    piece.colorMoves();
     //add event listeners for drag and drop
     document.addEventListener("mousemove", pieceDrag, true);
     document.addEventListener("mouseup", pieceDrop, true);
@@ -625,6 +629,8 @@ function pieceDrop(e) {
                 piece.pos.x = squareX;
                 piece.pos.y = squareY;
                 piece.hasMoved = true;
+
+                playerToMove = (playerToMove === "white") ? "black" : "white";
                 break;
             }
         }
