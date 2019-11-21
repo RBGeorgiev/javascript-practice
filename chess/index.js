@@ -2,6 +2,7 @@ let boardSize = 8;
 let squareSize = 70;
 let playerToMove = "white";
 let allPieces = [];
+let kings = [];
 
 let capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
 let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
@@ -311,6 +312,8 @@ class King extends Piece {
         super(x, y, color, "king");
 
         this.pieceElem.piece = this;
+
+        this.check = false;
     }
 
     getValidMoves() {
@@ -324,6 +327,19 @@ class King extends Piece {
             ...this.checkBottomRight(1),
             ...this.checkBottomLeft(1)
         ]
+    }
+
+    checkCheck() {
+        let x = this.pos.x,
+            y = this.pos.y
+        for (const piece of allPieces) {
+            if (piece.color !== this.color) {
+                for (const move of piece.validMoves) {
+                    if (move[0] === x && move[1] === y) return true;
+                }
+            }
+        }
+        return false;
     }
 }
 
@@ -506,32 +522,39 @@ class Pawn extends Piece {
 
 
 function initPieces() {
+    let whiteKing = new King(4, 0, "white");
+    let blackKing = new King(4, 7, "black");
+    kings.push(whiteKing, blackKing)
+
     // white
     for (let i = 0; i < boardSize; i++) {
         allPieces.push(new Pawn(i, 1, "white"));
     }
-    allPieces.push(new Rook(0, 0, "white"));
-    allPieces.push(new Knight(1, 0, "white"));
-    allPieces.push(new Bishop(2, 0, "white"));
-    allPieces.push(new Queen(3, 0, "white"));
-    allPieces.push(new King(4, 0, "white"));
-    allPieces.push(new Bishop(5, 0, "white"));
-    allPieces.push(new Knight(6, 0, "white"));
-    allPieces.push(new Rook(7, 0, "white"));
+    allPieces.push(
+        new Rook(0, 0, "white"),
+        new Knight(1, 0, "white"),
+        new Bishop(2, 0, "white"),
+        new Queen(3, 0, "white"),
+        whiteKing,
+        new Bishop(5, 0, "white"),
+        new Knight(6, 0, "white"),
+        new Rook(7, 0, "white")
+    )
 
     // black
     for (let i = 0; i < boardSize; i++) {
         allPieces.push(new Pawn(i, 6, "black"));
     }
-    allPieces.push(new Rook(0, 7, "black"));
-    allPieces.push(new Knight(1, 7, "black"));
-    allPieces.push(new Bishop(2, 7, "black"));
-    allPieces.push(new Queen(3, 7, "black"));
-    allPieces.push(new King(4, 7, "black"));
-    allPieces.push(new Bishop(5, 7, "black"));
-    allPieces.push(new Knight(6, 7, "black"));
-    allPieces.push(new Rook(7, 7, "black"));
-
+    allPieces.push(
+        new Rook(0, 7, "black"),
+        new Knight(1, 7, "black"),
+        new Bishop(2, 7, "black"),
+        new Queen(3, 7, "black"),
+        blackKing,
+        new Bishop(5, 7, "black"),
+        new Knight(6, 7, "black"),
+        new Rook(7, 7, "black")
+    )
 
     allPieces.forEach(el => el.getValidMoves());
 }
@@ -588,6 +611,7 @@ function pieceDragStop(e) {
 
 function pieceDrag(e) {
     let el = e.target;
+    //fixes bug when moving mouse too fast while dragging
     if (!el.piece || el.piece.color !== playerToMove) return;
 
     el.style.position = "absolute";
@@ -644,6 +668,7 @@ function pieceDrop(e) {
 
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.getValidMoves());
+    kings.forEach(king => king.check = king.checkCheck())
 
     //clear valid move colors  
     piece.clearColorMoves();
