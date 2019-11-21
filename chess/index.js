@@ -588,6 +588,8 @@ function pieceDragStop(e) {
 
 function pieceDrag(e) {
     let el = e.target;
+    if (!el.piece || el.piece.color !== playerToMove) return;
+
     el.style.position = "absolute";
     el.style.height = squareSize + "px";
     el.style.width = squareSize + "px";
@@ -600,6 +602,7 @@ function pieceDrop(e) {
     let square = getSquareFromPoint(x, y);
 
     let piece = e.target.piece;
+    if (!piece) return;
     let validMoves = piece.validMoves;
 
     //if dropped on a square
