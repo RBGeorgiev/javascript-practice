@@ -364,7 +364,6 @@ class Queen extends Piece {
     }
 
     getValidMoves() {
-        console.log(this.king.check)
         this.validMoves = [
             ...this.checkTop(),
             ...this.checkBottom(),
@@ -655,20 +654,56 @@ function pieceDrop(e) {
                 &&
                 squareY === validMoves[i][1]
             ) {
+                //old xy values for moved piece
+                let oldX = piece.pos.x,
+                    oldY = piece.pos.y;
+                //old xy values for captured piece
+                let takenLastPosX,
+                    takenLastPosY
+
                 // if landed on another piece
                 if (square.firstChild) {
+                    takenLastPosX = square.firstChild.piece.pos.x;
+                    takenLastPosY = square.firstChild.piece.pos.y;
                     //capture the other piece
                     square.firstChild.piece.pos.x = null;
                     square.firstChild.piece.pos.y = null;
+                }
+
+                //point piece to new square
+                piece.pos.x = squareX;
+                piece.pos.y = squareY;
+
+                if (piece.king.check) {
+                    let validMove = true;
+                    allPieces.forEach(el => el.getValidMoves());
+                    kings.forEach(king => {
+                        if (king.checkCheck()) {
+                            allPieces.forEach(el => el.getValidMoves());
+                            validMove = false;
+                            piece.pos.x = oldX;
+                            piece.pos.y = oldY;
+                        }
+                    });
+                    if (!validMove) {
+                        if (square.firstChild) {
+                            square.firstChild.piece.pos.x = takenLastPosX;
+                            square.firstChild.piece.pos.y = takenLastPosY;
+
+                        }
+                        break;
+                    }
+                }
+
+                //remove captured piece from board
+                if (square.firstChild) {
                     (piece.color === "white")
                         ?
                         capturedByWhite.appendChild(square.firstChild)
                         :
                         capturedByBlack.appendChild(square.firstChild);
                 }
-                //point piece to new square
-                piece.pos.x = squareX;
-                piece.pos.y = squareY;
+
                 piece.hasMoved = true;
 
                 playerToMove = (playerToMove === "white") ? "black" : "white";
@@ -682,8 +717,10 @@ function pieceDrop(e) {
 
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.getValidMoves());
-    kings.forEach(king => king.checkCheck());
-
+    kings.forEach(king => {
+        if (king.checkCheck())
+            allPieces.forEach(el => el.getValidMoves());
+    });
 
     //clear valid move colors  
     piece.clearColorMoves();
