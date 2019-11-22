@@ -57,6 +57,14 @@ class Piece {
         this.placePieceOnBoard();
 
         this.validMoves;
+
+        this.king = (this.type !== "king") ? this.getKing() : this;
+    }
+
+    getKing() {
+        for (let i = 0; i < kings.length; i++) {
+            if (kings[i].color === this.color) return kings[i];
+        }
     }
 
     setIsTaken = () => this.setIsTaken = true;
@@ -335,11 +343,15 @@ class King extends Piece {
         for (const piece of allPieces) {
             if (piece.color !== this.color) {
                 for (const move of piece.validMoves) {
-                    if (move[0] === x && move[1] === y) return true;
+                    if (move[0] === x && move[1] === y) {
+                        this.pieceElem.id = "checked";
+                        return this.check = true;
+                    }
                 }
             }
         }
-        return false;
+        this.pieceElem.id = "";
+        return this.check = false;
     }
 }
 
@@ -352,6 +364,7 @@ class Queen extends Piece {
     }
 
     getValidMoves() {
+        console.log(this.king.check)
         this.validMoves = [
             ...this.checkTop(),
             ...this.checkBottom(),
@@ -546,7 +559,8 @@ function initPieces() {
         allPieces.push(new Pawn(i, 6, "black"));
     }
     allPieces.push(
-        new Rook(0, 7, "black"),
+        // new Rook(0, 7, "black"),
+        new Rook(4, 4, "black"),
         new Knight(1, 7, "black"),
         new Bishop(2, 7, "black"),
         new Queen(3, 7, "black"),
@@ -668,7 +682,8 @@ function pieceDrop(e) {
 
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.getValidMoves());
-    kings.forEach(king => king.check = king.checkCheck())
+    kings.forEach(king => king.checkCheck());
+
 
     //clear valid move colors  
     piece.clearColorMoves();
