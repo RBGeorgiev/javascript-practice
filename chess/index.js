@@ -56,7 +56,8 @@ class Piece {
 
         this.placePieceOnBoard();
 
-        this.validMoves;
+        this.validMoves = [];
+        this.legalMoves = [];
 
         this.king = (this.type !== "king") ? this.getKing() : this;
     }
@@ -67,7 +68,7 @@ class Piece {
         }
     }
 
-    setIsTaken = () => this.setIsTaken = true;
+    setTaken = () => this.taken = true;
 
     //#region - direction and collision check functions
     checkCollision(x, y) {
@@ -295,7 +296,7 @@ class Piece {
     //#region - visual display functions
     colorMoves() {
         for (const square of this.squares) {
-            for (const coord of this.validMoves) {
+            for (const coord of this.legalMoves) {
                 if (
                     square.pos.x === coord[0]
                     &&
@@ -313,6 +314,86 @@ class Piece {
         }
     }
     //#endregion - visual display functions
+
+    setValidMoves() {
+        this.validMoves = this.findValidMoves();
+    }
+
+    setLegalMoves() {
+        let arr = [];
+        if (this.validMoves.length === 0 || this.taken) return;
+        for (let i = this.validMoves.length - 1; i >= 0; i--) {
+            let x = this.validMoves[i][0];
+            let y = this.validMoves[i][1];
+            let square = this.findSquare(x, y);
+            let legalMove = this.testMove(x, y, square);
+
+            allPieces.forEach(el => el.setValidMoves());
+            if (legalMove) {
+                arr.push(this.validMoves[i]);
+            }
+        }
+        this.legalMoves = arr;
+    }
+
+    findSquare(x, y) {
+        for (let i = 0; i < this.squares.length; i++) {
+            if (
+                this.squares[i].pos.x === x
+                &&
+                this.squares[i].pos.y === y
+            ) {
+                return this.squares[i];
+            }
+        }
+    }
+
+    testMove(x, y, square) {
+        //old xy values for moved piece
+        let oldX = this.pos.x,
+            oldY = this.pos.y;
+        //old xy values for captured piece
+        let takenLastPosX,
+            takenLastPosY
+
+
+        //if landed on another piece
+        if (square.firstChild) {
+            takenLastPosX = square.firstChild.piece.pos.x;
+            takenLastPosY = square.firstChild.piece.pos.y;
+            //capture the other piece
+            square.firstChild.piece.pos.x = null;
+            square.firstChild.piece.pos.y = null;
+        }
+
+        //point piece to new square
+        this.pos.x = x;
+        this.pos.y = y;
+
+        let legalMove = this.isLegalMove();
+
+        //reset values
+        this.pos.x = oldX;
+        this.pos.y = oldY;
+
+        if (square.firstChild) {
+            square.firstChild.piece.pos.x = takenLastPosX;
+            square.firstChild.piece.pos.y = takenLastPosY;
+        }
+
+        return legalMove;
+    }
+
+    isLegalMove() {
+        let legalMove = true;
+        allPieces.forEach(el => el.setValidMoves());
+
+        if (this.king.checkCheck())
+            legalMove = false;
+
+
+        return legalMove;
+    }
 }
 
 class King extends Piece {
@@ -324,8 +405,9 @@ class King extends Piece {
         this.check = false;
     }
 
-    getValidMoves() {
-        this.validMoves = [
+
+    findValidMoves() {
+        return [
             ...this.checkTop(1),
             ...this.checkBottom(1),
             ...this.checkRight(1),
@@ -363,8 +445,9 @@ class Queen extends Piece {
 
     }
 
-    getValidMoves() {
-        this.validMoves = [
+
+    findValidMoves() {
+        return [
             ...this.checkTop(),
             ...this.checkBottom(),
             ...this.checkRight(),
@@ -384,8 +467,9 @@ class Rook extends Piece {
         this.pieceElem.piece = this;
     }
 
-    getValidMoves() {
-        this.validMoves = [
+
+    findValidMoves() {
+        return [
             ...this.checkTop(),
             ...this.checkBottom(),
             ...this.checkRight(),
@@ -401,8 +485,9 @@ class Bishop extends Piece {
         this.pieceElem.piece = this;
     }
 
-    getValidMoves() {
-        this.validMoves = [
+
+    findValidMoves() {
+        return [
             ...this.checkTopLeft(),
             ...this.checkTopRight(),
             ...this.checkBottomRight(),
@@ -421,7 +506,7 @@ class Knight extends Piece {
     }
 
 
-    getValidMoves() {
+    findValidMoves() {
         let arr = [];
         let x = this.pos.x;
         let y = this.pos.y;
@@ -448,7 +533,7 @@ class Knight extends Piece {
             }
         }
 
-        this.validMoves = arr;
+        return arr;
     }
 
     getKnightMoves() {
@@ -500,8 +585,9 @@ class Pawn extends Piece {
         this.pieceElem.piece = this;
     }
 
-    getValidMoves() {
-        this.validMoves = (this.hasMoved) ? this.getPawnMoves(1) : this.getPawnMoves(2);
+
+    findValidMoves() {
+        return (this.hasMoved) ? this.getPawnMoves(1) : this.getPawnMoves(2);
     }
 
     getPawnMoves(steps) {
@@ -569,32 +655,29 @@ function initPieces() {
         new Rook(7, 7, "black")
     )
 
-    allPieces.forEach(el => el.getValidMoves());
+    allPieces.forEach(el => {
+        el.setValidMoves();
+        el.setLegalMoves();
+    });
 }
 
 initBoard(squareSize);
 initPieces();
 
 document.addEventListener("mousedown", e => {
-    let el = e.target;
+    const el = e.target;
     //if not clicking on a piece
     if (!el.piece) return;
     if (el.piece.color !== playerToMove) return;
 
+    const style = el.style;
+    style.position = "absolute";
+    style.height = squareSize + "px";
+    style.width = squareSize + "px";
     function pieceDrag(e) {
-        //fixes bug when moving mouse too fast while dragging
-        if (!el.piece || el.piece.color !== playerToMove) return;
-
-        el.style.position = "absolute";
-        el.style.height = squareSize + "px";
-        el.style.width = squareSize + "px";
-
-        moveTo(e.pageX, e.pageY, squareSize / 2);
-
-        function moveTo(x, y, shift) {
-            el.style.left = (x - shift) + "px";
-            el.style.top = (y - shift) + "px";
-        }
+        const offset = squareSize / 2;
+        style.left = `${e.pageX - offset}px`;
+        style.top = `${e.pageY - offset}px`;
     }
 
     //color all valid moves 
@@ -605,6 +688,8 @@ document.addEventListener("mousedown", e => {
 
     function pieceDrop(e) {
         checkMove(e);
+        //clear valid move colors 
+        el.piece.clearColorMoves();
         //remove/clean up event listeners for drag and drop
         document.removeEventListener('mousemove', pieceDrag, true);
         document.removeEventListener('mouseup', pieceDrop, true);
@@ -651,7 +736,7 @@ function checkMove(e) {
 
     let piece = e.target.piece;
     if (!piece) return;
-    let validMoves = piece.validMoves;
+    let legalMoves = piece.legalMoves;
 
     //if dropped on a square
     if (square) {
@@ -659,60 +744,18 @@ function checkMove(e) {
         let squareY = square.pos.y;
 
         //check if valid move
-        for (let i = 0; i < validMoves.length; i++) {
+        for (let i = 0; i < legalMoves.length; i++) {
             if (
-                squareX === validMoves[i][0]
+                squareX === legalMoves[i][0]
                 &&
-                squareY === validMoves[i][1]
+                squareY === legalMoves[i][1]
             ) {
-                //old xy values for moved piece
-                let oldX = piece.pos.x,
-                    oldY = piece.pos.y;
-                //old xy values for captured piece
-                let takenLastPosX,
-                    takenLastPosY
-
-                // if landed on another piece
-                if (square.firstChild) {
-                    takenLastPosX = square.firstChild.piece.pos.x;
-                    takenLastPosY = square.firstChild.piece.pos.y;
-                    //capture the other piece
-                    square.firstChild.piece.pos.x = null;
-                    square.firstChild.piece.pos.y = null;
-                }
-
-                //point piece to new square
                 piece.pos.x = squareX;
                 piece.pos.y = squareY;
 
-                if (piece.king.check) {
-                    let validMove = true;
-                    allPieces.forEach(el => el.getValidMoves());
-                    kings.forEach(king => {
-                        if (king.checkCheck()) {
-                            allPieces.forEach(el => el.getValidMoves());
-                            validMove = false;
-                            piece.pos.x = oldX;
-                            piece.pos.y = oldY;
-                        }
-                    });
-                    if (!validMove) {
-                        if (square.firstChild) {
-                            square.firstChild.piece.pos.x = takenLastPosX;
-                            square.firstChild.piece.pos.y = takenLastPosY;
-
-                        }
-                        break;
-                    }
-                }
-
-                //remove captured piece from board
                 if (square.firstChild) {
-                    (piece.color === "white")
-                        ?
-                        capturedByWhite.appendChild(square.firstChild)
-                        :
-                        capturedByBlack.appendChild(square.firstChild);
+                    //capture the other piece
+                    capturePiece(square.firstChild)
                 }
 
                 piece.hasMoved = true;
@@ -727,12 +770,32 @@ function checkMove(e) {
     pieceDragStop(e);
 
     //find all new valid moves for all pieces
-    allPieces.forEach(el => el.getValidMoves());
-    kings.forEach(king => {
-        if (king.checkCheck())
-            allPieces.forEach(el => el.getValidMoves());
+    allPieces.forEach(el => {
+        el.setValidMoves();
+        el.setLegalMoves();
     });
+    kings.forEach(king => {
+        if (king.checkCheck()) {
+            allPieces.forEach(el => {
+                if (king.color === el.color) {
+                    el.setValidMoves();
+                    el.setLegalMoves();
+                }
+            });
+        }
+    });
+}
 
-    //clear valid move colors  
-    piece.clearColorMoves();
+function capturePiece(pieceDiv) {
+    const piece = pieceDiv.piece;
+    piece.pos.x = null;
+    piece.pos.y = null;
+    piece.setTaken();
+
+    //remove captured piece from board and place in correct capture area
+    (piece.color === "white")
+        ?
+        capturedByBlack.appendChild(pieceDiv)
+        :
+        capturedByWhite.appendChild(pieceDiv);
 }
