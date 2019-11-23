@@ -576,16 +576,39 @@ initBoard(squareSize);
 initPieces();
 
 document.addEventListener("mousedown", e => {
-    let piece = e.target.piece;
+    let el = e.target;
     //if not clicking on a piece
-    if (!piece) return;
-    if (piece.color !== playerToMove) return;
+    if (!el.piece) return;
+    if (el.piece.color !== playerToMove) return;
+
+    function pieceDrag(e) {
+        //fixes bug when moving mouse too fast while dragging
+        if (!el.piece || el.piece.color !== playerToMove) return;
+
+        el.style.position = "absolute";
+        el.style.height = squareSize + "px";
+        el.style.width = squareSize + "px";
+
+        moveTo(e.pageX, e.pageY, squareSize / 2);
+
+        function moveTo(x, y, shift) {
+            el.style.left = (x - shift) + "px";
+            el.style.top = (y - shift) + "px";
+        }
+    }
 
     //color all valid moves 
-    piece.colorMoves();
+    el.piece.colorMoves();
     //add event listeners for drag and drop
     document.addEventListener("mousemove", pieceDrag, true);
     document.addEventListener("mouseup", pieceDrop, true);
+
+    function pieceDrop(e) {
+        checkMove(e);
+        //remove/clean up event listeners for drag and drop
+        document.removeEventListener('mousemove', pieceDrag, true);
+        document.removeEventListener('mouseup', pieceDrop, true);
+    }
 });
 
 function getSquareFromPoint(x, y) {
@@ -622,19 +645,7 @@ function pieceDragStop(e) {
     el.style.top = "";
 }
 
-function pieceDrag(e) {
-    let el = e.target;
-    //fixes bug when moving mouse too fast while dragging
-    if (!el.piece || el.piece.color !== playerToMove) return;
-
-    el.style.position = "absolute";
-    el.style.height = squareSize + "px";
-    el.style.width = squareSize + "px";
-    el.style.left = (e.pageX - squareSize / 2) + "px";
-    el.style.top = (e.pageY - squareSize / 2) + "px";
-}
-
-function pieceDrop(e) {
+function checkMove(e) {
     let x = event.clientX, y = event.clientY;
     let square = getSquareFromPoint(x, y);
 
@@ -724,7 +735,4 @@ function pieceDrop(e) {
 
     //clear valid move colors  
     piece.clearColorMoves();
-    //remove/clean up event listeners for drag and drop
-    document.removeEventListener('mousemove', pieceDrag, true);
-    document.removeEventListener('mouseup', pieceDrop, true);
 }
