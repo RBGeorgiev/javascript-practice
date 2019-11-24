@@ -315,25 +315,35 @@ class Piece {
     }
     //#endregion - visual display functions
 
+    setMoves() {
+        this.setValidMoves();
+        this.setLegalMoves();
+    }
+
     setValidMoves() {
         this.validMoves = this.findValidMoves();
     }
 
     setLegalMoves() {
+        this.legalMoves = this.findLegalMoves();
+    }
+
+    findLegalMoves() {
         let arr = [];
-        if (this.validMoves.length === 0 || this.taken) return;
+        if (this.validMoves.length === 0 || this.taken)
+            return arr;
+
         for (let i = this.validMoves.length - 1; i >= 0; i--) {
             let x = this.validMoves[i][0];
             let y = this.validMoves[i][1];
             let square = this.findSquare(x, y);
             let legalMove = this.testMove(x, y, square);
 
-            allPieces.forEach(el => el.setValidMoves());
             if (legalMove) {
                 arr.push(this.validMoves[i]);
             }
         }
-        this.legalMoves = arr;
+        return arr;
     }
 
     findSquare(x, y) {
@@ -354,14 +364,16 @@ class Piece {
             oldY = this.pos.y;
         //old xy values for captured piece
         let takenLastPosX,
-            takenLastPosY
+            takenLastPosY;
+        //save old valid moves
+        let oldValidMoves = this.validMoves;
 
 
         //if landed on another piece
         if (square.firstChild) {
             takenLastPosX = square.firstChild.piece.pos.x;
             takenLastPosY = square.firstChild.piece.pos.y;
-            //capture the other piece
+            //temporarily capture the other piece
             square.firstChild.piece.pos.x = null;
             square.firstChild.piece.pos.y = null;
         }
@@ -370,13 +382,19 @@ class Piece {
         this.pos.x = x;
         this.pos.y = y;
 
+        //find all valid moves for test move
+        allPieces.forEach(el => el.setValidMoves());
+        //see if king would be in check in the test move was made (i.e. is move legal)
         let legalMove = this.isLegalMove();
+        //restore valid moves to before test
+        this.validMoves = oldValidMoves;
 
-        //reset values
+        //restore xy values
         this.pos.x = oldX;
         this.pos.y = oldY;
 
         if (square.firstChild) {
+            //bring back temporarily captured piece
             square.firstChild.piece.pos.x = takenLastPosX;
             square.firstChild.piece.pos.y = takenLastPosY;
         }
@@ -386,11 +404,9 @@ class Piece {
 
     isLegalMove() {
         let legalMove = true;
-        allPieces.forEach(el => el.setValidMoves());
 
         if (this.king.checkCheck())
             legalMove = false;
-
 
         return legalMove;
     }
@@ -655,10 +671,7 @@ function initPieces() {
         new Rook(7, 7, "black")
     )
 
-    allPieces.forEach(el => {
-        el.setValidMoves();
-        el.setLegalMoves();
-    });
+    allPieces.forEach(el => el.setMoves());
 }
 
 initBoard(squareSize);
@@ -770,17 +783,12 @@ function checkMove(e) {
     pieceDragStop(e);
 
     //find all new valid moves for all pieces
-    allPieces.forEach(el => {
-        el.setValidMoves();
-        el.setLegalMoves();
-    });
+    allPieces.forEach(el => el.setMoves());
     kings.forEach(king => {
         if (king.checkCheck()) {
             allPieces.forEach(el => {
-                if (king.color === el.color) {
-                    el.setValidMoves();
-                    el.setLegalMoves();
-                }
+                if (king.color === el.color)
+                    el.setMoves();
             });
         }
     });
