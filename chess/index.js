@@ -671,6 +671,7 @@ function initPieces() {
         new Rook(7, 7, "black")
     )
 
+    //get starting moves for all the pieces
     allPieces.forEach(el => el.setMoves());
 }
 
@@ -693,7 +694,7 @@ document.addEventListener("mousedown", e => {
         style.top = `${e.pageY - offset}px`;
     }
 
-    //color all valid moves 
+    //color all legal moves 
     el.piece.colorMoves();
     //add event listeners for drag and drop
     document.addEventListener("mousemove", pieceDrag, true);
@@ -701,7 +702,7 @@ document.addEventListener("mousedown", e => {
 
     function pieceDrop(e) {
         checkMove(e);
-        //clear valid move colors 
+        //clear legal move colors 
         el.piece.clearColorMoves();
         //remove/clean up event listeners for drag and drop
         document.removeEventListener('mousemove', pieceDrag, true);
@@ -784,14 +785,8 @@ function checkMove(e) {
 
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.setMoves());
-    kings.forEach(king => {
-        if (king.checkCheck()) {
-            allPieces.forEach(el => {
-                if (king.color === el.color)
-                    el.setMoves();
-            });
-        }
-    });
+    //show if king is in check
+    kings.forEach(king => king.checkCheck());
 }
 
 function capturePiece(pieceDiv) {
