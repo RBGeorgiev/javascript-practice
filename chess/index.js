@@ -636,45 +636,38 @@ class Pawn extends Piece {
 
 
 function initPieces() {
-    let whiteKing = new King(7, 0, "white");
-    // let whiteKing = new King(4, 0, "white");
+    let whiteKing = new King(4, 0, "white");
     let blackKing = new King(4, 7, "black");
     kings.push(whiteKing, blackKing)
 
     // white
     for (let i = 0; i < boardSize; i++) {
-        // allPieces.push(new Pawn(i, 1, "white"));
+        allPieces.push(new Pawn(i, 1, "white"));
     }
     allPieces.push(
-        // new Rook(0, 0, "white"),
-        // new Knight(1, 0, "white"),
-        // new Bishop(2, 0, "white"),
-        // new Queen(3, 0, "white"),
-        // whiteKing,
-        // new Bishop(5, 0, "white"),
-        // new Knight(6, 0, "white"),
-        // new Rook(7, 0, "white")
+        new Rook(0, 0, "white"),
+        new Knight(1, 0, "white"),
+        new Bishop(2, 0, "white"),
+        new Queen(3, 0, "white"),
+        whiteKing,
+        new Bishop(5, 0, "white"),
+        new Knight(6, 0, "white"),
+        new Rook(7, 0, "white")
     )
 
     // black
     for (let i = 0; i < boardSize; i++) {
-        // allPieces.push(new Pawn(i, 6, "black"));
+        allPieces.push(new Pawn(i, 6, "black"));
     }
     allPieces.push(
-        // new Rook(0, 7, "black"),
-        // new Rook(4, 4, "black"),
-        // new Knight(1, 7, "black"),
-        // new Bishop(2, 7, "black"),
-        // new Queen(3, 7, "black"),
-        // blackKing,
-        // new Bishop(5, 7, "black"),
-        // new Knight(6, 7, "black"),
-        // new Rook(7, 7, "black")
-
-        whiteKing,
-        new Queen(6, 7, "black"),
-        new Rook(0, 2, "black"),
+        new Rook(0, 7, "black"),
+        new Knight(1, 7, "black"),
+        new Bishop(2, 7, "black"),
+        new Queen(3, 7, "black"),
         blackKing,
+        new Bishop(5, 7, "black"),
+        new Knight(6, 7, "black"),
+        new Rook(7, 7, "black")
     )
 
     //get starting moves for all the pieces
@@ -791,15 +784,8 @@ function checkMove(e) {
 
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.setMoves());
-    winText.innerHTML = '';
-    let noMoves = canMove();
-    if (noMoves) winText.innerHTML = 'Draw!';
-    //show if king is in check
-    kings.forEach(king => {
-        if (king.checkCheck()) {
-            (noMoves) ? winText.innerHTML = 'Checkmate!' : winText.innerHTML = 'Check!';
-        }
-    });
+
+    winText.innerHTML = gameState();
 }
 
 function capturePiece(pieceDiv) {
@@ -814,6 +800,30 @@ function capturePiece(pieceDiv) {
         capturedByBlack.appendChild(pieceDiv)
         :
         capturedByWhite.appendChild(pieceDiv);
+}
+
+function gameState() {
+    let gameState = '';
+    let noMoves = canMove();
+
+    if (noMoves) gameState = 'Draw!';
+
+    kings.forEach(king => {
+        if (king.checkCheck()) {
+            (noMoves)
+                ?
+                gameState = `Checkmate! ${getWinner()} wins!`
+                :
+                gameState = 'Check!';
+        }
+    });
+
+    return gameState;
+}
+
+function getWinner() {
+    let winner = (playerToMove === "white") ? "black" : "white";
+    return `${winner[0].toUpperCase() + winner.slice(1)}`;
 }
 
 function canMove() {
