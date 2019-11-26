@@ -4,6 +4,9 @@ let playerToMove = "white";
 let allPieces = [];
 let kings = [];
 
+let currentMove = 0;
+let previousMoves = [];
+
 let capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
 let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
@@ -774,6 +777,10 @@ function checkMove(e) {
                 piece.hasMoved = true;
 
                 playerToMove = (playerToMove === "white") ? "black" : "white";
+
+                currentMove++
+                saveMove();
+                console.log(previousMoves)
                 break;
             }
         }
@@ -836,4 +843,18 @@ function canMove() {
         };
     })
     return canMove;
+}
+
+saveMove();
+console.log(previousMoves)
+
+function saveMove() {
+    let node = {
+        "move": currentMove,
+        "previousMoves": { ...previousMoves },
+        "playerToMove": playerToMove,
+        "allPieces": allPieces
+    }
+
+    previousMoves.push(node)
 }
