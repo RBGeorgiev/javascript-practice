@@ -780,7 +780,6 @@ function checkMove(e) {
 
                 currentMove++
                 saveMove();
-                console.log(previousMoves)
                 break;
             }
         }
@@ -846,14 +845,31 @@ function canMove() {
 }
 
 saveMove();
-console.log(previousMoves)
+undo.onclick = loadMove
+
+function loadMove() {
+    let lastMove = previousMoves[currentMove - 1];
+    currentMove = lastMove.move;
+    previousMoves = lastMove.previousMoves;
+    playerToMove = lastMove.playerToMove;
+
+    for (let i = 0; i < allPieces.length; i++) {
+        allPieces[i].pos = lastMove.pos[i];
+    }
+
+    allPieces.forEach(el => el.placePieceOnBoard());
+    allPieces.forEach(el => el.setMoves());
+}
 
 function saveMove() {
+    let prev = [...previousMoves]
+    let pos = allPieces.map(el => ({ ...el.pos }))
+
     let node = {
         "move": currentMove,
-        "previousMoves": { ...previousMoves },
+        "previousMoves": prev,
         "playerToMove": playerToMove,
-        "allPieces": allPieces
+        "pos": pos
     }
 
     previousMoves.push(node)
