@@ -41,8 +41,6 @@ function initBoard(squareSize) {
 
 class Piece {
     constructor(x, y, color, type) {
-        this.allPieces = allPieces;
-
         this.pos = {
             x,
             y
@@ -75,13 +73,13 @@ class Piece {
 
     //#region - direction and collision check functions
     checkCollision(x, y) {
-        for (let j = 0; j < this.allPieces.length; j++) {
+        for (let j = 0; j < allPieces.length; j++) {
             if (
-                x === this.allPieces[j].pos.x
+                x === allPieces[j].pos.x
                 &&
-                y === this.allPieces[j].pos.y
+                y === allPieces[j].pos.y
             ) {
-                return this.allPieces[j];
+                return allPieces[j];
             }
         }
     }
@@ -766,6 +764,9 @@ function checkMove(e) {
                 &&
                 squareY === legalMoves[i][1]
             ) {
+                currentMove++
+                saveBoardState();
+
                 piece.pos.x = squareX;
                 piece.pos.y = squareY;
 
@@ -778,8 +779,6 @@ function checkMove(e) {
 
                 playerToMove = (playerToMove === "white") ? "black" : "white";
 
-                currentMove++
-                saveMove();
                 break;
             }
         }
@@ -844,33 +843,47 @@ function canMove() {
     return canMove;
 }
 
-saveMove();
-undo.onclick = loadMove
+saveBoardState();
+undo.onclick = undoLastMove
 
-function loadMove() {
-    let lastMove = previousMoves[currentMove - 1];
-    currentMove = lastMove.move;
+function undoLastMove() {
+    let lastMove = previousMoves[previousMoves.length - 1];
+    currentMove = lastMove.currentMove;
     previousMoves = lastMove.previousMoves;
     playerToMove = lastMove.playerToMove;
 
     for (let i = 0; i < allPieces.length; i++) {
-        allPieces[i].pos = lastMove.pos[i];
+        allPieces[i].pos = lastMove.pieces[i].pos;
+        allPieces[i].hasMoved = lastMove.pieces[i].hasMoved;
+        allPieces[i].taken = lastMove.pieces[i].taken;
+        allPieces[i].validMoves = lastMove.pieces[i].validMoves;
+        allPieces[i].legalMoves = lastMove.pieces[i].legalMoves;
     }
 
     allPieces.forEach(el => el.placePieceOnBoard());
     allPieces.forEach(el => el.setMoves());
+
+    if (previousMoves.length === 0) saveBoardState();
 }
 
-function saveMove() {
+function saveBoardState() {
     let prev = [...previousMoves]
-    let pos = allPieces.map(el => ({ ...el.pos }))
+    let pieces = allPieces.map(el => (
+        {
+            pos: { ...el.pos },
+            hasMoved: el.hasMoved,
+            taken: el.taken,
+            validMoves: [...el.validMoves],
+            legalMoves: [...el.legalMoves]
+        }
+    ))
 
-    let node = {
-        "move": currentMove,
+    let curState = {
+        "currentMove": currentMove,
         "previousMoves": prev,
         "playerToMove": playerToMove,
-        "pos": pos
+        "pieces": pieces
     }
 
-    previousMoves.push(node)
+    previousMoves.push(curState)
 }
