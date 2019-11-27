@@ -675,8 +675,6 @@ function initPieces() {
     allPieces.forEach(el => el.setMoves());
 }
 
-initBoard(squareSize);
-initPieces();
 
 document.addEventListener("mousedown", e => {
     const el = e.target;
@@ -843,9 +841,6 @@ function canMove() {
     return canMove;
 }
 
-saveBoardState();
-undo.onclick = undoLastMove
-
 function undoLastMove() {
     let lastMove = previousMoves[previousMoves.length - 1];
     currentMove = lastMove.currentMove;
@@ -887,3 +882,12 @@ function saveBoardState() {
 
     previousMoves.push(curState)
 }
+
+function init() {
+    initBoard(squareSize);
+    initPieces();
+    saveBoardState();
+    undo.onclick = undoLastMove;
+}
+
+document.onload = init();
