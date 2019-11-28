@@ -788,7 +788,7 @@ function checkMove(e) {
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.setMoves());
 
-    winText.innerHTML = gameState();
+    winText.innerHTML = gameStatus();
 }
 
 function capturePiece(pieceDiv) {
@@ -805,23 +805,23 @@ function capturePiece(pieceDiv) {
         capturedByWhite.appendChild(pieceDiv);
 }
 
-function gameState() {
-    let gameState = '';
+function gameStatus() {
+    let gameStatus = '';
     let noMoves = canMove();
 
-    if (noMoves) gameState = 'Draw!';
+    if (noMoves) gameStatus = 'Draw!';
 
     kings.forEach(king => {
         if (king.checkCheck()) {
             (noMoves)
                 ?
-                gameState = `Checkmate! ${getWinner()} wins!`
+                gameStatus = `Checkmate! ${getWinner()} wins!`
                 :
-                gameState = 'Check!';
+                gameStatus = 'Check!';
         }
     });
 
-    return gameState;
+    return gameStatus;
 }
 
 function getWinner() {
@@ -848,15 +848,17 @@ function undoLastMove() {
     playerToMove = lastMove.playerToMove;
 
     for (let i = 0; i < allPieces.length; i++) {
-        allPieces[i].pos = lastMove.pieces[i].pos;
-        allPieces[i].hasMoved = lastMove.pieces[i].hasMoved;
-        allPieces[i].taken = lastMove.pieces[i].taken;
-        allPieces[i].validMoves = lastMove.pieces[i].validMoves;
-        allPieces[i].legalMoves = lastMove.pieces[i].legalMoves;
+        let cur = allPieces[i],
+            prev = lastMove.pieces[i];
+        cur.pos = prev.pos;
+        cur.hasMoved = prev.hasMoved;
+        cur.taken = prev.taken;
+        cur.validMoves = prev.validMoves;
+        cur.legalMoves = prev.legalMoves;
+        cur.placePieceOnBoard();
     }
 
-    allPieces.forEach(el => el.placePieceOnBoard());
-    allPieces.forEach(el => el.setMoves());
+    winText.innerHTML = gameStatus();
 
     if (previousMoves.length === 0) saveBoardState();
 }
