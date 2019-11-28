@@ -11,11 +11,11 @@ let capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
 let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
 function initBoard(squareSize) {
-    let board = document.getElementsByClassName("board");
+    let board = document.getElementsByClassName("board")[0];
 
 
-    board[0].style.width = `${squareSize * boardSize}px`;
-    board[0].style.height = `${squareSize * boardSize}px`;
+    board.style.width = `${squareSize * boardSize}px`;
+    board.style.height = `${squareSize * boardSize}px`;
 
     for (let y = 0; y < boardSize; y++) {
         for (let x = 0; x < boardSize; x++) {
@@ -33,7 +33,7 @@ function initBoard(squareSize) {
             square.style.width = `${squareSize}px`;
             square.style.height = `${squareSize}px`;
 
-            board[0].appendChild(square);
+            board.appendChild(square);
         }
     }
 }
@@ -885,11 +885,22 @@ function saveBoardState() {
     previousMoves.push(curState)
 }
 
+function flipBoard() {
+    let board = document.getElementsByClassName("board")[0];
+
+    (board.classList[1] === "boardOrientWhite")
+        ?
+        board.classList.replace("boardOrientWhite", "boardOrientBlack")
+        :
+        board.classList.replace("boardOrientBlack", "boardOrientWhite")
+}
+
 function init() {
     initBoard(squareSize);
     initPieces();
     saveBoardState();
-    undo.onclick = undoLastMove;
+    undoBtn.onclick = undoLastMove;
+    flipBtn.onclick = flipBoard;
 }
 
 document.onload = init();

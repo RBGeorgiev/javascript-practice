@@ -13,8 +13,16 @@ div {
 
 .board {
     display: flex;
-    flex-wrap: wrap-reverse;
     border: 1px solid black;
+}
+
+.boardOrientWhite {
+    flex-wrap: wrap-reverse;
+}
+
+.boardOrientBlack {
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
 }
 
 .captures {
