@@ -807,7 +807,7 @@ function capturePiece(pieceDiv) {
 
 function gameStatus() {
     let gameStatus = '';
-    let noMoves = canMove();
+    let noMoves = checkNoMoves();
 
     if (noMoves) gameStatus = 'Draw!';
 
@@ -829,16 +829,16 @@ function getWinner() {
     return `${winner[0].toUpperCase() + winner.slice(1)}`;
 }
 
-function canMove() {
-    let canMove = true;
+function checkNoMoves() {
+    let noMoves = true;
     allPieces.forEach(piece => {
         if (piece.color === playerToMove) {
             if (piece.legalMoves.length > 0) {
-                canMove = false;
+                noMoves = false;
             }
         };
     })
-    return canMove;
+    return noMoves;
 }
 
 function undoLastMove() {
