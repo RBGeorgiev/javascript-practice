@@ -441,6 +441,8 @@ class King extends Piece {
             y = this.pos.y
         for (const piece of allPieces) {
             if (piece.color !== this.color) {
+                //avoids bug with black not getting checked sometimes
+                piece.setValidMoves();
                 for (const move of piece.validMoves) {
                     if (move[0] === x && move[1] === y) {
                         this.pieceElem.id = "checked";
