@@ -604,6 +604,16 @@ class Pawn extends Piece {
         this.pieceElem.piece = this;
     }
 
+    promote() {
+        if (this.pos.y === 0 || this.pos.y === 7) {
+            allPieces.push(new Queen(this.pos.x, this.pos.y, this.color));
+
+            this.pos.x = null;
+            this.pos.y = null;
+            this.setTaken();
+            this.pieceElem.parentNode.removeChild(this.pieceElem);
+        }
+    }
 
     findValidMoves() {
         return (this.hasMoved) ? this.getPawnMoves(1) : this.getPawnMoves(2);
@@ -776,6 +786,8 @@ function checkMove(e) {
                 }
 
                 piece.hasMoved = true;
+
+                if (piece.type === "pawn") piece.promote();
 
                 playerToMove = (playerToMove === "white") ? "black" : "white";
 
