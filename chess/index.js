@@ -604,10 +604,13 @@ class Pawn extends Piece {
         this.pieceElem.piece = this;
     }
 
-    promote() {
+    tryPromotion() {
+        //if pawn reached end row
         if (this.pos.y === 0 || this.pos.y === 7) {
+            //add new queen piece
             allPieces.push(new Queen(this.pos.x, this.pos.y, this.color));
 
+            //remove pawn
             this.pos.x = null;
             this.pos.y = null;
             this.setTaken();
@@ -787,7 +790,8 @@ function checkMove(e) {
 
                 piece.hasMoved = true;
 
-                if (piece.type === "pawn") piece.promote();
+                //check if pawn in on last row to promote
+                if (piece.type === "pawn") piece.tryPromotion();
 
                 playerToMove = (playerToMove === "white") ? "black" : "white";
 
@@ -802,7 +806,7 @@ function checkMove(e) {
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.setMoves());
 
-    winText.innerHTML = gameStatus();
+    gameText.innerHTML = gameStatus();
 }
 
 function capturePiece(pieceDiv) {
@@ -872,7 +876,7 @@ function undoLastMove() {
         cur.placePieceOnBoard();
     }
 
-    winText.innerHTML = gameStatus();
+    gameText.innerHTML = gameStatus();
 
     if (previousMoves.length === 0) saveBoardState();
 }
