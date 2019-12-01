@@ -71,6 +71,22 @@ class Piece {
 
     setTaken = () => this.taken = true;
 
+    movePiece(x, y, captureTarget) {
+        this.pos.x = x;
+        this.pos.y = y;
+
+        if (captureTarget) {
+            //capture the other piece
+            capturePiece(captureTarget)
+        }
+
+        this.hasMoved = true;
+
+        //check if pawn in on last row to promote
+        if (this.type === "pawn") this.tryPromotion();
+    }
+
+
     //#region - direction and collision check functions
     checkCollision(x, y) {
         for (let j = 0; j < allPieces.length; j++) {
@@ -777,21 +793,9 @@ function checkMove(e) {
                 &&
                 squareY === legalMoves[i][1]
             ) {
-                currentMove++
                 saveBoardState();
 
-                piece.pos.x = squareX;
-                piece.pos.y = squareY;
-
-                if (square.firstChild) {
-                    //capture the other piece
-                    capturePiece(square.firstChild)
-                }
-
-                piece.hasMoved = true;
-
-                //check if pawn in on last row to promote
-                if (piece.type === "pawn") piece.tryPromotion();
+                piece.movePiece(squareX, squareY, square.firstChild);
 
                 playerToMove = (playerToMove === "white") ? "black" : "white";
 
@@ -882,6 +886,8 @@ function undoLastMove() {
 }
 
 function saveBoardState() {
+    currentMove++
+
     let prev = [...previousMoves]
     let pieces = allPieces.map(el => (
         {
