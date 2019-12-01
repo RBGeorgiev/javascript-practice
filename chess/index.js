@@ -77,13 +77,27 @@ class Piece {
 
         if (captureTarget) {
             //capture the other piece
-            capturePiece(captureTarget)
+            this.capturePiece(captureTarget)
         }
 
         this.hasMoved = true;
 
         //check if pawn in on last row to promote
         if (this.type === "pawn") this.tryPromotion();
+    }
+
+    capturePiece(pieceDiv) {
+        const piece = pieceDiv.piece;
+        piece.pos.x = null;
+        piece.pos.y = null;
+        piece.setTaken();
+
+        //remove captured piece from board and place in correct capture area
+        (piece.color === "white")
+            ?
+            capturedByBlack.appendChild(pieceDiv)
+            :
+            capturedByWhite.appendChild(pieceDiv);
     }
 
 
@@ -706,8 +720,32 @@ function initPieces() {
     allPieces.forEach(el => el.setMoves());
 }
 
+function getSquareFromPoint(x, y) {
+    let element, elements = [];
+    let old_visibility = [];
+    while (true) {
+        element = document.elementFromPoint(x, y);
 
-document.addEventListener("mousedown", e => {
+        if (element.matches(".square")) {
+            break;
+        }
+
+        if (!element || element === document.documentElement) {
+            element = null;
+            break;
+        }
+        elements.push(element);
+        old_visibility.push(element.style.visibility);
+        element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
+    }
+    for (let k = 0; k < elements.length; k++) {
+        elements[k].style.visibility = old_visibility[k];
+    }
+
+    return element;
+}
+
+function selectPiece(e) {
     const el = e.target;
     //if not clicking on a piece
     if (!el.piece) return;
@@ -737,31 +775,6 @@ document.addEventListener("mousedown", e => {
         document.removeEventListener('mousemove', pieceDrag, true);
         document.removeEventListener('mouseup', pieceDrop, true);
     }
-});
-
-function getSquareFromPoint(x, y) {
-    let element, elements = [];
-    let old_visibility = [];
-    while (true) {
-        element = document.elementFromPoint(x, y);
-
-        if (element.matches(".square")) {
-            break;
-        }
-
-        if (!element || element === document.documentElement) {
-            element = null;
-            break;
-        }
-        elements.push(element);
-        old_visibility.push(element.style.visibility);
-        element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
-    }
-    for (let k = 0; k < elements.length; k++) {
-        elements[k].style.visibility = old_visibility[k];
-    }
-
-    return element;
 }
 
 function pieceDragStop(e) {
@@ -811,20 +824,6 @@ function checkMove(e) {
     allPieces.forEach(el => el.setMoves());
 
     gameText.innerHTML = gameStatus();
-}
-
-function capturePiece(pieceDiv) {
-    const piece = pieceDiv.piece;
-    piece.pos.x = null;
-    piece.pos.y = null;
-    piece.setTaken();
-
-    //remove captured piece from board and place in correct capture area
-    (piece.color === "white")
-        ?
-        capturedByBlack.appendChild(pieceDiv)
-        :
-        capturedByWhite.appendChild(pieceDiv);
 }
 
 function gameStatus() {
@@ -925,6 +924,8 @@ function init() {
     saveBoardState();
     undoBtn.onclick = undoLastMove;
     flipBtn.onclick = flipBoard;
+
+    document.addEventListener("mousedown", selectPiece);
 }
 
 document.onload = init();
