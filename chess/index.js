@@ -72,6 +72,9 @@ class Piece {
     setTaken = () => this.taken = true;
 
     movePiece(x, y, captureTarget) {
+        //if pawn starts with a double move
+        if (this.type === "pawn" && (this.pos.y + y) % 2 === 0) this.enableEnPassant();
+
         this.pos.x = x;
         this.pos.y = y;
 
@@ -491,7 +494,6 @@ class Queen extends Piece {
         super(x, y, color, "queen");
 
         this.pieceElem.piece = this;
-
     }
 
 
@@ -632,6 +634,31 @@ class Pawn extends Piece {
         this.direction = (this.color === "white") ? 1 : -1;
 
         this.pieceElem.piece = this;
+
+        this.enPassantTarget = false;
+    }
+
+    checkEnPassant() {
+        let rightCollision = this.checkCollision(this.pos.x + 1, this.pos.y);
+        let leftCollision = this.checkCollision(this.pos.x - 1, this.pos.y);
+
+        if (leftCollision && leftCollision.type === 'pawn' && leftCollision.enPassantTarget && leftCollision.color === 'black') console.log(leftCollision)
+
+        if (leftCollision && leftCollision.type === 'pawn' && leftCollision.enPassantTarget && leftCollision.color !== this.color) {
+            return [leftCollision.pos.x, leftCollision.pos.y + this.direction]
+        }
+
+        if (rightCollision && rightCollision.type === 'pawn' && rightCollision.enPassantTarget && rightCollision.color !== this.color) {
+            return [rightCollision.pos.x, rightCollision.pos.y + this.direction]
+        }
+    }
+
+    disableEnPassant() {
+        this.enPassantTarget = false;
+    }
+
+    enableEnPassant() {
+        this.enPassantTarget = true;
     }
 
     tryPromotion() {
@@ -654,6 +681,9 @@ class Pawn extends Piece {
 
     getPawnMoves(steps) {
         let arr = [];
+
+        let enPassant = this.checkEnPassant();
+        if (enPassant) arr.push(enPassant);
 
         //check for an attack on the left side
         let leftCollision = this.checkCollision(this.pos.x - 1, this.pos.y + this.direction);
