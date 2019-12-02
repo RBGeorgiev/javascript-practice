@@ -642,8 +642,6 @@ class Pawn extends Piece {
         let rightCollision = this.checkCollision(this.pos.x + 1, this.pos.y);
         let leftCollision = this.checkCollision(this.pos.x - 1, this.pos.y);
 
-        if (leftCollision && leftCollision.type === 'pawn' && leftCollision.enPassantTarget && leftCollision.color === 'black') console.log(leftCollision)
-
         if (leftCollision && leftCollision.type === 'pawn' && leftCollision.enPassantTarget && leftCollision.color !== this.color) {
             return [leftCollision.pos.x, leftCollision.pos.y + this.direction]
         }
@@ -680,6 +678,8 @@ class Pawn extends Piece {
     }
 
     getPawnMoves(steps) {
+        if (playerToMove === this.color && this.enPassantTarget) this.disableEnPassant();
+
         let arr = [];
 
         let enPassant = this.checkEnPassant();
