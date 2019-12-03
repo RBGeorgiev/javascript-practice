@@ -72,21 +72,30 @@ class Piece {
     setTaken = () => this.taken = true;
 
     movePiece(x, y, captureTarget) {
-        //if pawn starts with a double move
-        if (this.type === "pawn" && (this.pos.y + y) % 2 === 0) this.enableEnPassant();
+        let oldX = this.pos.x,
+            oldY = this.pos.y
 
         this.pos.x = x;
         this.pos.y = y;
+        this.hasMoved = true;
 
         if (captureTarget) {
             //capture the other piece
             this.capturePiece(captureTarget)
         }
 
-        this.hasMoved = true;
+        if (this.type === "pawn") {
+            //check if pawn is on last row to promote
+            this.tryPromotion();
 
-        //check if pawn in on last row to promote
-        if (this.type === "pawn") this.tryPromotion();
+            //if pawn does a starting double move
+            if ((oldY + y) % 2 === 0)
+                this.enableEnPassant();
+
+            //if moving behind pawn that can be en passant'd
+            if (oldX !== x && !captureTarget)
+                this.captureEnPassant();
+        }
     }
 
     capturePiece(pieceDiv) {
@@ -657,6 +666,11 @@ class Pawn extends Piece {
 
     enableEnPassant() {
         this.enPassantTarget = true;
+    }
+
+    captureEnPassant() {
+        let target = this.checkCollision(this.pos.x, this.pos.y - this.direction);
+        this.capturePiece(target.pieceElem);
     }
 
     tryPromotion() {
