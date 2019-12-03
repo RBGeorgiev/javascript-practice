@@ -406,7 +406,8 @@ class Piece {
         let oldX = this.pos.x,
             oldY = this.pos.y;
         //old xy values for captured piece
-        let takenLastPosX,
+        let takenPiece,
+            takenLastPosX,
             takenLastPosY;
         //save old valid moves
         let oldValidMoves = this.validMoves;
@@ -414,11 +415,20 @@ class Piece {
 
         //if landed on another piece
         if (square.firstChild) {
-            takenLastPosX = square.firstChild.piece.pos.x;
-            takenLastPosY = square.firstChild.piece.pos.y;
+            //if taking a piece 
+            takenPiece = square.firstChild.piece;
+            takenLastPosX = takenPiece.pos.x;
+            takenLastPosY = takenPiece.pos.y;
             //temporarily capture the other piece
-            square.firstChild.piece.pos.x = null;
-            square.firstChild.piece.pos.y = null;
+            takenPiece.pos.x = null;
+            takenPiece.pos.y = null;
+        } else if (this.type === "pawn" && oldX !== x && !takenPiece) {
+            //if en passant
+            takenPiece = this.checkCollision(x, y - this.direction);
+            takenLastPosX = takenPiece.pos.x;
+            takenLastPosY = takenPiece.pos.y;
+            takenPiece.pos.x = null;
+            takenPiece.pos.y = null;
         }
 
         //point piece to new square
@@ -436,10 +446,10 @@ class Piece {
         this.pos.x = oldX;
         this.pos.y = oldY;
 
-        if (square.firstChild) {
+        if (takenPiece) {
             //bring back temporarily captured piece
-            square.firstChild.piece.pos.x = takenLastPosX;
-            square.firstChild.piece.pos.y = takenLastPosY;
+            takenPiece.pos.x = takenLastPosX;
+            takenPiece.pos.y = takenLastPosY;
         }
 
         return legalMove;
