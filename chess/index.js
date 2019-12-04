@@ -1,6 +1,7 @@
 let boardSize = 8;
 let squareSize = 70;
 let playerToMove = "white";
+let gameOver = false;
 let allPieces = [];
 let kings = [];
 
@@ -800,6 +801,7 @@ function getSquareFromPoint(x, y) {
 }
 
 function selectPiece(e) {
+    if (gameOver) return;
     const el = e.target;
     //if not clicking on a piece
     if (!el.piece) return;
@@ -884,15 +886,19 @@ function gameStatus() {
     let gameStatus = '';
     let noMoves = checkNoMoves();
 
-    if (noMoves) gameStatus = 'Draw!';
+    if (noMoves) {
+        gameStatus = 'Draw!';
+        setGameOver();
+    }
 
     kings.forEach(king => {
         if (king.checkCheck()) {
-            (noMoves)
-                ?
+            if (noMoves) {
                 gameStatus = `Checkmate! ${getWinner()} wins!`
-                :
+                setGameOver();
+            } else {
                 gameStatus = 'Check!';
+            }
         }
     });
 
@@ -921,6 +927,7 @@ function undoLastMove() {
     currentMove = lastMove.currentMove;
     previousMoves = lastMove.previousMoves;
     playerToMove = lastMove.playerToMove;
+    gameOver = lastMove.gameOver;
 
     for (let i = 0; i < allPieces.length; i++) {
         let cur = allPieces[i],
@@ -956,7 +963,8 @@ function saveBoardState() {
         "currentMove": currentMove,
         "previousMoves": prev,
         "playerToMove": playerToMove,
-        "pieces": pieces
+        "pieces": pieces,
+        "gameOver": gameOver
     }
 
     previousMoves.push(curState)
@@ -973,8 +981,14 @@ function flipBoard() {
 }
 
 function surrender() {
-    document.removeEventListener("mousedown", selectPiece);
-    gameText.innerHTML = `${playerToMove} surrendered! ${getWinner()} wins!`
+    if (gameOver) return;
+    let loser = playerToMove[0].toUpperCase() + playerToMove.slice(1)
+    gameText.innerHTML = `${loser} surrendered. ${getWinner()} wins!`
+    setGameOver();
+}
+
+function setGameOver() {
+    gameOver = true;
 }
 
 function init() {
