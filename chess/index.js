@@ -972,12 +972,18 @@ function flipBoard() {
         board.classList.replace("boardOrientBlack", "boardOrientWhite")
 }
 
+function surrender() {
+    document.removeEventListener("mousedown", selectPiece);
+    gameText.innerHTML = `${playerToMove} surrendered! ${getWinner()} wins!`
+}
+
 function init() {
     initBoard(squareSize);
     initPieces();
     saveBoardState();
     undoBtn.onclick = undoLastMove;
     flipBtn.onclick = flipBoard;
+    surrenderBtn.onclick = surrender;
 
     document.addEventListener("mousedown", selectPiece);
 }
