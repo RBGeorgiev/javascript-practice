@@ -477,7 +477,7 @@ class King extends Piece {
 
 
     findValidMoves() {
-        return [
+        let moves = [
             ...this.checkTop(1),
             ...this.checkBottom(1),
             ...this.checkRight(1),
@@ -485,8 +485,11 @@ class King extends Piece {
             ...this.checkTopLeft(1),
             ...this.checkTopRight(1),
             ...this.checkBottomRight(1),
-            ...this.checkBottomLeft(1)
+            ...this.checkBottomLeft(1),
+            ...this.canCastle()
         ]
+
+        return moves;
     }
 
     checkCheck() {
@@ -506,6 +509,68 @@ class King extends Piece {
         }
         this.pieceElem.id = "";
         return this.check = false;
+    }
+
+    canCastle() {
+        let arr = [],
+            left = this.checkCastleLeft(),
+            right = this.checkCastleRight();
+
+        if (left) {
+            arr.push([this.pos.x - 2, this.pos.y]);
+        }
+        if (right) {
+            arr.push([this.pos.x + 2, this.pos.y]);
+        }
+        return arr;
+    }
+
+    checkCastleLeft() {
+        if (this.hasMoved) return false;
+
+        for (let i = 1; i <= 8; i++) {
+            if (this.pos.x - i < 0) return false;
+
+            let collisionObj = this.checkCollision(this.pos.x - i, this.pos.y);
+
+            if (collisionObj) {
+                if (collisionObj.type === 'rook'
+                    &&
+                    collisionObj.color === this.color
+                    &&
+                    collisionObj.hasMoved === false
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    checkCastleRight() {
+        if (this.hasMoved) return false;
+
+        for (let i = 1; i <= 8; i++) {
+            if (this.pos.x + i < 0) return false;
+
+            let collisionObj = this.checkCollision(this.pos.x + i, this.pos.y);
+
+            if (collisionObj) {
+                if (collisionObj.type === 'rook'
+                    &&
+                    collisionObj.color === this.color
+                    &&
+                    collisionObj.hasMoved === false
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        return false;
     }
 }
 
