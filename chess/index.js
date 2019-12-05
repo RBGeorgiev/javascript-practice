@@ -78,7 +78,6 @@ class Piece {
 
         this.pos.x = x;
         this.pos.y = y;
-        this.hasMoved = true;
 
         if (captureTarget) {
             //capture the other piece
@@ -97,6 +96,17 @@ class Piece {
             if (oldX !== x && !captureTarget)
                 this.captureEnPassant();
         }
+
+        //if king does a double move / if king is castling
+        if (
+            this.type === "king"
+            &&
+            (oldX + x) % 2 === 0
+        ) {
+            this.castle(oldX, x);
+        }
+
+        this.hasMoved = true;
     }
 
     capturePiece(pieceDiv) {
@@ -511,6 +521,20 @@ class King extends Piece {
         return this.check = false;
     }
 
+    castle(oldX, x) {
+        let rook
+        if (oldX > x) {
+            //castle to the left
+            rook = this.checkCastleLeft();
+            rook.movePiece(this.pos.x + 1, this.pos.y);
+        } else {
+            //castle to the right
+            rook = this.checkCastleRight();
+            rook.movePiece(this.pos.x - 1, this.pos.y);
+        }
+        rook.placePieceOnBoard();
+    }
+
     canCastle() {
         let arr = [],
             left = this.checkCastleLeft(),
@@ -540,7 +564,7 @@ class King extends Piece {
                     &&
                     collisionObj.hasMoved === false
                 ) {
-                    return true;
+                    return collisionObj;
                 }
                 return false;
             }
@@ -564,7 +588,7 @@ class King extends Piece {
                     &&
                     collisionObj.hasMoved === false
                 ) {
-                    return true;
+                    return collisionObj;
                 }
                 return false;
             }
