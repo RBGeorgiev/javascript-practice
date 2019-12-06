@@ -580,14 +580,16 @@ class King extends Piece {
                 return false;
             }
 
-            //check if squares between king and rook are attacked
-            for (let j = 0; j < enemyMoves.length - 1; j++) {
-                if (
-                    enemyMoves[j][0] === this.pos.x - i
-                    &&
-                    enemyMoves[j][1] === this.pos.y
-                ) {
-                    return false;
+            if (i < 3 && !!enemyMoves) {
+                //check if squares between king and rook are attacked
+                for (let j = 0; j < enemyMoves.length; j++) {
+                    if (
+                        enemyMoves[j][0] === this.pos.x - i
+                        &&
+                        enemyMoves[j][1] === this.pos.y
+                    ) {
+                        return false;
+                    }
                 }
             }
         }
@@ -614,7 +616,7 @@ class King extends Piece {
             }
 
             //check if squares between king and rook are attacked
-            for (let j = 0; j < enemyMoves.length - 1; j++) {
+            for (let j = 0; j < enemyMoves.length; j++) {
                 if (
                     enemyMoves[j][0] === this.pos.x + i
                     &&
