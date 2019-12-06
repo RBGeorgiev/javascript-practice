@@ -495,8 +495,7 @@ class King extends Piece {
             ...this.checkTopLeft(1),
             ...this.checkTopRight(1),
             ...this.checkBottomRight(1),
-            ...this.checkBottomLeft(1),
-            ...this.canCastle()
+            ...this.checkBottomLeft(1)
         ]
 
         return moves;
@@ -535,10 +534,24 @@ class King extends Piece {
         rook.placePieceOnBoard();
     }
 
+    setCastleMoves() {
+        this.legalMoves.push(...this.canCastle())
+    }
+
     canCastle() {
-        let arr = [],
-            left = this.checkCastleLeft(),
-            right = this.checkCastleRight();
+        let arr = [];
+        if (this.check || this.hasMoved) return arr;
+
+        let enemyMoves = [];
+
+        allPieces.forEach(piece => {
+            if (this.color !== piece.color && piece.legalMoves.length > 0) {
+                enemyMoves.push(...piece.legalMoves);
+            };
+        })
+
+        let left = this.checkCastleLeft(enemyMoves),
+            right = this.checkCastleRight(enemyMoves);
 
         if (left) {
             arr.push([this.pos.x - 2, this.pos.y]);
@@ -549,9 +562,7 @@ class King extends Piece {
         return arr;
     }
 
-    checkCastleLeft() {
-        if (this.hasMoved) return false;
-
+    checkCastleLeft(enemyMoves) {
         for (let i = 1; i <= 8; i++) {
             if (this.pos.x - i < 0) return false;
 
@@ -568,14 +579,23 @@ class King extends Piece {
                 }
                 return false;
             }
+
+            //check if squares between king and rook are attacked
+            for (let j = 0; j < enemyMoves.length - 1; j++) {
+                if (
+                    enemyMoves[j][0] === this.pos.x - i
+                    &&
+                    enemyMoves[j][1] === this.pos.y
+                ) {
+                    return false;
+                }
+            }
         }
 
         return false;
     }
 
-    checkCastleRight() {
-        if (this.hasMoved) return false;
-
+    checkCastleRight(enemyMoves) {
         for (let i = 1; i <= 8; i++) {
             if (this.pos.x + i < 0) return false;
 
@@ -591,6 +611,17 @@ class King extends Piece {
                     return collisionObj;
                 }
                 return false;
+            }
+
+            //check if squares between king and rook are attacked
+            for (let j = 0; j < enemyMoves.length - 1; j++) {
+                if (
+                    enemyMoves[j][0] === this.pos.x + i
+                    &&
+                    enemyMoves[j][1] === this.pos.y
+                ) {
+                    return false;
+                }
             }
         }
 
@@ -967,6 +998,7 @@ function checkMove(e) {
 
     //find all new valid moves for all pieces
     allPieces.forEach(el => el.setMoves());
+    kings.forEach(king => king.setCastleMoves());
 
     gameText.innerHTML = gameStatus();
 }
