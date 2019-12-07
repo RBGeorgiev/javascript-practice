@@ -837,7 +837,6 @@ class Pawn extends Piece {
                     allPieces.push(new Rook(x, y, color));
                     break;
                 default:
-                    //add new queen piece
                     allPieces.push(new Queen(x, y, color));
             }
 
@@ -1085,6 +1084,14 @@ function undoLastMove() {
     for (let i = 0; i < allPieces.length; i++) {
         let cur = allPieces[i],
             prev = lastMove.pieces[i];
+
+        //if prev move has less pieces (i.e. cur move was a promotion which adds a piece), then remove the promoted piece
+        if (!prev) {
+            cur.pieceElem.parentNode.removeChild(cur.pieceElem);
+            allPieces.pop();
+            break;
+        }
+
         cur.pos = prev.pos;
         cur.hasMoved = prev.hasMoved;
         cur.taken = prev.taken;
