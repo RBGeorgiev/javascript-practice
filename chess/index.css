@@ -68,3 +68,25 @@ div {
 #checked {
     color: red;
 }
+
+.promotePopUp {
+    height: 560px;
+    width: 560px;
+    background: #cbbfbf61;
+    position: absolute;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#hidePopUp {
+    display: none;
+}
+
+#showPopUp {
+    display: flex;
+}
+
+.promoteButton {
+    height: 100px;
+    width: 125px;
+}

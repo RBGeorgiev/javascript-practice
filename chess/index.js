@@ -809,8 +809,7 @@ class Pawn extends Piece {
     tryPromotion() {
         //if pawn reached end row
         if (this.pos.y === 0 || this.pos.y === 7) {
-            //add new queen piece
-            allPieces.push(new Queen(this.pos.x, this.pos.y, this.color));
+            this.promote(this.pos.x, this.pos.y, this.color);
 
             //remove pawn
             this.pos.x = null;
@@ -818,6 +817,37 @@ class Pawn extends Piece {
             this.setTaken();
             this.pieceElem.parentNode.removeChild(this.pieceElem);
         }
+    }
+
+    promote(x, y, color) {
+        let popUpDiv = document.getElementsByClassName("promotePopUp")[0];
+        popUpDiv.id = "showPopUp";
+
+        function getPromotion(e) {
+            let piece = e.target.value;
+
+            switch (piece) {
+                case "Knight":
+                    allPieces.push(new Knight(x, y, color));
+                    break;
+                case "Bishop":
+                    allPieces.push(new Bishop(x, y, color));
+                    break;
+                case "Rook":
+                    allPieces.push(new Rook(x, y, color));
+                    break;
+                default:
+                    //add new queen piece
+                    allPieces.push(new Queen(x, y, color));
+            }
+
+            popUpDiv.id = "hidePopUp";
+        }
+
+        promoteKnight.onclick = getPromotion;
+        promoteBishop.onclick = getPromotion;
+        promoteRook.onclick = getPromotion;
+        promoteQueen.onclick = getPromotion;
     }
 
     findValidMoves() {
