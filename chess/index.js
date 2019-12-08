@@ -824,6 +824,9 @@ class Pawn extends Piece {
     promote(x, y, color) {
         let popUpDiv = document.getElementsByClassName("promotePopUp")[0];
         popUpDiv.id = "showPopUp";
+        undoBtn.disabled = true;
+        flipBtn.disabled = true;
+        surrenderBtn.disabled = true;
 
         function getPromotion(e) {
             let piece = e.target.value;
@@ -843,6 +846,9 @@ class Pawn extends Piece {
             }
 
             popUpDiv.id = "hidePopUp";
+            undoBtn.disabled = false;
+            flipBtn.disabled = false;
+            surrenderBtn.disabled = false;
         }
 
         promoteKnight.onclick = getPromotion;
