@@ -102,6 +102,8 @@ class Piece {
             this.type === "king"
             &&
             (oldX + x) % 2 === 0
+            &&
+            oldY === y
         ) {
             this.castle(oldX, x);
         }
