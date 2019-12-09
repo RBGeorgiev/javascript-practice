@@ -11,6 +11,9 @@ let previousMoves = [];
 let capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
 let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
+let moveSound;
+let captureSound;
+
 function initBoard(squareSize) {
     let board = document.getElementsByClassName("board")[0];
     let promotePopUp = document.getElementsByClassName("promotePopUp")[0];
@@ -112,6 +115,8 @@ class Piece {
         }
 
         this.hasMoved = true;
+
+        moveSound.play();
     }
 
     capturePiece(pieceDiv) {
@@ -119,6 +124,8 @@ class Piece {
         piece.pos.x = null;
         piece.pos.y = null;
         piece.setTaken();
+
+        captureSound.play();
 
         //remove captured piece from board and place in correct capture area
         (piece.color === "white")
@@ -1166,6 +1173,10 @@ function init() {
     initBoard(squareSize);
     initPieces();
     saveBoardState();
+
+    moveSound = new Audio("move.mp3");
+    captureSound = new Audio("capture.mp3");
+
     undoBtn.onclick = undoLastMove;
     flipBtn.onclick = flipBoard;
     surrenderBtn.onclick = surrender;
