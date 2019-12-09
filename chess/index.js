@@ -13,10 +13,13 @@ let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
 function initBoard(squareSize) {
     let board = document.getElementsByClassName("board")[0];
+    let promotePopUp = document.getElementsByClassName("promotePopUp")[0];
 
 
     board.style.width = `${squareSize * boardSize}px`;
     board.style.height = `${squareSize * boardSize}px`;
+    promotePopUp.style.width = `${squareSize * boardSize}px`;
+    promotePopUp.style.height = `${squareSize * boardSize}px`;
 
     for (let y = 0; y < boardSize; y++) {
         for (let x = 0; x < boardSize; x++) {

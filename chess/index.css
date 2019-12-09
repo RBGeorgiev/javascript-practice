@@ -70,8 +70,6 @@ div {
 }
 
 .promotePopUp {
-    height: 560px;
-    width: 560px;
     background: #cbbfbf61;
     position: absolute;
     justify-content: space-around;
