@@ -62,12 +62,20 @@ class Piece {
 
         this.pieceElem = document.createElement("div");
 
+        this.setSprite();
         this.placePieceOnBoard();
 
         this.validMoves = [];
         this.legalMoves = [];
 
         this.king = (this.type !== "king") ? this.getKing() : this;
+    }
+
+    setSprite() {
+        this.pieceElem.style.background = `url(${this.color}-${this.type}.png)`;
+        this.pieceElem.style.backgroundSize = `${squareSize}px`;
+        this.pieceElem.style.width = `${squareSize}px`;
+        this.pieceElem.style.height = `${squareSize}px`;
     }
 
     getKing() {
@@ -352,9 +360,7 @@ class Piece {
                 let pieceElem = this.pieceElem;
                 pieceElem.className = `piece ${this.type} ${this.color}`;
 
-                pieceElem.innerHTML = `${this.color} ${this.type}`;
-
-                this.squares[i].appendChild(pieceElem);
+                this.squares[i].appendChild(this.pieceElem);
             }
         }
     }

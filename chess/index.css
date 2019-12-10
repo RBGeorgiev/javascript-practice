@@ -39,8 +39,8 @@ div {
 }
 
 .captures div {
-    height: 50px;
-    width: 50px;
+    width: 70px;
+    height: 70px;
     margin: 10px;
 }
 
@@ -54,47 +54,12 @@ div {
 }
 
 .piece {
-    background: url(chessPieces.png);
-    display: inline-block;
-    height: 70px;
-    width: 70px;
+    width: 100%;
+    height: 100%;
 }
-
-.white {
-    background-position-y: 0px;
-}
-
-.black {
-    background-position-y: 132px;
-}
-
-.rook {
-    background-position-x: 0px;
-}
-
-.knight {
-    background-position-x: -132px;
-}
-
-.bishop {
-    background-position-x: -264px;
-}
-
-.queen {
-    background-position-x: -396px;
-}
-
-.king {
-    background-position-x: -528px;
-}
-
-.pawn {
-    background-position-x: -660px;
-}
-
 
 #checked {
-    color: red;
+    background: red;
 }
 
 .promotePopUp {
