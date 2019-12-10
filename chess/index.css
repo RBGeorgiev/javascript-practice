@@ -54,16 +54,44 @@ div {
 }
 
 .piece {
-    height: 100%;
+    background: url(chessPieces.png);
+    display: inline-block;
+    height: 70px;
+    width: 70px;
 }
 
 .white {
-    color: #f7c6a6;
+    background-position-y: 0px;
 }
 
 .black {
-    color: #000000;
+    background-position-y: 132px;
 }
+
+.rook {
+    background-position-x: 0px;
+}
+
+.knight {
+    background-position-x: -132px;
+}
+
+.bishop {
+    background-position-x: -264px;
+}
+
+.queen {
+    background-position-x: -396px;
+}
+
+.king {
+    background-position-x: -528px;
+}
+
+.pawn {
+    background-position-x: -660px;
+}
+
 
 #checked {
     color: red;

@@ -1175,7 +1175,9 @@ function init() {
     saveBoardState();
 
     moveSound = new Audio("move.mp3");
+    moveSound.volume = 0.4;
     captureSound = new Audio("capture.mp3");
+    captureSound.volume = 0.3;
 
     undoBtn.onclick = undoLastMove;
     flipBtn.onclick = flipBoard;
