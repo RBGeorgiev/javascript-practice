@@ -374,7 +374,10 @@ class Piece {
                     &&
                     square.pos.y === coord[1]
                 ) {
-                    square.style.background = "green";
+                    square.style.backgroundImage = "url(legal-move.png)";
+                    square.style.backgroundSize = `${squareSize}px`;
+                    square.style.width = `${squareSize}px`;
+                    square.style.height = `${squareSize}px`;
                 }
             }
         }
