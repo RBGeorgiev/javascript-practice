@@ -62,7 +62,7 @@ class Piece {
 
         this.pieceElem = document.createElement("div");
 
-        this.displaySprite();
+        this.displaySprite(this.pieceElem, `url(${this.color}-${this.type}.png)`);
         this.placePieceOnBoard();
 
         this.validMoves = [];
@@ -71,11 +71,11 @@ class Piece {
         this.king = (this.type !== "king") ? this.getKing() : this;
     }
 
-    displaySprite() {
-        this.pieceElem.style.background = `url(${this.color}-${this.type}.png)`;
-        this.pieceElem.style.backgroundSize = `${squareSize}px`;
-        this.pieceElem.style.width = `${squareSize}px`;
-        this.pieceElem.style.height = `${squareSize}px`;
+    displaySprite(target, imageUrl) {
+        target.style.backgroundImage = imageUrl;
+        target.style.backgroundSize = `${squareSize}px`;
+        target.style.width = `${squareSize}px`;
+        target.style.height = `${squareSize}px`;
     }
 
     getKing() {
@@ -374,10 +374,7 @@ class Piece {
                     &&
                     square.pos.y === coord[1]
                 ) {
-                    square.style.backgroundImage = "url(legal-move.png)";
-                    square.style.backgroundSize = `${squareSize}px`;
-                    square.style.width = `${squareSize}px`;
-                    square.style.height = `${squareSize}px`;
+                    this.displaySprite(square, "url(legal-move.png)");
                 }
             }
         }
@@ -540,10 +537,7 @@ class King extends Piece {
     }
 
     displayCheck() {
-        this.pieceElem.style.background = `url(${this.color}-${this.type}.png), url(check.png)`;
-        this.pieceElem.style.backgroundSize = `${squareSize}px`;
-        this.pieceElem.style.width = `${squareSize}px`;
-        this.pieceElem.style.height = `${squareSize}px`;
+        this.displaySprite(this.pieceElem, `url(${this.color}-${this.type}.png), url(check.png)`);
     }
 
     castle(oldX, x) {
@@ -1077,7 +1071,7 @@ function gameStatus() {
 
     kings.forEach(king => {
         //remove any previous check effects
-        king.displaySprite();
+        king.displaySprite(king.pieceElem, `url(${king.color}-${king.type}.png)`);
         if (king.checkCheck()) {
             if (noMoves) {
                 gameStatus = `Checkmate! ${getWinner()} wins!`
