@@ -62,7 +62,7 @@ class Piece {
 
         this.pieceElem = document.createElement("div");
 
-        this.setSprite();
+        this.displaySprite();
         this.placePieceOnBoard();
 
         this.validMoves = [];
@@ -71,7 +71,7 @@ class Piece {
         this.king = (this.type !== "king") ? this.getKing() : this;
     }
 
-    setSprite() {
+    displaySprite() {
         this.pieceElem.style.background = `url(${this.color}-${this.type}.png)`;
         this.pieceElem.style.backgroundSize = `${squareSize}px`;
         this.pieceElem.style.width = `${squareSize}px`;
@@ -528,14 +528,19 @@ class King extends Piece {
                 piece.setValidMoves();
                 for (const move of piece.validMoves) {
                     if (move[0] === x && move[1] === y) {
-                        this.pieceElem.id = "checked";
                         return this.check = true;
                     }
                 }
             }
         }
-        this.pieceElem.id = "";
         return this.check = false;
+    }
+
+    displayCheck() {
+        this.pieceElem.style.background = `url(${this.color}-${this.type}.png), url(check.png)`;
+        this.pieceElem.style.backgroundSize = `${squareSize}px`;
+        this.pieceElem.style.width = `${squareSize}px`;
+        this.pieceElem.style.height = `${squareSize}px`;
     }
 
     castle(oldX, x) {
@@ -1068,6 +1073,8 @@ function gameStatus() {
     }
 
     kings.forEach(king => {
+        //remove any previous check effects
+        king.displaySprite();
         if (king.checkCheck()) {
             if (noMoves) {
                 gameStatus = `Checkmate! ${getWinner()} wins!`
@@ -1075,6 +1082,7 @@ function gameStatus() {
             } else {
                 gameStatus = 'Check!';
             }
+            king.displayCheck();
         }
     });
 

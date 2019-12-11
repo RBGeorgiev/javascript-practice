@@ -58,10 +58,6 @@ div {
     height: 100%;
 }
 
-#checked {
-    background: red;
-}
-
 .promotePopUp {
     background: #cbbfbf61;
     position: absolute;
