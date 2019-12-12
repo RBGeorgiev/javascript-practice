@@ -867,6 +867,8 @@ class Pawn extends Piece {
             undoBtn.disabled = false;
             flipBtn.disabled = false;
             surrenderBtn.disabled = false;
+
+            calculateGameState();
         }
 
         promoteKnight.onclick = getPromotion;
@@ -1053,10 +1055,15 @@ function checkMove(e) {
     piece.placePieceOnBoard();
     pieceDragStop(e);
 
-    //find all new valid moves for all pieces
+    calculateGameState();
+}
+
+function calculateGameState() {
+    //find all new legal moves for all pieces
     allPieces.forEach(el => el.setMoves());
     kings.forEach(king => king.setCastleMoves());
 
+    //display game state text and king check sprite
     gameText.innerHTML = gameStatus();
 }
 
