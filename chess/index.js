@@ -62,7 +62,7 @@ class Piece {
 
         this.pieceElem = document.createElement("div");
 
-        this.displaySprite(this.pieceElem, `url(${this.color}-${this.type}.png)`);
+        this.displaySprite(this.pieceElem, `url(images/${this.color}-${this.type}.png)`);
         this.placePieceOnBoard();
 
         this.validMoves = [];
@@ -374,7 +374,7 @@ class Piece {
                     &&
                     square.pos.y === coord[1]
                 ) {
-                    this.displaySprite(square, "url(legal-move.png)");
+                    this.displaySprite(square, "url(images/legal-move.png)");
                 }
             }
         }
@@ -537,7 +537,7 @@ class King extends Piece {
     }
 
     displayCheck() {
-        this.displaySprite(this.pieceElem, `url(${this.color}-${this.type}.png), url(check.png)`);
+        this.displaySprite(this.pieceElem, `url(images/${this.color}-${this.type}.png), url(images/check.png)`);
     }
 
     castle(oldX, x) {
@@ -1078,7 +1078,7 @@ function gameStatus() {
 
     kings.forEach(king => {
         //remove any previous check effects
-        king.displaySprite(king.pieceElem, `url(${king.color}-${king.type}.png)`);
+        king.displaySprite(king.pieceElem, `url(images/${king.color}-${king.type}.png)`);
         if (king.checkCheck()) {
             if (noMoves) {
                 gameStatus = `Checkmate! ${getWinner()} wins!`
