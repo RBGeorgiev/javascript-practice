@@ -1,59 +1,363 @@
-let boardSize = 8;
-let squareSize = 70;
-let playerToMove = "white";
-let gameOver = false;
-let allPieces = [];
-let kings = [];
+class Chess {
+    constructor() {
+        this.boardSize = 8;
+        this.squareSize = 70;
+        this.playerToMove = "white";
+        this.gameOver = false;
+        this.allPieces = [];
+        this.kings = [];
 
-let currentMove = 0;
-let previousMoves = [];
+        this.currentMove = 0;
+        this.previousMoves = [];
 
-let capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
-let capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
+        this.capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
+        this.capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
-let moveSound;
-let captureSound;
+        this.moveSound;
+        this.captureSound;
+    }
 
-function initBoard(squareSize) {
-    let board = document.getElementsByClassName("board")[0];
-    let promotePopUp = document.getElementsByClassName("promotePopUp")[0];
+    init() {
+        this.initBoard();
+        this.initPieces();
+        this.saveBoardState();
+
+        this.moveSound = new Audio("sounds/move.mp3");
+        this.moveSound.volume = 0.4;
+        this.captureSound = new Audio("sounds/capture.mp3");
+        this.captureSound.volume = 0.3;
+
+        undoBtn.onclick = this.undoLastMove;
+        flipBtn.onclick = this.flipBoard;
+        surrenderBtn.onclick = this.surrender;
+
+        let boundSelectPiece = this.selectPiece.bind(this);
+        document.addEventListener("mousedown", boundSelectPiece);
+    }
+
+    initBoard() {
+        let board = document.getElementsByClassName("board")[0];
+        let promotePopUp = document.getElementsByClassName("promotePopUp")[0];
+
+        let squareSize = this.squareSize;
+        let boardSize = this.boardSize;
 
 
-    board.style.width = `${squareSize * boardSize}px`;
-    board.style.height = `${squareSize * boardSize}px`;
-    promotePopUp.style.width = `${squareSize * boardSize}px`;
-    promotePopUp.style.height = `${squareSize * boardSize}px`;
+        board.style.width = `${squareSize * boardSize}px`;
+        board.style.height = `${squareSize * boardSize}px`;
+        promotePopUp.style.width = `${squareSize * boardSize}px`;
+        promotePopUp.style.height = `${squareSize * boardSize}px`;
 
-    for (let y = 0; y < boardSize; y++) {
-        for (let x = 0; x < boardSize; x++) {
-            let square = document.createElement("div");
+        for (let y = 0; y < boardSize; y++) {
+            for (let x = 0; x < boardSize; x++) {
+                let square = document.createElement("div");
 
-            let className = "square";
-            if ((x + y) % 2 === 0) className += " sqBlack";
-            square.className = className;
+                let className = "square";
+                if ((x + y) % 2 === 0) className += " sqBlack";
+                square.className = className;
 
-            square.pos = {
-                x: x,
-                y: y
+                square.pos = {
+                    x: x,
+                    y: y
+                }
+
+                square.style.width = `${squareSize}px`;
+                square.style.height = `${squareSize}px`;
+
+                board.appendChild(square);
+            }
+        }
+    }
+
+    initPieces() {
+        let whiteKing = new King(4, 0, "white", this);
+        let blackKing = new King(4, 7, "black", this);
+        this.kings.push(whiteKing, blackKing);
+
+        // white
+        for (let i = 0; i < this.boardSize; i++) {
+            this.allPieces.push(new Pawn(i, 1, "white", this));
+        }
+        this.allPieces.push(
+            new Rook(0, 0, "white", this),
+            new Knight(1, 0, "white", this),
+            new Bishop(2, 0, "white", this),
+            new Queen(3, 0, "white", this),
+            whiteKing,
+            new Bishop(5, 0, "white", this),
+            new Knight(6, 0, "white", this),
+            new Rook(7, 0, "white", this)
+        )
+
+        // black
+        for (let i = 0; i < this.boardSize; i++) {
+            this.allPieces.push(new Pawn(i, 6, "black", this));
+        }
+        this.allPieces.push(
+            new Rook(0, 7, "black", this),
+            new Knight(1, 7, "black", this),
+            new Bishop(2, 7, "black", this),
+            new Queen(3, 7, "black", this),
+            blackKing,
+            new Bishop(5, 7, "black", this),
+            new Knight(6, 7, "black", this),
+            new Rook(7, 7, "black", this)
+        )
+
+        //get starting moves for all the pieces
+        this.allPieces.forEach(el => el.setMoves());
+    }
+
+    saveBoardState() {
+        this.currentMove++
+
+        let prev = [...this.previousMoves];
+        let pieces = this.allPieces.map(el => (
+            {
+                pos: { ...el.pos },
+                hasMoved: el.hasMoved,
+                taken: el.taken,
+                validMoves: [...el.validMoves],
+                legalMoves: [...el.legalMoves]
+            }
+        ));
+
+        let curState = {
+            "currentMove": this.currentMove,
+            "previousMoves": prev,
+            "playerToMove": this.playerToMove,
+            "pieces": pieces,
+            "gameOver": this.gameOver
+        };
+
+        this.previousMoves.push(curState);
+    }
+
+    selectPiece = (e) => {
+        if (this.gameOver) return;
+        const el = e.target;
+        //if not clicking on a piece
+        if (!el.piece) return;
+        if (el.piece.color !== this.playerToMove) return;
+
+
+        const squareSize = this.squareSize;
+        const style = el.style;
+        style.position = "absolute";
+        style.height = squareSize + "px";
+        style.width = squareSize + "px";
+        let pieceDrag = (e) => {
+            const offset = squareSize / 2;
+            style.left = `${e.pageX - offset}px`;
+            style.top = `${e.pageY - offset}px`;
+        }
+
+        let pieceDrop = (e) => {
+            this.checkMove(e);
+            //clear legal move colors 
+            el.piece.clearColorMoves();
+            //remove/clean up event listeners for drag and drop
+            document.removeEventListener('mousemove', pieceDrag, true);
+            document.removeEventListener('mouseup', pieceDrop, true);
+        }
+
+        //color all legal moves 
+        el.piece.colorMoves();
+        //add event listeners for drag and drop
+        document.addEventListener("mousemove", pieceDrag, true);
+        document.addEventListener("mouseup", pieceDrop, true);
+    }
+
+    pieceDragStop(e) {
+        let el = e.target;
+        el.style.position = "";
+        el.style.height = "";
+        el.style.width = "";
+        el.style.left = "";
+        el.style.top = "";
+    }
+
+    checkMove(e) {
+        let x = event.clientX, y = event.clientY;
+        let square = this.getSquareFromPoint(x, y);
+
+        let piece = e.target.piece;
+        if (!piece) return;
+        let legalMoves = piece.legalMoves;
+
+        //if dropped on a square
+        if (square) {
+            let squareX = square.pos.x;
+            let squareY = square.pos.y;
+
+            //check if valid move
+            for (let i = 0; i < legalMoves.length; i++) {
+                if (
+                    squareX === legalMoves[i][0]
+                    &&
+                    squareY === legalMoves[i][1]
+                ) {
+                    this.saveBoardState();
+
+                    piece.movePiece(squareX, squareY, square.firstChild);
+
+                    this.playerToMove = (this.playerToMove === "white") ? "black" : "white";
+
+                    break;
+                }
+            }
+        }
+        //place piece on board and stop dragging
+        piece.placePieceOnBoard();
+        this.pieceDragStop(e);
+
+        this.calculateGameState();
+    }
+
+    calculateGameState() {
+        //find all new legal moves for all pieces
+        this.allPieces.forEach(el => el.setMoves());
+        this.kings.forEach(king => king.setCastleMoves());
+
+        //display game state text and king check sprite
+        gameText.innerHTML = this.gameStatus();
+    }
+
+    gameStatus() {
+        let gameStatus = '';
+        let noMoves = this.checkNoMoves();
+
+        if (noMoves) {
+            gameStatus = 'Draw!';
+            this.setGameOver();
+        }
+
+        this.kings.forEach(king => {
+            //remove any previous check effects
+            king.displaySprite(king.pieceElem, `url(images/${king.color}-${king.type}.png)`);
+            if (king.checkCheck()) {
+                if (noMoves) {
+                    gameStatus = `Checkmate! ${this.getWinner()} wins!`
+                    this.setGameOver();
+                } else {
+                    gameStatus = 'Check!';
+                }
+                king.displayCheck();
+            }
+        });
+
+        return gameStatus;
+    }
+
+    getWinner() {
+        let winner = (this.playerToMove === "white") ? "black" : "white";
+        return `${winner[0].toUpperCase() + winner.slice(1)}`;
+    }
+
+    checkNoMoves() {
+        let noMoves = true;
+        this.allPieces.forEach(piece => {
+            if (piece.color === this.playerToMove) {
+                if (piece.legalMoves.length > 0) {
+                    noMoves = false;
+                }
+            };
+        })
+        return noMoves;
+    }
+
+    undoLastMove = () => {
+        let lastMove = this.previousMoves[this.previousMoves.length - 1];
+        this.currentMove = lastMove.currentMove;
+        this.previousMoves = lastMove.previousMoves;
+        this.playerToMove = lastMove.playerToMove;
+        this.gameOver = lastMove.gameOver;
+
+        for (let i = 0; i < this.allPieces.length; i++) {
+            let cur = this.allPieces[i],
+                prev = lastMove.pieces[i];
+
+            //if prev move has less pieces (i.e. cur move was a promotion which adds a piece), then remove the promoted piece
+            if (!prev) {
+                cur.pieceElem.parentNode.removeChild(cur.pieceElem);
+                this.allPieces.pop();
+                break;
             }
 
-            square.style.width = `${squareSize}px`;
-            square.style.height = `${squareSize}px`;
-
-            board.appendChild(square);
+            cur.pos = prev.pos;
+            cur.hasMoved = prev.hasMoved;
+            cur.taken = prev.taken;
+            cur.validMoves = prev.validMoves;
+            cur.legalMoves = prev.legalMoves;
+            cur.placePieceOnBoard();
         }
+
+        gameText.innerHTML = this.gameStatus();
+
+        if (this.previousMoves.length === 0) this.saveBoardState();
+    }
+
+
+    flipBoard() {
+        let board = document.getElementsByClassName("board")[0];
+
+        (board.classList[1] === "boardOrientWhite")
+            ?
+            board.classList.replace("boardOrientWhite", "boardOrientBlack")
+            :
+            board.classList.replace("boardOrientBlack", "boardOrientWhite")
+    }
+
+    surrender = () => {
+        if (this.gameOver) return;
+        let loser = this.playerToMove[0].toUpperCase() + this.playerToMove.slice(1)
+        gameText.innerHTML = `${loser} surrendered. ${this.getWinner()} wins!`
+        this.setGameOver();
+    }
+
+    setGameOver() {
+        this.gameOver = true;
+    }
+
+    getSquareFromPoint(x, y) {
+        let element, elements = [];
+        let old_visibility = [];
+        while (true) {
+            element = document.elementFromPoint(x, y);
+
+            if (element.matches(".square")) {
+                break;
+            }
+
+            if (!element || element === document.documentElement) {
+                element = null;
+                break;
+            }
+            elements.push(element);
+            old_visibility.push(element.style.visibility);
+            element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
+        }
+        for (let k = 0; k < elements.length; k++) {
+            elements[k].style.visibility = old_visibility[k];
+        }
+
+        return element;
     }
 }
 
 
+
+
 class Piece {
-    constructor(x, y, color, type) {
+    constructor(x, y, color, game, type) {
         this.pos = {
             x,
             y
         }
         this.color = color;
         this.type = type;
+
+        this.game = game;
 
         this.hasMoved = false;
         this.taken = false;
@@ -72,6 +376,8 @@ class Piece {
     }
 
     displaySprite(target, imageUrl) {
+        let squareSize = this.game.squareSize;
+
         target.style.backgroundImage = imageUrl;
         target.style.backgroundSize = `${squareSize}px`;
         target.style.width = `${squareSize}px`;
@@ -79,6 +385,7 @@ class Piece {
     }
 
     getKing() {
+        let kings = this.game.kings;
         for (let i = 0; i < kings.length; i++) {
             if (kings[i].color === this.color) return kings[i];
         }
@@ -124,7 +431,7 @@ class Piece {
 
         this.hasMoved = true;
 
-        moveSound.play();
+        this.game.moveSound.play();
     }
 
     capturePiece(pieceDiv) {
@@ -133,19 +440,21 @@ class Piece {
         piece.pos.y = null;
         piece.setTaken();
 
-        captureSound.play();
+        this.game.captureSound.play();
 
         //remove captured piece from board and place in correct capture area
         (piece.color === "white")
             ?
-            capturedByBlack.appendChild(pieceDiv)
+            this.game.capturedByBlack.appendChild(pieceDiv)
             :
-            capturedByWhite.appendChild(pieceDiv);
+            this.game.capturedByWhite.appendChild(pieceDiv);
     }
 
 
     //#region - direction and collision check functions
     checkCollision(x, y) {
+        let allPieces = this.game.allPieces;
+
         for (let j = 0; j < allPieces.length; j++) {
             if (
                 x === allPieces[j].pos.x
@@ -157,7 +466,9 @@ class Piece {
         }
     }
 
-    checkTop(steps = boardSize - 1) {
+    checkTop(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -179,7 +490,9 @@ class Piece {
         return arr;
     }
 
-    checkBottom(steps = boardSize - 1) {
+    checkBottom(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -201,7 +514,9 @@ class Piece {
         return arr;
     }
 
-    checkRight(steps = boardSize - 1) {
+    checkRight(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -223,7 +538,9 @@ class Piece {
         return arr;
     }
 
-    checkLeft(steps = boardSize - 1) {
+    checkLeft(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -245,7 +562,9 @@ class Piece {
         return arr;
     }
 
-    checkTopLeft(steps = boardSize - 1) {
+    checkTopLeft(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -271,7 +590,9 @@ class Piece {
         return arr;
     }
 
-    checkTopRight(steps = boardSize - 1) {
+    checkTopRight(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -297,7 +618,9 @@ class Piece {
         return arr;
     }
 
-    checkBottomRight(steps = boardSize - 1) {
+    checkBottomRight(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -323,7 +646,9 @@ class Piece {
         return arr;
     }
 
-    checkBottomLeft(steps = boardSize - 1) {
+    checkBottomLeft(steps) {
+        let boardSize = this.game.boardSize;
+        if (!steps) steps = boardSize - 1;
         let arr = [];
 
         for (let i = 1; i <= steps; i++) {
@@ -439,7 +764,8 @@ class Piece {
             takenLastPosX,
             takenLastPosY;
         //save old valid moves
-        let oldValidMoves = this.validMoves;
+        let oldValidMoves = this.validMoves,
+            allPieces = this.game.allPieces;
 
 
         //if landed on another piece
@@ -495,8 +821,8 @@ class Piece {
 }
 
 class King extends Piece {
-    constructor(x, y, color) {
-        super(x, y, color, "king");
+    constructor(x, y, color, game) {
+        super(x, y, color, game, "king");
 
         this.pieceElem.piece = this;
 
@@ -521,7 +847,9 @@ class King extends Piece {
 
     checkCheck() {
         let x = this.pos.x,
-            y = this.pos.y
+            y = this.pos.y,
+            allPieces = this.game.allPieces;
+
         for (const piece of allPieces) {
             if (piece.color !== this.color) {
                 //avoids bug with black not getting checked sometimes
@@ -564,7 +892,7 @@ class King extends Piece {
 
         let enemyMoves = [];
 
-        allPieces.forEach(piece => {
+        this.game.allPieces.forEach(piece => {
             if (this.color !== piece.color && piece.legalMoves.length > 0) {
                 enemyMoves.push(...piece.legalMoves);
             };
@@ -652,8 +980,8 @@ class King extends Piece {
 }
 
 class Queen extends Piece {
-    constructor(x, y, color) {
-        super(x, y, color, "queen");
+    constructor(x, y, color, game) {
+        super(x, y, color, game, "queen");
 
         this.pieceElem.piece = this;
     }
@@ -674,8 +1002,8 @@ class Queen extends Piece {
 }
 
 class Rook extends Piece {
-    constructor(x, y, color) {
-        super(x, y, color, "rook");
+    constructor(x, y, color, game) {
+        super(x, y, color, game, "rook");
 
         this.pieceElem.piece = this;
     }
@@ -692,8 +1020,8 @@ class Rook extends Piece {
 }
 
 class Bishop extends Piece {
-    constructor(x, y, color) {
-        super(x, y, color, "bishop");
+    constructor(x, y, color, game) {
+        super(x, y, color, game, "bishop");
 
         this.pieceElem.piece = this;
     }
@@ -710,8 +1038,8 @@ class Bishop extends Piece {
 }
 
 class Knight extends Piece {
-    constructor(x, y, color) {
-        super(x, y, color, "knight");
+    constructor(x, y, color, game) {
+        super(x, y, color, game, "knight");
 
         this.pieceElem.piece = this;
 
@@ -790,8 +1118,8 @@ class Knight extends Piece {
 }
 
 class Pawn extends Piece {
-    constructor(x, y, color) {
-        super(x, y, color, "pawn");
+    constructor(x, y, color, game) {
+        super(x, y, color, game, "pawn");
 
         this.direction = (this.color === "white") ? 1 : -1;
 
@@ -829,7 +1157,7 @@ class Pawn extends Piece {
     tryPromotion() {
         //if pawn reached end row
         if (this.pos.y === 0 || this.pos.y === 7) {
-            this.promote(this.pos.x, this.pos.y, this.color);
+            this.promote(this.pos.x, this.pos.y, this.color, this.game);
 
             //remove pawn
             this.pos.x = null;
@@ -839,28 +1167,29 @@ class Pawn extends Piece {
         }
     }
 
-    promote(x, y, color) {
+    promote(x, y, color, game) {
         let popUpDiv = document.getElementsByClassName("promotePopUp")[0];
         popUpDiv.id = "showPopUp";
         undoBtn.disabled = true;
         flipBtn.disabled = true;
         surrenderBtn.disabled = true;
 
-        function getPromotion(e) {
+        let getPromotion = (e) => {
             let piece = e.target.value;
+            let allPieces = this.game.allPieces;
 
             switch (piece) {
                 case "Knight":
-                    allPieces.push(new Knight(x, y, color));
+                    allPieces.push(new Knight(x, y, color, game));
                     break;
                 case "Bishop":
-                    allPieces.push(new Bishop(x, y, color));
+                    allPieces.push(new Bishop(x, y, color, game));
                     break;
                 case "Rook":
-                    allPieces.push(new Rook(x, y, color));
+                    allPieces.push(new Rook(x, y, color, game));
                     break;
                 default:
-                    allPieces.push(new Queen(x, y, color));
+                    allPieces.push(new Queen(x, y, color, game));
             }
 
             popUpDiv.id = "hidePopUp";
@@ -868,7 +1197,7 @@ class Pawn extends Piece {
             flipBtn.disabled = false;
             surrenderBtn.disabled = false;
 
-            calculateGameState();
+            this.game.calculateGameState();
         }
 
         promoteKnight.onclick = getPromotion;
@@ -882,6 +1211,7 @@ class Pawn extends Piece {
     }
 
     getPawnMoves(steps) {
+        let playerToMove = this.playerToMove;
         if (playerToMove === this.color && this.enPassantTarget) this.disableEnPassant();
 
         let arr = [];
@@ -915,293 +1245,9 @@ class Pawn extends Piece {
 }
 
 
-function initPieces() {
-    let whiteKing = new King(4, 0, "white");
-    let blackKing = new King(4, 7, "black");
-    kings.push(whiteKing, blackKing)
-
-    // white
-    for (let i = 0; i < boardSize; i++) {
-        allPieces.push(new Pawn(i, 1, "white"));
-    }
-    allPieces.push(
-        new Rook(0, 0, "white"),
-        new Knight(1, 0, "white"),
-        new Bishop(2, 0, "white"),
-        new Queen(3, 0, "white"),
-        whiteKing,
-        new Bishop(5, 0, "white"),
-        new Knight(6, 0, "white"),
-        new Rook(7, 0, "white")
-    )
-
-    // black
-    for (let i = 0; i < boardSize; i++) {
-        allPieces.push(new Pawn(i, 6, "black"));
-    }
-    allPieces.push(
-        new Rook(0, 7, "black"),
-        new Knight(1, 7, "black"),
-        new Bishop(2, 7, "black"),
-        new Queen(3, 7, "black"),
-        blackKing,
-        new Bishop(5, 7, "black"),
-        new Knight(6, 7, "black"),
-        new Rook(7, 7, "black")
-    )
-
-    //get starting moves for all the pieces
-    allPieces.forEach(el => el.setMoves());
+function startChess() {
+    let chessGame = new Chess;
+    chessGame.init();
 }
 
-function getSquareFromPoint(x, y) {
-    let element, elements = [];
-    let old_visibility = [];
-    while (true) {
-        element = document.elementFromPoint(x, y);
-
-        if (element.matches(".square")) {
-            break;
-        }
-
-        if (!element || element === document.documentElement) {
-            element = null;
-            break;
-        }
-        elements.push(element);
-        old_visibility.push(element.style.visibility);
-        element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
-    }
-    for (let k = 0; k < elements.length; k++) {
-        elements[k].style.visibility = old_visibility[k];
-    }
-
-    return element;
-}
-
-function selectPiece(e) {
-    if (gameOver) return;
-    const el = e.target;
-    //if not clicking on a piece
-    if (!el.piece) return;
-    if (el.piece.color !== playerToMove) return;
-
-    const style = el.style;
-    style.position = "absolute";
-    style.height = squareSize + "px";
-    style.width = squareSize + "px";
-    function pieceDrag(e) {
-        const offset = squareSize / 2;
-        style.left = `${e.pageX - offset}px`;
-        style.top = `${e.pageY - offset}px`;
-    }
-
-    //color all legal moves 
-    el.piece.colorMoves();
-    //add event listeners for drag and drop
-    document.addEventListener("mousemove", pieceDrag, true);
-    document.addEventListener("mouseup", pieceDrop, true);
-
-    function pieceDrop(e) {
-        checkMove(e);
-        //clear legal move colors 
-        el.piece.clearColorMoves();
-        //remove/clean up event listeners for drag and drop
-        document.removeEventListener('mousemove', pieceDrag, true);
-        document.removeEventListener('mouseup', pieceDrop, true);
-    }
-}
-
-function pieceDragStop(e) {
-    let el = e.target;
-    el.style.position = "";
-    el.style.height = "";
-    el.style.width = "";
-    el.style.left = "";
-    el.style.top = "";
-}
-
-function checkMove(e) {
-    let x = event.clientX, y = event.clientY;
-    let square = getSquareFromPoint(x, y);
-
-    let piece = e.target.piece;
-    if (!piece) return;
-    let legalMoves = piece.legalMoves;
-
-    //if dropped on a square
-    if (square) {
-        let squareX = square.pos.x;
-        let squareY = square.pos.y;
-
-        //check if valid move
-        for (let i = 0; i < legalMoves.length; i++) {
-            if (
-                squareX === legalMoves[i][0]
-                &&
-                squareY === legalMoves[i][1]
-            ) {
-                saveBoardState();
-
-                piece.movePiece(squareX, squareY, square.firstChild);
-
-                playerToMove = (playerToMove === "white") ? "black" : "white";
-
-                break;
-            }
-        }
-    }
-    //place piece on board and stop dragging
-    piece.placePieceOnBoard();
-    pieceDragStop(e);
-
-    calculateGameState();
-}
-
-function calculateGameState() {
-    //find all new legal moves for all pieces
-    allPieces.forEach(el => el.setMoves());
-    kings.forEach(king => king.setCastleMoves());
-
-    //display game state text and king check sprite
-    gameText.innerHTML = gameStatus();
-}
-
-function gameStatus() {
-    let gameStatus = '';
-    let noMoves = checkNoMoves();
-
-    if (noMoves) {
-        gameStatus = 'Draw!';
-        setGameOver();
-    }
-
-    kings.forEach(king => {
-        //remove any previous check effects
-        king.displaySprite(king.pieceElem, `url(images/${king.color}-${king.type}.png)`);
-        if (king.checkCheck()) {
-            if (noMoves) {
-                gameStatus = `Checkmate! ${getWinner()} wins!`
-                setGameOver();
-            } else {
-                gameStatus = 'Check!';
-            }
-            king.displayCheck();
-        }
-    });
-
-    return gameStatus;
-}
-
-function getWinner() {
-    let winner = (playerToMove === "white") ? "black" : "white";
-    return `${winner[0].toUpperCase() + winner.slice(1)}`;
-}
-
-function checkNoMoves() {
-    let noMoves = true;
-    allPieces.forEach(piece => {
-        if (piece.color === playerToMove) {
-            if (piece.legalMoves.length > 0) {
-                noMoves = false;
-            }
-        };
-    })
-    return noMoves;
-}
-
-function undoLastMove() {
-    let lastMove = previousMoves[previousMoves.length - 1];
-    currentMove = lastMove.currentMove;
-    previousMoves = lastMove.previousMoves;
-    playerToMove = lastMove.playerToMove;
-    gameOver = lastMove.gameOver;
-
-    for (let i = 0; i < allPieces.length; i++) {
-        let cur = allPieces[i],
-            prev = lastMove.pieces[i];
-
-        //if prev move has less pieces (i.e. cur move was a promotion which adds a piece), then remove the promoted piece
-        if (!prev) {
-            cur.pieceElem.parentNode.removeChild(cur.pieceElem);
-            allPieces.pop();
-            break;
-        }
-
-        cur.pos = prev.pos;
-        cur.hasMoved = prev.hasMoved;
-        cur.taken = prev.taken;
-        cur.validMoves = prev.validMoves;
-        cur.legalMoves = prev.legalMoves;
-        cur.placePieceOnBoard();
-    }
-
-    gameText.innerHTML = gameStatus();
-
-    if (previousMoves.length === 0) saveBoardState();
-}
-
-function saveBoardState() {
-    currentMove++
-
-    let prev = [...previousMoves]
-    let pieces = allPieces.map(el => (
-        {
-            pos: { ...el.pos },
-            hasMoved: el.hasMoved,
-            taken: el.taken,
-            validMoves: [...el.validMoves],
-            legalMoves: [...el.legalMoves]
-        }
-    ))
-
-    let curState = {
-        "currentMove": currentMove,
-        "previousMoves": prev,
-        "playerToMove": playerToMove,
-        "pieces": pieces,
-        "gameOver": gameOver
-    }
-
-    previousMoves.push(curState)
-}
-
-function flipBoard() {
-    let board = document.getElementsByClassName("board")[0];
-
-    (board.classList[1] === "boardOrientWhite")
-        ?
-        board.classList.replace("boardOrientWhite", "boardOrientBlack")
-        :
-        board.classList.replace("boardOrientBlack", "boardOrientWhite")
-}
-
-function surrender() {
-    if (gameOver) return;
-    let loser = playerToMove[0].toUpperCase() + playerToMove.slice(1)
-    gameText.innerHTML = `${loser} surrendered. ${getWinner()} wins!`
-    setGameOver();
-}
-
-function setGameOver() {
-    gameOver = true;
-}
-
-function init() {
-    initBoard(squareSize);
-    initPieces();
-    saveBoardState();
-
-    moveSound = new Audio("sounds/move.mp3");
-    moveSound.volume = 0.4;
-    captureSound = new Audio("sounds/capture.mp3");
-    captureSound.volume = 0.3;
-
-    undoBtn.onclick = undoLastMove;
-    flipBtn.onclick = flipBoard;
-    surrenderBtn.onclick = surrender;
-
-    document.addEventListener("mousedown", selectPiece);
-}
-
-document.onload = init();
+document.onload = startChess();
