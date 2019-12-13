@@ -1192,9 +1192,9 @@ function init() {
     initPieces();
     saveBoardState();
 
-    moveSound = new Audio("move.mp3");
+    moveSound = new Audio("sounds/move.mp3");
     moveSound.volume = 0.4;
-    captureSound = new Audio("capture.mp3");
+    captureSound = new Audio("sounds/capture.mp3");
     captureSound.volume = 0.3;
 
     undoBtn.onclick = undoLastMove;
