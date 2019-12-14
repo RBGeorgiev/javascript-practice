@@ -1,4 +1,4 @@
-import { King, Queen, Rook, Bishop, Knight, Pawn } from './pieces.js';
+import { King, Queen, Rook, Bishop, Knight, Pawn } from './all-pieces.js';
 
 export default class Game {
     constructor() {
