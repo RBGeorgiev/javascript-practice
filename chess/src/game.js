@@ -1,4 +1,5 @@
-import { King, Queen, Rook, Bishop, Knight, Pawn } from './all-pieces.js';
+import { King, Queen, Rook, Bishop, Knight, Pawn } from './allPieces.js';
+import getSquareFromPoint from './getSquareFromPoint.js'
 
 export default class Game {
     constructor() {
@@ -181,7 +182,7 @@ export default class Game {
 
     checkMove(e) {
         let x = event.clientX, y = event.clientY;
-        let square = this.getSquareFromPoint(x, y);
+        let square = getSquareFromPoint(x, y);
 
         let piece = e.target.piece;
         if (!piece) return;
@@ -319,30 +320,5 @@ export default class Game {
 
     setGameOver() {
         this.gameOver = true;
-    }
-
-    getSquareFromPoint(x, y) {
-        let element, elements = [];
-        let old_visibility = [];
-        while (true) {
-            element = document.elementFromPoint(x, y);
-
-            if (element.matches(".square")) {
-                break;
-            }
-
-            if (!element || element === document.documentElement) {
-                element = null;
-                break;
-            }
-            elements.push(element);
-            old_visibility.push(element.style.visibility);
-            element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
-        }
-        for (let k = 0; k < elements.length; k++) {
-            elements[k].style.visibility = old_visibility[k];
-        }
-
-        return element;
     }
 }
