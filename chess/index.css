@@ -32,10 +32,11 @@ div {
     width: 15%;
     margin: 0 10px;
     border: 1px solid black;
+    background: #EEDDC2;
 }
 
 .capturedByBlack {
-    background: brown;
+    background: #6C2C20;
 }
 
 .captures div {
@@ -47,10 +48,11 @@ div {
 .square {
     margin: 0;
     padding: 0;
+    background: #EEDDC2;
 }
 
 .sqBlack {
-    background: brown;
+    background: #6C2C20;
 }
 
 .piece {
