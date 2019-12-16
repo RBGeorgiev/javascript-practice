@@ -2,9 +2,9 @@ import { King, Queen, Rook, Bishop, Knight, Pawn } from './allPieces.js';
 import getSquareFromPoint from './getSquareFromPoint.js'
 
 export default class Game {
-    constructor() {
+    constructor(squareSize = 70) {
         this.boardSize = 8;
-        this.squareSize = 70;
+        this.squareSize = squareSize;
         this.playerToMove = "white";
         this.gameOver = false;
         this.allPieces = [];

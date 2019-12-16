@@ -1,7 +1,8 @@
 import Game from './src/game.js';
 
-let startGame = () => {
-    let game = new Game;
+let startGame = (squareSize) => {
+    // default squareSize is 70
+    let game = new Game(squareSize);
     game.init();
 }
 
