@@ -1,13 +1,22 @@
-const displayMove = (str) => {
-    let move = document.createElement("div");
-    move.innerHTML = str;
-    answer.appendChild(move);
+let movesArr = [];
+
+const displayMoves = (arr) => {
+    answer.innerHTML = "";
+    arr.forEach(move => {
+        let moveDiv = document.createElement("div");
+        moveDiv.innerHTML = `Move ${move.target} from ${move.from} to ${move.to}`;
+        answer.appendChild(moveDiv);
+    });
 }
 
-const move = (num, start, end) => {
-    if (num < 1) return;
-    let str = `Move ${num} from ${start} to ${end}`;
-    displayMove(str);
+const move = (target, from, to) => {
+    if (target < 1) return;
+    let obj = {
+        target,
+        from,
+        to
+    };
+    movesArr.push(obj);
 }
 
 class Hanoi {
@@ -135,8 +144,8 @@ const clampNumber = (e) => {
     if (val > max) e.target.value = max;
 }
 
-const getDiskNumber = () => diskNumber.value;
-const getPegNumber = () => pegNumber.value;
+const getDiskNumber = () => +diskNumber.value;
+const getPegNumber = () => +pegNumber.value;
 const getPegs = (numPegs) => {
     let pegs = [];
     for (let i = 0; i < numPegs; i++) {
@@ -146,39 +155,41 @@ const getPegs = (numPegs) => {
 }
 
 const solveHanoi = () => {
-    answer.innerHTML = "";
     let disks = getDiskNumber();
     let numPegs = getPegNumber();
     let pegs = getPegs(numPegs);
 
     switch (numPegs) {
-        case "3":
+        case 3:
             hanoi.ThreePegs(disks, ...pegs);
             break;
-        case "4":
+        case 4:
             hanoi.FourPegs(disks, ...pegs);
             break;
-        case "5":
+        case 5:
             hanoi.FivePegs(disks, ...pegs);
             break;
-        case "6":
+        case 6:
             hanoi.SixPegs(disks, ...pegs);
             break;
-        case "7":
+        case 7:
             hanoi.SevenPegs(disks, ...pegs);
             break;
-        case "8":
+        case 8:
             hanoi.EightPegs(disks, ...pegs);
             break;
-        case "9":
+        case 9:
             hanoi.NinePegs(disks, ...pegs);
             break;
-        case "10":
+        case 10:
             hanoi.TenPegs(disks, ...pegs);
             break;
         default:
             throw "Error determining number of pegs";
     }
+
+    displayMoves(movesArr);
+    movesArr = [];
 }
 
 diskNumber.onchange = (e) => clampNumber(e);
