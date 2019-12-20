@@ -37,6 +37,91 @@ class Hanoi {
         move(num - 2, mid2, end);
         this.FivePegs(num - 3, mid3, start, mid1, mid2, end);
     }
+
+    SixPegs = (num, start, mid1, mid2, mid3, mid4, end) => {
+        if (num < 1) return;
+        this.SixPegs(num - 4, start, mid1, mid2, mid3, end, mid4)
+        move(num - 3, start, mid3);
+        move(num - 2, start, mid2);
+        move(num - 1, start, mid1);
+        move(num, start, end);
+        move(num - 1, mid1, end);
+        move(num - 2, mid2, end);
+        move(num - 3, mid3, end);
+        this.SixPegs(num - 4, mid4, start, mid1, mid2, mid3, end);
+    }
+
+    SevenPegs = (num, start, mid1, mid2, mid3, mid4, mid5, end) => {
+        if (num < 1) return;
+        this.SevenPegs(num - 5, start, mid1, mid2, mid3, mid4, end, mid5)
+        move(num - 4, start, mid4);
+        move(num - 3, start, mid3);
+        move(num - 2, start, mid2);
+        move(num - 1, start, mid1);
+        move(num, start, end);
+        move(num - 1, mid1, end);
+        move(num - 2, mid2, end);
+        move(num - 3, mid3, end);
+        move(num - 4, mid4, end);
+        this.SevenPegs(num - 5, mid5, start, mid1, mid2, mid3, mid4, end);
+    }
+
+    EightPegs = (num, start, mid1, mid2, mid3, mid4, mid5, mid6, end) => {
+        if (num < 1) return;
+        this.EightPegs(num - 6, start, mid1, mid2, mid3, mid4, mid5, end, mid6)
+        move(num - 5, start, mid5);
+        move(num - 4, start, mid4);
+        move(num - 3, start, mid3);
+        move(num - 2, start, mid2);
+        move(num - 1, start, mid1);
+        move(num, start, end);
+        move(num - 1, mid1, end);
+        move(num - 2, mid2, end);
+        move(num - 3, mid3, end);
+        move(num - 4, mid4, end);
+        move(num - 5, mid5, end);
+        this.EightPegs(num - 6, mid6, start, mid1, mid2, mid3, mid4, mid5, end);
+    }
+
+    NinePegs = (num, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, end) => {
+        if (num < 1) return;
+        this.NinePegs(num - 7, start, mid1, mid2, mid3, mid4, mid5, mid6, end, mid7)
+        move(num - 6, start, mid6);
+        move(num - 5, start, mid5);
+        move(num - 4, start, mid4);
+        move(num - 3, start, mid3);
+        move(num - 2, start, mid2);
+        move(num - 1, start, mid1);
+        move(num, start, end);
+        move(num - 1, mid1, end);
+        move(num - 2, mid2, end);
+        move(num - 3, mid3, end);
+        move(num - 4, mid4, end);
+        move(num - 5, mid5, end);
+        move(num - 6, mid6, end);
+        this.NinePegs(num - 7, mid7, start, mid1, mid2, mid3, mid4, mid5, mid6, end);
+    }
+
+    TenPegs = (num, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, mid8, end) => {
+        if (num < 1) return;
+        this.TenPegs(num - 8, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, end, mid8)
+        move(num - 7, start, mid7);
+        move(num - 6, start, mid6);
+        move(num - 5, start, mid5);
+        move(num - 4, start, mid4);
+        move(num - 3, start, mid3);
+        move(num - 2, start, mid2);
+        move(num - 1, start, mid1);
+        move(num, start, end);
+        move(num - 1, mid1, end);
+        move(num - 2, mid2, end);
+        move(num - 3, mid3, end);
+        move(num - 4, mid4, end);
+        move(num - 5, mid5, end);
+        move(num - 6, mid6, end);
+        move(num - 7, mid7, end);
+        this.TenPegs(num - 8, mid8, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, end);
+    }
 }
 
 const hanoi = new Hanoi;
@@ -67,14 +152,32 @@ const solveHanoi = () => {
     let pegs = getPegs(numPegs);
 
     switch (numPegs) {
+        case "3":
+            hanoi.ThreePegs(disks, ...pegs);
+            break;
         case "4":
             hanoi.FourPegs(disks, ...pegs);
             break;
         case "5":
             hanoi.FivePegs(disks, ...pegs);
             break;
+        case "6":
+            hanoi.SixPegs(disks, ...pegs);
+            break;
+        case "7":
+            hanoi.SevenPegs(disks, ...pegs);
+            break;
+        case "8":
+            hanoi.EightPegs(disks, ...pegs);
+            break;
+        case "9":
+            hanoi.NinePegs(disks, ...pegs);
+            break;
+        case "10":
+            hanoi.TenPegs(disks, ...pegs);
+            break;
         default:
-            hanoi.ThreePegs(disks, ...pegs);
+            throw "Error determining number of pegs";
     }
 }
 
