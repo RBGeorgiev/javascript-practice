@@ -190,7 +190,40 @@ const solveHanoi = () => {
 
     displayMoves(movesArr);
     movesArr = [];
+
+    drawPegs();
 }
 
 diskNumber.onchange = (e) => clampNumber(e);
 calculateHanoi.onclick = () => solveHanoi();
+
+
+
+
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+
+canvas.width = 1200;
+canvas.height = 600;
+
+function drawPegs() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let pegNumber = getPegNumber();
+    let pegSpacing = canvas.width / (pegNumber + 1);
+
+    let lastPegPos = pegSpacing * (pegNumber - 1);
+    let margin = (canvas.width - lastPegPos) / 2;
+
+    ctx.lineWidth = 10;
+
+    for (let i = 0; i < pegNumber; i++) {
+        let x = pegSpacing * i;
+        ctx.beginPath();
+        ctx.moveTo(margin + x, canvas.height);
+        ctx.lineTo(margin + x, canvas.height * .3);
+        ctx.stroke();
+    }
+}
+
+drawPegs()
