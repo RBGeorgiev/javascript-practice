@@ -146,7 +146,7 @@ const clampNumber = (e) => {
 
 const getDiskNumber = () => +diskNumber.value;
 const getPegNumber = () => +pegNumber.value;
-const getPegs = (numPegs) => {
+const getPegsId = (numPegs) => {
     let pegs = [];
     for (let i = 0; i < numPegs; i++) {
         pegs.push(String.fromCharCode(65 + i));
@@ -157,7 +157,7 @@ const getPegs = (numPegs) => {
 const solveHanoi = () => {
     let disks = getDiskNumber();
     let numPegs = getPegNumber();
-    let pegs = getPegs(numPegs);
+    let pegs = getPegsId(numPegs);
 
     switch (numPegs) {
         case 3:
@@ -189,9 +189,10 @@ const solveHanoi = () => {
     }
 
     displayMoves(movesArr);
-    movesArr = [];
 
-    drawPegs();
+    drawHanoi();
+
+    movesArr = [];
 }
 
 diskNumber.onchange = (e) => clampNumber(e);
@@ -206,24 +207,47 @@ let ctx = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 600;
 
-function drawPegs() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+function getPegsPosition() {
+    let pegsPos = [];
 
     let pegNumber = getPegNumber();
-    let pegSpacing = canvas.width / (pegNumber + 1);
+    let pegsId = getPegsId(pegNumber);
 
+    let pegSpacing = canvas.width / (pegNumber + 1);
     let lastPegPos = pegSpacing * (pegNumber - 1);
     let margin = (canvas.width - lastPegPos) / 2;
 
-    ctx.lineWidth = 10;
-
     for (let i = 0; i < pegNumber; i++) {
         let x = pegSpacing * i;
+        let pos = {
+            id: pegsId[i],
+            x1: margin + x,
+            y1: canvas.height,
+            x2: margin + x,
+            y2: canvas.height * .3
+        }
+
+        pegsPos.push(pos)
+    }
+
+    return pegsPos;
+}
+
+function drawPegs(pegsPos) {
+    ctx.lineWidth = 10;
+    for (let i = 0; i < pegsPos.length; i++) {
         ctx.beginPath();
-        ctx.moveTo(margin + x, canvas.height);
-        ctx.lineTo(margin + x, canvas.height * .3);
+        ctx.moveTo(pegsPos[i].x1, pegsPos[i].y1);
+        ctx.lineTo(pegsPos[i].x2, pegsPos[i].y2);
         ctx.stroke();
     }
 }
 
-drawPegs()
+function drawHanoi() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let pegsPos = getPegsPosition();
+    drawPegs(pegsPos);
+}
+
+drawHanoi();
