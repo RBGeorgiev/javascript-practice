@@ -260,15 +260,29 @@ function drawDisks(pegsPos) {
     }
 
     for (let i = 0; i < disks.length; i++) {
-        let height = 50;
+        let height = 40;
         let towerHeight = pegsPos[0].y1 - height * disksNum;
-        let biggest = 50;
+        let biggest = 200;
         let smallest = 10;
+
         let range = biggest - smallest;
         let change = range / disksNum;
-        let fontSize = smallest + (change * (i + 1));
-        ctx.font = `${fontSize}px Arial`;
-        ctx.fillText(`Disk ${disks[i]}`, pegsPos[0].x1, towerHeight + height * (i + 1));
+        let width = smallest + (change * (i + 1));
+        ctx.font = `${height}px Arial`;
+
+        let txt = `${disks[i]}`
+        ctx.fillText(txt, pegsPos[0].x1 - ctx.measureText(txt).width / 2, towerHeight + height * (i + 1));
+
+        ctx.lineWidth = 1;
+
+        ctx.beginPath();
+        ctx.rect(
+            pegsPos[0].x1 - width / 2,
+            towerHeight + height * i,
+            width,
+            height
+        );
+        ctx.stroke();
     }
 }
 
