@@ -248,6 +248,28 @@ function drawHanoi() {
 
     let pegsPos = getPegsPosition();
     drawPegs(pegsPos);
+    drawDisks(pegsPos);
+}
+
+function drawDisks(pegsPos) {
+    let disksNum = getDiskNumber();
+    let disks = [];
+
+    for (let i = 1; i <= disksNum; i++) {
+        disks.push(i);
+    }
+
+    for (let i = 0; i < disks.length; i++) {
+        let height = 50;
+        let towerHeight = pegsPos[0].y1 - height * disksNum;
+        let biggest = 50;
+        let smallest = 10;
+        let range = biggest - smallest;
+        let change = range / disksNum;
+        let fontSize = smallest + (change * (i + 1));
+        ctx.font = `${fontSize}px Arial`;
+        ctx.fillText(`Disk ${disks[i]}`, pegsPos[0].x1, towerHeight + height * (i + 1));
+    }
 }
 
 drawHanoi();
