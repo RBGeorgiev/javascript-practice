@@ -239,59 +239,44 @@ const drawPegs = (pegsPos) => {
     }
 }
 
-// function drawDisks(pegsPos) {
-//     let diskAmount = getDiskAmount();
-//     let disks = [];
+function drawAllDisks(pegsPos, pegsArr) {
+    let diskAmount = getDiskAmount();
 
-//     let pegSpacing = canvas.width / (pegsPos.length + 1);
-//     for (let i = 1; i <= diskAmount; i++) {
-//         disks.push(i);
-//     }
 
-//     for (let i = 0; i < disks.length; i++) {
-//         let height = 40;
-//         let towerHeight = pegsPos[0].y1 - height * diskAmount;
-//         let biggest = pegSpacing / 1.5;
-//         let smallest = 10;
+    let height = 40;
+    let floor = pegsPos[0].y1 - height;
 
-//         let range = biggest - smallest;
-//         let change = range / diskAmount;
-//         let width = smallest + (change * (i + 1));
+    let pegSpacing = canvas.width / (pegsPos.length + 1);
+    let biggest = pegSpacing / 1.5;
+    let smallest = 10;
 
-//         ctx.lineWidth = 1;
+    let range = biggest - smallest;
+    let change = range / diskAmount;
 
-//         ctx.fillStyle = "lightgrey";
-//         ctx.beginPath();
-//         ctx.fillRect(
-//             pegsPos[0].x1 - width / 2,
-//             towerHeight + height * i,
-//             width,
-//             height
-//         );
+    ctx.lineWidth = 1;
 
-//         ctx.rect(
-//             pegsPos[0].x1 - width / 2,
-//             towerHeight + height * i,
-//             width,
-//             height
-//         );
-//         ctx.stroke();
+    for (let i = 0; i < pegsArr.length; i++) {
+        for (let j = 0; j < pegsArr[i].length; j++) {
+            let width = smallest + (change * (pegsArr[i][j] + 1));
 
-//         ctx.font = `${height}px Arial`;
-//         ctx.fillStyle = "#46A049";
-//         ctx.textAlign = "center";
-//         let txt = `${disks[i]}`;
-//         ctx.fillText(txt, pegsPos[0].x1, towerHeight + height * (i + 1) - height * .1);
-//     }
-// }
-
+            ctx.beginPath();
+            ctx.rect(
+                pegsPos[i].x1 - width / 2,
+                floor - height * j,
+                width,
+                height
+            );
+            ctx.stroke();
+        }
+    }
+}
 
 function drawHanoi(pegsArr) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     let pegsPos = getPegsPosition();
     drawPegs(pegsPos);
-    drawDisks(pegsPos, pegsArr);
+    drawAllDisks(pegsPos, pegsArr);
 }
 
 function executeHanoi(movesArr) {
@@ -318,8 +303,6 @@ function initDisks(diskAmount, pegsArr) {
 }
 
 function executeMoves(movesArr, pegsArr) {
-    pegsArr.forEach((peg) => console.log(peg))
-
     drawHanoi(pegsArr);
     for (let i = 0; i < movesArr.length; i++) {
         let from = movesArr[i].from;
@@ -332,42 +315,7 @@ function executeMoves(movesArr, pegsArr) {
 
             drawHanoi(pegsArr)
         }, (i + 1) * 1000);
-        // requestAnimationFrame(() => drawHanoi(pegsArr))
-
-        console.log("_____________________________________________")
-        pegsArr.forEach((peg) => console.log(peg))
     }
-}
-
-function drawDisks(pegsPos, pegsArr) {
-    let diskAmount = getDiskAmount();
-
-    let pegSpacing = canvas.width / (pegsPos.length + 1);
-
-    let height = 40;
-    let towerHeight = pegsPos[0].y1 - height * diskAmount;
-    let biggest = pegSpacing / 1.5;
-    let smallest = 10;
-
-    let range = biggest - smallest;
-    let change = range / diskAmount;
-
-
-    for (let i = 0; i < pegsArr.length; i++) {
-        for (let j = 0; j < pegsArr[i].length; j++) {
-            let width = smallest + (change * (pegsArr[i][j] + 1));
-
-            ctx.beginPath();
-            ctx.rect(
-                pegsPos[i].x1 - width / 2,
-                towerHeight + height * i,
-                width,
-                height
-            );
-            ctx.stroke();
-        }
-    }
-
 }
 
 
