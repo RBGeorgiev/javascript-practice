@@ -198,8 +198,6 @@ const solveHanoi = () => {
 
     executeHanoi(movesArr);
 
-    // drawHanoi();
-
     movesArr = [];
 }
 
@@ -242,7 +240,6 @@ const drawPegs = (pegsPos) => {
 function drawAllDisks(pegsPos, pegsArr) {
     let diskAmount = getDiskAmount();
 
-
     let height = 40;
     let floor = pegsPos[0].y1 - height;
 
@@ -253,22 +250,32 @@ function drawAllDisks(pegsPos, pegsArr) {
     let range = biggest - smallest;
     let change = range / diskAmount;
 
-    ctx.lineWidth = 1;
-
     for (let i = 0; i < pegsArr.length; i++) {
         for (let j = 0; j < pegsArr[i].length; j++) {
-            let width = smallest + (change * (pegsArr[i][j] + 1));
+            let target = pegsArr[i][j]
+            let width = smallest + (change * (target + 1));
 
-            ctx.beginPath();
-            ctx.rect(
-                pegsPos[i].x1 - width / 2,
-                floor - height * j,
-                width,
-                height
-            );
-            ctx.stroke();
+            let x = pegsPos[i].x1 - width / 2;
+            let y = floor - height * j;
+
+            drawDisk(target, x, y, width, height);
         }
     }
+}
+
+function drawDisk(target, x, y, width, height) {
+    ctx.lineWidth = 1;
+    ctx.fillStyle = "lightgrey";
+
+    ctx.beginPath();
+    ctx.rect(x, y, width, height);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.font = `${height}px Arial`;
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#46A049";
+    ctx.fillText(`${target}`, x + width / 2, y + height * 0.875);
 }
 
 function drawHanoi(pegsArr) {
