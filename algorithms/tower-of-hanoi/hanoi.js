@@ -6,11 +6,13 @@ canvas.height = 600;
 
 let movesArr = [];
 
-const displayMoves = (arr) => {
+const getPegChar = n => String.fromCharCode(65 + n);
+
+const displayMovesInHtml = (arr) => {
     answer.innerHTML = "";
     arr.forEach(move => {
         let moveDiv = document.createElement("div");
-        moveDiv.innerHTML = `Move ${move.target} from ${move.from} to ${move.to}`;
+        moveDiv.innerHTML = `Move disk ${move.target} from ${getPegChar(move.from)} to ${getPegChar(move.to)}`;
         answer.appendChild(moveDiv);
     });
 }
@@ -190,7 +192,7 @@ class HanoiVisualization {
                 throw "Error determining number of pegs";
         }
 
-        displayMoves(movesArr);
+        displayMovesInHtml(movesArr);
 
         this.executeHanoi(movesArr);
 
@@ -271,7 +273,7 @@ class HanoiVisualization {
         ctx.font = `${height}px Arial`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#46A049";
-        ctx.fillText(`${target}`, x + width / 2, y + height * 0.875);
+        ctx.fillText(target, x + width / 2, y + height * 0.875);
     }
 
     drawHanoi = (pegsArr) => {
@@ -288,6 +290,7 @@ class HanoiVisualization {
 
         let pegsArr = this.initPegs(pegsAmount)
         this.initDisks(diskAmount, pegsArr);
+        this.drawHanoi(pegsArr);
         this.fillQueue(movesArr, pegsArr);
         this.executeQueue();
     }
@@ -306,9 +309,23 @@ class HanoiVisualization {
         }
     }
 
+    displayMoveDesc = (str, size = 30) => {
+        ctx.font = `${size}px Arial`;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#46A049";
+        ctx.fillText(str, canvas.width / 2, 10 + size);
+    }
+
+    displayMoveCounter(cur, total, size = 20) {
+        ctx.font = `${size}px Arial`;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#46A049";
+        ctx.fillText(`${cur} / ${total}`, canvas.width / 2, 45 + size);
+    }
+
     fillQueue = (movesArr, pegsArr) => {
-        this.drawHanoi(pegsArr);
         for (let i = 0; i < movesArr.length; i++) {
+            let target = movesArr[i].target;
             let from = movesArr[i].from;
             let to = movesArr[i].to;
 
@@ -318,7 +335,11 @@ class HanoiVisualization {
                         pegsArr[from].pop()
                     );
 
+                    let str = `Move disk ${target} from ${getPegChar(from)} to ${getPegChar(to)}`;
+
                     this.drawHanoi(pegsArr);
+                    this.displayMoveDesc(str);
+                    this.displayMoveCounter(i + 1, movesArr.length);
                 }
             )
         }
