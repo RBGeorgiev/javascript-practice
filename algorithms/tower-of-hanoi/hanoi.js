@@ -145,6 +145,8 @@ class HanoiVisualization {
     constructor() {
         this.queue = [];
         this.animating = false;
+        this.pegsArr = [];
+        this.setPegsAndDisksArr();
     }
 
     setAnimating(bool) {
@@ -200,7 +202,7 @@ class HanoiVisualization {
 
         displayMovesInHtml(movesArr);
 
-        this.executeHanoi(movesArr);
+        this.fillQueue(movesArr, this.pegsArr);
 
         this.setAnimating(true);
 
@@ -292,17 +294,6 @@ class HanoiVisualization {
         this.drawAllDisks(pegsPos, pegsArr);
     }
 
-    executeHanoi = (movesArr) => {
-        let pegsAmount = this.getPegsAmount();
-        let diskAmount = this.getDiskAmount();
-
-        let pegsArr = this.initPegs(pegsAmount)
-        this.initDisks(diskAmount, pegsArr);
-        this.drawHanoi(pegsArr);
-        this.fillQueue(movesArr, pegsArr);
-        this.executeQueue();
-    }
-
     initPegs = (pegsAmount) => {
         let pegsArr = [];
         for (let i = 0; i < pegsAmount; i++) {
@@ -315,6 +306,14 @@ class HanoiVisualization {
         for (let i = diskAmount; i > 0; i--) {
             pegsArr[0].push(i)
         }
+    }
+
+    setPegsAndDisksArr = () => {
+        let pegsAmount = this.getPegsAmount();
+        let diskAmount = this.getDiskAmount();
+
+        this.pegsArr = this.initPegs(pegsAmount);
+        this.initDisks(diskAmount, this.pegsArr);
     }
 
     displayMoveDesc = (str, size = 30) => {
@@ -338,6 +337,7 @@ class HanoiVisualization {
             let to = movesArr[i].to;
 
             this.queue.push(
+                // push a function that when called will execute the move and display it on the canvas
                 () => {
                     pegsArr[to].push(
                         pegsArr[from].pop()
@@ -372,6 +372,14 @@ class HanoiVisualization {
             }
         }
     }
+
+    draw(deltaTime) {
+        if (this.animating) {
+            this.animateSolution(deltaTime);
+        } else {
+            this.drawHanoi(this.pegsArr);
+        }
+    }
 }
 
 const hanoi = new Hanoi;
@@ -386,7 +394,11 @@ const clampNumber = (e) => {
     if (val > max) e.target.value = max;
 }
 
-diskAmount.onchange = (e) => clampNumber(e);
+diskAmount.oninput = (e) => {
+    clampNumber(e);
+    hanoiVis.setPegsAndDisksArr();
+}
+pegsAmount.onChange = () => hanoiVis.setPegsAndDisksArr();
 calculateHanoi.onclick = () => hanoiVis.getHanoiSolution();
 
 
@@ -397,7 +409,7 @@ function step(timestamp) {
     deltaTime = timestamp - lastTime;
     lastTime = timestamp;
 
-    hanoiVis.animateSolution(deltaTime);
+    hanoiVis.draw(deltaTime);
 
     window.requestAnimationFrame(step);
 }
