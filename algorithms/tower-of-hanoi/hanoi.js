@@ -147,6 +147,10 @@ class HanoiVisualization {
         this.animating = false;
         this.pegsArr = [];
         this.setPegsAndDisksArr();
+
+        this.moveDesc = '';
+        this.curMove = 0;
+        this.totalMoves = 0;
     }
 
     setAnimating(bool) {
@@ -287,8 +291,6 @@ class HanoiVisualization {
     }
 
     drawHanoi = (pegsArr) => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         let pegsPos = this.getPegsPosition();
         this.drawPegs(pegsPos);
         this.drawAllDisks(pegsPos, pegsArr);
@@ -316,14 +318,14 @@ class HanoiVisualization {
         this.initDisks(diskAmount, this.pegsArr);
     }
 
-    displayMoveDesc = (str, size = 30) => {
+    drawMoveDesc = (str, size = 30) => {
         ctx.font = `${size}px Arial`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#46A049";
         ctx.fillText(str, canvas.width / 2, 10 + size);
     }
 
-    displayMoveCounter(cur, total, size = 20) {
+    drawMoveCounter(cur, total, size = 20) {
         ctx.font = `${size}px Arial`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#46A049";
@@ -337,17 +339,15 @@ class HanoiVisualization {
             let to = movesArr[i].to;
 
             this.queue.push(
-                // push a function that when called will execute the move and display it on the canvas
-                () => {
-                    pegsArr[to].push(
-                        pegsArr[from].pop()
-                    );
-
-                    let str = `Move disk ${target} from ${getPegChar(from)} to ${getPegChar(to)}`;
-
-                    this.drawHanoi(pegsArr);
-                    this.displayMoveDesc(str);
-                    this.displayMoveCounter(i + 1, movesArr.length);
+                {
+                    move: () => {
+                        pegsArr[to].push(
+                            pegsArr[from].pop()
+                        );
+                    },
+                    moveDesc: `Move disk ${target} from ${getPegChar(from)} to ${getPegChar(to)}`,
+                    curMove: i + 1,
+                    totalMoves: movesArr.length
                 }
             )
         }
@@ -355,14 +355,18 @@ class HanoiVisualization {
 
     executeQueue = () => {
         if (this.queue.length > 0) {
-            let move = this.queue.shift();
-            move();
+            let moveData = this.queue.shift();
+            moveData.move();
+            this.moveDesc = moveData.moveDesc;
+            this.curMove = moveData.curMove;
+            this.totalMoves = moveData.totalMoves;
+
         } else {
             this.setAnimating(false);
         }
     }
 
-    animateSolution(deltaTime) {
+    animateSolution = (deltaTime) => {
         if (this.animating) {
             timeout += deltaTime;
 
@@ -373,11 +377,16 @@ class HanoiVisualization {
         }
     }
 
-    draw(deltaTime) {
+    draw = (deltaTime) => {
         if (this.animating) {
             this.animateSolution(deltaTime);
-        } else {
-            this.drawHanoi(this.pegsArr);
+        }
+
+        this.drawHanoi(this.pegsArr);
+
+        if (this.totalMoves !== 0) {
+            this.drawMoveDesc(this.moveDesc);
+            this.drawMoveCounter(this.curMove, this.totalMoves);
         }
     }
 }
@@ -398,7 +407,7 @@ diskAmount.oninput = (e) => {
     clampNumber(e);
     hanoiVis.setPegsAndDisksArr();
 }
-pegsAmount.onChange = () => hanoiVis.setPegsAndDisksArr();
+pegsAmount.onchange = () => hanoiVis.setPegsAndDisksArr();
 calculateHanoi.onclick = () => hanoiVis.getHanoiSolution();
 
 
@@ -408,6 +417,8 @@ let lastTime = timeout = 0, deltaTime;
 function step(timestamp) {
     deltaTime = timestamp - lastTime;
     lastTime = timestamp;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     hanoiVis.draw(deltaTime);
 
