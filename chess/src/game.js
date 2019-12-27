@@ -16,6 +16,8 @@ export default class Game {
         this.capturedByWhite = document.getElementsByClassName("capturedByWhite")[0];
         this.capturedByBlack = document.getElementsByClassName("capturedByBlack")[0];
 
+        this.squares = document.getElementsByClassName("square");
+
         this.moveSound;
         this.captureSound;
     }
@@ -188,6 +190,9 @@ export default class Game {
         if (!piece) return;
         let legalMoves = piece.legalMoves;
 
+        let oldParent = piece.pieceElem.parentNode;
+        let newParent;
+
         //if dropped on a square
         if (square) {
             let squareX = square.pos.x;
@@ -213,6 +218,12 @@ export default class Game {
         //place piece on board and stop dragging
         piece.placePieceOnBoard();
         this.pieceDragStop(e);
+
+        newParent = piece.pieceElem.parentNode;
+        if (oldParent !== newParent) {
+            this.clearHightlightLastMove();
+            this.highlightLastMove(oldParent, newParent);
+        }
 
         this.calculateGameState();
     }
@@ -269,7 +280,23 @@ export default class Game {
         return noMoves;
     }
 
+    highlightLastMove(oldParent, newParent) {
+        const getElColor = el => (el.classList.contains("sqBlack")) ? "#e1ba43" : "#e8d658";
+
+        oldParent.style.backgroundColor = getElColor(oldParent);
+        if (newParent)
+            newParent.style.backgroundColor = getElColor(newParent);
+    }
+
+    clearHightlightLastMove() {
+        for (const square of this.squares) {
+            square.style.backgroundColor = "";
+        }
+    }
+
     undoLastMove = () => {
+        this.clearHightlightLastMove();
+
         let lastMove = this.previousMoves[this.previousMoves.length - 1];
         this.currentMove = lastMove.currentMove;
         this.previousMoves = lastMove.previousMoves;

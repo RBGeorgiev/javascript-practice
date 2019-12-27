@@ -12,8 +12,6 @@ export default class Piece {
         this.hasMoved = false;
         this.taken = false;
 
-        this.squares = document.getElementsByClassName("square");
-
         this.pieceElem = document.createElement("div");
 
         this.displaySprite(this.pieceElem, `url(images/${this.color}-${this.type}.png)`);
@@ -326,23 +324,25 @@ export default class Piece {
     //#endregion - direction and collision check functions
 
     placePieceOnBoard = () => {
-        for (let i = 0; i < this.squares.length; i++) {
+        let squares = this.game.squares;
+
+        for (let i = 0; i < squares.length; i++) {
             if (
-                this.pos.x === this.squares[i].pos.x
+                this.pos.x === squares[i].pos.x
                 &&
-                this.pos.y === this.squares[i].pos.y
+                this.pos.y === squares[i].pos.y
             ) {
                 let pieceElem = this.pieceElem;
                 pieceElem.className = `piece ${this.type} ${this.color}`;
 
-                this.squares[i].appendChild(this.pieceElem);
+                squares[i].appendChild(this.pieceElem);
             }
         }
     }
 
     //#region - visual display functions
     colorMoves() {
-        for (const square of this.squares) {
+        for (const square of this.game.squares) {
             for (const coord of this.legalMoves) {
                 if (
                     square.pos.x === coord[0]
@@ -356,8 +356,8 @@ export default class Piece {
     }
 
     clearColorMoves() {
-        for (const square of this.squares) {
-            square.style.background = "";
+        for (const square of this.game.squares) {
+            square.style.backgroundImage = "";
         }
     }
     //#endregion - visual display functions
@@ -394,13 +394,14 @@ export default class Piece {
     }
 
     findSquare(x, y) {
-        for (let i = 0; i < this.squares.length; i++) {
+        let squares = this.game.squares;
+        for (let i = 0; i < squares.length; i++) {
             if (
-                this.squares[i].pos.x === x
+                squares[i].pos.x === x
                 &&
-                this.squares[i].pos.y === y
+                squares[i].pos.y === y
             ) {
-                return this.squares[i];
+                return squares[i];
             }
         }
     }
