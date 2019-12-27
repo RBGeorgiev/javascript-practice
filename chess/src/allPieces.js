@@ -391,7 +391,7 @@ export class Pawn extends Piece {
     }
 
     getPawnMoves(steps) {
-        let playerToMove = this.playerToMove;
+        let playerToMove = this.game.playerToMove;
         if (playerToMove === this.color && this.enPassantTarget) this.disableEnPassant();
 
         let arr = [];
