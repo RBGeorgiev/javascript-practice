@@ -159,7 +159,10 @@ class HanoiVisualization {
         displayMovesInHtml([]);
     }
 
-    setAnimating = (bool) => this.animating = bool;
+    setAnimating = (bool) => {
+        this.animating = bool;
+        calculateHanoiBtn.disabled = bool;
+    }
 
     getDiskAmount = () => +diskAmount.value;
 
@@ -412,7 +415,7 @@ diskAmount.oninput = (e) => {
     hanoiVis.init();
 }
 pegsAmount.onchange = () => hanoiVis.init();
-calculateHanoi.onclick = () => hanoiVis.getHanoiSolution();
+calculateHanoiBtn.onclick = () => hanoiVis.getHanoiSolution();
 
 
 
