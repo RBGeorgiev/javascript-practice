@@ -143,6 +143,10 @@ class Hanoi {
 
 class HanoiVisualization {
     constructor() {
+        this.init();
+    }
+
+    init = () => {
         this.queue = [];
         this.animating = false;
         this.pegsArr = [];
@@ -151,11 +155,11 @@ class HanoiVisualization {
         this.moveDesc = '';
         this.curMove = 0;
         this.totalMoves = 0;
+
+        displayMovesInHtml([]);
     }
 
-    setAnimating(bool) {
-        this.animating = bool;
-    }
+    setAnimating = (bool) => this.animating = bool;
 
     getDiskAmount = () => +diskAmount.value;
 
@@ -382,12 +386,12 @@ class HanoiVisualization {
             this.animateSolution(deltaTime);
         }
 
-        this.drawHanoi(this.pegsArr);
-
         if (this.totalMoves !== 0) {
             this.drawMoveDesc(this.moveDesc);
             this.drawMoveCounter(this.curMove, this.totalMoves);
         }
+
+        this.drawHanoi(this.pegsArr);
     }
 }
 
@@ -405,9 +409,9 @@ const clampNumber = (e) => {
 
 diskAmount.oninput = (e) => {
     clampNumber(e);
-    hanoiVis.setPegsAndDisksArr();
+    hanoiVis.init();
 }
-pegsAmount.onchange = () => hanoiVis.setPegsAndDisksArr();
+pegsAmount.onchange = () => hanoiVis.init();
 calculateHanoi.onclick = () => hanoiVis.getHanoiSolution();
 
 
