@@ -383,6 +383,7 @@ class HanoiVisualization {
     }
 
     draw = (deltaTime, animSpeed) => {
+
         if (this.animating && !paused) {
             this.animateSolution(deltaTime, animSpeed);
         }
@@ -426,7 +427,12 @@ animationSpeed.onchange = (e) => {
     let ms = +animationSpeed.value;
     setAnimSpeed(ms);
 }
-pauseCheckbox.onchange = () => paused = pauseCheckbox.checked;
+pauseCheckbox.onchange = () => {
+    let bool = pauseCheckbox.checked;
+    paused = bool;
+    nextStepBtn.disabled = !bool;
+}
+nextStepBtn.onclick = () => hanoiVis.executeQueue();
 
 
 let lastTime = timeout = 0, deltaTime;
