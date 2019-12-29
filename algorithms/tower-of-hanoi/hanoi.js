@@ -373,20 +373,18 @@ class HanoiVisualization {
         }
     }
 
-    animateSolution = (deltaTime) => {
-        if (this.animating) {
-            timeout += deltaTime;
+    animateSolution = (deltaTime, animSpeed) => {
+        timeout += deltaTime;
 
-            if (timeout > 1000) {
-                hanoiVis.executeQueue();
-                timeout = 0;
-            }
+        if (timeout > animSpeed) {
+            hanoiVis.executeQueue();
+            timeout = 0;
         }
     }
 
-    draw = (deltaTime) => {
+    draw = (deltaTime, animSpeed) => {
         if (this.animating) {
-            this.animateSolution(deltaTime);
+            this.animateSolution(deltaTime, animSpeed);
         }
 
         if (this.totalMoves !== 0) {
@@ -400,6 +398,9 @@ class HanoiVisualization {
 
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
+let animSpeed = 1000;
+
+let setAnimSpeed = (ms) => animSpeed = ms;
 
 const clampNumber = (e) => {
     let val = +e.target.value;
@@ -415,7 +416,15 @@ diskAmount.oninput = (e) => {
     hanoiVis.init();
 }
 pegsAmount.onchange = () => hanoiVis.init();
-calculateHanoiBtn.onclick = () => hanoiVis.getHanoiSolution();
+calculateHanoiBtn.onclick = () => {
+    hanoiVis.init();
+    hanoiVis.getHanoiSolution();
+}
+animationSpeed.onchange = (e) => {
+    clampNumber(e);
+    let ms = +animationSpeed.value;
+    setAnimSpeed(ms);
+}
 
 
 
@@ -427,7 +436,7 @@ function step(timestamp) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    hanoiVis.draw(deltaTime);
+    hanoiVis.draw(deltaTime, animSpeed);
 
     window.requestAnimationFrame(step);
 }

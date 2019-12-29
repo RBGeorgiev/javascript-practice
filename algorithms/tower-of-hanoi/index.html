@@ -15,6 +15,7 @@
                     <input type="number" id="diskAmount" min="1" max="10" value="3">
                 </label>
 
+
                 <label>Number of pegs
                     <select id="pegsAmount">
                         <option value="3" selected>Three</option>
@@ -29,6 +30,11 @@
                 </label>
 
                 <button id="calculateHanoiBtn">Calculate</button>
+
+                <label>Animation speed
+                    <input type="number" id="animationSpeed" min="1" max="10000" value="1000">
+                    ms
+                </label>
             </div>
         </div>
         <canvas id="canvas"></canvas>
