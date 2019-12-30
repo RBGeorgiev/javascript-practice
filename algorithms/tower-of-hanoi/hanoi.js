@@ -147,7 +147,9 @@ class HanoiVisualization {
     }
 
     init = () => {
-        this.queue = [];
+        this.queuedSteps = [];
+        this.prevSteps = [];
+
         this.animating = false;
         this.pegsArr = [];
         this.setPegsAndDisksArr();
@@ -213,7 +215,7 @@ class HanoiVisualization {
 
         displayMovesInHtml(movesArr);
 
-        this.fillQueue(movesArr, this.pegsArr);
+        this.fillQueue(movesArr);
 
         this.setAnimating(true);
 
@@ -339,17 +341,17 @@ class HanoiVisualization {
         ctx.fillText(`${cur} / ${total}`, canvas.width / 2, 45 + size);
     }
 
-    fillQueue = (movesArr, pegsArr) => {
+    fillQueue = (movesArr) => {
         for (let i = 0; i < movesArr.length; i++) {
             let target = movesArr[i].target;
             let from = movesArr[i].from;
             let to = movesArr[i].to;
 
-            this.queue.push(
+            this.queuedSteps.push(
                 {
                     move: () => {
-                        pegsArr[to].push(
-                            pegsArr[from].pop()
+                        this.pegsArr[to].push(
+                            this.pegsArr[from].pop()
                         );
                     },
                     moveDesc: `Move disk ${target} from ${getPegChar(from)} to ${getPegChar(to)}`,
@@ -360,16 +362,33 @@ class HanoiVisualization {
         }
     }
 
-    executeQueue = () => {
-        if (this.queue.length > 0) {
-            let moveData = this.queue.shift();
+    executeQueuedStep = () => {
+        if (this.queuedSteps.length > 0) {
+            let moveData = this.queuedSteps.shift();
+            //craete a copy of current pegsArr to use when going back to previous moves
+            moveData.pegsArrCopy = deepCopyArray(this.pegsArr);
+
             moveData.move();
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
             this.totalMoves = moveData.totalMoves;
 
+            this.prevSteps.push(moveData);
         } else {
             this.setAnimating(false);
+        }
+    }
+
+    getPrevMove = () => {
+        if (this.prevSteps.length > 0) {
+            let moveData = this.prevSteps.pop();
+            this.pegsArr = moveData.pegsArrCopy;
+
+            this.queuedSteps.unshift(moveData);
+            this.moveDesc = moveData.moveDesc;
+            this.curMove = moveData.curMove;
+            this.totalMoves = moveData.totalMoves;
+
         }
     }
 
@@ -377,7 +396,7 @@ class HanoiVisualization {
         timeout += deltaTime;
 
         if (timeout > animSpeed) {
-            hanoiVis.executeQueue();
+            hanoiVis.executeQueuedStep();
             timeout = 0;
         }
     }
@@ -395,6 +414,14 @@ class HanoiVisualization {
 
         this.drawHanoi(this.pegsArr);
     }
+}
+
+const deepCopyArray = (arr) => {
+    let ans = [];
+    for (let i = 0; i < arr.length; i++) {
+        ans.push([...arr[i]]);
+    }
+    return ans;
 }
 
 const hanoi = new Hanoi;
@@ -431,8 +458,10 @@ pauseCheckbox.onchange = () => {
     let bool = pauseCheckbox.checked;
     paused = bool;
     nextStepBtn.disabled = !bool;
+    prevStepBtn.disabled = !bool;
 }
-nextStepBtn.onclick = () => hanoiVis.executeQueue();
+nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
+prevStepBtn.onclick = () => hanoiVis.getPrevMove();
 
 
 let lastTime = timeout = 0, deltaTime;
