@@ -379,8 +379,11 @@ class HanoiVisualization {
         }
     }
 
-    getPrevMove = () => {
+    getPrevStep = () => {
         if (this.prevSteps.length > 0) {
+            if (!this.animating)
+                this.setAnimating(true);
+
             let moveData = this.prevSteps.pop();
             this.pegsArr = moveData.pegsArrCopy;
 
@@ -461,7 +464,7 @@ pauseCheckbox.onchange = () => {
     prevStepBtn.disabled = !bool;
 }
 nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
-prevStepBtn.onclick = () => hanoiVis.getPrevMove();
+prevStepBtn.onclick = () => hanoiVis.getPrevStep();
 
 
 let lastTime = timeout = 0, deltaTime;
