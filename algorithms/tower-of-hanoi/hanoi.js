@@ -150,7 +150,8 @@ class HanoiVisualization {
         this.queuedSteps = [];
         this.prevSteps = [];
 
-        this.animating = false;
+        this.animating;
+        this.setAnimating(false);
         this.pegsArr = [];
         this.setPegsAndDisksArr();
 
