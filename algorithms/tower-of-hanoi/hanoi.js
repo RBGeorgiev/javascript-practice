@@ -279,14 +279,20 @@ class HanoiVisualization {
                 let x = pegsPos[i].x1 - width / 2;
                 let y = floor - height * j;
 
-                this.drawDisk(target, x, y, width, height);
+                let color = `rgb(${this.calculateDiskColor(diskAmount, target)}, 10, 25)`;
+
+                this.drawDisk(target, x, y, width, height, color);
             }
         }
     }
 
-    drawDisk = (target, x, y, width, height) => {
+    calculateDiskColor(n, i) {
+        return 225 - (150 / n) * i;
+    }
+
+    drawDisk = (target, x, y, width, height, color = 'lightgrey') => {
         ctx.lineWidth = 1;
-        ctx.fillStyle = "lightgrey";
+        ctx.fillStyle = color;
 
         ctx.beginPath();
         ctx.rect(x, y, width, height);
@@ -295,7 +301,7 @@ class HanoiVisualization {
 
         ctx.font = `${height}px Arial`;
         ctx.textAlign = "center";
-        ctx.fillStyle = "#46A049";
+        ctx.fillStyle = "white";
         ctx.fillText(target, x + width / 2, y + height * 0.875);
     }
 
@@ -341,6 +347,14 @@ class HanoiVisualization {
         ctx.fillText(`${cur} / ${total}`, canvas.width / 2, 45 + size);
     }
 
+    deepCopyPegsArray = (arr) => {
+        let ans = [];
+        for (let i = 0; i < arr.length; i++) {
+            ans.push([...arr[i]]);
+        }
+        return ans;
+    }
+
     fillQueue = (movesArr) => {
         for (let i = 0; i < movesArr.length; i++) {
             let target = movesArr[i].target;
@@ -366,7 +380,7 @@ class HanoiVisualization {
         if (this.queuedSteps.length > 0) {
             let moveData = this.queuedSteps.shift();
             //craete a copy of current pegsArr to use when going back to previous moves
-            moveData.pegsArrCopy = deepCopyArray(this.pegsArr);
+            moveData.pegsArrCopy = this.deepCopyPegsArray(this.pegsArr);
 
             moveData.move();
             this.moveDesc = moveData.moveDesc;
@@ -417,14 +431,6 @@ class HanoiVisualization {
 
         this.drawHanoi(this.pegsArr);
     }
-}
-
-const deepCopyArray = (arr) => {
-    let ans = [];
-    for (let i = 0; i < arr.length; i++) {
-        ans.push([...arr[i]]);
-    }
-    return ans;
 }
 
 const hanoi = new Hanoi;
