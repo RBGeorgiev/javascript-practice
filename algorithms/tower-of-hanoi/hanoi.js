@@ -256,6 +256,11 @@ class HanoiVisualization {
             ctx.moveTo(pegsPos[i].x1, pegsPos[i].y1);
             ctx.lineTo(pegsPos[i].x2, pegsPos[i].y2);
             ctx.stroke();
+
+            ctx.font = `20px Arial`;
+            ctx.fillStyle = "black";
+            let text = getPegChar(pegsPos[i].id);
+            ctx.fillText(text, pegsPos[i].x2, pegsPos[i].y2 - 5);
         }
     }
 
