@@ -171,25 +171,25 @@ class HanoiVisualization {
 
     getPegsAmount = () => +pegsAmount.value;
 
-    getPegsId = (pegsAmount) => {
-        let pegs = [];
-        for (let i = 0; i < pegsAmount; i++) {
-            pegs.push(i);
+    getPegsIds = () => {
+        let pegsIds = [];
+        for (let i = 0; i < this.pegsArr.length; i++) {
+            pegsIds.push(this.pegsArr[i].id);
         }
-        return pegs;
+        return pegsIds;
     }
 
     getHanoiSolution = () => {
         let disks = this.getDiskAmount();
         let pegsAmount = this.getPegsAmount();
-        let pegs = this.getPegsId(pegsAmount);
+        let pegs = this.getPegsIds();
 
         switch (pegsAmount) {
             case 3:
                 hanoi.ThreePegs(disks, ...pegs);
                 break;
             case 4:
-                hanoi.FourPegs(disks, ...pegs);
+                hanoi.FourPegs(disks, ...pegs); W
                 break;
             case 5:
                 hanoi.FivePegs(disks, ...pegs);
@@ -223,32 +223,6 @@ class HanoiVisualization {
         movesArr = [];
     }
 
-    getPegsPosition = () => {
-        let pegsPos = [];
-
-        let pegsAmount = this.getPegsAmount();
-        let pegsId = this.getPegsId(pegsAmount);
-
-        let pegSpacing = canvas.width / (pegsAmount + 1);
-        let lastPegPos = pegSpacing * (pegsAmount - 1);
-        let margin = (canvas.width - lastPegPos) / 2;
-
-        for (let i = 0; i < pegsAmount; i++) {
-            let x = pegSpacing * i;
-            let pos = {
-                id: pegsId[i],
-                x1: margin + x,
-                y1: canvas.height,
-                x2: margin + x,
-                y2: canvas.height * .3
-            }
-
-            pegsPos.push(pos)
-        }
-
-        return pegsPos;
-    }
-
     drawPegs = (pegsPos) => {
         ctx.lineWidth = 10;
         for (let i = 0; i < pegsPos.length; i++) {
@@ -261,34 +235,6 @@ class HanoiVisualization {
             ctx.fillStyle = "black";
             let text = getPegChar(pegsPos[i].id);
             ctx.fillText(text, pegsPos[i].x2, pegsPos[i].y2 - 5);
-        }
-    }
-
-    drawAllDisks = (pegsPos, pegsArr) => {
-        let diskAmount = this.getDiskAmount();
-
-        let height = 40;
-        let floor = pegsPos[0].y1 - height;
-
-        let pegSpacing = canvas.width / (pegsPos.length + 1);
-        let biggest = pegSpacing / 1.5;
-        let smallest = 10;
-
-        let range = biggest - smallest;
-        let change = range / diskAmount;
-
-        for (let i = 0; i < pegsArr.length; i++) {
-            for (let j = 0; j < pegsArr[i].length; j++) {
-                let target = pegsArr[i][j]
-                let width = smallest + (change * (target + 1));
-
-                let x = pegsPos[i].x1 - width / 2;
-                let y = floor - height * j;
-
-                let color = `rgb(${this.calculateDiskColor(diskAmount, target)}, 10, 25)`;
-
-                this.drawDisk(target, x, y, width, height, color);
-            }
         }
     }
 
@@ -312,24 +258,82 @@ class HanoiVisualization {
     }
 
     drawHanoi = (pegsArr) => {
-        let pegsPos = this.getPegsPosition();
-        this.drawPegs(pegsPos);
-        this.drawAllDisks(pegsPos, pegsArr);
+        this.drawPegs(pegsArr);
+        this.drawAllDisks(pegsArr);
     }
 
     initPegs = (pegsAmount) => {
         let pegsArr = [];
+
+        let pegSpacing = canvas.width / (pegsAmount + 1);
+        let lastPegPos = pegSpacing * (pegsAmount - 1);
+        let margin = (canvas.width - lastPegPos) / 2;
+
         for (let i = 0; i < pegsAmount; i++) {
-            pegsArr.push([]);
+            let x = pegSpacing * i;
+            let pos = {
+                id: i,
+                x1: margin + x,
+                y1: canvas.height,
+                x2: margin + x,
+                y2: canvas.height * .3,
+                disks: []
+            }
+
+            pegsArr.push(pos);
         }
-        return pegsArr;
+
+        return pegsArr
     }
 
     initDisks = (diskAmount, pegsArr) => {
+
+        let height = 40;
+        let floor = pegsArr[0].y1 - height;
+
+        let pegSpacing = canvas.width / (pegsArr.length + 1);
+        let biggestDisk = pegSpacing / 1.5;
+        let smallestDisk = 10;
+
+        let diskSizeRange = biggestDisk - smallestDisk;
+        let averageSizeChange = diskSizeRange / diskAmount;
+
+
         for (let i = diskAmount; i > 0; i--) {
-            pegsArr[0].push(i)
+
+            let id = i
+            let width = smallestDisk + (averageSizeChange * (id + 1));
+
+            let x = pegsArr[0].x1 - width / 2;
+            let y = floor - height * pegsArr[0].disks.length;
+
+            let color = `rgb(${this.calculateDiskColor(diskAmount, id)}, 10, 25)`;
+
+            let diskObj = {
+                id,
+                x,
+                y,
+                width,
+                height,
+                color,
+                parent: pegsArr[0]
+            }
+
+            pegsArr[0].disks.push(diskObj);
+        }
+
+
+    }
+
+    drawAllDisks = (pegsArr) => {
+        for (let i = 0; i < pegsArr.length; i++) {
+            for (let j = 0; j < pegsArr[i].disks.length; j++) {
+                let disk = pegsArr[i].disks[j]
+                this.drawDisk(disk.id, disk.x, disk.y, disk.width, disk.height, disk.color);
+            }
         }
     }
+
 
     setPegsAndDisksArr = () => {
         let pegsAmount = this.getPegsAmount();
@@ -353,14 +357,6 @@ class HanoiVisualization {
         ctx.fillText(`${cur} / ${total}`, canvas.width / 2, 45 + size);
     }
 
-    deepCopyPegsArray = (arr) => {
-        let ans = [];
-        for (let i = 0; i < arr.length; i++) {
-            ans.push([...arr[i]]);
-        }
-        return ans;
-    }
-
     fillQueue = (movesArr) => {
         for (let i = 0; i < movesArr.length; i++) {
             let target = movesArr[i].target;
@@ -369,11 +365,8 @@ class HanoiVisualization {
 
             this.queuedSteps.push(
                 {
-                    move: () => {
-                        this.pegsArr[to].push(
-                            this.pegsArr[from].pop()
-                        );
-                    },
+                    oldPeg: this.pegsArr[from],
+                    newPeg: this.pegsArr[to],
                     moveDesc: `Move disk ${target} from ${getPegChar(from)} to ${getPegChar(to)}`,
                     curMove: i + 1,
                     totalMoves: movesArr.length
@@ -382,13 +375,22 @@ class HanoiVisualization {
         }
     }
 
+    moveDisk = (startPeg, endPeg) => {
+        let disk = startPeg.disks.pop();
+
+        endPeg.disks.push(
+            disk
+        );
+
+        disk.x = endPeg.x1 - disk.width / 2;
+        disk.y = endPeg.y1 - disk.height * endPeg.disks.length;
+    }
+
     executeQueuedStep = () => {
         if (this.queuedSteps.length > 0) {
             let moveData = this.queuedSteps.shift();
-            //craete a copy of current pegsArr to use when going back to previous moves
-            moveData.pegsArrCopy = this.deepCopyPegsArray(this.pegsArr);
 
-            moveData.move();
+            this.moveDisk(moveData.oldPeg, moveData.newPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
             this.totalMoves = moveData.totalMoves;
@@ -405,13 +407,13 @@ class HanoiVisualization {
                 this.setAnimating(true);
 
             let moveData = this.prevSteps.pop();
-            this.pegsArr = moveData.pegsArrCopy;
 
-            this.queuedSteps.unshift(moveData);
+            this.moveDisk(moveData.newPeg, moveData.oldPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
             this.totalMoves = moveData.totalMoves;
 
+            this.queuedSteps.unshift(moveData);
         }
     }
 
