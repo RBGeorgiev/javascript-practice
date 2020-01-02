@@ -8,13 +8,22 @@
 </head>
 
 <body>
+    <h1>Tower of Hanoi</h1>
     <main>
+        <div id="movesDiv">
+            <h2>Moves</h2>
+            <div id="answer"> </div>
+        </div>
+
+        <canvas id="canvas"></canvas>
+
         <div id="hanoiSettings">
+            <h2>Options</h2>
             <div id="options">
+
                 <label>Number of disks
                     <input type="number" id="diskAmount" min="1" max="10" value="3">
                 </label>
-
 
                 <label>Number of pegs
                     <select id="pegsAmount">
@@ -43,9 +52,6 @@
                 <button id="nextStepBtn" disabled>Next Step</button>
             </div>
         </div>
-        <canvas id="canvas"></canvas>
-
-        <div id="answer"></div>
     </main>
 
     <script src="hanoi.js"></script>

@@ -2,6 +2,35 @@ body {
     text-align: center;
 }
 
+main {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+#hanoiSettings {
+    padding: 0 15%;
+}
+
+
+#answer {
+    height: 555px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+
+#options {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 #canvas {
     border: 1px black solid;
 }

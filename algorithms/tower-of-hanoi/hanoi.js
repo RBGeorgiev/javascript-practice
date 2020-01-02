@@ -218,9 +218,10 @@ class HanoiVisualization {
 
     displayMovesInHtml = (arr) => {
         answer.innerHTML = "";
-        arr.forEach(move => {
+        arr.forEach((move, idx) => {
+            let moveNumber = idx + 1;
             let moveDiv = document.createElement("div");
-            moveDiv.innerHTML = `Move disk ${move.target} from ${getPegChar(move.from)} to ${getPegChar(move.to)}`;
+            moveDiv.innerHTML = `${moveNumber}) Move disk ${move.target} from ${getPegChar(move.from)} to ${getPegChar(move.to)}`;
             answer.appendChild(moveDiv);
         });
     }
