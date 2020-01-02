@@ -8,15 +8,6 @@ let movesArr = [];
 
 const getPegChar = n => String.fromCharCode(65 + n);
 
-const displayMovesInHtml = (arr) => {
-    answer.innerHTML = "";
-    arr.forEach(move => {
-        let moveDiv = document.createElement("div");
-        moveDiv.innerHTML = `Move disk ${move.target} from ${getPegChar(move.from)} to ${getPegChar(move.to)}`;
-        answer.appendChild(moveDiv);
-    });
-}
-
 const move = (target, from, to) => {
     if (target < 1) return;
     let obj = {
@@ -159,12 +150,12 @@ class HanoiVisualization {
         this.curMove = 0;
         this.totalMoves = 0;
 
-        displayMovesInHtml([]);
+        this.getHanoiSolution();
     }
 
     setAnimating = (bool) => {
         this.animating = bool;
-        calculateHanoiBtn.disabled = bool;
+        animateHanoiBtn.disabled = bool;
     }
 
     getDiskAmount = () => +diskAmount.value;
@@ -214,13 +205,24 @@ class HanoiVisualization {
                 throw "Error determining number of pegs";
         }
 
-        displayMovesInHtml(movesArr);
+        this.displayMovesInHtml(movesArr);
 
         this.fillQueue(movesArr);
 
-        this.setAnimating(true);
-
         movesArr = [];
+    }
+
+    startAnimating = () => {
+        this.setAnimating(true);
+    }
+
+    displayMovesInHtml = (arr) => {
+        answer.innerHTML = "";
+        arr.forEach(move => {
+            let moveDiv = document.createElement("div");
+            moveDiv.innerHTML = `Move disk ${move.target} from ${getPegChar(move.from)} to ${getPegChar(move.to)}`;
+            answer.appendChild(moveDiv);
+        });
     }
 
     drawPegs = (pegsPos) => {
@@ -270,6 +272,9 @@ class HanoiVisualization {
         let margin = (canvas.width - lastPegPos) / 2;
 
         for (let i = 0; i < pegsAmount; i++) {
+
+
+
             let x = pegSpacing * i;
             let pos = {
                 id: i,
@@ -280,7 +285,8 @@ class HanoiVisualization {
                 disks: []
             }
 
-            pegsArr.push(pos);
+            pegsArr.push(pos)
+
         }
 
         return pegsArr
@@ -462,10 +468,7 @@ diskAmount.oninput = (e) => {
     hanoiVis.init();
 }
 pegsAmount.onchange = () => hanoiVis.init();
-calculateHanoiBtn.onclick = () => {
-    hanoiVis.init();
-    hanoiVis.getHanoiSolution();
-}
+animateHanoiBtn.onclick = () => hanoiVis.startAnimating();
 animationSpeed.onchange = (e) => {
     clampNumber(e);
     let ms = +animationSpeed.value;
