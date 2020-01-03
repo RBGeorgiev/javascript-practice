@@ -273,9 +273,6 @@ class HanoiVisualization {
         let margin = (canvas.width - lastPegPos) / 2;
 
         for (let i = 0; i < pegsAmount; i++) {
-
-
-
             let x = pegSpacing * i;
             let pos = {
                 id: i,
@@ -286,8 +283,7 @@ class HanoiVisualization {
                 disks: []
             }
 
-            pegsArr.push(pos)
-
+            pegsArr.push(pos);
         }
 
         return pegsArr
@@ -393,11 +389,36 @@ class HanoiVisualization {
         disk.y = endPeg.y1 - disk.height * endPeg.disks.length;
     }
 
+    animateDisk = (startPeg, endPeg) => {
+        let disk = startPeg.disks.pop();
+
+        endPeg.disks.push(
+            disk
+        );
+
+        let y_Lift = startPeg.y2 - disk.height - 30;
+        let x_Final = endPeg.x1 - disk.width / 2;
+        let y_Final = endPeg.y1 - disk.height * endPeg.disks.length;
+
+        setTimeout(() => {
+            disk.y = y_Lift;
+        }, 0)
+
+        setTimeout(() => {
+            disk.x = x_Final;
+        }, 300)
+
+        setTimeout(() => {
+            disk.y = y_Final;
+        }, 600)
+    }
+
     executeQueuedStep = () => {
         if (this.queuedSteps.length > 0) {
             let moveData = this.queuedSteps.shift();
 
-            this.moveDisk(moveData.oldPeg, moveData.newPeg);
+            this.animateDisk(moveData.oldPeg, moveData.newPeg)
+            // this.moveDisk(moveData.oldPeg, moveData.newPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
             this.totalMoves = moveData.totalMoves;
@@ -450,7 +471,7 @@ class HanoiVisualization {
 
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
-let animSpeed = 1000;
+let animSpeed = +animationSpeed.value;
 let paused = false;
 
 let setAnimSpeed = (ms) => animSpeed = ms;
@@ -470,6 +491,7 @@ diskAmount.oninput = (e) => {
 }
 pegsAmount.onchange = () => hanoiVis.init();
 animateHanoiBtn.onclick = () => hanoiVis.startAnimating();
+
 animationSpeed.onchange = (e) => {
     clampNumber(e);
     let ms = +animationSpeed.value;
