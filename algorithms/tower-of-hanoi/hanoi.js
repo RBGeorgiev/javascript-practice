@@ -490,8 +490,10 @@ diskAmount.oninput = (e) => {
     hanoiVis.init();
 }
 pegsAmount.onchange = () => hanoiVis.init();
-animateHanoiBtn.onclick = () => hanoiVis.startAnimating();
-
+animateHanoiBtn.onclick = () => {
+    hanoiVis.init();
+    hanoiVis.startAnimating();
+}
 animationSpeed.onchange = (e) => {
     clampNumber(e);
     let ms = +animationSpeed.value;
