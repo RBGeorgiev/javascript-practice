@@ -321,6 +321,7 @@ class HanoiVisualization {
                 width,
                 height,
                 color,
+                draw: true,
                 parent: pegsArr[0]
             }
 
@@ -332,7 +333,9 @@ class HanoiVisualization {
         for (let i = 0; i < pegsArr.length; i++) {
             for (let j = 0; j < pegsArr[i].disks.length; j++) {
                 let disk = pegsArr[i].disks[j]
-                this.drawDisk(disk.id, disk.x, disk.y, disk.width, disk.height, disk.color);
+                if (disk.draw) {
+                    this.drawDisk(disk.id, disk.x, disk.y, disk.width, disk.height, disk.color);
+                }
             }
         }
     }
@@ -378,9 +381,7 @@ class HanoiVisualization {
         }
     }
 
-    moveDisk = (startPeg, endPeg) => {
-        let disk = startPeg.disks.pop();
-
+    moveDisk = (disk, endPeg) => {
         endPeg.disks.push(
             disk
         );
@@ -389,16 +390,22 @@ class HanoiVisualization {
         disk.y = endPeg.y1 - disk.height * endPeg.disks.length;
     }
 
-    fillAnimationQueue = (startPeg, endPeg) => {
-        let disk = startPeg.disks.pop();
+    hideDisk = (disk) => {
+        disk.draw = false;
+    }
 
-        endPeg.disks.push(
-            disk
-        );
+    showDisk = (disk) => {
+        disk.draw = true;
+    }
 
-        let y_Lift = startPeg.y2 - disk.height - 30;
+    fillAnimationQueue = (disk, endPeg) => {
+        disk.draw = false;
+
+        let diskCopy = Object.assign({}, disk);
+
+        let y_Lift = endPeg.y2 - disk.height - 30;
         let x_Final = endPeg.x1 - disk.width / 2;
-        let y_Final = endPeg.y1 - disk.height * endPeg.disks.length;
+        let y_Final = endPeg.y1 - disk.height * (endPeg.disks.length + 1);
 
         function direction(curPos, endPos) {
             return (curPos - endPos < 0) ? '+' : '-';
@@ -409,53 +416,87 @@ class HanoiVisualization {
         }
 
         this.animationQueue.push(
-            [disk, y_Lift, direction(disk.y, y_Lift), 'y', distance(disk.y, y_Lift)],
-            [disk, x_Final, direction(disk.x, x_Final), 'x', distance(disk.x, x_Final)],
-            [disk, y_Final, direction(y_Lift, y_Final), 'y', distance(y_Lift, y_Final)])
+            [
+                disk,
+                [
+                    [diskCopy, y_Lift, direction(disk.y, y_Lift), 'y', distance(disk.y, y_Lift)],
+                    [diskCopy, x_Final, direction(disk.x, x_Final), 'x', distance(disk.x, x_Final)],
+                    [diskCopy, y_Final, direction(y_Lift, y_Final), 'y', distance(y_Lift, y_Final)]
+                ]
+            ]
+        )
     }
 
-    animateDisk = (target, finalPoint, movementDirection, speed, deltaTime) => {
+    getAnimateDiskPos = (target, finalPoint, movementDirection, speed, deltaTime) => {
         if (
             target < finalPoint && movementDirection === '-'
             ||
             target > finalPoint && movementDirection === '+'
         ) {
-            this.animationQueue.shift();
-            return target = finalPoint;
+            return null;
         } else {
             return target + +(movementDirection + (speed * deltaTime));
         }
     }
 
+    endTargetDiskAnimation = (disk) => {
+        disk.draw = true;
+        this.animationQueue.shift();
+    }
+
     executeAnimationQueue = (deltaTime, animSpeed) => {
-        let cur = this.animationQueue[0];
-        let disk = cur[0];
+        let diskOriginal = this.animationQueue[0][0];
+        let animationList = this.animationQueue[0][1];
+
+        if (!animationList.length) {
+            return this.endTargetDiskAnimation(diskOriginal);
+        }
+
+        let cur = animationList[0];
+
+        let diskCopy = cur[0];
         let finalPoint = cur[1];
         let movementDirection = cur[2];
         let axis = cur[3];
         let distance = cur[4];
         if (distance === 0) {
-            this.animationQueue.shift();
+            animationList.shift();
         }
 
-        let time = animSpeed / 3;
+        let time = animSpeed / 4;
         let speed = distance / time;
 
         if (axis === 'y') {
-            disk.y = this.animateDisk(disk.y, finalPoint, movementDirection, speed, deltaTime);
+            let pos = this.getAnimateDiskPos(diskCopy.y, finalPoint, movementDirection, speed, deltaTime);
+            if (pos === null) {
+                diskCopy.y = finalPoint
+                animationList.shift();
+            } else {
+                diskCopy.y = pos;
+            }
         }
 
         if (axis === 'x') {
-            disk.x = this.animateDisk(disk.x, finalPoint, movementDirection, speed, deltaTime);
+            let pos = this.getAnimateDiskPos(diskCopy.x, finalPoint, movementDirection, speed, deltaTime);
+            if (pos === null) {
+                diskCopy.x = finalPoint
+                animationList.shift();
+            } else {
+                diskCopy.x = pos;
+            }
         }
+
+        this.drawDisk(diskCopy.id, diskCopy.x, diskCopy.y, diskCopy.width, diskCopy.height, diskCopy.color);
     }
 
     executeQueuedStep = () => {
         if (this.queuedSteps.length > 0) {
             let moveData = this.queuedSteps.shift();
 
-            this.fillAnimationQueue(moveData.oldPeg, moveData.newPeg)
-            // this.moveDisk(moveData.oldPeg, moveData.newPeg);
+            let disk = moveData.oldPeg.disks.pop();
+
+            this.fillAnimationQueue(disk, moveData.newPeg);
+            this.moveDisk(disk, moveData.newPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
             this.totalMoves = moveData.totalMoves;
@@ -473,7 +514,9 @@ class HanoiVisualization {
 
             let moveData = this.prevSteps.pop();
 
-            this.moveDisk(moveData.newPeg, moveData.oldPeg);
+            let disk = moveData.newPeg.disks.pop();
+
+            this.moveDisk(disk, moveData.oldPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
             this.totalMoves = moveData.totalMoves;
