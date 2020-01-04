@@ -138,6 +138,8 @@ class HanoiVisualization {
     }
 
     init = () => {
+        this.animationQueue = [];
+
         this.queuedSteps = [];
         this.prevSteps = [];
 
@@ -324,8 +326,6 @@ class HanoiVisualization {
 
             pegsArr[0].disks.push(diskObj);
         }
-
-
     }
 
     drawAllDisks = (pegsArr) => {
@@ -389,7 +389,7 @@ class HanoiVisualization {
         disk.y = endPeg.y1 - disk.height * endPeg.disks.length;
     }
 
-    animateDisk = (startPeg, endPeg) => {
+    fillAnimationQueue = (startPeg, endPeg) => {
         let disk = startPeg.disks.pop();
 
         endPeg.disks.push(
@@ -400,24 +400,61 @@ class HanoiVisualization {
         let x_Final = endPeg.x1 - disk.width / 2;
         let y_Final = endPeg.y1 - disk.height * endPeg.disks.length;
 
-        setTimeout(() => {
-            disk.y = y_Lift;
-        }, 0)
+        function direction(curPos, endPos) {
+            return (curPos - endPos < 0) ? '+' : '-';
+        }
 
-        setTimeout(() => {
-            disk.x = x_Final;
-        }, 300)
+        function distance(curPos, endPos) {
+            return (curPos - endPos < 0) ? endPos - curPos : curPos - endPos;
+        }
 
-        setTimeout(() => {
-            disk.y = y_Final;
-        }, 600)
+        this.animationQueue.push(
+            [disk, y_Lift, direction(disk.y, y_Lift), 'y', distance(disk.y, y_Lift)],
+            [disk, x_Final, direction(disk.x, x_Final), 'x', distance(disk.x, x_Final)],
+            [disk, y_Final, direction(y_Lift, y_Final), 'y', distance(y_Lift, y_Final)])
+    }
+
+    animateDisk = (target, finalPoint, movementDirection, speed, deltaTime) => {
+        if (
+            target < finalPoint && movementDirection === '-'
+            ||
+            target > finalPoint && movementDirection === '+'
+        ) {
+            this.animationQueue.shift();
+            return target = finalPoint;
+        } else {
+            return target + +(movementDirection + (speed * deltaTime));
+        }
+    }
+
+    executeAnimationQueue = (deltaTime, animSpeed) => {
+        let cur = this.animationQueue[0];
+        let disk = cur[0];
+        let finalPoint = cur[1];
+        let movementDirection = cur[2];
+        let axis = cur[3];
+        let distance = cur[4];
+        if (distance === 0) {
+            this.animationQueue.shift();
+        }
+
+        let time = animSpeed / 3;
+        let speed = distance / time;
+
+        if (axis === 'y') {
+            disk.y = this.animateDisk(disk.y, finalPoint, movementDirection, speed, deltaTime);
+        }
+
+        if (axis === 'x') {
+            disk.x = this.animateDisk(disk.x, finalPoint, movementDirection, speed, deltaTime);
+        }
     }
 
     executeQueuedStep = () => {
         if (this.queuedSteps.length > 0) {
             let moveData = this.queuedSteps.shift();
 
-            this.animateDisk(moveData.oldPeg, moveData.newPeg)
+            this.fillAnimationQueue(moveData.oldPeg, moveData.newPeg)
             // this.moveDisk(moveData.oldPeg, moveData.newPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
@@ -455,7 +492,6 @@ class HanoiVisualization {
     }
 
     draw = (deltaTime, animSpeed) => {
-
         if (this.animating && !paused) {
             this.animateSolution(deltaTime, animSpeed);
         }
@@ -516,6 +552,10 @@ function step(timestamp) {
     lastTime = timestamp;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (!!hanoiVis.animationQueue.length) {
+        hanoiVis.executeAnimationQueue(deltaTime, animSpeed);
+    }
 
     hanoiVis.draw(deltaTime, animSpeed);
 
