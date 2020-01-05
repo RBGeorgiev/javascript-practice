@@ -182,7 +182,7 @@ class HanoiVisualization {
                 hanoi.ThreePegs(disks, ...pegs);
                 break;
             case 4:
-                hanoi.FourPegs(disks, ...pegs); W
+                hanoi.FourPegs(disks, ...pegs);
                 break;
             case 5:
                 hanoi.FivePegs(disks, ...pegs);
@@ -399,7 +399,7 @@ class HanoiVisualization {
     }
 
     fillAnimationQueue = (disk, endPeg) => {
-        disk.draw = false;
+        this.hideDisk(disk);
 
         let diskCopy = Object.assign({}, disk);
 
@@ -407,83 +407,76 @@ class HanoiVisualization {
         let x_Final = endPeg.x1 - disk.width / 2;
         let y_Final = endPeg.y1 - disk.height * (endPeg.disks.length + 1);
 
-        function direction(curPos, endPos) {
-            return (curPos - endPos < 0) ? '+' : '-';
-        }
+        const getAnimDirection = (cur, end) => (cur - end < 0) ? '+' : '-';
 
-        function distance(curPos, endPos) {
-            return (curPos - endPos < 0) ? endPos - curPos : curPos - endPos;
+        const getTotalDistance = (cur, end) => (cur - end < 0) ? end - cur : cur - end;
+
+        const createAnimSegment = (startPos, endPos, axis) => {
+            return {
+                diskCopy,
+                endPos,
+                axis,
+                animDirection: getAnimDirection(startPos, endPos),
+                totalDistance: getTotalDistance(startPos, endPos)
+            }
         }
 
         this.animationQueue.push(
             [
                 disk,
                 [
-                    [diskCopy, y_Lift, direction(disk.y, y_Lift), 'y', distance(disk.y, y_Lift)],
-                    [diskCopy, x_Final, direction(disk.x, x_Final), 'x', distance(disk.x, x_Final)],
-                    [diskCopy, y_Final, direction(y_Lift, y_Final), 'y', distance(y_Lift, y_Final)]
+                    createAnimSegment(disk.y, y_Lift, 'y'),
+                    createAnimSegment(disk.x, x_Final, 'x'),
+                    createAnimSegment(y_Lift, y_Final, 'y')
                 ]
             ]
         )
     }
 
-    getAnimateDiskPos = (target, finalPoint, movementDirection, speed, deltaTime) => {
-        if (
-            target < finalPoint && movementDirection === '-'
+    getNewAnimDiskPos = (curPos, endPos, velocity) => {
+        if (curPos < endPos && velocity < 0
             ||
-            target > finalPoint && movementDirection === '+'
-        ) {
+            curPos > endPos && velocity > 0) {
             return null;
         } else {
-            return target + +(movementDirection + (speed * deltaTime));
+            return curPos + velocity;
         }
     }
 
     endTargetDiskAnimation = (disk) => {
-        disk.draw = true;
+        this.showDisk(disk);
         this.animationQueue.shift();
     }
 
     executeAnimationQueue = (deltaTime, animSpeed) => {
-        let diskOriginal = this.animationQueue[0][0];
-        let animationList = this.animationQueue[0][1];
+        let diskOrig = this.animationQueue[0][0];
+        let currentAnimationArr = this.animationQueue[0][1];
 
-        if (!animationList.length) {
-            return this.endTargetDiskAnimation(diskOriginal);
+        if (!currentAnimationArr.length) {
+            return this.endTargetDiskAnimation(diskOrig);
         }
 
-        let cur = animationList[0];
-
-        let diskCopy = cur[0];
-        let finalPoint = cur[1];
-        let movementDirection = cur[2];
-        let axis = cur[3];
-        let distance = cur[4];
-        if (distance === 0) {
-            animationList.shift();
-        }
+        let curSegment = currentAnimationArr[0];
+        let diskCopy = curSegment.diskCopy;
+        let endPos = curSegment.endPos;
+        let axis = curSegment.axis;
+        let animDirection = curSegment.animDirection;
+        let totalDistance = curSegment.totalDistance;
 
         let time = animSpeed / 4;
-        let speed = distance / time;
+        let speed = totalDistance / time * deltaTime;
+        let velocity = +(animDirection + speed);
 
-        if (axis === 'y') {
-            let pos = this.getAnimateDiskPos(diskCopy.y, finalPoint, movementDirection, speed, deltaTime);
-            if (pos === null) {
-                diskCopy.y = finalPoint
-                animationList.shift();
-            } else {
-                diskCopy.y = pos;
-            }
+        if (totalDistance === 0) {
+            currentAnimationArr.shift();
         }
 
-        if (axis === 'x') {
-            let pos = this.getAnimateDiskPos(diskCopy.x, finalPoint, movementDirection, speed, deltaTime);
-            if (pos === null) {
-                diskCopy.x = finalPoint
-                animationList.shift();
-            } else {
-                diskCopy.x = pos;
-            }
+        let pos = this.getNewAnimDiskPos(diskCopy[axis], endPos, velocity);
+        if (pos === null) {
+            diskCopy[axis] = endPos;
+            currentAnimationArr.shift();
+        } else {
+            diskCopy[axis] = pos;
         }
 
         this.drawDisk(diskCopy.id, diskCopy.x, diskCopy.y, diskCopy.width, diskCopy.height, diskCopy.color);
