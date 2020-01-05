@@ -488,7 +488,10 @@ class HanoiVisualization {
 
             let disk = moveData.oldPeg.disks.pop();
 
-            this.fillAnimationQueue(disk, moveData.newPeg);
+            if (playFullAnim) {
+                this.fillAnimationQueue(disk, moveData.newPeg);
+            }
+
             this.moveDisk(disk, moveData.newPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
@@ -537,6 +540,10 @@ class HanoiVisualization {
             this.drawMoveCounter(this.curMove, this.totalMoves);
         }
 
+        if (!!this.animationQueue.length) {
+            this.executeAnimationQueue(deltaTime, animSpeed);
+        }
+
         this.drawHanoi(this.pegsArr);
     }
 }
@@ -544,6 +551,7 @@ class HanoiVisualization {
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
 let animSpeed = +animationSpeed.value;
+let playFullAnim = fullAnimationCheckbox.checked;
 let paused = false;
 
 let setAnimSpeed = (ms) => animSpeed = ms;
@@ -562,6 +570,9 @@ diskAmount.oninput = (e) => {
     hanoiVis.init();
 }
 pegsAmount.onchange = () => hanoiVis.init();
+fullAnimationCheckbox.onchange = () => {
+    playFullAnim = fullAnimationCheckbox.checked;
+}
 animateHanoiBtn.onclick = () => {
     hanoiVis.init();
     hanoiVis.startAnimating();
@@ -588,10 +599,6 @@ function step(timestamp) {
     lastTime = timestamp;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (!!hanoiVis.animationQueue.length) {
-        hanoiVis.executeAnimationQueue(deltaTime, animSpeed);
-    }
 
     hanoiVis.draw(deltaTime, animSpeed);
 
