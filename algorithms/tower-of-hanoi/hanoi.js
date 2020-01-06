@@ -262,11 +262,6 @@ class HanoiVisualization {
         ctx.fillText(target, x + width / 2, y + height * 0.875);
     }
 
-    drawHanoi = (pegsArr) => {
-        this.drawPegs(pegsArr);
-        this.drawAllDisks(pegsArr);
-    }
-
     initPegs = (pegsAmount) => {
         let pegsArr = [];
 
@@ -531,6 +526,8 @@ class HanoiVisualization {
     }
 
     draw = (deltaTime, animSpeed) => {
+        this.drawPegs(this.pegsArr);
+
         if (this.animating && !paused) {
             this.animateSolution(deltaTime, animSpeed);
         }
@@ -544,7 +541,7 @@ class HanoiVisualization {
             this.executeAnimationQueue(deltaTime, animSpeed);
         }
 
-        this.drawHanoi(this.pegsArr);
+        this.drawAllDisks(this.pegsArr);
     }
 }
 
