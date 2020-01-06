@@ -551,34 +551,44 @@ let animSpeed = +animationSpeed.value;
 let playFullAnim = fullAnimationCheckbox.checked;
 let paused = false;
 
-let setAnimSpeed = (ms) => animSpeed = ms;
+const clampNumber = (target) => {
+    let val = +target.value;
+    let min = +target.min;
+    let max = +target.max;
+    if (val < min) return min;
+    if (val > max) return max;
+    return val;
+}
 
-const clampNumber = (e) => {
-    let val = +e.target.value;
-    let min = +e.target.min;
-    let max = +e.target.max;
-
-    if (val < min) e.target.value = min;
-    if (val > max) e.target.value = max;
+let setAnimSpeed = (target) => {
+    let num = clampNumber(target);
+    let ms = num;
+    animationSpeed.value = animSpeed = ms;;
 }
 
 diskAmount.oninput = (e) => {
-    clampNumber(e);
+    let num = clampNumber(e.target);
+    diskAmount.value = num;
     hanoiVis.init();
 }
 pegsAmount.onchange = () => hanoiVis.init();
 fullAnimationCheckbox.onchange = () => {
     playFullAnim = fullAnimationCheckbox.checked;
+
+    (fullAnimationCheckbox.checked)
+        ?
+        animationSpeed.min = 500
+        :
+        animationSpeed.min = 1;
+
+    setAnimSpeed(animationSpeed);
 }
 animateHanoiBtn.onclick = () => {
     hanoiVis.init();
     hanoiVis.startAnimating();
 }
-animationSpeed.onchange = (e) => {
-    clampNumber(e);
-    let ms = +animationSpeed.value;
-    setAnimSpeed(ms);
-}
+animationSpeed.onchange = (e) => setAnimSpeed(e.target);
+
 pauseCheckbox.onchange = () => {
     let bool = pauseCheckbox.checked;
     paused = bool;
