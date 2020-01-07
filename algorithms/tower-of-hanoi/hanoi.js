@@ -594,6 +594,8 @@ pauseCheckbox.onchange = () => {
     paused = bool;
     nextStepBtn.disabled = !bool;
     prevStepBtn.disabled = !bool;
+    fullAnimationCheckbox.checked = !bool;
+    fullAnimationCheckbox.onchange();
 }
 nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
 prevStepBtn.onclick = () => hanoiVis.getPrevStep();
