@@ -160,6 +160,8 @@ class HanoiVisualization {
         animateHanoiBtn.disabled = bool;
     }
 
+    setTotalMoves = (val) => this.totalMoves = val;
+
     getDiskAmount = () => +diskAmount.value;
 
     getPegsAmount = () => +pegsAmount.value;
@@ -210,6 +212,8 @@ class HanoiVisualization {
         this.displayMovesInHtml(movesArr);
 
         this.fillQueue(movesArr);
+
+        this.setTotalMoves(this.queuedSteps[0].totalMoves);
 
         movesArr = [];
     }
@@ -490,7 +494,6 @@ class HanoiVisualization {
             this.moveDisk(disk, moveData.newPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
-            this.totalMoves = moveData.totalMoves;
 
             this.prevSteps.push(moveData);
         } else {
@@ -510,7 +513,6 @@ class HanoiVisualization {
             this.moveDisk(disk, moveData.oldPeg);
             this.moveDesc = moveData.moveDesc;
             this.curMove = moveData.curMove;
-            this.totalMoves = moveData.totalMoves;
 
             this.queuedSteps.unshift(moveData);
         }
@@ -532,14 +534,12 @@ class HanoiVisualization {
             this.animateSolution(deltaTime, animSpeed);
         }
 
-        if (this.totalMoves !== 0) {
-            this.drawMoveDesc(this.moveDesc);
-            this.drawMoveCounter(this.curMove, this.totalMoves);
-        }
-
         if (!!this.animationQueue.length) {
             this.executeAnimationQueue(deltaTime, animSpeed);
         }
+
+        this.drawMoveDesc(this.moveDesc);
+        this.drawMoveCounter(this.curMove, this.totalMoves);
 
         this.drawAllDisks(this.pegsArr);
     }
@@ -563,7 +563,7 @@ const clampNumber = (target) => {
 let setAnimSpeed = (target) => {
     let num = clampNumber(target);
     let ms = num;
-    animationSpeed.value = animSpeed = ms;;
+    animationSpeed.value = animSpeed = ms;
 }
 
 diskAmount.oninput = (e) => {
