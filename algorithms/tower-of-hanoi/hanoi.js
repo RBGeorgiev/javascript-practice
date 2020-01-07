@@ -586,6 +586,7 @@ fullAnimationCheckbox.onchange = () => {
 animateHanoiBtn.onclick = () => {
     hanoiVis.init();
     hanoiVis.startAnimating();
+    pauseCheckbox.disabled = false;
 }
 animationSpeed.onchange = (e) => setAnimSpeed(e.target);
 
