@@ -247,8 +247,8 @@ class HanoiVisualization {
         }
     }
 
-    calculateDiskColor(n, i) {
-        return 225 - (150 / n) * i;
+    calculateDiskColor(val, n, i) {
+        return val - (150 / n) * i;
     }
 
     drawDisk = (target, x, y, width, height, color = 'lightgrey') => {
@@ -311,7 +311,7 @@ class HanoiVisualization {
             let x = pegsArr[0].x1 - width / 2;
             let y = floor - height * pegsArr[0].disks.length;
 
-            let color = `rgb(${this.calculateDiskColor(diskAmount, id)}, 10, 25)`;
+            let color = `rgb(${this.calculateDiskColor(redVal, diskAmount, id)}, ${greenVal}, ${blueVal})`;
 
             let diskObj = {
                 id,
@@ -338,7 +338,6 @@ class HanoiVisualization {
             }
         }
     }
-
 
     setPegsAndDisksArr = () => {
         let pegsAmount = this.getPegsAmount();
@@ -545,6 +544,10 @@ class HanoiVisualization {
     }
 }
 
+let redVal = +colorSelectorRed.value;
+let greenVal = +colorSelectorGreen.value;
+let blueVal = +colorSelectorBlue.value;
+
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
 let animSpeed = +animationSpeed.value;
@@ -561,8 +564,7 @@ const clampNumber = (target) => {
 }
 
 let setAnimSpeed = (target) => {
-    let num = clampNumber(target);
-    let ms = num;
+    let ms = clampNumber(target);
     animationSpeed.value = animSpeed = ms;
 }
 
@@ -600,6 +602,19 @@ pauseCheckbox.onchange = () => {
 }
 nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
 prevStepBtn.onclick = () => hanoiVis.getPrevStep();
+
+colorSelectorRed.oninput = (e) => {
+    colorSelectorRed.value = redVal = clampNumber(e.target);
+    hanoiVis.setPegsAndDisksArr();
+}
+colorSelectorGreen.oninput = (e) => {
+    colorSelectorGreen.value = greenVal = clampNumber(e.target);
+    hanoiVis.setPegsAndDisksArr();
+}
+colorSelectorBlue.oninput = (e) => {
+    colorSelectorBlue.value = blueVal = clampNumber(e.target);
+    hanoiVis.setPegsAndDisksArr();
+}
 
 
 let lastTime = timeout = 0, deltaTime;
