@@ -162,10 +162,6 @@ class HanoiVisualization {
 
     setTotalMoves = (val) => this.totalMoves = val;
 
-    getDiskAmount = () => +diskAmount.value;
-
-    getPegsAmount = () => +pegsAmount.value;
-
     getPegsIds = () => {
         let pegsIds = [];
         for (let i = 0; i < this.pegsArr.length; i++) {
@@ -175,34 +171,32 @@ class HanoiVisualization {
     }
 
     getHanoiSolution = () => {
-        let disks = this.getDiskAmount();
-        let pegsAmount = this.getPegsAmount();
         let pegs = this.getPegsIds();
 
         switch (pegsAmount) {
             case 3:
-                hanoi.ThreePegs(disks, ...pegs);
+                hanoi.ThreePegs(diskAmount, ...pegs);
                 break;
             case 4:
-                hanoi.FourPegs(disks, ...pegs);
+                hanoi.FourPegs(diskAmount, ...pegs);
                 break;
             case 5:
-                hanoi.FivePegs(disks, ...pegs);
+                hanoi.FivePegs(diskAmount, ...pegs);
                 break;
             case 6:
-                hanoi.SixPegs(disks, ...pegs);
+                hanoi.SixPegs(diskAmount, ...pegs);
                 break;
             case 7:
-                hanoi.SevenPegs(disks, ...pegs);
+                hanoi.SevenPegs(diskAmount, ...pegs);
                 break;
             case 8:
-                hanoi.EightPegs(disks, ...pegs);
+                hanoi.EightPegs(diskAmount, ...pegs);
                 break;
             case 9:
-                hanoi.NinePegs(disks, ...pegs);
+                hanoi.NinePegs(diskAmount, ...pegs);
                 break;
             case 10:
-                hanoi.TenPegs(disks, ...pegs);
+                hanoi.TenPegs(diskAmount, ...pegs);
                 break;
             default:
                 alert("Error determining number of pegs");
@@ -266,7 +260,7 @@ class HanoiVisualization {
         ctx.fillText(target, x + width / 2, y + height * 0.875);
     }
 
-    initPegs = (pegsAmount) => {
+    initPegs = () => {
         let pegsArr = [];
 
         let pegSpacing = canvas.width / (pegsAmount + 1);
@@ -290,7 +284,7 @@ class HanoiVisualization {
         return pegsArr
     }
 
-    initDisks = (diskAmount, pegsArr) => {
+    initDisks = (pegsArr) => {
 
         let height = 40;
         let floor = pegsArr[0].y1 - height;
@@ -340,11 +334,8 @@ class HanoiVisualization {
     }
 
     setPegsAndDisksArr = () => {
-        let pegsAmount = this.getPegsAmount();
-        let diskAmount = this.getDiskAmount();
-
-        this.pegsArr = this.initPegs(pegsAmount);
-        this.initDisks(diskAmount, this.pegsArr);
+        this.pegsArr = this.initPegs();
+        this.initDisks(this.pegsArr);
     }
 
     drawMoveDesc = (str, size = 30) => {
@@ -547,6 +538,8 @@ class HanoiVisualization {
 let redVal = +colorSelectorRed.value;
 let greenVal = +colorSelectorGreen.value;
 let blueVal = +colorSelectorBlue.value;
+let diskAmount = +diskAmountInput.value;
+let pegsAmount = +pegsAmountInput.value;
 
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
@@ -568,12 +561,16 @@ let setAnimSpeed = (target) => {
     animationSpeed.value = animSpeed = ms;
 }
 
-diskAmount.oninput = (e) => {
+diskAmountInput.oninput = (e) => {
     let num = clampNumber(e.target);
-    diskAmount.value = num;
+    diskAmount = diskAmountInput.value = num;
     hanoiVis.init();
 }
-pegsAmount.onchange = () => hanoiVis.init();
+pegsAmountInput.onchange = (e) => {
+    let num = clampNumber(e.target);
+    pegsAmount = pegsAmountInput.value = num;
+    hanoiVis.init();
+}
 fullAnimationCheckbox.onchange = () => {
     playFullAnim = fullAnimationCheckbox.checked;
 
