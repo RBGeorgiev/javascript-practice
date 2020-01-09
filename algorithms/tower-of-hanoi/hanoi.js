@@ -241,6 +241,13 @@ class HanoiVisualization {
         }
     }
 
+    getDiskColor = (n, i) => {
+        let red = (redGradient.checked) ? this.calculateDiskColor(redVal, n, i) : redVal;
+        let green = (greenGradient.checked) ? this.calculateDiskColor(greenVal, n, i) : greenVal;;
+        let blue = (blueGradient.checked) ? this.calculateDiskColor(blueVal, n, i) : blueVal;;
+        return `rgb(${red}, ${green}, ${blue})`;
+    }
+
     calculateDiskColor(val, n, i) {
         return val - (150 / n) * i;
     }
@@ -298,17 +305,15 @@ class HanoiVisualization {
 
 
         for (let i = diskAmount; i > 0; i--) {
-
-            let id = i
-            let width = smallestDisk + (averageSizeChange * (id + 1));
+            let width = smallestDisk + (averageSizeChange * (i + 1));
 
             let x = pegsArr[0].x1 - width / 2;
             let y = floor - height * pegsArr[0].disks.length;
 
-            let color = `rgb(${this.calculateDiskColor(redVal, diskAmount, id)}, ${greenVal}, ${blueVal})`;
+            let color = this.getDiskColor(diskAmount, i);
 
             let diskObj = {
-                id,
+                id: i,
                 x,
                 y,
                 width,
@@ -612,6 +617,9 @@ colorSelectorBlue.oninput = (e) => {
     colorSelectorBlue.value = blueVal = clampNumber(e.target);
     hanoiVis.setPegsAndDisksArr();
 }
+redGradient.onchange = () => hanoiVis.setPegsAndDisksArr();
+greenGradient.onchange = () => hanoiVis.setPegsAndDisksArr();
+blueGradient.onchange = () => hanoiVis.setPegsAndDisksArr();
 
 
 let lastTime = timeout = 0, deltaTime;
