@@ -241,10 +241,10 @@ class HanoiVisualization {
         }
     }
 
-    getDiskColor = (n, i) => {
-        let red = (redGradient.checked) ? this.calculateDiskColor(redVal, n, i) : redVal;
-        let green = (greenGradient.checked) ? this.calculateDiskColor(greenVal, n, i) : greenVal;;
-        let blue = (blueGradient.checked) ? this.calculateDiskColor(blueVal, n, i) : blueVal;;
+    getDiskColor = (i) => {
+        let red = (redGradient) ? this.calculateDiskColor(redVal, diskAmount, i) : redVal;
+        let green = (greenGradient) ? this.calculateDiskColor(greenVal, diskAmount, i) : greenVal;;
+        let blue = (blueGradient) ? this.calculateDiskColor(blueVal, diskAmount, i) : blueVal;;
         return `rgb(${red}, ${green}, ${blue})`;
     }
 
@@ -252,9 +252,9 @@ class HanoiVisualization {
         return val - (150 / n) * i;
     }
 
-    drawDisk = (target, x, y, width, height, color = 'lightgrey') => {
+    drawDisk = (target, x, y, width, height) => {
         ctx.lineWidth = 1;
-        ctx.fillStyle = color;
+        ctx.fillStyle = this.getDiskColor(target);
 
         ctx.beginPath();
         ctx.rect(x, y, width, height);
@@ -310,15 +310,12 @@ class HanoiVisualization {
             let x = pegsArr[0].x1 - width / 2;
             let y = floor - height * pegsArr[0].disks.length;
 
-            let color = this.getDiskColor(diskAmount, i);
-
             let diskObj = {
                 id: i,
                 x,
                 y,
                 width,
                 height,
-                color,
                 draw: true,
                 parent: pegsArr[0]
             }
@@ -330,9 +327,9 @@ class HanoiVisualization {
     drawAllDisks = (pegsArr) => {
         for (let i = 0; i < pegsArr.length; i++) {
             for (let j = 0; j < pegsArr[i].disks.length; j++) {
-                let disk = pegsArr[i].disks[j]
+                let disk = pegsArr[i].disks[j];
                 if (disk.draw) {
-                    this.drawDisk(disk.id, disk.x, disk.y, disk.width, disk.height, disk.color);
+                    this.drawDisk(disk.id, disk.x, disk.y, disk.width, disk.height);
                 }
             }
         }
@@ -473,7 +470,7 @@ class HanoiVisualization {
             diskCopy[axis] = pos;
         }
 
-        this.drawDisk(diskCopy.id, diskCopy.x, diskCopy.y, diskCopy.width, diskCopy.height, diskCopy.color);
+        this.drawDisk(diskCopy.id, diskCopy.x, diskCopy.y, diskCopy.width, diskCopy.height);
     }
 
     executeQueuedStep = () => {
@@ -543,6 +540,10 @@ class HanoiVisualization {
 let redVal = +colorSelectorRed.value;
 let greenVal = +colorSelectorGreen.value;
 let blueVal = +colorSelectorBlue.value;
+let redGradient = +redGradientCheckbox.checked;
+let greenGradient = +greenGradientCheckbox.checked;
+let blueGradient = +blueGradientCheckbox.checked;
+
 let diskAmount = +diskAmountInput.value;
 let pegsAmount = +pegsAmountInput.value;
 
@@ -605,21 +606,13 @@ pauseCheckbox.onchange = () => {
 nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
 prevStepBtn.onclick = () => hanoiVis.getPrevStep();
 
-colorSelectorRed.oninput = (e) => {
-    colorSelectorRed.value = redVal = clampNumber(e.target);
-    hanoiVis.setPegsAndDisksArr();
-}
-colorSelectorGreen.oninput = (e) => {
-    colorSelectorGreen.value = greenVal = clampNumber(e.target);
-    hanoiVis.setPegsAndDisksArr();
-}
-colorSelectorBlue.oninput = (e) => {
-    colorSelectorBlue.value = blueVal = clampNumber(e.target);
-    hanoiVis.setPegsAndDisksArr();
-}
-redGradient.onchange = () => hanoiVis.setPegsAndDisksArr();
-greenGradient.onchange = () => hanoiVis.setPegsAndDisksArr();
-blueGradient.onchange = () => hanoiVis.setPegsAndDisksArr();
+colorSelectorRed.oninput = (e) => colorSelectorRed.value = redVal = clampNumber(e.target);
+colorSelectorGreen.oninput = (e) => colorSelectorGreen.value = greenVal = clampNumber(e.target);
+colorSelectorBlue.oninput = (e) => colorSelectorBlue.value = blueVal = clampNumber(e.target);
+
+redGradientCheckbox.onchange = (e) => redGradient = e.target.checked;
+greenGradientCheckbox.onchange = (e) => greenGradient = e.target.checked;
+blueGradientCheckbox.onchange = (e) => blueGradient = e.target.checked;
 
 
 let lastTime = timeout = 0, deltaTime;
