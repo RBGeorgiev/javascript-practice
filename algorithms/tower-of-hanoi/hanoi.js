@@ -542,9 +542,6 @@ class HanoiVisualization {
     }
 }
 
-let startingPeg = 1;
-let endingPeg = 0;
-
 let redVal = +colorSelectorRed.value;
 let greenVal = +colorSelectorGreen.value;
 let blueVal = +colorSelectorBlue.value;
@@ -554,6 +551,9 @@ let blueGradient = +blueGradientCheckbox.checked;
 
 let diskAmount = +diskAmountInput.value;
 let pegsAmount = +pegsAmountInput.value;
+
+let startingPeg = +startingPegInput.value;
+let endingPeg = +endingPegInput.value;
 
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
@@ -575,6 +575,34 @@ let setAnimSpeed = (target) => {
     animationSpeed.value = animSpeed = ms;
 }
 
+const populateTargetPegsInputs = (start = 0, end = pegsAmount - 1) => {
+    startingPegInput.innerHTML = '';
+    endingPegInput.innerHTML = '';
+
+    for (let i = 0; i < pegsAmount; i++) {
+        let option = document.createElement("option");
+        option.text = getPegChar(i);
+        option.value = i;
+
+        if (i === start) option.selected = true;
+        if (i === end) option.disabled = true;
+
+        startingPegInput.add(option, null);
+    }
+
+    for (let i = 0; i < pegsAmount; i++) {
+        let option = document.createElement("option");
+        option.text = getPegChar(i);
+        option.value = i;
+
+        if (i === start) option.disabled = true;
+        if (i === end) option.selected = true;
+
+        endingPegInput.add(option, null);
+    }
+}
+populateTargetPegsInputs();
+
 diskAmountInput.oninput = (e) => {
     let num = clampNumber(e.target);
     diskAmount = diskAmountInput.value = num;
@@ -583,6 +611,7 @@ diskAmountInput.oninput = (e) => {
 pegsAmountInput.onchange = (e) => {
     let num = clampNumber(e.target);
     pegsAmount = pegsAmountInput.value = num;
+    populateTargetPegsInputs();
     hanoiVis.init();
 }
 fullAnimationCheckbox.onchange = () => {
@@ -622,6 +651,16 @@ redGradientCheckbox.onchange = (e) => redGradient = e.target.checked;
 greenGradientCheckbox.onchange = (e) => greenGradient = e.target.checked;
 blueGradientCheckbox.onchange = (e) => blueGradient = e.target.checked;
 
+startingPegInput.onchange = (e) => {
+    startingPeg = +e.target.value;
+    populateTargetPegsInputs(startingPeg, endingPeg);
+    hanoiVis.init();
+}
+endingPegInput.onchange = (e) => {
+    endingPeg = +e.target.value;
+    populateTargetPegsInputs(startingPeg, endingPeg);
+    hanoiVis.init();
+}
 
 let lastTime = timeout = 0, deltaTime;
 

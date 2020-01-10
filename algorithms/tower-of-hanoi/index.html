@@ -67,6 +67,24 @@
                     <input type="checkbox" id="blueGradientCheckbox" name="blueGradientCheckbox">
                     <input type="number" class="colorSelector" id="colorSelectorBlue" min="1" max="255" value="25">Blue
                 </label>
+
+                <div id="targetPegs">
+                    <label>Starting Peg
+                        <select id="startingPegInput">
+                            <option value="0" selected>A</option>
+                            <option value="1">B</option>
+                            <option value="2" disabled>C</option>
+                        </select>
+                    </label>
+
+                    <label>Ending Peg
+                        <select id="endingPegInput">
+                            <option value="0" disabled>A</option>
+                            <option value="1">B</option>
+                            <option value="2" selected>C</option>
+                        </select>
+                    </label>
+                </div>
             </div>
         </div>
     </main>
