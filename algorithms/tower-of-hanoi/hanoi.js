@@ -164,9 +164,15 @@ class HanoiVisualization {
 
     getPegsIds = () => {
         let pegsIds = [];
+
         for (let i = 0; i < this.pegsArr.length; i++) {
+            if (i === startingPeg || i === endingPeg) continue;
             pegsIds.push(this.pegsArr[i].id);
         }
+
+        pegsIds.unshift(startingPeg);
+        pegsIds.push(endingPeg);
+
         return pegsIds;
     }
 
@@ -294,7 +300,7 @@ class HanoiVisualization {
     initDisks = (pegsArr) => {
 
         let height = 40;
-        let floor = pegsArr[0].y1 - height;
+        let floor = pegsArr[startingPeg].y1 - height;
 
         let pegSpacing = canvas.width / (pegsArr.length + 1);
         let biggestDisk = pegSpacing / 1.5;
@@ -307,8 +313,8 @@ class HanoiVisualization {
         for (let i = diskAmount; i > 0; i--) {
             let width = smallestDisk + (averageSizeChange * (i + 1));
 
-            let x = pegsArr[0].x1 - width / 2;
-            let y = floor - height * pegsArr[0].disks.length;
+            let x = pegsArr[startingPeg].x1 - width / 2;
+            let y = floor - height * pegsArr[startingPeg].disks.length;
 
             let diskObj = {
                 id: i,
@@ -316,11 +322,10 @@ class HanoiVisualization {
                 y,
                 width,
                 height,
-                draw: true,
-                parent: pegsArr[0]
+                draw: true
             }
 
-            pegsArr[0].disks.push(diskObj);
+            pegsArr[startingPeg].disks.push(diskObj);
         }
     }
 
@@ -536,6 +541,9 @@ class HanoiVisualization {
         this.drawAllDisks(this.pegsArr);
     }
 }
+
+let startingPeg = 1;
+let endingPeg = 0;
 
 let redVal = +colorSelectorRed.value;
 let greenVal = +colorSelectorGreen.value;
