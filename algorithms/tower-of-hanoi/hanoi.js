@@ -611,7 +611,10 @@ diskAmountInput.oninput = (e) => {
 pegsAmountInput.onchange = (e) => {
     let num = clampNumber(e.target);
     pegsAmount = pegsAmountInput.value = num;
+
     populateTargetPegsInputs();
+    startingPeg = +startingPegInput.value;;
+    endingPeg = +endingPegInput.value;;
     hanoiVis.init();
 }
 fullAnimationCheckbox.onchange = () => {
