@@ -166,20 +166,21 @@ class HanoiVisualization {
         let pegsIds = [];
 
         for (let i = 0; i < this.pegsArr.length; i++) {
-            if (i === startingPeg || i === endingPeg) continue;
+            if (i === options.startingPeg || i === options.endingPeg) continue;
             pegsIds.push(this.pegsArr[i].id);
         }
 
-        pegsIds.unshift(startingPeg);
-        pegsIds.push(endingPeg);
+        pegsIds.unshift(options.startingPeg);
+        pegsIds.push(options.endingPeg);
 
         return pegsIds;
     }
 
     getHanoiSolution = () => {
+        let diskAmount = options.diskAmount;
         let pegs = this.getPegsIds();
 
-        switch (pegsAmount) {
+        switch (options.pegsAmount) {
             case 3:
                 hanoi.ThreePegs(diskAmount, ...pegs);
                 break;
@@ -248,9 +249,10 @@ class HanoiVisualization {
     }
 
     getDiskColor = (i) => {
-        let red = (redGradient) ? this.calculateDiskColor(redVal, diskAmount, i) : redVal;
-        let green = (greenGradient) ? this.calculateDiskColor(greenVal, diskAmount, i) : greenVal;;
-        let blue = (blueGradient) ? this.calculateDiskColor(blueVal, diskAmount, i) : blueVal;;
+        let n = options.diskAmount;
+        let red = (options.redGradient) ? this.calculateDiskColor(options.redVal, n, i) : options.redVal;
+        let green = (options.greenGradient) ? this.calculateDiskColor(options.greenVal, n, i) : options.greenVal;;
+        let blue = (options.blueGradient) ? this.calculateDiskColor(options.blueVal, n, i) : options.blueVal;;
         return `rgb(${red}, ${green}, ${blue})`;
     }
 
@@ -275,6 +277,7 @@ class HanoiVisualization {
 
     initPegs = () => {
         let pegsArr = [];
+        let pegsAmount = options.pegsAmount;
 
         let pegSpacing = canvas.width / (pegsAmount + 1);
         let lastPegPos = pegSpacing * (pegsAmount - 1);
@@ -298,9 +301,10 @@ class HanoiVisualization {
     }
 
     initDisks = (pegsArr) => {
+        let diskAmount = options.diskAmount;
 
         let height = 40;
-        let floor = pegsArr[startingPeg].y1 - height;
+        let floor = pegsArr[options.startingPeg].y1 - height;
 
         let pegSpacing = canvas.width / (pegsArr.length + 1);
         let biggestDisk = pegSpacing / 1.5;
@@ -313,8 +317,8 @@ class HanoiVisualization {
         for (let i = diskAmount; i > 0; i--) {
             let width = smallestDisk + (averageSizeChange * (i + 1));
 
-            let x = pegsArr[startingPeg].x1 - width / 2;
-            let y = floor - height * pegsArr[startingPeg].disks.length;
+            let x = pegsArr[options.startingPeg].x1 - width / 2;
+            let y = floor - height * pegsArr[options.startingPeg].disks.length;
 
             let diskObj = {
                 id: i,
@@ -325,7 +329,7 @@ class HanoiVisualization {
                 draw: true
             }
 
-            pegsArr[startingPeg].disks.push(diskObj);
+            pegsArr[options.startingPeg].disks.push(diskObj);
         }
     }
 
@@ -484,7 +488,7 @@ class HanoiVisualization {
 
             let disk = moveData.oldPeg.disks.pop();
 
-            if (playFullAnim) {
+            if (options.playFullAnim) {
                 this.fillAnimationQueue(disk, moveData.newPeg);
             }
 
@@ -527,7 +531,7 @@ class HanoiVisualization {
     draw = (deltaTime, animSpeed) => {
         this.drawPegs(this.pegsArr);
 
-        if (this.animating && !paused) {
+        if (this.animating && !options.paused) {
             this.animateSolution(deltaTime, animSpeed);
         }
 
@@ -542,128 +546,155 @@ class HanoiVisualization {
     }
 }
 
-let redVal = +colorSelectorRed.value;
-let greenVal = +colorSelectorGreen.value;
-let blueVal = +colorSelectorBlue.value;
-let redGradient = +redGradientCheckbox.checked;
-let greenGradient = +greenGradientCheckbox.checked;
-let blueGradient = +blueGradientCheckbox.checked;
+class Options {
+    constructor() {
+        this.initVariables();
+        this.initEventListeners();
+    }
 
-let diskAmount = +diskAmountInput.value;
-let pegsAmount = +pegsAmountInput.value;
+    initVariables = () => {
+        this.diskAmount = +diskAmountInput.value;
+        this.pegsAmount = +pegsAmountInput.value;
 
-let startingPeg = +startingPegInput.value;
-let endingPeg = +endingPegInput.value;
+        this.populateTargetPegsInputs();
+        this.startingPeg = +startingPegInput.value;
+        this.endingPeg = +endingPegInput.value;
 
+        this.animSpeed = +animationSpeed.value;
+        this.playFullAnim = fullAnimationCheckbox.checked;
+        this.paused = false;
+
+        this.redVal = +colorSelectorRed.value;
+        this.greenVal = +colorSelectorGreen.value;
+        this.blueVal = +colorSelectorBlue.value;
+        this.redGradient = +redGradientCheckbox.checked;
+        this.greenGradient = +greenGradientCheckbox.checked;
+        this.blueGradient = +blueGradientCheckbox.checked;
+    }
+
+    initEventListeners = () => {
+        //#region - Disk and peg options listeners
+        diskAmountInput.oninput = (e) => {
+            let num = this.clampNumber(e.target);
+            this.diskAmount = diskAmountInput.value = num;
+            hanoiVis.init();
+        }
+
+        pegsAmountInput.onchange = (e) => {
+            let num = this.clampNumber(e.target);
+            this.pegsAmount = pegsAmountInput.value = num;
+            this.populateTargetPegsInputs();
+            this.startingPeg = +startingPegInput.value;;
+            this.endingPeg = +endingPegInput.value;;
+            hanoiVis.init();
+        }
+
+        startingPegInput.onchange = (e) => {
+            this.startingPeg = +e.target.value;
+            this.populateTargetPegsInputs(this.startingPeg, this.endingPeg);
+            hanoiVis.init();
+        }
+
+        endingPegInput.onchange = (e) => {
+            this.endingPeg = +e.target.value;
+            this.populateTargetPegsInputs(this.startingPeg, this.endingPeg);
+            hanoiVis.init();
+        }
+        //#endregion - Disk and peg options listeners
+
+        //#region - Animation options listeners
+        fullAnimationCheckbox.onchange = () => {
+            this.playFullAnim = fullAnimationCheckbox.checked;
+
+            (fullAnimationCheckbox.checked)
+                ?
+                animationSpeed.min = 500
+                :
+                animationSpeed.min = 1;
+
+            this.setAnimSpeed(animationSpeed);
+        }
+
+        animateHanoiBtn.onclick = () => {
+            hanoiVis.init();
+            hanoiVis.startAnimating();
+            pauseCheckbox.disabled = false;
+        }
+
+        animationSpeed.onchange = (e) => this.setAnimSpeed(e.target);
+        //#endregion - Animation options listeners
+
+        //#region - Pause and step options listeners
+        pauseCheckbox.onchange = () => {
+            let bool = pauseCheckbox.checked;
+            this.paused = bool;
+            nextStepBtn.disabled = !bool;
+            prevStepBtn.disabled = !bool;
+            fullAnimationCheckbox.checked = !bool;
+            fullAnimationCheckbox.onchange();
+        }
+
+        nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
+        prevStepBtn.onclick = () => hanoiVis.getPrevStep();
+        //#endregion - Pause and step options listeners
+
+        //#region - Color options listeners
+        colorSelectorRed.oninput = (e) => this.redVal = colorSelectorRed.value = this.clampNumber(e.target);
+        colorSelectorGreen.oninput = (e) => this.greenVal = colorSelectorGreen.value = this.clampNumber(e.target);
+        colorSelectorBlue.oninput = (e) => this.blueVal = colorSelectorBlue.value = this.clampNumber(e.target);
+
+        redGradientCheckbox.onchange = (e) => this.redGradient = e.target.checked;
+        greenGradientCheckbox.onchange = (e) => this.greenGradient = e.target.checked;
+        blueGradientCheckbox.onchange = (e) => this.blueGradient = e.target.checked;
+        //#endregion - Color options listeners
+    }
+
+    populateTargetPegsInputs = (start = 0, end = this.pegsAmount - 1) => {
+        startingPegInput.innerHTML = '';
+        endingPegInput.innerHTML = '';
+
+        for (let i = 0; i < this.pegsAmount; i++) {
+            let opt = document.createElement("option");
+            opt.text = getPegChar(i);
+            opt.value = i;
+
+            if (i === start) opt.selected = true;
+            if (i === end) opt.disabled = true;
+
+            startingPegInput.add(opt, null);
+        }
+
+        for (let i = 0; i < this.pegsAmount; i++) {
+            let opt = document.createElement("option");
+            opt.text = getPegChar(i);
+            opt.value = i;
+
+            if (i === start) opt.disabled = true;
+            if (i === end) opt.selected = true;
+
+            endingPegInput.add(opt, null);
+        }
+    }
+
+    setAnimSpeed = (target) => {
+        let ms = this.clampNumber(target);
+        this.animSpeed = animationSpeed.value = ms;
+    }
+
+    clampNumber = (target) => {
+        let val = +target.value;
+        let min = +target.min;
+        let max = +target.max;
+        if (val < min) return min;
+        if (val > max) return max;
+        return val;
+    }
+}
+
+const options = new Options;
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
-let animSpeed = +animationSpeed.value;
-let playFullAnim = fullAnimationCheckbox.checked;
-let paused = false;
 
-const clampNumber = (target) => {
-    let val = +target.value;
-    let min = +target.min;
-    let max = +target.max;
-    if (val < min) return min;
-    if (val > max) return max;
-    return val;
-}
-
-let setAnimSpeed = (target) => {
-    let ms = clampNumber(target);
-    animationSpeed.value = animSpeed = ms;
-}
-
-const populateTargetPegsInputs = (start = 0, end = pegsAmount - 1) => {
-    startingPegInput.innerHTML = '';
-    endingPegInput.innerHTML = '';
-
-    for (let i = 0; i < pegsAmount; i++) {
-        let option = document.createElement("option");
-        option.text = getPegChar(i);
-        option.value = i;
-
-        if (i === start) option.selected = true;
-        if (i === end) option.disabled = true;
-
-        startingPegInput.add(option, null);
-    }
-
-    for (let i = 0; i < pegsAmount; i++) {
-        let option = document.createElement("option");
-        option.text = getPegChar(i);
-        option.value = i;
-
-        if (i === start) option.disabled = true;
-        if (i === end) option.selected = true;
-
-        endingPegInput.add(option, null);
-    }
-}
-populateTargetPegsInputs();
-
-diskAmountInput.oninput = (e) => {
-    let num = clampNumber(e.target);
-    diskAmount = diskAmountInput.value = num;
-    hanoiVis.init();
-}
-pegsAmountInput.onchange = (e) => {
-    let num = clampNumber(e.target);
-    pegsAmount = pegsAmountInput.value = num;
-
-    populateTargetPegsInputs();
-    startingPeg = +startingPegInput.value;;
-    endingPeg = +endingPegInput.value;;
-    hanoiVis.init();
-}
-fullAnimationCheckbox.onchange = () => {
-    playFullAnim = fullAnimationCheckbox.checked;
-
-    (fullAnimationCheckbox.checked)
-        ?
-        animationSpeed.min = 500
-        :
-        animationSpeed.min = 1;
-
-    setAnimSpeed(animationSpeed);
-}
-animateHanoiBtn.onclick = () => {
-    hanoiVis.init();
-    hanoiVis.startAnimating();
-    pauseCheckbox.disabled = false;
-}
-animationSpeed.onchange = (e) => setAnimSpeed(e.target);
-
-pauseCheckbox.onchange = () => {
-    let bool = pauseCheckbox.checked;
-    paused = bool;
-    nextStepBtn.disabled = !bool;
-    prevStepBtn.disabled = !bool;
-    fullAnimationCheckbox.checked = !bool;
-    fullAnimationCheckbox.onchange();
-}
-nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
-prevStepBtn.onclick = () => hanoiVis.getPrevStep();
-
-colorSelectorRed.oninput = (e) => colorSelectorRed.value = redVal = clampNumber(e.target);
-colorSelectorGreen.oninput = (e) => colorSelectorGreen.value = greenVal = clampNumber(e.target);
-colorSelectorBlue.oninput = (e) => colorSelectorBlue.value = blueVal = clampNumber(e.target);
-
-redGradientCheckbox.onchange = (e) => redGradient = e.target.checked;
-greenGradientCheckbox.onchange = (e) => greenGradient = e.target.checked;
-blueGradientCheckbox.onchange = (e) => blueGradient = e.target.checked;
-
-startingPegInput.onchange = (e) => {
-    startingPeg = +e.target.value;
-    populateTargetPegsInputs(startingPeg, endingPeg);
-    hanoiVis.init();
-}
-endingPegInput.onchange = (e) => {
-    endingPeg = +e.target.value;
-    populateTargetPegsInputs(startingPeg, endingPeg);
-    hanoiVis.init();
-}
 
 let lastTime = timeout = 0, deltaTime;
 
@@ -673,7 +704,7 @@ function step(timestamp) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    hanoiVis.draw(deltaTime, animSpeed);
+    hanoiVis.draw(deltaTime, options.animSpeed);
 
     window.requestAnimationFrame(step);
 }
