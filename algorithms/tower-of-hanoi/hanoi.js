@@ -4,130 +4,134 @@ let ctx = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 600;
 
-let movesArr = [];
-
-const getPegChar = n => String.fromCharCode(65 + n);
-
-const move = (target, from, to) => {
-    if (target < 1) return;
-    let obj = {
-        target,
-        from,
-        to
-    };
-    movesArr.push(obj);
-}
-
 class Hanoi {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        this.movesArr = [];
+    }
+
+    move = (target, from, to) => {
+        if (target < 1) return;
+        let obj = {
+            target,
+            from,
+            to
+        };
+        this.movesArr.push(obj);
+    }
+
     ThreePegs = (number, start, middle, end) => {
         if (number < 1) return;
         this.ThreePegs(number - 1, start, end, middle);
-        move(number, start, end);
+        this.move(number, start, end);
         this.ThreePegs(number - 1, middle, start, end);
     }
 
     FourPegs = (num, start, mid1, mid2, end) => {
         if (num < 1) return;
         this.FourPegs(num - 2, start, mid1, end, mid2);
-        move(num - 1, start, mid1);
-        move(num, start, end);
-        move(num - 1, mid1, end);
+        this.move(num - 1, start, mid1);
+        this.move(num, start, end);
+        this.move(num - 1, mid1, end);
         this.FourPegs(num - 2, mid2, start, mid1, end);
     }
 
     FivePegs = (num, start, mid1, mid2, mid3, end) => {
         if (num < 1) return;
         this.FivePegs(num - 3, start, mid1, mid2, end, mid3)
-        move(num - 2, start, mid2);
-        move(num - 1, start, mid1);
-        move(num, start, end);
-        move(num - 1, mid1, end);
-        move(num - 2, mid2, end);
+        this.move(num - 2, start, mid2);
+        this.move(num - 1, start, mid1);
+        this.move(num, start, end);
+        this.move(num - 1, mid1, end);
+        this.move(num - 2, mid2, end);
         this.FivePegs(num - 3, mid3, start, mid1, mid2, end);
     }
 
     SixPegs = (num, start, mid1, mid2, mid3, mid4, end) => {
         if (num < 1) return;
         this.SixPegs(num - 4, start, mid1, mid2, mid3, end, mid4)
-        move(num - 3, start, mid3);
-        move(num - 2, start, mid2);
-        move(num - 1, start, mid1);
-        move(num, start, end);
-        move(num - 1, mid1, end);
-        move(num - 2, mid2, end);
-        move(num - 3, mid3, end);
+        this.move(num - 3, start, mid3);
+        this.move(num - 2, start, mid2);
+        this.move(num - 1, start, mid1);
+        this.move(num, start, end);
+        this.move(num - 1, mid1, end);
+        this.move(num - 2, mid2, end);
+        this.move(num - 3, mid3, end);
         this.SixPegs(num - 4, mid4, start, mid1, mid2, mid3, end);
     }
 
     SevenPegs = (num, start, mid1, mid2, mid3, mid4, mid5, end) => {
         if (num < 1) return;
         this.SevenPegs(num - 5, start, mid1, mid2, mid3, mid4, end, mid5)
-        move(num - 4, start, mid4);
-        move(num - 3, start, mid3);
-        move(num - 2, start, mid2);
-        move(num - 1, start, mid1);
-        move(num, start, end);
-        move(num - 1, mid1, end);
-        move(num - 2, mid2, end);
-        move(num - 3, mid3, end);
-        move(num - 4, mid4, end);
+        this.move(num - 4, start, mid4);
+        this.move(num - 3, start, mid3);
+        this.move(num - 2, start, mid2);
+        this.move(num - 1, start, mid1);
+        this.move(num, start, end);
+        this.move(num - 1, mid1, end);
+        this.move(num - 2, mid2, end);
+        this.move(num - 3, mid3, end);
+        this.move(num - 4, mid4, end);
         this.SevenPegs(num - 5, mid5, start, mid1, mid2, mid3, mid4, end);
     }
 
     EightPegs = (num, start, mid1, mid2, mid3, mid4, mid5, mid6, end) => {
         if (num < 1) return;
         this.EightPegs(num - 6, start, mid1, mid2, mid3, mid4, mid5, end, mid6)
-        move(num - 5, start, mid5);
-        move(num - 4, start, mid4);
-        move(num - 3, start, mid3);
-        move(num - 2, start, mid2);
-        move(num - 1, start, mid1);
-        move(num, start, end);
-        move(num - 1, mid1, end);
-        move(num - 2, mid2, end);
-        move(num - 3, mid3, end);
-        move(num - 4, mid4, end);
-        move(num - 5, mid5, end);
+        this.move(num - 5, start, mid5);
+        this.move(num - 4, start, mid4);
+        this.move(num - 3, start, mid3);
+        this.move(num - 2, start, mid2);
+        this.move(num - 1, start, mid1);
+        this.move(num, start, end);
+        this.move(num - 1, mid1, end);
+        this.move(num - 2, mid2, end);
+        this.move(num - 3, mid3, end);
+        this.move(num - 4, mid4, end);
+        this.move(num - 5, mid5, end);
         this.EightPegs(num - 6, mid6, start, mid1, mid2, mid3, mid4, mid5, end);
     }
 
     NinePegs = (num, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, end) => {
         if (num < 1) return;
         this.NinePegs(num - 7, start, mid1, mid2, mid3, mid4, mid5, mid6, end, mid7)
-        move(num - 6, start, mid6);
-        move(num - 5, start, mid5);
-        move(num - 4, start, mid4);
-        move(num - 3, start, mid3);
-        move(num - 2, start, mid2);
-        move(num - 1, start, mid1);
-        move(num, start, end);
-        move(num - 1, mid1, end);
-        move(num - 2, mid2, end);
-        move(num - 3, mid3, end);
-        move(num - 4, mid4, end);
-        move(num - 5, mid5, end);
-        move(num - 6, mid6, end);
+        this.move(num - 6, start, mid6);
+        this.move(num - 5, start, mid5);
+        this.move(num - 4, start, mid4);
+        this.move(num - 3, start, mid3);
+        this.move(num - 2, start, mid2);
+        this.move(num - 1, start, mid1);
+        this.move(num, start, end);
+        this.move(num - 1, mid1, end);
+        this.move(num - 2, mid2, end);
+        this.move(num - 3, mid3, end);
+        this.move(num - 4, mid4, end);
+        this.move(num - 5, mid5, end);
+        this.move(num - 6, mid6, end);
         this.NinePegs(num - 7, mid7, start, mid1, mid2, mid3, mid4, mid5, mid6, end);
     }
 
     TenPegs = (num, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, mid8, end) => {
         if (num < 1) return;
         this.TenPegs(num - 8, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, end, mid8)
-        move(num - 7, start, mid7);
-        move(num - 6, start, mid6);
-        move(num - 5, start, mid5);
-        move(num - 4, start, mid4);
-        move(num - 3, start, mid3);
-        move(num - 2, start, mid2);
-        move(num - 1, start, mid1);
-        move(num, start, end);
-        move(num - 1, mid1, end);
-        move(num - 2, mid2, end);
-        move(num - 3, mid3, end);
-        move(num - 4, mid4, end);
-        move(num - 5, mid5, end);
-        move(num - 6, mid6, end);
-        move(num - 7, mid7, end);
+        this.move(num - 7, start, mid7);
+        this.move(num - 6, start, mid6);
+        this.move(num - 5, start, mid5);
+        this.move(num - 4, start, mid4);
+        this.move(num - 3, start, mid3);
+        this.move(num - 2, start, mid2);
+        this.move(num - 1, start, mid1);
+        this.move(num, start, end);
+        this.move(num - 1, mid1, end);
+        this.move(num - 2, mid2, end);
+        this.move(num - 3, mid3, end);
+        this.move(num - 4, mid4, end);
+        this.move(num - 5, mid5, end);
+        this.move(num - 6, mid6, end);
+        this.move(num - 7, mid7, end);
         this.TenPegs(num - 8, mid8, start, mid1, mid2, mid3, mid4, mid5, mid6, mid7, end);
     }
 }
@@ -210,25 +214,23 @@ class HanoiVisualization {
                 throw "Error determining number of pegs";
         }
 
-        this.displayMovesInHtml(movesArr);
+        this.displayMovesInHtml(hanoi.movesArr);
 
-        this.fillQueue(movesArr);
+        this.fillQueue(hanoi.movesArr);
 
         this.setTotalMoves(this.queuedSteps[0].totalMoves);
 
-        movesArr = [];
+        hanoi.init();
     }
 
-    startAnimating = () => {
-        this.setAnimating(true);
-    }
+    startAnimating = () => this.setAnimating(true);
 
-    displayMovesInHtml = (arr) => {
+    displayMovesInHtml = (movesArr) => {
         answer.innerHTML = "";
-        arr.forEach((move, idx) => {
+        movesArr.forEach((move, idx) => {
             let moveNumber = idx + 1;
             let moveDiv = document.createElement("div");
-            moveDiv.innerHTML = `${moveNumber}) Move disk ${move.target} from ${getPegChar(move.from)} to ${getPegChar(move.to)}`;
+            moveDiv.innerHTML = `${moveNumber}) Move disk ${move.target} from ${options.getPegChar(move.from)} to ${options.getPegChar(move.to)}`;
             answer.appendChild(moveDiv);
         });
     }
@@ -243,7 +245,7 @@ class HanoiVisualization {
 
             ctx.font = `20px Arial`;
             ctx.fillStyle = "black";
-            let text = getPegChar(pegsPos[i].id);
+            let text = options.getPegChar(pegsPos[i].id);
             ctx.fillText(text, pegsPos[i].x2, pegsPos[i].y2 - 5);
         }
     }
@@ -373,7 +375,7 @@ class HanoiVisualization {
                 {
                     oldPeg: this.pegsArr[from],
                     newPeg: this.pegsArr[to],
-                    moveDesc: `Move disk ${target} from ${getPegChar(from)} to ${getPegChar(to)}`,
+                    moveDesc: `Move disk ${target} from ${options.getPegChar(from)} to ${options.getPegChar(to)}`,
                     curMove: i + 1,
                     totalMoves: movesArr.length
                 }
@@ -655,7 +657,7 @@ class Options {
 
         for (let i = 0; i < this.pegsAmount; i++) {
             let opt = document.createElement("option");
-            opt.text = getPegChar(i);
+            opt.text = this.getPegChar(i);
             opt.value = i;
 
             if (i === start) opt.selected = true;
@@ -666,7 +668,7 @@ class Options {
 
         for (let i = 0; i < this.pegsAmount; i++) {
             let opt = document.createElement("option");
-            opt.text = getPegChar(i);
+            opt.text = this.getPegChar(i);
             opt.value = i;
 
             if (i === start) opt.disabled = true;
@@ -675,6 +677,8 @@ class Options {
             endingPegInput.add(opt, null);
         }
     }
+
+    getPegChar = n => String.fromCharCode(65 + n);
 
     setAnimSpeed = (target) => {
         let ms = this.clampNumber(target);
