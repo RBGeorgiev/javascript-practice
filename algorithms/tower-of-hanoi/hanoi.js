@@ -4,6 +4,7 @@ let ctx = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 600;
 
+
 class Hanoi {
     constructor() {
         this.init();
@@ -259,7 +260,7 @@ class HanoiVisualization {
     }
 
     calculateDiskColor(val, n, i) {
-        return val - (150 / n) * i;
+        return val - (val / n * (i - 1));
     }
 
     drawDisk = (target, x, y, width, height) => {
@@ -695,10 +696,10 @@ class Options {
     }
 }
 
+
 const options = new Options;
 const hanoi = new Hanoi;
 const hanoiVis = new HanoiVisualization;
-
 
 let lastTime = timeout = 0, deltaTime;
 
