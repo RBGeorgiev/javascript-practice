@@ -42,7 +42,7 @@ export class CarControls {
 }
 
 export class GameOptions {
-    constructor(game) {
+    constructor(game, currentPlayer) {
         document.addEventListener('keydown', e => {
             switch (e.keyCode) {
                 case 13: // Enter
@@ -53,8 +53,12 @@ export class GameOptions {
                     game.paused = !game.paused
                     break;
 
-                case 82: // 'R'                    
-                    game.cars = [];
+                case 82: // 'R'    
+                    if (currentPlayer === 1) {
+                        game.cars = [];
+                    } else if (currentPlayer === 2) {
+                        game.init();
+                    }
                     break;
             }
         });

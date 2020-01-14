@@ -1,5 +1,6 @@
+import { currentPlayer } from '../../index.js';
 import Map from '../maps/map-loader.js';
-// import Car from './car.js';
+import Car from './car.js';
 import { GameOptions, CarControls } from './inputs.js';
 import Neat from "../nn/nn.js";
 import { drawCarsCheckbox, drawGatesCheckbox, numberOfCars } from '../constants.js';
@@ -14,60 +15,67 @@ export default class Game {
             y: 130,
         }
 
-        this.neat = new Neat;
-
         this.init();
-        this.map = new Map;
-        this.paused = false;
-        this.timer = 0;
-
-        new GameOptions(this);
     }
 
     init() {
-        this.neat.initNeat();
-        // this.car = new Car(this);
-        // new CarControls(this.car);
-        this.cars = this.neat.startEvaluation(this);
+        if (currentPlayer === 1) {
+            this.neat = new Neat;
+            this.timer = 0;
+            this.neat.initNeat();
+            this.cars = this.neat.startEvaluation(this);
+        } else if (currentPlayer === 2) {
+            this.car = new Car(this);
+            new CarControls(this.car);
+        }
+        this.map = new Map;
+        this.paused = false;
+        new GameOptions(this, currentPlayer);
     }
 
     update(deltaTime) {
         if (this.paused) return;
-        if (this.timer > 60000) {
-            this.cars = [];
-            console.log('timer ran out');
-        }
 
-        // this.car.update(deltaTime)
+        if (currentPlayer === 1) {
+            if (this.timer > 60000) {
+                this.cars = [];
+                console.log('timer ran out');
+            }
 
-        if (this.cars.length === 0) {
-            this.cars = this.neat.endEvaluation(this);
-            this.timer = 0;
-        }
+            if (this.cars.length === 0) {
+                this.cars = this.neat.endEvaluation(this);
+                this.timer = 0;
+            }
 
-        this.timer += deltaTime;
+            this.timer += deltaTime;
 
-        for (let i = this.cars.length - 1; i >= 0; i--) {
-            this.cars[i].update(deltaTime);
-            if (this.cars[i].crashed) this.cars.splice(i, 1);
+            for (let i = this.cars.length - 1; i >= 0; i--) {
+                this.cars[i].update(deltaTime);
+                if (this.cars[i].crashed) this.cars.splice(i, 1);
+            }
+        } else if (currentPlayer === 2) {
+            this.car.update(deltaTime);
         }
     }
 
     draw(ctx) {
         this.drawBackground(ctx);
 
-        // this.car.draw(ctx)
+        if (currentPlayer === 1) {
+            if (drawCarsCheckbox.checked) {
+                for (let i = 0; i < numberOfCars.value; i++) {
+                    if (this.cars[i]) this.cars[i].draw(ctx);
+                }
+            }
+        } else if (currentPlayer === 2) {
+            this.car.draw(ctx)
+        }
 
         this.map.drawTrack(ctx);
 
         if (drawGatesCheckbox.checked)
             this.map.drawGates(ctx);
 
-        if (drawCarsCheckbox.checked) {
-            for (let i = 0; i < numberOfCars.value; i++) {
-                if (this.cars[i]) this.cars[i].draw(ctx);
-            }
-        }
         if (this.paused) this.drawPauseScreen(ctx);
     }
 

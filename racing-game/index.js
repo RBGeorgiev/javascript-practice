@@ -36,6 +36,21 @@ numberOfCars.oninput = function () {
     numberOfCars.value = this.value;
 }
 
+export let currentPlayer = 1; // 1 = AI; 2 = Human;
+const setCurrentPlayer = val => {
+    currentPlayer = val;
+    game.init();
+}
+
+document.getElementsByName("currentPlayer")
+    .forEach(el =>
+        el.onclick = (e) => {
+            // remove focus from input after click
+            e.target.blur();
+            setCurrentPlayer(+e.target.value);
+        }
+    );
+
 // init canvas
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -76,7 +91,6 @@ window.requestAnimationFrame(gameLoop);
 mapCreatorCheckbox.onchange = () => {
     // remove focus from checkbox after click
     mapCreatorCheckbox.blur();
-
 
     if (!mapCreatorCheckbox.checked) {
         window.requestAnimationFrame(gameLoop);

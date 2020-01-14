@@ -1,6 +1,7 @@
 import lineCollision from './collision.js';
 import { drawAxisCheckbox, drawVerticesCheckbox, drawSidesCheckbox, drawSpriteCheckbox, drawSensorsCheckbox, drawSensorCollisionsCheckbox, carImage } from '../constants.js';
 import drawLines from '../draw-lines.js';
+import { currentPlayer } from '../../index.js';
 
 export default class Car {
     constructor(game, genome) {
@@ -27,8 +28,12 @@ export default class Car {
         this.rotate = 0;
         this.moving = 0;
         this.crashed = false;
+        this.lastGatePassed = 0;
+        this.lap = 0
 
-        this.initBrain(genome);
+        if (currentPlayer === 1) {
+            this.initBrain(genome);
+        }
     }
 
     positionCar() {
@@ -47,8 +52,6 @@ export default class Car {
         this.sensorDistToCol = [];
 
         this.timeImmobile = 0;
-        this.lastGatePassed = 0;
-        this.lap = 0
 
         this.brain = genome;
         this.brain.score = 0;
@@ -56,6 +59,8 @@ export default class Car {
         this.brain.inputs = [];
         this.brain.outputs = this.brain.activate(this.brain.inputs);
     }
+
+    setBrainScore = score => this.brain.score = score;
 
     getInputs() {
         let ans = []
@@ -337,9 +342,11 @@ export default class Car {
         (this.rotate !== 0) ? this.timeSpinning += deltaTime : this.timeSpinning = 0;
 
         // if immobile or spinning for too long crash the car and give lower score
-        if (this.timeImmobile > 1000 || this.timeSpinning > 3000) {
-            this.brain.score = this.lastGatePassed * 1000 * this.lap;
-            this.crashed = true;
+        if (currentPlayer === 1) {
+            if (this.timeImmobile > 1000 || this.timeSpinning > 3000) {
+                this.brain.score = this.lastGatePassed * 1000 * this.lap;
+                this.crashed = true;
+            }
         }
 
         // set to 0 if car is immobile to stop it from turning in place
@@ -361,24 +368,26 @@ export default class Car {
         this.carGatesCollision(map.gates);
 
         // inputs and outputs for neural network
-        this.getInputs();
-        this.getOutputs()
+        if (currentPlayer === 1) {
+            this.getInputs();
+            this.getOutputs()
 
-        // the faster the car is moving the bigger score it will get
-        this.brain.score += this.speed / 4;
+            // the faster the car is moving the bigger score it will get
+            this.brain.score += this.speed / 4;
 
-        // move based on neural network outputs
-        if (this.brain.outputs[0] < 0)
-            this.stopMoving();
-        if (this.brain.outputs[0] > 0)
-            this.moveForward();
+            // move based on neural network outputs
+            if (this.brain.outputs[0] < 0)
+                this.stopMoving();
+            if (this.brain.outputs[0] > 0)
+                this.moveForward();
 
-        if (this.brain.outputs[1] < -0.6)
-            this.stopTurning();
-        if (this.brain.outputs[1] > -0.6 && this.brain.outputs[0] < 0.3)
-            this.turnRight();
-        if (this.brain.outputs[1] > 0.3)
-            this.turnLeft();
+            if (this.brain.outputs[1] < -0.6)
+                this.stopTurning();
+            if (this.brain.outputs[1] > -0.6 && this.brain.outputs[0] < 0.3)
+                this.turnRight();
+            if (this.brain.outputs[1] > 0.3)
+                this.turnLeft();
+        }
     }
 
     applyAcc() {
@@ -402,7 +411,8 @@ export default class Car {
 
             if (x < 0 || x > gameWidth ||
                 y < 0 || y > gameHeight) {
-                this.brain.score = 0;
+                let score = 0;
+                this.setBrainScore(score);
                 this.crashed = true;
             }
         }
@@ -424,22 +434,30 @@ export default class Car {
                     gates[j].y2,
                 )
                 if (collide) {
-                    // debugger;
                     const id = gates[j].id;
                     if (this.lastGatePassed === id || this.lastGatePassed - (this.lap * (gates.length - 1)) === id) return;
                     if (this.lastGatePassed - (this.lap * (gates.length - 1)) === id - 1) {
                         // if passing gates in order      
                         this.lastGatePassed++;
-                        this.brain.score += 1000;
+                        if (currentPlayer === 1) {
+                            let score = this.brain.score + 1000;
+                            this.setBrainScore(score);
+                        }
 
                         // if passing through last gate
                         if (gates[gates.length - 1].id === this.lastGatePassed) {
                             this.lap++;
-                            this.brain.score += 5000;
+                            if (currentPlayer === 1) {
+                                let score = this.brain.score + 5000;
+                                this.setBrainScore(score);
+                            }
                             this.game.timer = 0;
                         }
                     } else {
-                        this.brain.score = 0;
+                        if (currentPlayer === 1) {
+                            let score = 0;
+                            this.setBrainScore(score);
+                        }
                         this.crashed = true;
                     }
                 }
