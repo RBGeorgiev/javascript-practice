@@ -254,8 +254,8 @@ class HanoiVisualization {
     getDiskColor = (i) => {
         let n = options.diskAmount;
         let red = (options.redGradient) ? this.calculateDiskColor(options.redVal, n, i) : options.redVal;
-        let green = (options.greenGradient) ? this.calculateDiskColor(options.greenVal, n, i) : options.greenVal;;
-        let blue = (options.blueGradient) ? this.calculateDiskColor(options.blueVal, n, i) : options.blueVal;;
+        let green = (options.greenGradient) ? this.calculateDiskColor(options.greenVal, n, i) : options.greenVal;
+        let blue = (options.blueGradient) ? this.calculateDiskColor(options.blueVal, n, i) : options.blueVal;
         return `rgb(${red}, ${green}, ${blue})`;
     }
 
@@ -587,8 +587,8 @@ class Options {
             let num = this.clampNumber(e.target);
             this.pegsAmount = pegsAmountInput.value = num;
             this.populateTargetPegsInputs();
-            this.startingPeg = +startingPegInput.value;;
-            this.endingPeg = +endingPegInput.value;;
+            this.startingPeg = +startingPegInput.value;
+            this.endingPeg = +endingPegInput.value;
             hanoiVis.init();
         }
 
@@ -633,6 +633,7 @@ class Options {
             this.paused = bool;
             nextStepBtn.disabled = !bool;
             prevStepBtn.disabled = !bool;
+            fullAnimationCheckbox.disabled = bool;
             fullAnimationCheckbox.checked = !bool;
             fullAnimationCheckbox.onchange();
         }
