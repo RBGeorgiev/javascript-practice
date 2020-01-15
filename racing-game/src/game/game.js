@@ -71,7 +71,8 @@ export default class Game {
             this.car.draw(ctx)
         }
 
-        this.map.drawTrack(ctx);
+        if (drawTrackCheckbox.checked)
+            this.map.drawTrack(ctx);
 
         if (drawGatesCheckbox.checked)
             this.map.drawGates(ctx);

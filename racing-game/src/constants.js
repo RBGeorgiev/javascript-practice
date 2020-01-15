@@ -3,6 +3,7 @@ const el = (el) => document.getElementById(el);
 export const
     drawAxisCheckbox = el("drawAxisCheckbox"),
     drawCarsCheckbox = el("drawCarsCheckbox"),
+    drawTrackCheckbox = el("drawTrackCheckbox"),
     drawGatesCheckbox = el("drawGatesCheckbox"),
     drawSensorsCheckbox = el("drawSensorsCheckbox"),
     drawSensorCollisionsCheckbox = el("drawSensorCollisionsCheckbox"),
