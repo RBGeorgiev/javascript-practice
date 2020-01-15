@@ -45,10 +45,6 @@ export class GameOptions {
     constructor(game, currentPlayer) {
         document.addEventListener('keydown', e => {
             switch (e.keyCode) {
-                case 13: // Enter
-                    game.init();
-                    break;
-
                 case 32: // Space
                     game.paused = !game.paused
                     break;

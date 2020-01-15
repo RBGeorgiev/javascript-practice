@@ -94,10 +94,10 @@ mapCreatorCheckbox.onchange = () => {
 
     if (!mapCreatorCheckbox.checked) {
         window.requestAnimationFrame(gameLoop);
-        for (let el of document.getElementsByClassName("controls")) el.style.display = "flex";
-        for (let el of document.getElementsByClassName("mapCreatorControls")) el.style.display = "none";
+        document.getElementById("controls").style.display = "block";
+        document.getElementById("mapCreatorControls").style.display = "none";
     } else {
-        for (let el of document.getElementsByClassName("controls")) el.style.display = "none";
-        for (let el of document.getElementsByClassName("mapCreatorControls")) el.style.display = "block";
+        document.getElementById("controls").style.display = "none";
+        document.getElementById("mapCreatorControls").style.display = "block";
     }
 }

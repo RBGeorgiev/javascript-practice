@@ -11,23 +11,45 @@
     <h1>Racing game</h1>
     <p id="genNumber">Current generation: 0</p>
     <main>
-        <div>
-            <label>
-                <input type="checkbox" id="mapCreatorCheckbox" name="mapCreatorCheckbox">
-                Open map creator
-            </label>
+
+        <div class="info">
+            <div>
+                <h2>Info</h2>
+            </div>
+            <div>
+                <h2>Controls</h2>
+                <ul>
+                    <li><b>Arrow keys</b> to move</li>
+                    <li><b>Space</b> to pause</li>
+                    <li><b>R</b> to restart/load next generation</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="controls">
-            <div>
+        <canvas id="gameCanvas"></canvas>
+
+        <div class="options">
+            <h2>Options</h2>
+            <div id="mapCreatorDiv">
                 <label>
-                    <input type="checkbox" id="drawCarsCheckbox" name="drawCarsCheckbox" checked>
-                    Draw cars:
+                    <input type="checkbox" id="mapCreatorCheckbox" name="mapCreatorCheckbox">
+                    Open map creator
                 </label>
-                <span id="numberOfCarsVal"></span>
-                <input type="range" id="numberOfCars" min="1" max="150" value="150">
+            </div>
+
+            <div id="controls">
+                <div>Player:
+                    <label> <input type="radio" name="currentPlayer" value="1" checked>AI </label>
+                    <label> <input type="radio" name="currentPlayer" value="2">Human </label>
+                </div>
+
                 <div>
-                    (
+                    <label>
+                        <input type="checkbox" id="drawCarsCheckbox" name="drawCarsCheckbox" checked>
+                        Draw cars: <span id="numberOfCarsVal"></span>
+                    </label>
+                    <input type="range" id="numberOfCars" min="1" max="150" value="150">
+
                     <label>
                         <input type="checkbox" id="drawSpriteCheckbox" name="drawSpriteCheckbox" checked>
                         Draw sprite
@@ -52,69 +74,63 @@
                         <input type="checkbox" id="drawSensorCollisionsCheckbox" name="drawSensorCollisionsCheckbox">
                         Draw sensor collisions
                     </label>
-                    )
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="drawTrackCheckbox" name="drawTrackCheckbox" checked>
+                        Draw track
+                    </label>
+                    <label>
+                        <input type="checkbox" id="drawGatesCheckbox" name="drawGatesCheckbox">
+                        Draw gates
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Game Speed: <span id="gameSpeedVal"></span>
+                    </label>
+                    <input type="range" min="1" max="5" value="1" class="slider" id="gameSpeed">
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="useTrainedCheckbox" name="useTrainedCheckbox">
+                        Use previously trained population (~1000 generations)
+                    </label>
+                </div>
+
+                <div>
+                    <a id="dlPrevGen" class="btn">Download previous generation</a>
+                    <a id="dlFittest" class="btn">Download fittest from all generations</a>
                 </div>
             </div>
 
-            <div>
-                <label>
-                    <input type="checkbox" id="drawTrackCheckbox" name="drawTrackCheckbox" checked>
-                    Draw track
-                </label>
-                <label>
-                    <input type="checkbox" id="drawGatesCheckbox" name="drawGatesCheckbox">
-                    Draw gates
-                </label>
-            </div>
+            <div id="mapCreatorControls">
+                <div>
+                    <label>
+                        <input type="radio" id="r1" name="mapCreatorTarget" value="outer" checked="checked"> Outer Lines
+                    </label>
+                    <label>
+                        <input type="radio" id="r2" name="mapCreatorTarget" value="inner"> Inner Lines
+                    </label>
+                    <label>
+                        <input type="radio" id="r3" name="mapCreatorTarget" value="gates"> Gates
+                    </label>
+                </div>
 
-            <div>
-                <label>
-                    <input type="checkbox" id="useTrainedCheckbox" name="useTrainedCheckbox">
-                    Use previously trained population
-                </label>
-            </div>
+                <div>
+                    <p>Name can only include letters, numbers and underscore</p>
+                    <input type="text" id="dlMapName" value="map_2" maxlength="16">
+                    <a id="dlMap" class="btn">Download map</a>
+                </div>
 
-            <div>Player:
-                <label> <input type="radio" name="currentPlayer" value="1" checked>AI </label>
-                <label> <input type="radio" name="currentPlayer" value="2">Human </label>
-            </div>
-        </div>
-
-        <div class="mapCreatorControls">
-            <div>
-                <label>
-                    <input type="radio" id="r1" name="mapCreatorTarget" value="outer" checked="checked"> Outer Lines
-                </label>
-                <label>
-                    <input type="radio" id="r2" name="mapCreatorTarget" value="inner"> Inner Lines
-                </label>
-                <label>
-                    <input type="radio" id="r3" name="mapCreatorTarget" value="gates"> Gates
-                </label>
-            </div>
-        </div>
-
-
-        <canvas id="gameCanvas"></canvas>
-
-        <div class="controls">
-            <p>Space to pause</p>
-            <p>R to restart/load next generation</p>
-            <div>
-                <label>
-                    Game Speed: <span id="gameSpeedVal"></span>
-                    <input type="range" min="1" max="10" value="1" class="slider" id="gameSpeed">
-                </label>
-            </div>
-            <a id="dlPrevGen" class="btn">Download previous generation</a>
-            <a id="dlFittest" class="btn">Download fittest from all generations</a>
-        </div>
-
-        <div class="mapCreatorControls">
-            <div>
-                <p>Name can only include letters, numbers and underscore</p>
-                <input type="text" id="dlMapName" value="map_2" maxlength="16">
-                <a id="dlMap" class="btn">Download map</a>
+                <p>
+                    A bare-bones map creator I made so I don't have to make maps by hand. Not very useful and basically
+                    no functionality, but I decided to include it anyway. The red dot is the starting position of the
+                    car.
+                </p>
             </div>
         </div>
     </main>
