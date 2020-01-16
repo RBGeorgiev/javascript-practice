@@ -9,7 +9,7 @@ main {
     grid-template-columns: 1fr 2fr 1fr;
     border-top: 2px black solid;
     border-bottom: 2px black solid;
-    user-select: none;
+    height: 720px;
 }
 
 canvas {
@@ -17,18 +17,38 @@ canvas {
     border-Right: 1px black solid;
 }
 
-.info {
-    background: lightblue;
-    user-select: text;
-}
-
-.options {
-    padding: 0 15px;
-}
-
 h2 {
     margin: -5px;
     margin-top: 3px;
+    text-align: center;
+}
+
+.info {
+    background: lightyellow;
+    padding: 0 15px;
+    overflow: auto;
+}
+
+.info>* {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    padding: 0 15px;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+p {
+    margin: 0.4em 0;
+}
+
+.options {
+    background: lavender;
+    padding: 0 15px;
+    user-select: none;
 }
 
 #mapCreatorDiv {
