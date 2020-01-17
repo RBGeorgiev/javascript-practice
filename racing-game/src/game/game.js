@@ -61,6 +61,9 @@ export default class Game {
     draw(ctx) {
         this.drawBackground(ctx);
 
+        if (drawTrackCheckbox.checked)
+            this.map.drawTrack(ctx);
+
         if (currentPlayer === 1) {
             if (drawCarsCheckbox.checked) {
                 for (let i = 0; i < numberOfCars.value; i++) {
@@ -68,11 +71,11 @@ export default class Game {
                 }
             }
         } else if (currentPlayer === 2) {
-            this.car.draw(ctx)
+            this.car.draw(ctx);
+            if (this.car.crashed) {
+                this.drawCrashedScreen(ctx);
+            }
         }
-
-        if (drawTrackCheckbox.checked)
-            this.map.drawTrack(ctx);
 
         if (drawGatesCheckbox.checked)
             this.map.drawGates(ctx);
@@ -94,5 +97,17 @@ export default class Game {
         ctx.font = "125px Arial";
         ctx.textAlign = "center";
         ctx.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
+    }
+
+    drawCrashedScreen(ctx) {
+        let fontSize = 90;
+        ctx.fillStyle = "rgba(155,0,0,0.4)"
+        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `${fontSize}px Arial`;
+        ctx.textAlign = "center";
+        ctx.fillText("Crashed!", this.gameWidth / 2, this.gameHeight / 2 - fontSize / 2);
+        ctx.fillText("Press R to restart", this.gameWidth / 2, this.gameHeight / 2 + fontSize / 2);
     }
 }
