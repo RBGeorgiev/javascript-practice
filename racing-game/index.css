@@ -68,6 +68,15 @@ p {
     display: none;
 }
 
+#mapCreatorControls>* {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: start;
+    padding: 15px;
+    border-top: 2px black solid;
+}
+
 .btn {
     display: flex;
     justify-content: center;
