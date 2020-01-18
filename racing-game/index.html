@@ -26,7 +26,8 @@
                 <p>
                     This racing game was created with the intent to train a Neural Network(NN) on it and not for humans
                     to play and enjoy. Because of this the controls are challenging by design, since I found it
-                    interesting to see how the AI would deal with difficult controls.
+                    interesting to see how the AI would deal with difficult controls. It is possible to try the game out
+                    by switching the player option on the right to 'Human'.
                 </p>
                 <p>
                     The NN library used was <a href="https://wagenaartje.github.io/neataptic/"
@@ -38,18 +39,13 @@
                     Each individual car is aware of the directional controls, and can "see" the distance to the walls of
                     the track through 9 sensors. From each generation the fittest (highest score) individuals, along
                     with a small selections of random individuals and mutations, are chosen to create the next
-                    generation. Each individual aims to maximize it's fitness score.
+                    generation. Each individual car aims to maximize it's fitness score.
                 </p>
                 <p>
                     The AI is rewarded based on it's speed and how many hidden "gates" it can pass through. The AI is
                     not aware of the position of the gates and is punished for going backwards and spinning in place,
                     which it loves to do. The current trained population is not perfect by any means and it took around
                     1000 generations to complete 1 lap around the track.
-                </p>
-                <p>
-                    It is possible to try the game out by switching the player option on the right to 'Human'. Also it
-                    is possible to disable the sprite of the car, visuals of the track and enable 'sensor collisions'
-                    for the true AI experience.
                 </p>
             </div>
         </div>
@@ -66,6 +62,13 @@
             </div>
 
             <div id="controls">
+                <div>
+                    <label>
+                        <input type="checkbox" id="useTrainedCheckbox" name="useTrainedCheckbox">
+                        Use previously trained population (~1000 generations)
+                    </label>
+                </div>
+
                 <div>Player:
                     <label> <input type="radio" name="currentPlayer" value="1" checked>AI </label>
                     <label> <input type="radio" name="currentPlayer" value="2">Human </label>
@@ -120,13 +123,6 @@
                         Game Speed: <span id="gameSpeedVal"></span>
                     </label>
                     <input type="range" min="1" max="5" value="1" class="slider" id="gameSpeed">
-                </div>
-
-                <div>
-                    <label>
-                        <input type="checkbox" id="useTrainedCheckbox" name="useTrainedCheckbox">
-                        Use previously trained population (~1000 generations)
-                    </label>
                 </div>
 
                 <div>
