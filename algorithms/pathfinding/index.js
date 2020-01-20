@@ -10,7 +10,7 @@ class TileMap {
         this.rows = 50;
         this.tileSize = 16;
         this.tilemap = [];
-        this.initTileMap()
+        this.initTileMap();
     }
 
     getTile = (x, y) => {
@@ -27,10 +27,10 @@ class TileMap {
         }
     }
 
-    drawTile = (x, y, size) => {
+    drawTile = (x, y, size, color) => {
         ctx.beginPath();
         ctx.strokeStyle = "grey";
-        ctx.fillStyle = "white";
+        ctx.fillStyle = (color === 1) ? "green" : "white";
         ctx.lineWidth = 1;
         ctx.rect(x, y, size, size);
         ctx.stroke();
@@ -43,8 +43,16 @@ class TileMap {
             for (let y = 0; y < this.tilemap[x].length; y++) {
                 let xPos = size * x;
                 let yPos = size * y;
-                this.drawTile(xPos, yPos, size);
+                let color = this.getTile(x, y);
+                this.drawTile(xPos, yPos, size, color);
             }
+        }
+    }
+
+    getTileFromCoordinates = (x, y) => {
+        return {
+            x: Math.floor(x / this.tileSize),
+            y: Math.floor(y / this.tileSize)
         }
     }
 }
@@ -53,3 +61,4 @@ let tilemap = new TileMap;
 
 tilemap.drawAllTiles();
 
+canvas.addEventListener('click', (e) => tilemap.getTileFromCoordinates(e.offsetX, e.offsetY));
