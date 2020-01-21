@@ -105,7 +105,44 @@ class TileMap {
     }
 }
 
+class Node {
+    constructor(x, y, parent = null, isEnd = false) {
+        this.x = x;
+        this.y = y;
+        this.parent = parent;
+        this.isEnd = isEnd;
+    }
+}
+
+class AStar {
+    constructor(tilemap) {
+        this.tilemap = tilemap;
+        this.startNode = null;
+        this.endNode = null;
+        this.openList = {};
+        this.closedList = {};
+
+        this.setStartNode(5, 3);
+        this.setEndNode(65, 4);
+    }
+
+    setStartNode = (x, y) => {
+        this.startNode = new Node(x, y);
+        this.tilemap.setTile(x, y, TILE_TYPES.START);
+    }
+
+    setEndNode = (x, y) => {
+        this.endNode = new Node(x, y, null, true);
+        this.tilemap.setTile(x, y, TILE_TYPES.END);
+    }
+
+    getKey = (x, y) => {
+        return `x${x}y${y}`;
+    }
+}
+
 let tilemap = new TileMap;
+let aStar = new AStar(tilemap);
 
 tilemap.drawAllTiles();
 
