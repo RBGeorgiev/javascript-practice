@@ -22,29 +22,57 @@ Object.freeze(NODE_TYPES);
 
 
 class Node {
-    constructor(type = NODE_TYPES.EMPTY, isEnd = false) {
+    constructor(x, y, type = NODE_TYPES.EMPTY, isEnd = false) {
+        this.x = x;
+        this.y = y;
         this.parent = null;
         this.type = type;
         this.isEnd = isEnd;
+        this.gCost;
+        this.hCost;
     }
+    getFCost = () => this.gCost + this.hCost;
 }
 
 class Grid {
     constructor() {
-        this.columns = 100;
-        this.rows = 50;
-        this.gridSize = 16;
+        this.gridSizeX = 100;
+        this.gridSizeY = 50;
+        this.nodeSize = 16;
         this.grid = [];
         this.initGrid();
     }
 
     initGrid = () => {
-        for (let x = 0; x < this.columns; x++) {
+        for (let x = 0; x < this.gridSizeX; x++) {
             this.grid.push([]);
-            for (let y = 0; y < this.rows; y++) {
-                this.grid[x][y] = new Node;
+            for (let y = 0; y < this.gridSizeY; y++) {
+                this.grid[x][y] = new Node(x, y);
             }
         }
+    }
+
+    getNeighbors = (node) => {
+        let neighbors = [];
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (x === 0 & y === 0) continue;
+
+                let adjX = node.x + x;
+                let adjY = node.y + y;
+
+                if (
+                    adjX >= 0 || adjX < this.gridSizeX ||
+                    adjY >= 0 || adjY < this.gridSizeY
+                ) {
+                    neighbors.push(
+                        this.grid[adjX][adjY]
+                    );
+                }
+            }
+        }
+
+        return neighbors;
     }
 
     getNode = (x, y) => {
@@ -68,7 +96,7 @@ class Grid {
     }
 
     drawAllNodes = () => {
-        let size = this.gridSize;
+        let size = this.nodeSize;
         for (let x = 0; x < this.grid.length; x++) {
             for (let y = 0; y < this.grid[x].length; y++) {
                 let xPos = size * x;
@@ -86,8 +114,8 @@ class Grid {
 
     getNodeFromCoordinates = (x, y) => {
         return {
-            x: Math.floor(x / this.gridSize),
-            y: Math.floor(y / this.gridSize)
+            x: Math.floor(x / this.nodeSize),
+            y: Math.floor(y / this.nodeSize)
         }
     }
 }
@@ -97,12 +125,8 @@ class AStar {
         this.grid = grid;
         this.startNode = null;
         this.endNode = null;
-        this.openList = {};
-        this.closedList = {};
-    }
-
-    getKey = (x, y) => {
-        return `x${x}y${y}`;
+        this.openList = [];
+        this.closedList = [];
     }
 }
 
