@@ -54,6 +54,7 @@ class Grid {
 
     getNeighbors = (node) => {
         let neighbors = [];
+
         for (let x = -1; x <= 1; x++) {
             for (let y = -1; y <= 1; y++) {
                 if (x === 0 & y === 0) continue;
@@ -127,6 +128,16 @@ class AStar {
         this.endNode = null;
         this.openList = [];
         this.closedList = [];
+    }
+
+    calcCost = (nodeA, nodeB) => {
+        let distX = Math.abs(nodeA.x - nodeB.x);
+        let distY = Math.abs(nodeA.y - nodeB.y);
+
+        if (distX > distY) {
+            return 14 * distY + 10 * (distX - distY);
+        }
+        return 14 * distX + 10 * (distY - distX);
     }
 }
 
