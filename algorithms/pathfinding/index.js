@@ -139,6 +139,31 @@ class AStar {
         }
         return 14 * distX + 10 * (distY - distX);
     }
+
+    findInsertionIdx = (node) => {
+        let target = node.getFCost();
+        let openList = this.openList;
+
+        if (target <= openList[0].getFCost() || openList.length === 0) return 0;
+        if (target >= openList[openList.length - 1].getFCost()) return openList.length;
+
+        let l = 0;
+        let r = openList.length - 1;
+
+        while (l <= r) {
+            let midIdx = Math.floor(l + (r - l) / 2);
+            let cur = openList[midIdx].getFCost();
+            let adj = openList[midIdx - 1].getFCost();
+
+            if (cur >= target && adj <= target) {
+                return midIdx;
+            } else if (cur < target) {
+                l = midIdx + 1;
+            } else {
+                r = midIdx - 1;
+            }
+        }
+    }
 }
 
 let grid = new Grid;
