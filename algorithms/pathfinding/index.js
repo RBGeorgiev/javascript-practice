@@ -127,7 +127,7 @@ class AStar {
         this.startNode = null;
         this.endNode = null;
         this.openList = [];
-        this.closedList = [];
+        this.closedList = {};
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -168,6 +168,20 @@ class AStar {
     addToOpenList = (node) => {
         let idx = this.findOpenListInsertIdx(node);
         this.openList.splice(idx, 0, node);
+    }
+
+    getKey = (x, y) => {
+        return `x${x}y${y}`;
+    }
+
+    addToClosedList = (node) => {
+        let key = this.getKey(node.x, node.y);
+        this.closedList[key] = node;
+    }
+
+    checkClosedList = (node) => {
+        let key = this.getKey(node.x, node.y);
+        return !!this.closedList[key];
     }
 }
 
