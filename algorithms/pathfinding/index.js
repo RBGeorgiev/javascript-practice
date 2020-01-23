@@ -114,10 +114,10 @@ class Grid {
     }
 
     getNodeFromCoordinates = (x, y) => {
-        return {
-            x: Math.floor(x / this.nodeSize),
-            y: Math.floor(y / this.nodeSize)
-        }
+        let gridX = Math.floor(x / this.nodeSize);
+        let gridY = Math.floor(y / this.nodeSize);
+
+        return this.grid[gridX][gridY];
     }
 }
 
@@ -140,11 +140,11 @@ class AStar {
         return 14 * distX + 10 * (distY - distX);
     }
 
-    findInsertionIdx = (node) => {
+    findOpenListInsertIdx = (node) => {
         let target = node.getFCost();
         let openList = this.openList;
 
-        if (target <= openList[0].getFCost() || openList.length === 0) return 0;
+        if (openList.length === 0 || target <= openList[0].getFCost()) return 0;
         if (target >= openList[openList.length - 1].getFCost()) return openList.length;
 
         let l = 0;
@@ -163,6 +163,11 @@ class AStar {
                 r = midIdx - 1;
             }
         }
+    }
+
+    addToOpenList = (node) => {
+        let idx = this.findOpenListInsertIdx(node);
+        this.openList.splice(idx, 0, node);
     }
 }
 
