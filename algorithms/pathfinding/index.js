@@ -26,14 +26,15 @@ Object.freeze(NODE_TYPES);
 
 
 class Node {
-    constructor(x, y, type = NODE_TYPES.EMPTY, isEnd = false) {
+    constructor(x, y, type = NODE_TYPES.EMPTY) {
         this.x = x;
         this.y = y;
-        this.parent = null;
         this.type = type;
-        this.isEnd = isEnd;
-        this.gCost;
-        this.hCost;
+        this.walkable = (type === NODE_TYPES.UNWALKABLE) ? false : true;
+        this.isEnd = false;
+        this.parent = null;
+        this.gCost = null;
+        this.hCost = null;
     }
     getFCost = () => this.gCost + this.hCost;
 }
@@ -127,7 +128,8 @@ class Grid {
 
 class AStar {
     constructor(grid) {
-        this.grid = grid;
+        this.gridClass = grid;
+        this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
         this.openList = [];
@@ -142,10 +144,52 @@ class AStar {
         node.type = NODE_TYPES.START;
         this.startNode = node;
     }
+
     setEndNode = (x, y) => {
         let node = this.grid[x][y];
         node.type = NODE_TYPES.END;
+        node.isEnd = true;
         this.endNode = node;
+    }
+
+    findPath = () => {
+        console.log('finding path')
+        this.addToOpenList(this.startNode);
+
+        while (this.openList.length > 0) {
+            let curNode = this.openList.shift();
+
+            if (curNode.isEnd) {
+                console.log("found end: ", curNode);
+                return true;
+            }
+
+            this.addToClosedList(curNode);
+
+            let neighbors = this.gridClass.getNeighbors(curNode);
+            for (let i = 0; i < neighbors.length; i++) {
+                let adjNode = neighbors[i];
+                if (adjNode.walkable && !this.checkClosedList(adjNode)) {
+                    if (adjNode.gCost === null && adjNode.hCost === null) {
+                        adjNode.gCost = this.calcCost(this.startNode, adjNode);
+                        adjNode.hCost = this.calcCost(this.endNode, adjNode);
+                        adjNode.parent = curNode;
+
+                        this.addToOpenList(adjNode);
+                    } else if (adjNode.gCost > this.calcCost(this.startNode, adjNode)
+                        ||
+                        adjNode.hCost > this.calcCost(this.endNode, adjNode)
+                    ) {
+                        adjNode.gCost = this.calcCost(this.startNode, adjNode);
+                        adjNode.hCost = this.calcCost(this.endNode, adjNode);
+                        adjNode.parent = curNode;
+                    }
+                }
+            }
+        }
+
+        console.log("Path doesn't exist");
+        return "Path doesn't exist";
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -169,7 +213,7 @@ class AStar {
         let r = openList.length - 1;
 
         while (l <= r) {
-            let midIdx = Math.floor(l + (r - l) / 2);
+            let midIdx = Math.ceil(l + (r - l) / 2);
             let cur = openList[midIdx].getFCost();
             let adj = openList[midIdx - 1].getFCost();
 
@@ -204,8 +248,9 @@ class AStar {
 }
 
 let grid = new Grid;
-let aStar = new AStar(grid.grid);
+let aStar = new AStar(grid);
 
 grid.drawAllNodes();
 
-canvas.addEventListener('click', (e) => grid.getNodeFromCoordinates(e.offsetX, e.offsetY));
+canvas.addEventListener('click', () => aStar.findPath());
+// canvas.addEventListener('click', (e) => grid.getNodeFromCoordinates(e.offsetX, e.offsetY));
