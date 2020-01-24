@@ -8,14 +8,18 @@ canvas.height = 800;
 const NODE_COLORS = {
     EMPTY: "white",
     UNWALKABLE: "black",
-    SWAMP: "burlywood"
+    SWAMP: "burlywood",
+    START: "green",
+    END: "red"
 }
 Object.freeze(NODE_COLORS);
 
 const NODE_TYPES = {
     EMPTY: "EMPTY",
     UNWALKABLE: 'UNWALKABLE',
-    SWAMP: "SWAMP"
+    SWAMP: "SWAMP",
+    START: "START",
+    END: "END"
 }
 Object.freeze(NODE_TYPES);
 // #endregion eNums
@@ -128,6 +132,20 @@ class AStar {
         this.endNode = null;
         this.openList = [];
         this.closedList = {};
+
+        this.setStartNode(5, 12);
+        this.setEndNode(46, 32);
+    }
+
+    setStartNode = (x, y) => {
+        let node = this.grid[x][y];
+        node.type = NODE_TYPES.START;
+        this.startNode = node;
+    }
+    setEndNode = (x, y) => {
+        let node = this.grid[x][y];
+        node.type = NODE_TYPES.END;
+        this.endNode = node;
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -186,7 +204,7 @@ class AStar {
 }
 
 let grid = new Grid;
-let aStar = new AStar(grid);
+let aStar = new AStar(grid.grid);
 
 grid.drawAllNodes();
 
