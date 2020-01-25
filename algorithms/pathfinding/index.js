@@ -11,7 +11,9 @@ const NODE_COLORS = {
     SWAMP: "burlywood",
     START: "green",
     END: "red",
-    PATH: "orange"
+    PATH: "orange",
+    OPEN_LIST: "lightblue",
+    CLOSED_LIST: "blue"
 }
 Object.freeze(NODE_COLORS);
 
@@ -21,7 +23,9 @@ const NODE_TYPES = {
     SWAMP: "SWAMP",
     START: "START",
     END: "END",
-    PATH: "PATH"
+    PATH: "PATH",
+    OPEN_LIST: "OPEN_LIST",
+    CLOSED_LIST: "CLOSED_LIST"
 }
 Object.freeze(NODE_TYPES);
 // #endregion eNums
@@ -70,8 +74,8 @@ class Grid {
                 let adjY = node.y + y;
 
                 if (
-                    adjX >= 0 || adjX < this.gridSizeX ||
-                    adjY >= 0 || adjY < this.gridSizeY
+                    adjX >= 0 && adjX < this.gridSizeX &&
+                    adjY >= 0 && adjY < this.gridSizeY
                 ) {
                     neighbors.push(
                         this.grid[adjX][adjY]
@@ -137,8 +141,8 @@ class AStar {
         this.openList = [];
         this.closedList = {};
 
-        this.setStartNode(5, 12);
-        this.setEndNode(46, 32);
+        this.setStartNode(55, 12);
+        this.setEndNode(4, 6);
     }
 
     setStartNode = (x, y) => {
@@ -162,7 +166,6 @@ class AStar {
             curNode.type = NODE_TYPES.PATH;
             path.unshift(curNode)
             if (curNode.parent.type === NODE_TYPES.START) {
-                this.gridClass.drawAllNodes();
                 return path;
             }
             curNode = curNode.parent;
@@ -170,30 +173,33 @@ class AStar {
     }
 
     findPath = () => {
-        console.log('finding path')
+        console.log('Searching for path')
+        let path = null;
         this.addToOpenList(this.startNode);
 
         while (this.openList.length > 0) {
             let curNode = this.openList.shift();
 
             if (curNode.isEnd) {
-                console.log("found end: ", curNode);
-                let path = this.getPath(curNode)
-                console.log(path)
-                return true;
+                path = this.getPath(curNode);
+                break;
             }
+
+            if (curNode.type !== NODE_TYPES.START && curNode.type !== NODE_TYPES.END) curNode.type = NODE_TYPES.CLOSED_LIST;
 
             this.addToClosedList(curNode);
 
             let neighbors = this.gridClass.getNeighbors(curNode);
             for (let i = 0; i < neighbors.length; i++) {
                 let adjNode = neighbors[i];
+
                 if (adjNode.walkable && !this.checkClosedList(adjNode)) {
                     if (adjNode.gCost === null && adjNode.hCost === null) {
                         adjNode.gCost = this.calcCost(this.startNode, adjNode);
                         adjNode.hCost = this.calcCost(this.endNode, adjNode);
                         adjNode.parent = curNode;
 
+                        if (adjNode.type !== NODE_TYPES.START && adjNode.type !== NODE_TYPES.END) adjNode.type = NODE_TYPES.OPEN_LIST;
                         this.addToOpenList(adjNode);
                     } else if (adjNode.gCost > this.calcCost(this.startNode, adjNode)
                         ||
@@ -207,8 +213,9 @@ class AStar {
             }
         }
 
-        console.log("Path doesn't exist");
-        return "Path doesn't exist";
+        this.gridClass.drawAllNodes();
+        (path === null) ? console.log("Path doesn't exist") : console.log("Found path: ", path);;
+        return (path === null) ? "Path doesn't exist" : path;
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -225,7 +232,7 @@ class AStar {
         let target = node.getFCost();
         let openList = this.openList;
 
-        if (openList.length === 0 || target <= openList[0].getFCost()) return 0;
+        if (openList.length === 0 || target <= openList[0].getFCost() && node.hCost < openList[0].hCost) return 0;
         if (target >= openList[openList.length - 1].getFCost()) return openList.length;
 
         let l = 0;
@@ -236,7 +243,10 @@ class AStar {
             let cur = openList[midIdx].getFCost();
             let adj = openList[midIdx - 1].getFCost();
 
-            if (cur >= target && adj <= target) {
+            if (cur > target && adj < target) {
+                return midIdx;
+            } else if (adj === target) {
+                midIdx = this.findIdxByHCost(midIdx, node);
                 return midIdx;
             } else if (cur < target) {
                 l = midIdx + 1;
@@ -244,6 +254,23 @@ class AStar {
                 r = midIdx - 1;
             }
         }
+    }
+
+    findIdxByHCost = (idx, node) => {
+        let fCost = node.getFCost();
+        let hCost = node.hCost;
+
+        while (idx >= 0 && this.openList[idx].getFCost() === fCost) {
+            idx--;
+        }
+
+        idx++;
+
+        while (idx < this.openList.length && this.openList[idx].hCost < hCost && this.openList[idx].getFCost() === fCost) {
+            idx++;
+        }
+
+        return idx;
     }
 
     addToOpenList = (node) => {
@@ -271,7 +298,7 @@ let aStar = new AStar(grid);
 
 grid.drawAllNodes();
 
-canvas.addEventListener('click', () => aStar.findPath());
+// canvas.addEventListener('click', () => aStar.findPath());
 canvas.addEventListener('click', (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     console.log(node)
