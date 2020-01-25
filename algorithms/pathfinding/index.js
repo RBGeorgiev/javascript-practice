@@ -10,7 +10,8 @@ const NODE_COLORS = {
     UNWALKABLE: "black",
     SWAMP: "burlywood",
     START: "green",
-    END: "red"
+    END: "red",
+    PATH: "orange"
 }
 Object.freeze(NODE_COLORS);
 
@@ -19,7 +20,8 @@ const NODE_TYPES = {
     UNWALKABLE: 'UNWALKABLE',
     SWAMP: "SWAMP",
     START: "START",
-    END: "END"
+    END: "END",
+    PATH: "PATH"
 }
 Object.freeze(NODE_TYPES);
 // #endregion eNums
@@ -152,6 +154,21 @@ class AStar {
         this.endNode = node;
     }
 
+    getPath = (endNode) => {
+        let path = [];
+        let curNode = endNode.parent;
+
+        while (true) {
+            curNode.type = NODE_TYPES.PATH;
+            path.unshift(curNode)
+            if (curNode.parent.type === NODE_TYPES.START) {
+                this.gridClass.drawAllNodes();
+                return path;
+            }
+            curNode = curNode.parent;
+        }
+    }
+
     findPath = () => {
         console.log('finding path')
         this.addToOpenList(this.startNode);
@@ -161,6 +178,8 @@ class AStar {
 
             if (curNode.isEnd) {
                 console.log("found end: ", curNode);
+                let path = this.getPath(curNode)
+                console.log(path)
                 return true;
             }
 
@@ -253,4 +272,9 @@ let aStar = new AStar(grid);
 grid.drawAllNodes();
 
 canvas.addEventListener('click', () => aStar.findPath());
+canvas.addEventListener('click', (e) => {
+    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    console.log(node)
+    aStar.findPath()
+});
 // canvas.addEventListener('click', (e) => grid.getNodeFromCoordinates(e.offsetX, e.offsetY));
