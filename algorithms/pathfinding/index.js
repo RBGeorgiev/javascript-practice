@@ -141,8 +141,8 @@ class AStar {
         this.openList = [];
         this.closedList = {};
 
-        this.setStartNode(55, 12);
-        this.setEndNode(4, 6);
+        this.setStartNode(0, 0);
+        this.setEndNode(99, 49);
     }
 
     setStartNode = (x, y) => {
@@ -160,12 +160,14 @@ class AStar {
 
     getPath = (endNode) => {
         let path = [];
-        let curNode = endNode.parent;
+        let curNode = endNode;
 
         while (true) {
-            curNode.type = NODE_TYPES.PATH;
-            path.unshift(curNode)
-            if (curNode.parent.type === NODE_TYPES.START) {
+            if (curNode.type !== NODE_TYPES.START && curNode.type !== NODE_TYPES.END) {
+                curNode.type = NODE_TYPES.PATH;
+            }
+            path.unshift(curNode);
+            if (curNode.type === NODE_TYPES.START) {
                 return path;
             }
             curNode = curNode.parent;
@@ -245,7 +247,7 @@ class AStar {
 
             if (cur > target && adj < target) {
                 return midIdx;
-            } else if (adj === target) {
+            } else if (cur === target || adj === target) {
                 midIdx = this.findIdxByHCost(midIdx, node);
                 return midIdx;
             } else if (cur < target) {
