@@ -36,13 +36,26 @@ class Node {
         this.x = x;
         this.y = y;
         this.type = type;
-        this.walkable = (type === NODE_TYPES.UNWALKABLE) ? false : true;
+        this.unwalkable = false;
         this.isEnd = false;
         this.parent = null;
         this.gCost = null;
         this.hCost = null;
     }
+
     getFCost = () => this.gCost + this.hCost;
+
+    setGCost = (val) => this.gCost = val;
+
+    setHCost = (val) => this.hCost = val;
+
+    setParent = (parent) => this.parent = parent;
+
+    setType = (type) => {
+        this.type = type;
+        this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
+        this.isEnd = !!(type === NODE_TYPES.END);
+    }
 }
 
 class Grid {
@@ -63,6 +76,8 @@ class Grid {
         }
     }
 
+    getNode = (x, y) => this.grid[x][y];
+
     getNeighbors = (node) => {
         let neighbors = [];
 
@@ -78,21 +93,13 @@ class Grid {
                     adjY >= 0 && adjY < this.gridSizeY
                 ) {
                     neighbors.push(
-                        this.grid[adjX][adjY]
+                        this.getNode(adjX, adjY)
                     );
                 }
             }
         }
 
         return neighbors;
-    }
-
-    getNode = (x, y) => {
-        return this.grid[x][y];
-    }
-
-    setNodeType = (x, y, type) => {
-        return this.grid[x][y].type = type;
     }
 
     drawNode = (x, y, size, color) => {
@@ -128,7 +135,7 @@ class Grid {
         let gridX = Math.floor(x / this.nodeSize);
         let gridY = Math.floor(y / this.nodeSize);
 
-        return this.grid[gridX][gridY];
+        return this.getNode(gridX, gridY);
     }
 }
 
@@ -141,35 +148,34 @@ class AStar {
         this.openList = [];
         this.closedList = {};
 
-        this.setStartNode(0, 0);
-        this.setEndNode(99, 49);
+        this.setStartNode(10, 12);
+        this.setEndNode(4, 2);
     }
 
     setStartNode = (x, y) => {
-        let node = this.grid[x][y];
-        node.type = NODE_TYPES.START;
+        let node = this.gridClass.getNode(x, y);
+        node.setType(NODE_TYPES.START);
         this.startNode = node;
     }
 
     setEndNode = (x, y) => {
-        let node = this.grid[x][y];
-        node.type = NODE_TYPES.END;
-        node.isEnd = true;
+        let node = this.gridClass.getNode(x, y);
+        node.setType(NODE_TYPES.END);
         this.endNode = node;
     }
 
     getPath = (endNode) => {
-        let path = [];
-        let curNode = endNode;
+        let path = [endNode];
+        let curNode = endNode.parent;
 
         while (true) {
-            if (curNode.type !== NODE_TYPES.START && curNode.type !== NODE_TYPES.END) {
-                curNode.type = NODE_TYPES.PATH;
-            }
             path.unshift(curNode);
+
             if (curNode.type === NODE_TYPES.START) {
                 return path;
             }
+
+            curNode.setType(NODE_TYPES.PATH);
             curNode = curNode.parent;
         }
     }
@@ -187,30 +193,24 @@ class AStar {
                 break;
             }
 
-            if (curNode.type !== NODE_TYPES.START && curNode.type !== NODE_TYPES.END) curNode.type = NODE_TYPES.CLOSED_LIST;
-
             this.addToClosedList(curNode);
 
             let neighbors = this.gridClass.getNeighbors(curNode);
+
             for (let i = 0; i < neighbors.length; i++) {
                 let adjNode = neighbors[i];
 
-                if (adjNode.walkable && !this.checkClosedList(adjNode)) {
-                    if (adjNode.gCost === null && adjNode.hCost === null) {
-                        adjNode.gCost = this.calcCost(this.startNode, adjNode);
-                        adjNode.hCost = this.calcCost(this.endNode, adjNode);
-                        adjNode.parent = curNode;
+                if (adjNode.unwalkable || this.checkClosedList(adjNode)) {
+                    continue;
+                }
 
-                        if (adjNode.type !== NODE_TYPES.START && adjNode.type !== NODE_TYPES.END) adjNode.type = NODE_TYPES.OPEN_LIST;
-                        this.addToOpenList(adjNode);
-                    } else if (adjNode.gCost > this.calcCost(this.startNode, adjNode)
-                        ||
-                        adjNode.hCost > this.calcCost(this.endNode, adjNode)
-                    ) {
-                        adjNode.gCost = this.calcCost(this.startNode, adjNode);
-                        adjNode.hCost = this.calcCost(this.endNode, adjNode);
-                        adjNode.parent = curNode;
-                    }
+                if (adjNode.gCost === null && adjNode.hCost === null) {
+                    this.setNodeCosts(adjNode);
+                    adjNode.setParent(curNode);
+                    this.addToOpenList(adjNode);
+                } else if (adjNode.hCost > this.calcCost(adjNode, this.endNode)) {
+                    this.setNodeCosts(adjNode);
+                    adjNode.setParent(curNode);
                 }
             }
         }
@@ -218,6 +218,13 @@ class AStar {
         this.gridClass.drawAllNodes();
         (path === null) ? console.log("Path doesn't exist") : console.log("Found path: ", path);;
         return (path === null) ? "Path doesn't exist" : path;
+    }
+
+    setNodeCosts = (node) => {
+        let gCost = this.calcCost(node, this.startNode);
+        let hCost = this.calcCost(node, this.endNode);
+        node.setGCost(gCost);
+        node.setHCost(hCost);
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -278,6 +285,10 @@ class AStar {
     addToOpenList = (node) => {
         let idx = this.findOpenListInsertIdx(node);
         this.openList.splice(idx, 0, node);
+        if (node.type !== NODE_TYPES.START &&
+            node.type !== NODE_TYPES.END) {
+            node.setType(NODE_TYPES.OPEN_LIST)
+        }
     }
 
     getKey = (x, y) => {
@@ -287,6 +298,10 @@ class AStar {
     addToClosedList = (node) => {
         let key = this.getKey(node.x, node.y);
         this.closedList[key] = node;
+        if (node.type !== NODE_TYPES.START &&
+            node.type !== NODE_TYPES.END) {
+            node.setType(NODE_TYPES.CLOSED_LIST)
+        }
     }
 
     checkClosedList = (node) => {
