@@ -13,7 +13,7 @@ const NODE_COLORS = {
     END: "red",
     PATH: "orange",
     OPEN_LIST: "lightblue",
-    CLOSED_LIST: "blue"
+    CLOSED_LIST: "cornflowerblue"
 }
 Object.freeze(NODE_COLORS);
 
@@ -56,6 +56,7 @@ class Node {
         this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
         this.isEnd = !!(type === NODE_TYPES.END);
     }
+
 }
 
 class Grid {
@@ -148,7 +149,19 @@ class AStar {
         this.openList = [];
         this.closedList = {};
 
-        this.setStartNode(10, 12);
+        this.grid[6][0].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[6][1].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[6][2].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[6][3].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[6][4].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[6][5].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[6][6].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[6][7].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[5][7].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[4][7].setType(NODE_TYPES.UNWALKABLE);
+        this.grid[3][7].setType(NODE_TYPES.UNWALKABLE);
+
+        this.setStartNode(12, 2);
         this.setEndNode(4, 2);
     }
 
@@ -204,13 +217,18 @@ class AStar {
                     continue;
                 }
 
-                if (adjNode.gCost === null && adjNode.hCost === null) {
-                    this.setNodeCosts(adjNode);
+                let newAdjNodeGCost = curNode.gCost + this.calcCost(curNode, adjNode);
+                let adjNotInOpenList = adjNode.gCost === null;
+
+                if (newAdjNodeGCost < adjNode.gCost || adjNotInOpenList) {
+                    let hCost = this.calcCost(adjNode, this.endNode);
+                    adjNode.setGCost(newAdjNodeGCost);
+                    adjNode.setHCost(hCost);
                     adjNode.setParent(curNode);
-                    this.addToOpenList(adjNode);
-                } else if (adjNode.hCost > this.calcCost(adjNode, this.endNode)) {
-                    this.setNodeCosts(adjNode);
-                    adjNode.setParent(curNode);
+
+                    if (adjNotInOpenList) {
+                        this.addToOpenList(adjNode);
+                    }
                 }
             }
         }
@@ -218,13 +236,6 @@ class AStar {
         this.gridClass.drawAllNodes();
         (path === null) ? console.log("Path doesn't exist") : console.log("Found path: ", path);;
         return (path === null) ? "Path doesn't exist" : path;
-    }
-
-    setNodeCosts = (node) => {
-        let gCost = this.calcCost(node, this.startNode);
-        let hCost = this.calcCost(node, this.endNode);
-        node.setGCost(gCost);
-        node.setHCost(hCost);
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -241,7 +252,8 @@ class AStar {
         let target = node.getFCost();
         let openList = this.openList;
 
-        if (openList.length === 0 || target <= openList[0].getFCost() && node.hCost < openList[0].hCost) return 0;
+        if (openList.length === 0 || target < openList[0].getFCost()) return 0;
+
         if (target >= openList[openList.length - 1].getFCost()) return openList.length;
 
         let l = 0;
