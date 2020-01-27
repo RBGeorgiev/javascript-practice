@@ -327,10 +327,20 @@ let aStar = new AStar(grid);
 
 grid.drawAllNodes();
 
-// canvas.addEventListener('click', () => aStar.findPath());
-canvas.addEventListener('click', (e) => {
+const setTypeOnMouseDown = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    console.log(node)
-    aStar.findPath()
+    if (node.type === NODE_TYPES.EMPTY) {
+        node.setType(NODE_TYPES.UNWALKABLE);
+        grid.drawAllNodes();
+    }
+}
+const handleMouseDown = () => canvas.addEventListener('mousemove', setTypeOnMouseDown);
+
+canvas.addEventListener('mousedown', (e) => { setTypeOnMouseDown(e); handleMouseDown(e) });
+canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', setTypeOnMouseDown));
+
+document.addEventListener('keydown', (e) => {
+    if (e.keyCode === 13 || e.keyCode === 32) {
+        aStar.findPath()
+    }
 });
-// canvas.addEventListener('click', (e) => grid.getNodeFromCoordinates(e.offsetX, e.offsetY));
