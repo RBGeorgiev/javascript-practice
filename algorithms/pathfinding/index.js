@@ -318,8 +318,12 @@ grid.drawAllNodes();
 
 const setTypeOnMouseDown = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    if (node.type === NODE_TYPES.EMPTY) {
+    if (node.type === NODE_TYPES.EMPTY && e.buttons === 1) {
         node.setType(NODE_TYPES.UNWALKABLE);
+        grid.drawNode(node.x, node.y);
+    }
+    if (node.type === NODE_TYPES.UNWALKABLE && e.buttons === 2) {
+        node.setType(NODE_TYPES.EMPTY);
         grid.drawNode(node.x, node.y);
     }
 }
