@@ -62,8 +62,8 @@ class Node {
 class Grid {
     constructor() {
         this.gridSizeX = 100;
-        this.gridSizeY = 50;
-        this.nodeSize = 16;
+        this.gridSizeY = this.gridSizeX / 2;
+        this.nodeSize = canvas.width / this.gridSizeX;
         this.grid = [];
         this.initGrid();
     }
@@ -103,12 +103,17 @@ class Grid {
         return neighbors;
     }
 
-    drawNode = (x, y, size, color) => {
+    drawNode = (x, y) => {
+        let size = this.nodeSize;
+        let xPos = size * x;
+        let yPos = size * y;
+        let color = this.getNodeColor(x, y);
+
         ctx.beginPath();
 
         ctx.lineWidth = 1;
         ctx.strokeStyle = "grey";
-        ctx.rect(x, y, size, size);
+        ctx.rect(xPos, yPos, size, size);
         ctx.stroke();
 
         ctx.fillStyle = color;
@@ -116,13 +121,9 @@ class Grid {
     }
 
     drawAllNodes = () => {
-        let size = this.nodeSize;
         for (let x = 0; x < this.grid.length; x++) {
             for (let y = 0; y < this.grid[x].length; y++) {
-                let xPos = size * x;
-                let yPos = size * y;
-                let color = this.getNodeColor(x, y);
-                this.drawNode(xPos, yPos, size, color);
+                this.drawNode(x, y);
             }
         }
     }
@@ -149,20 +150,8 @@ class AStar {
         this.openList = [];
         this.closedList = {};
 
-        this.grid[6][0].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[6][1].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[6][2].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[6][3].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[6][4].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[6][5].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[6][6].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[6][7].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[5][7].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[4][7].setType(NODE_TYPES.UNWALKABLE);
-        this.grid[3][7].setType(NODE_TYPES.UNWALKABLE);
-
-        this.setStartNode(12, 2);
-        this.setEndNode(4, 2);
+        this.setStartNode(2, 2);
+        this.setEndNode(4, 4);
     }
 
     setStartNode = (x, y) => {
@@ -331,7 +320,7 @@ const setTypeOnMouseDown = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.UNWALKABLE);
-        grid.drawAllNodes();
+        grid.drawNode(node.x, node.y);
     }
 }
 const handleMouseDown = () => canvas.addEventListener('mousemove', setTypeOnMouseDown);
@@ -341,6 +330,6 @@ canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove',
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
-        aStar.findPath()
+        aStar.findPath();
     }
 });
