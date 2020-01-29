@@ -323,6 +323,7 @@ const addUnwalkable = (e) => {
         grid.drawNode(node.x, node.y);
     }
 }
+
 const addEmpty = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     if (node.type === NODE_TYPES.UNWALKABLE) {
@@ -331,17 +332,59 @@ const addEmpty = (e) => {
     }
 }
 
+const dragStart = (e) => {
+    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    let oldStart = aStar.startNode;
+
+    if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
+        oldStart.setType(NODE_TYPES.EMPTY);
+        grid.drawNode(oldStart.x, oldStart.y);
+
+        aStar.setStartNode(node.x, node.y);
+        grid.drawNode(node.x, node.y);
+    }
+}
+
+const dragEnd = (e) => {
+    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    let oldEnd = aStar.endNode;
+
+    if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
+        oldEnd.setType(NODE_TYPES.EMPTY);
+        grid.drawNode(oldEnd.x, oldEnd.y);
+
+        aStar.setEndNode(node.x, node.y);
+        grid.drawNode(node.x, node.y);
+    }
+}
+
 const handleMouseDown = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     let listener;
-    if (node.type === NODE_TYPES.EMPTY) {
-        listener = addUnwalkable;
-        canvas.addEventListener('mousemove', addUnwalkable);
+    switch (node.type) {
+        case NODE_TYPES.EMPTY:
+            listener = addUnwalkable;
+            canvas.addEventListener('mousemove', addUnwalkable);
+            break;
+
+        case NODE_TYPES.UNWALKABLE:
+            listener = addEmpty;
+            canvas.addEventListener('mousemove', addEmpty);
+            break;
+
+        case NODE_TYPES.START:
+            listener = dragStart;
+            canvas.addEventListener('mousemove', dragStart);
+            break;
+
+        case NODE_TYPES.END:
+            listener = dragEnd;
+            canvas.addEventListener('mousemove', dragEnd);
+            break;
+        default:
+            console.error('Error determining node type');
     }
-    if (node.type === NODE_TYPES.UNWALKABLE) {
-        listener = addEmpty;
-        canvas.addEventListener('mousemove', addEmpty);
-    }
+
 
     canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', listener));
 }
