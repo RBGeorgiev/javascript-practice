@@ -137,6 +137,11 @@ class Grid {
         let gridX = Math.floor(x / this.nodeSize);
         let gridY = Math.floor(y / this.nodeSize);
 
+        if (gridX < 0 || gridX >= this.gridSizeX ||
+            gridY < 0 || gridY >= this.gridSizeY) {
+            return null;
+        }
+
         return this.getNode(gridX, gridY);
     }
 }
@@ -318,6 +323,7 @@ grid.drawAllNodes();
 
 const addUnwalkable = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.UNWALKABLE);
         grid.drawNode(node.x, node.y);
@@ -326,6 +332,7 @@ const addUnwalkable = (e) => {
 
 const addEmpty = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    if (node === null) return;
     if (node.type === NODE_TYPES.UNWALKABLE) {
         node.setType(NODE_TYPES.EMPTY);
         grid.drawNode(node.x, node.y);
@@ -335,7 +342,7 @@ const addEmpty = (e) => {
 const dragStart = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     let oldStart = aStar.startNode;
-
+    if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
         oldStart.setType(NODE_TYPES.EMPTY);
         grid.drawNode(oldStart.x, oldStart.y);
@@ -348,7 +355,7 @@ const dragStart = (e) => {
 const dragEnd = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     let oldEnd = aStar.endNode;
-
+    if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
         oldEnd.setType(NODE_TYPES.EMPTY);
         grid.drawNode(oldEnd.x, oldEnd.y);
@@ -361,6 +368,7 @@ const dragEnd = (e) => {
 const handleMouseDown = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     let listener;
+
     switch (node.type) {
         case NODE_TYPES.EMPTY:
             listener = addUnwalkable;
@@ -381,10 +389,10 @@ const handleMouseDown = (e) => {
             listener = dragEnd;
             canvas.addEventListener('mousemove', dragEnd);
             break;
+
         default:
             console.error('Error determining node type');
     }
-
 
     canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', listener));
 }
