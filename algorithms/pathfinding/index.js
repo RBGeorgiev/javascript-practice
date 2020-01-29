@@ -61,7 +61,7 @@ class Node {
 
 class Grid {
     constructor() {
-        this.gridSizeX = 100;
+        this.gridSizeX = 50;
         this.gridSizeY = this.gridSizeX / 2;
         this.nodeSize = canvas.width / this.gridSizeX;
         this.grid = [];
@@ -223,7 +223,7 @@ class AStar {
         }
 
         this.gridClass.drawAllNodes();
-        (path === null) ? console.log("Path doesn't exist") : console.log("Found path: ", path);;
+        (path === null) ? console.log("Path doesn't exist") : console.log("Found path: ", path);
         return (path === null) ? "Path doesn't exist" : path;
     }
 
@@ -316,21 +316,37 @@ let aStar = new AStar(grid);
 
 grid.drawAllNodes();
 
-const setTypeOnMouseDown = (e) => {
+const addUnwalkable = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    if (node.type === NODE_TYPES.EMPTY && e.buttons === 1) {
+    if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.UNWALKABLE);
         grid.drawNode(node.x, node.y);
     }
-    if (node.type === NODE_TYPES.UNWALKABLE && e.buttons === 2) {
+}
+const addEmpty = (e) => {
+    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    if (node.type === NODE_TYPES.UNWALKABLE) {
         node.setType(NODE_TYPES.EMPTY);
         grid.drawNode(node.x, node.y);
     }
 }
-const handleMouseDown = () => canvas.addEventListener('mousemove', setTypeOnMouseDown);
 
-canvas.addEventListener('mousedown', (e) => { setTypeOnMouseDown(e); handleMouseDown(e) });
-canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', setTypeOnMouseDown));
+const handleMouseDown = (e) => {
+    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    let listener;
+    if (node.type === NODE_TYPES.EMPTY) {
+        listener = addUnwalkable;
+        canvas.addEventListener('mousemove', addUnwalkable);
+    }
+    if (node.type === NODE_TYPES.UNWALKABLE) {
+        listener = addEmpty;
+        canvas.addEventListener('mousemove', addEmpty);
+    }
+
+    canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', listener));
+}
+
+canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
