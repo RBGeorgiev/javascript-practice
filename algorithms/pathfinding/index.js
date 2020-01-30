@@ -155,8 +155,8 @@ class AStar {
         this.openList = [];
         this.closedList = {};
 
-        this.setStartNode(2, 2);
-        this.setEndNode(4, 4);
+        this.setStartNode(10, 8);
+        this.setEndNode(15, 8);
     }
 
     setStartNode = (x, y) => {
@@ -187,6 +187,13 @@ class AStar {
         }
     }
 
+    isDiagonalBlocked = (curNode, adjNode) => {
+        let sideNodeX = this.gridClass.getNode(adjNode.x, curNode.y);
+        let sideNodeY = this.gridClass.getNode(curNode.x, adjNode.y);
+
+        return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
+    }
+
     findPath = () => {
         console.log('Searching for path')
         let path = null;
@@ -209,6 +216,11 @@ class AStar {
 
                 if (adjNode.unwalkable || this.checkClosedList(adjNode)) {
                     continue;
+                }
+
+                if (curNode.x - adjNode.x !== 0 && curNode.y - adjNode.y !== 0) {
+                    let blocked = this.isDiagonalBlocked(curNode, adjNode);
+                    if (blocked) continue;
                 }
 
                 let newAdjNodeGCost = curNode.gCost + this.calcCost(curNode, adjNode);
