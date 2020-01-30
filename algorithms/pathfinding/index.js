@@ -112,12 +112,12 @@ class Grid {
         ctx.beginPath();
 
         ctx.lineWidth = 1;
-        ctx.strokeStyle = "grey";
+        ctx.strokeStyle = "darkgray";
         ctx.rect(xPos, yPos, size, size);
-        ctx.stroke();
-
         ctx.fillStyle = color;
+
         ctx.fill();
+        ctx.stroke();
     }
 
     drawAllNodes = () => {
