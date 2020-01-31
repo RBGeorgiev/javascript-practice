@@ -36,6 +36,7 @@ class Node {
         this.x = x;
         this.y = y;
         this.type = type;
+        this.moveCost = 0;
         this.unwalkable = false;
         this.isEnd = false;
         this.parent = null;
@@ -53,6 +54,7 @@ class Node {
 
     setType = (type) => {
         this.type = type;
+        this.moveCost = (type === NODE_TYPES.SWAMP) ? 5 : 0;
         this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
         this.isEnd = !!(type === NODE_TYPES.END);
     }
@@ -223,8 +225,8 @@ class AStar {
                     if (blocked) continue;
                 }
 
-                let newAdjNodeGCost = curNode.gCost + this.calcCost(curNode, adjNode);
-                let adjNotInOpenList = adjNode.gCost === null;
+                let newAdjNodeGCost = curNode.gCost + this.calcCost(curNode, adjNode) + adjNode.moveCost;
+                let adjNotInOpenList = !!(adjNode.gCost === null);
 
                 if (newAdjNodeGCost < adjNode.gCost || adjNotInOpenList) {
                     let hCost = this.calcCost(adjNode, this.endNode);
@@ -345,8 +347,17 @@ const addUnwalkable = (e) => {
 const addEmpty = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     if (node === null) return;
-    if (node.type === NODE_TYPES.UNWALKABLE) {
+    if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
         node.setType(NODE_TYPES.EMPTY);
+        grid.drawNode(node.x, node.y);
+    }
+}
+
+const addSwamp = (e) => {
+    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+    if (node === null) return;
+    if (node.type === NODE_TYPES.EMPTY) {
+        node.setType(NODE_TYPES.SWAMP);
         grid.drawNode(node.x, node.y);
     }
 }
@@ -383,8 +394,13 @@ const handleMouseDown = (e) => {
 
     switch (node.type) {
         case NODE_TYPES.EMPTY:
-            listener = addUnwalkable;
-            canvas.addEventListener('mousemove', addUnwalkable);
+            if (e.buttons === 1) {
+                listener = addUnwalkable;
+                canvas.addEventListener('mousemove', addUnwalkable);
+            } else if (e.buttons === 2) {
+                listener = addUnwalkable;
+                canvas.addEventListener('mousemove', addSwamp);
+            }
             break;
 
         case NODE_TYPES.UNWALKABLE:
