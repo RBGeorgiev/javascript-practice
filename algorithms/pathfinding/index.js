@@ -1,6 +1,8 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
+canvas.oncontextmenu = () => false;
+
 canvas.width = 1600;
 canvas.height = 800;
 
@@ -307,7 +309,7 @@ class AStar {
         this.openList.splice(idx, 0, node);
         if (node.type !== NODE_TYPES.START &&
             node.type !== NODE_TYPES.END) {
-            node.setType(NODE_TYPES.OPEN_LIST)
+            // node.setType(NODE_TYPES.OPEN_LIST)
         }
     }
 
@@ -320,7 +322,7 @@ class AStar {
         this.closedList[key] = node;
         if (node.type !== NODE_TYPES.START &&
             node.type !== NODE_TYPES.END) {
-            node.setType(NODE_TYPES.CLOSED_LIST)
+            // node.setType(NODE_TYPES.CLOSED_LIST)
         }
     }
 
@@ -398,7 +400,7 @@ const handleMouseDown = (e) => {
                 listener = addUnwalkable;
                 canvas.addEventListener('mousemove', addUnwalkable);
             } else if (e.buttons === 2) {
-                listener = addUnwalkable;
+                listener = addSwamp;
                 canvas.addEventListener('mousemove', addSwamp);
             }
             break;
@@ -419,7 +421,8 @@ const handleMouseDown = (e) => {
             break;
 
         default:
-            console.error('Error determining node type');
+            listener = addEmpty;
+            canvas.addEventListener('mousemove', addEmpty);
     }
 
     canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', listener));
