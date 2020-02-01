@@ -129,23 +129,27 @@ class MinHeap {
         let element = this.heap[idx];
         let elemScore = this.scoreFunction(element);
 
-        while (true) {
-            let child2Idx = (idx + 1) * 2;
-            let child1Idx = child2Idx - 1;
+        let child1, child1Score, child1Idx,
+            child2, child2Score, child2Idx,
+            swapIdx;
 
-            let swapIdx = null;
+        while (true) {
+            child2Idx = (idx + 1) * 2;
+            child1Idx = child2Idx - 1;
+
+            swapIdx = null;
 
             if (child1Idx < length) {
-                let child1 = this.heap[child1Idx]
-                let child1Score = this.scoreFunction(child1);
+                child1 = this.heap[child1Idx]
+                child1Score = this.scoreFunction(child1);
 
                 if (child1Score < elemScore)
                     swapIdx = child1Idx;
             }
 
             if (child2Idx < length) {
-                let child2 = this.heap[child2Idx];
-                let child2Score = this.scoreFunction(child2);
+                child2 = this.heap[child2Idx];
+                child2Score = this.scoreFunction(child2);
                 if (child2Score < (swapIdx == null ? elemScore : child1Score))
                     swapIdx = child2Idx;
             }
@@ -257,7 +261,7 @@ class AStar {
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
-        this.openList = [];
+        this.openList = new MinHeap(this.scoreFunction);
         this.closedList = {};
 
         this.setStartNode(10, 8);
@@ -304,8 +308,8 @@ class AStar {
         let path = null;
         this.addToOpenList(this.startNode);
 
-        while (this.openList.length > 0) {
-            let curNode = this.openList.shift();
+        while (this.openList.size() > 0) {
+            let curNode = this.openList.popMin();
 
             if (curNode.isEnd) {
                 path = this.getPath(curNode);
@@ -359,58 +363,18 @@ class AStar {
         return 14 * distX + 10 * (distY - distX);
     }
 
-    findOpenListInsertIdx = (node) => {
-        let target = node.getFCost();
-        let openList = this.openList;
-
-        if (openList.length === 0 || target < openList[0].getFCost()) return 0;
-
-        if (target >= openList[openList.length - 1].getFCost()) return openList.length;
-
-        let l = 0;
-        let r = openList.length - 1;
-        let midIdx
-
-        while (l <= r) {
-            midIdx = Math.ceil(l + (r - l) / 2);
-            let cur = openList[midIdx].getFCost();
-
-            if (cur === target) {
-                midIdx = this.findIdxByHCost(midIdx, node);
-                return midIdx;
-            } else if (cur < target) {
-                l = midIdx + 1;
-            } else {
-                r = midIdx - 1;
-            }
-        }
-
-        return midIdx;
-    }
-
-    findIdxByHCost = (idx, node) => {
+    scoreFunction = (node) => {
         let fCost = node.getFCost();
         let hCost = node.hCost;
-
-        while (idx >= 0 && this.openList[idx].getFCost() === fCost) {
-            idx--;
-        }
-
-        idx++;
-
-        while (idx < this.openList.length && this.openList[idx].hCost < hCost && this.openList[idx].getFCost() === fCost) {
-            idx++;
-        }
-
-        return idx;
+        let score = +`${fCost}${hCost}`;
+        return score;
     }
 
     addToOpenList = (node) => {
-        let idx = this.findOpenListInsertIdx(node);
-        this.openList.splice(idx, 0, node);
+        this.openList.add(node);
         if (node.type !== NODE_TYPES.START &&
             node.type !== NODE_TYPES.END) {
-            // node.setType(NODE_TYPES.OPEN_LIST)
+            node.setType(NODE_TYPES.OPEN_LIST);
         }
     }
 
@@ -423,7 +387,7 @@ class AStar {
         this.closedList[key] = node;
         if (node.type !== NODE_TYPES.START &&
             node.type !== NODE_TYPES.END) {
-            // node.setType(NODE_TYPES.CLOSED_LIST)
+            node.setType(NODE_TYPES.CLOSED_LIST);
         }
     }
 
