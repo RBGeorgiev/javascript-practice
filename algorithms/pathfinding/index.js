@@ -63,6 +63,107 @@ class Node {
 
 }
 
+class MinHeap {
+    constructor(scoreFunction) {
+        this.heap = [];
+        this.scoreFunction = scoreFunction;
+    }
+
+    add = (el) => {
+        this.heap.push(el);
+        this.sortUp(this.heap.length - 1);
+    }
+
+    popMin = () => {
+        let result = this.heap[0];
+        let end = this.heap.pop();
+
+        if (this.heap.length > 0) {
+            this.heap[0] = end;
+            this.sortDown(0);
+        }
+
+        return result;
+    }
+
+    remove = (el) => {
+        let length = this.heap.length;
+
+        for (let i = 0; i < length; i++) {
+            if (this.heap[i] != el) continue;
+
+            let end = this.heap.pop();
+            // If the element popped was the element to remove (i.e. el to remove was the last el in heap)
+            if (i == length - 1) break;
+
+            // Else replace the removed element with the popped and sort
+            this.heap[i] = end;
+            this.bubbleUp(i);
+            this.sinkDown(i);
+            break;
+        }
+    }
+
+    size = () => this.heap.length;
+
+    sortUp = (idx) => {
+        let el = this.heap[idx];
+        let score = this.scoreFunction(el);
+
+        while (idx > 0) {
+            let parentIdx = Math.floor((idx + 1) / 2) - 1;
+            let parent = this.heap[parentIdx];
+
+            if (score >= this.scoreFunction(parent)) {
+                break;
+            }
+
+            this.heap[parentIdx] = el;
+            this.heap[idx] = parent;
+            idx = parentIdx;
+        }
+    }
+
+    sortDown = (idx) => {
+        let length = this.heap.length;
+        let element = this.heap[idx];
+        let elemScore = this.scoreFunction(element);
+
+        while (true) {
+            let child2Idx = (idx + 1) * 2;
+            let child1Idx = child2Idx - 1;
+
+            let swapIdx = null;
+
+            if (child1Idx < length) {
+                let child1 = this.heap[child1Idx]
+                let child1Score = this.scoreFunction(child1);
+
+                if (child1Score < elemScore)
+                    swapIdx = child1Idx;
+            }
+
+            if (child2Idx < length) {
+                let child2 = this.heap[child2Idx];
+                let child2Score = this.scoreFunction(child2);
+                if (child2Score < (swapIdx == null ? elemScore : child1Score))
+                    swapIdx = child2Idx;
+            }
+
+            if (swapIdx == null) break;
+
+            this.heap[idx] = this.heap[swapIdx];
+            this.heap[swapIdx] = element;
+            idx = swapIdx;
+        }
+
+    }
+
+    scoreFunction = () => {
+
+    }
+}
+
 class Grid {
     constructor() {
         this.gridSizeX = 50;
@@ -160,7 +261,7 @@ class AStar {
         this.closedList = {};
 
         this.setStartNode(10, 8);
-        this.setEndNode(15, 8);
+        this.setEndNode(23, 8);
     }
 
     setStartNode = (x, y) => {
@@ -268,15 +369,13 @@ class AStar {
 
         let l = 0;
         let r = openList.length - 1;
+        let midIdx
 
         while (l <= r) {
-            let midIdx = Math.ceil(l + (r - l) / 2);
+            midIdx = Math.ceil(l + (r - l) / 2);
             let cur = openList[midIdx].getFCost();
-            let adj = openList[midIdx - 1].getFCost();
 
-            if (cur > target && adj < target) {
-                return midIdx;
-            } else if (cur === target || adj === target) {
+            if (cur === target) {
                 midIdx = this.findIdxByHCost(midIdx, node);
                 return midIdx;
             } else if (cur < target) {
@@ -285,6 +384,8 @@ class AStar {
                 r = midIdx - 1;
             }
         }
+
+        return midIdx;
     }
 
     findIdxByHCost = (idx, node) => {
