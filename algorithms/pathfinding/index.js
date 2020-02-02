@@ -92,7 +92,7 @@ class MinHeap {
 
     remove = (idx) => {
         let end = this.heap.pop();
-        if (idx == length - 1) break;
+        if (idx == length - 1) return;
 
         this.heap[idx] = end;
         this.sortUp(i);
@@ -372,25 +372,13 @@ class AStar {
 
     scoreFunction = (node) => node.getFCost();
 
-    addToOpenList = (node) => {
-        this.openList.add(node);
-        if (node.type !== NODE_TYPES.START &&
-            node.type !== NODE_TYPES.END) {
-            node.setType(NODE_TYPES.OPEN_LIST);
-        }
-    }
+    addToOpenList = (node) => this.openList.add(node);
 
-    getKey = (x, y) => {
-        return `x${x}y${y}`;
-    }
+    getKey = (x, y) => `x${x}y${y}`;
 
     addToClosedList = (node) => {
         let key = this.getKey(node.x, node.y);
         this.closedList[key] = node;
-        if (node.type !== NODE_TYPES.START &&
-            node.type !== NODE_TYPES.END) {
-            node.setType(NODE_TYPES.CLOSED_LIST);
-        }
     }
 
     checkClosedList = (node) => {
