@@ -44,6 +44,7 @@ class Node {
         this.parent = null;
         this.gCost = null;
         this.hCost = null;
+        this.heapIdx = null;
     }
 
     getFCost = () => this.gCost + this.hCost;
@@ -61,6 +62,7 @@ class Node {
         this.isEnd = !!(type === NODE_TYPES.END);
     }
 
+    setHeapIdx = (idx) => this.heapIdx = idx;
 }
 
 class MinHeap {
@@ -71,6 +73,7 @@ class MinHeap {
 
     add = (el) => {
         this.heap.push(el);
+        el.setHeapIdx(this.heap.length - 1);
         this.sortUp(this.heap.length - 1);
     }
 
@@ -80,28 +83,25 @@ class MinHeap {
 
         if (this.heap.length > 0) {
             this.heap[0] = end;
+            this.heap[0].setHeapIdx(0);
             this.sortDown(0);
         }
 
         return result;
     }
 
-    remove = (el) => {
-        let length = this.heap.length;
+    remove = (idx) => {
+        let end = this.heap.pop();
+        if (idx == length - 1) break;
 
-        for (let i = 0; i < length; i++) {
-            if (this.heap[i] != el) continue;
+        this.heap[idx] = end;
+        this.sortUp(i);
+        this.sortDown(i);
+    }
 
-            let end = this.heap.pop();
-            // If the element popped was the element to remove (i.e. el to remove was the last el in heap)
-            if (i == length - 1) break;
-
-            // Else replace the removed element with the popped and sort
-            this.heap[i] = end;
-            this.bubbleUp(i);
-            this.sinkDown(i);
-            break;
-        }
+    update = (idx) => {
+        this.sortUp(idx);
+        this.sortDown(idx);
     }
 
     size = () => this.heap.length;
@@ -118,8 +118,7 @@ class MinHeap {
                 break;
             }
 
-            this.heap[parentIdx] = el;
-            this.heap[idx] = parent;
+            this.swap(idx, parentIdx);
             idx = parentIdx;
         }
     }
@@ -156,16 +155,22 @@ class MinHeap {
 
             if (swapIdx == null) break;
 
-            this.heap[idx] = this.heap[swapIdx];
-            this.heap[swapIdx] = element;
+            this.swap(idx, swapIdx);
             idx = swapIdx;
         }
-
     }
 
-    scoreFunction = () => {
+    swap = (idx1, idx2) => {
+        let el1 = this.heap[idx1];
+        let el2 = this.heap[idx2];
 
+        el1.setHeapIdx(idx2);
+        this.heap[idx1] = el2;
+
+        el2.setHeapIdx(idx1);
+        this.heap[idx2] = el1;
     }
+
 }
 
 class Grid {
@@ -343,6 +348,8 @@ class AStar {
 
                     if (adjNotInOpenList) {
                         this.addToOpenList(adjNode);
+                    } else {
+                        this.openList.update(adjNode.heapIdx);
                     }
                 }
             }
@@ -363,12 +370,7 @@ class AStar {
         return 14 * distX + 10 * (distY - distX);
     }
 
-    scoreFunction = (node) => {
-        let fCost = node.getFCost();
-        let hCost = node.hCost;
-        let score = +`${fCost}${hCost}`;
-        return score;
-    }
+    scoreFunction = (node) => node.getFCost();
 
     addToOpenList = (node) => {
         this.openList.add(node);
