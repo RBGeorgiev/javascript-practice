@@ -12,10 +12,7 @@ const NODE_COLORS = {
     UNWALKABLE: "black",
     SWAMP: "burlywood",
     START: "green",
-    END: "red",
-    PATH: "orange",
-    OPEN_LIST: "lightblue",
-    CLOSED_LIST: "cornflowerblue"
+    END: "red"
 }
 Object.freeze(NODE_COLORS);
 
@@ -24,12 +21,26 @@ const NODE_TYPES = {
     UNWALKABLE: 'UNWALKABLE',
     SWAMP: "SWAMP",
     START: "START",
-    END: "END",
+    END: "END"
+}
+Object.freeze(NODE_TYPES);
+
+const ASTAR_TYPES = {
     PATH: "PATH",
     OPEN_LIST: "OPEN_LIST",
     CLOSED_LIST: "CLOSED_LIST"
 }
-Object.freeze(NODE_TYPES);
+Object.freeze(ASTAR_TYPES);
+
+const ASTAR_COLORS = {
+    PATH: "orange",
+    OPEN_LIST: "lightblue",
+    CLOSED_LIST: "cornflowerblue"
+    // PATH: "rgba(247, 153, 58, 0.82)",
+    // OPEN_LIST: "rgba(63, 191, 191, 0.42)",
+    // CLOSED_LIST: "rgba(63, 127, 191, 0.57)"
+}
+Object.freeze(ASTAR_COLORS);
 // #endregion eNums
 
 
@@ -265,7 +276,6 @@ class GridVisualization {
         let node = this.gridClass.getNode(x, y);
         return NODE_COLORS[node.type];
     }
-
 }
 
 class AStar {
@@ -303,6 +313,7 @@ class AStar {
             if (curNode.type === NODE_TYPES.START) {
                 return path;
             }
+            this.drawAStarNode(curNode.x, curNode.y, ASTAR_COLORS.PATH);
 
             curNode.setType(NODE_TYPES.PATH);
             curNode = curNode.parent;
@@ -379,18 +390,41 @@ class AStar {
 
     scoreFunction = (node) => node.getFCost();
 
-    addToOpenList = (node) => this.openList.add(node);
+    addToOpenList = (node) => {
+        this.openList.add(node);
+        this.drawAStarNode(node.x, node.y, ASTAR_COLORS.OPEN_LIST);
+    }
 
     getKey = (x, y) => `x${x}y${y}`;
 
     addToClosedList = (node) => {
         let key = this.getKey(node.x, node.y);
         this.closedList[key] = node;
+        this.drawAStarNode(node.x, node.y, ASTAR_COLORS.CLOSED_LIST);
     }
 
     checkClosedList = (node) => {
         let key = this.getKey(node.x, node.y);
         return !!this.closedList[key];
+    }
+
+    drawAStarNode = (x, y, color) => {
+        let size = this.gridClass.nodeSize;
+        let xPos = size * x;
+        let yPos = size * y;
+
+        ctx.beginPath();
+
+        ctx.fillStyle = color;
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = color;
+        ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+
+        // ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
+
+        ctx.fill();
+        ctx.stroke();
     }
 }
 
@@ -496,6 +530,5 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
         aStar.findPath();
-        gridVis.drawAllNodes();
     }
 });
