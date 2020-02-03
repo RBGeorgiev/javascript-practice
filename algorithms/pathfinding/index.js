@@ -217,8 +217,27 @@ class Grid {
         return neighbors;
     }
 
+    getNodeFromCoordinates = (x, y) => {
+        let gridX = Math.floor(x / this.nodeSize);
+        let gridY = Math.floor(y / this.nodeSize);
+
+        if (gridX < 0 || gridX >= this.gridSizeX ||
+            gridY < 0 || gridY >= this.gridSizeY) {
+            return null;
+        }
+
+        return this.getNode(gridX, gridY);
+    }
+}
+
+class GridVisualization {
+    constructor(grid) {
+        this.gridClass = grid;
+        this.grid = grid.grid;
+    }
+
     drawNode = (x, y) => {
-        let size = this.nodeSize;
+        let size = this.gridClass.nodeSize;
         let xPos = size * x;
         let yPos = size * y;
         let color = this.getNodeColor(x, y);
@@ -243,21 +262,10 @@ class Grid {
     }
 
     getNodeColor = (x, y) => {
-        let node = this.getNode(x, y);
+        let node = this.gridClass.getNode(x, y);
         return NODE_COLORS[node.type];
     }
 
-    getNodeFromCoordinates = (x, y) => {
-        let gridX = Math.floor(x / this.nodeSize);
-        let gridY = Math.floor(y / this.nodeSize);
-
-        if (gridX < 0 || gridX >= this.gridSizeX ||
-            gridY < 0 || gridY >= this.gridSizeY) {
-            return null;
-        }
-
-        return this.getNode(gridX, gridY);
-    }
 }
 
 class AStar {
@@ -355,7 +363,6 @@ class AStar {
             }
         }
 
-        this.gridClass.drawAllNodes();
         (path === null) ? console.log("Path doesn't exist") : console.log("Found path: ", path);
         return (path === null) ? "Path doesn't exist" : path;
     }
@@ -388,16 +395,17 @@ class AStar {
 }
 
 let grid = new Grid;
+let gridVis = new GridVisualization(grid);
 let aStar = new AStar(grid);
 
-grid.drawAllNodes();
+gridVis.drawAllNodes();
 
 const addUnwalkable = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.UNWALKABLE);
-        grid.drawNode(node.x, node.y);
+        gridVis.drawNode(node.x, node.y);
     }
 }
 
@@ -406,7 +414,7 @@ const addEmpty = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
         node.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(node.x, node.y);
+        gridVis.drawNode(node.x, node.y);
     }
 }
 
@@ -415,7 +423,7 @@ const addSwamp = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.SWAMP);
-        grid.drawNode(node.x, node.y);
+        gridVis.drawNode(node.x, node.y);
     }
 }
 
@@ -425,10 +433,10 @@ const dragStart = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
         oldStart.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(oldStart.x, oldStart.y);
+        gridVis.drawNode(oldStart.x, oldStart.y);
 
         aStar.setStartNode(node.x, node.y);
-        grid.drawNode(node.x, node.y);
+        gridVis.drawNode(node.x, node.y);
     }
 }
 
@@ -438,10 +446,10 @@ const dragEnd = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
         oldEnd.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(oldEnd.x, oldEnd.y);
+        gridVis.drawNode(oldEnd.x, oldEnd.y);
 
         aStar.setEndNode(node.x, node.y);
-        grid.drawNode(node.x, node.y);
+        gridVis.drawNode(node.x, node.y);
     }
 }
 
@@ -488,5 +496,6 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
         aStar.findPath();
+        gridVis.drawAllNodes();
     }
 });
