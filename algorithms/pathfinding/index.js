@@ -125,7 +125,7 @@ class MinHeap {
             let parentIdx = Math.floor((idx + 1) / 2) - 1;
             let parent = this.heap[parentIdx];
 
-            if (score >= this.scoreFunction(parent)) {
+            if (score > this.scoreFunction(parent)) {
                 break;
             }
 
@@ -327,6 +327,7 @@ class AStar {
     }
 
     findPath = () => {
+        console.time('test');
         let path = null;
         this.addToOpenList(this.startNode);
 
@@ -343,6 +344,7 @@ class AStar {
                 if (adjNode.isEnd) {
                     adjNode.setParent(curNode);
                     path = this.getPath(adjNode);
+                    console.timeEnd('test');
                     return path;
                 }
 
@@ -373,6 +375,7 @@ class AStar {
             }
         }
 
+        console.timeEnd('test');
         return alert("Path doesn't exist");
     }
 
