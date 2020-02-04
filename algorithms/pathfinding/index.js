@@ -313,9 +313,8 @@ class AStar {
             if (curNode.type === NODE_TYPES.START) {
                 return path;
             }
-            this.drawAStarNode(curNode.x, curNode.y, ASTAR_COLORS.PATH);
 
-            curNode.setType(NODE_TYPES.PATH);
+            this.drawAStarNode(curNode.x, curNode.y, ASTAR_COLORS.PATH);
             curNode = curNode.parent;
         }
     }
@@ -328,17 +327,11 @@ class AStar {
     }
 
     findPath = () => {
-        console.log('Searching for path')
         let path = null;
         this.addToOpenList(this.startNode);
 
         while (this.openList.size() > 0) {
             let curNode = this.openList.popMin();
-
-            if (curNode.isEnd) {
-                path = this.getPath(curNode);
-                break;
-            }
 
             this.addToClosedList(curNode);
 
@@ -346,6 +339,12 @@ class AStar {
 
             for (let i = 0; i < neighbors.length; i++) {
                 let adjNode = neighbors[i];
+
+                if (adjNode.isEnd) {
+                    adjNode.setParent(curNode);
+                    path = this.getPath(adjNode);
+                    return path;
+                }
 
                 if (adjNode.unwalkable || this.checkClosedList(adjNode)) {
                     continue;
@@ -374,8 +373,7 @@ class AStar {
             }
         }
 
-        (path === null) ? console.log("Path doesn't exist") : console.log("Found path: ", path);
-        return (path === null) ? "Path doesn't exist" : path;
+        return alert("Path doesn't exist");
     }
 
     calcCost = (nodeA, nodeB) => {
