@@ -56,6 +56,7 @@ class Node {
         this.gCost = null;
         this.hCost = null;
         this.heapIdx = null;
+        this.closed = false;
     }
 
     getFCost = () => this.gCost + this.hCost;
@@ -80,6 +81,7 @@ class Node {
         this.gCost = null;
         this.hCost = null;
         this.heapIdx = null;
+        this.closed = false;
     }
 }
 
@@ -294,7 +296,6 @@ class AStar {
         this.startNode = null;
         this.endNode = null;
         this.openList = new MinHeap(this.scoreFunction);
-        this.closedList = {};
 
         this.setStartNode(10, 8);
         this.setEndNode(23, 8);
@@ -313,7 +314,6 @@ class AStar {
         }
 
         this.openList.reset();
-        this.closedList = {};
     }
 
     setStartNode = (x, y) => {
@@ -373,7 +373,7 @@ class AStar {
                     return path;
                 }
 
-                if (adjNode.unwalkable || this.checkClosedList(adjNode)) {
+                if (adjNode.unwalkable || adjNode.closed) {
                     continue;
                 }
 
@@ -421,17 +421,9 @@ class AStar {
         this.drawAStarNode(node.x, node.y, ASTAR_COLORS.OPEN_LIST);
     }
 
-    getKey = (x, y) => `x${x}y${y}`;
-
     addToClosedList = (node) => {
-        let key = this.getKey(node.x, node.y);
-        this.closedList[key] = node;
+        node.closed = true;
         this.drawAStarNode(node.x, node.y, ASTAR_COLORS.CLOSED_LIST);
-    }
-
-    checkClosedList = (node) => {
-        let key = this.getKey(node.x, node.y);
-        return !!this.closedList[key];
     }
 
     drawAStarNode = (x, y, color) => {
