@@ -74,6 +74,13 @@ class Node {
     }
 
     setHeapIdx = (idx) => this.heapIdx = idx;
+
+    resetAStarValues = () => {
+        this.parent = null;
+        this.gCost = null;
+        this.hCost = null;
+        this.heapIdx = null;
+    }
 }
 
 class MinHeap {
@@ -81,6 +88,8 @@ class MinHeap {
         this.heap = [];
         this.scoreFunction = scoreFunction;
     }
+
+    reset = () => this.heap = [];
 
     add = (el) => {
         this.heap.push(el);
@@ -289,6 +298,22 @@ class AStar {
 
         this.setStartNode(10, 8);
         this.setEndNode(23, 8);
+    }
+
+    reset = () => {
+        let gridWidth = this.gridClass.gridSizeX;
+        let gridHeight = this.gridClass.gridSizeY;
+
+        for (let x = 0; x < gridWidth; x++) {
+            for (let y = 0; y < gridHeight; y++) {
+                let node = this.gridClass.getNode(x, y);
+                if (node.gCost === null) continue;
+                node.resetAStarValues();
+            }
+        }
+
+        this.openList.reset();
+        this.closedList = {};
     }
 
     setStartNode = (x, y) => {
@@ -530,6 +555,7 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
+        aStar.reset();
         aStar.findPath();
     }
 });
