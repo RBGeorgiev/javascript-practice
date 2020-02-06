@@ -418,18 +418,19 @@ class AStar {
 
     addToOpenList = (node) => {
         this.openList.add(node);
-        this.drawAStarNode(node.x, node.y, ASTAR_COLORS.OPEN_LIST);
+        this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST);
     }
 
     addToClosedList = (node) => {
         node.closed = true;
-        this.drawAStarNode(node.x, node.y, ASTAR_COLORS.CLOSED_LIST);
+        this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST);
     }
 
-    drawAStarNode = (x, y, color) => {
+    drawAStarNode = (node, color) => {
+        if (Object.is(node, this.startNode) || node.isEnd) return;
         let size = this.gridClass.nodeSize;
-        let xPos = size * x;
-        let yPos = size * y;
+        let xPos = size * node.x;
+        let yPos = size * node.y;
 
         ctx.beginPath();
 
