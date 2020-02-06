@@ -329,8 +329,8 @@ class AStar {
     }
 
     getPath = (endNode) => {
-        let path = [endNode];
-        let curNode = endNode.parent;
+        let path = [];
+        let curNode = endNode;
 
         while (true) {
             path.unshift(curNode);
@@ -339,7 +339,7 @@ class AStar {
                 return path;
             }
 
-            this.drawAStarNode(curNode.x, curNode.y, ASTAR_COLORS.PATH);
+            this.drawPath(curNode, curNode.parent);
             curNode = curNode.parent;
         }
     }
@@ -442,6 +442,22 @@ class AStar {
         // ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
 
         ctx.fill();
+        ctx.stroke();
+    }
+
+    drawPath = (nodeA, nodeB) => {
+        let size = this.gridClass.nodeSize;
+        let aX = size * nodeA.x + size / 2;
+        let aY = size * nodeA.y + size / 2;
+        let bX = size * nodeB.x + size / 2;
+        let bY = size * nodeB.y + size / 2;
+
+        ctx.strokeStyle = ASTAR_COLORS.PATH;
+        ctx.lineWidth = 5;
+
+        ctx.beginPath();
+        ctx.moveTo(aX, aY);
+        ctx.lineTo(bX, bY);
         ctx.stroke();
     }
 }
