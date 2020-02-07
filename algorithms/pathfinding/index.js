@@ -251,11 +251,11 @@ class Grid {
         return this.getNode(gridX, gridY);
     }
 
-    drawNode = (x, y) => {
+    drawNode = (node) => {
         let size = this.nodeSize;
-        let xPos = size * x;
-        let yPos = size * y;
-        let color = this.getNodeColor(x, y);
+        let xPos = size * node.x;
+        let yPos = size * node.y;
+        let color = this.getNodeColor(node);
 
         ctx.beginPath();
 
@@ -271,15 +271,13 @@ class Grid {
     drawAllNodes = () => {
         for (let x = 0; x < this.grid.length; x++) {
             for (let y = 0; y < this.grid[x].length; y++) {
-                this.drawNode(x, y);
+                let node = this.getNode(x, y);
+                this.drawNode(node);
             }
         }
     }
 
-    getNodeColor = (x, y) => {
-        let node = this.getNode(x, y);
-        return NODE_COLORS[node.type];
-    }
+    getNodeColor = (node) => NODE_COLORS[node.type];
 }
 
 class AStar {
@@ -290,8 +288,8 @@ class AStar {
         this.endNode = null;
         this.openList = new MinHeap(this.scoreFunction);
 
-        this.setStartNode(10, 8);
-        this.setEndNode(23, 8);
+        this.setStartNode(this.gridClass.getNode(10, 8));
+        this.setEndNode(this.gridClass.getNode(23, 8));
     }
 
     reset = () => {
@@ -309,14 +307,12 @@ class AStar {
         this.openList.reset();
     }
 
-    setStartNode = (x, y) => {
-        let node = this.gridClass.getNode(x, y);
+    setStartNode = (node) => {
         node.setType(NODE_TYPES.START);
         this.startNode = node;
     }
 
-    setEndNode = (x, y) => {
-        let node = this.gridClass.getNode(x, y);
+    setEndNode = (node) => {
         node.setType(NODE_TYPES.END);
         this.endNode = node;
     }
@@ -466,7 +462,7 @@ const addUnwalkable = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.UNWALKABLE);
-        grid.drawNode(node.x, node.y);
+        grid.drawNode(node);
     }
 }
 
@@ -475,7 +471,7 @@ const addEmpty = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
         node.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(node.x, node.y);
+        grid.drawNode(node);
     }
 }
 
@@ -484,7 +480,7 @@ const addSwamp = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.SWAMP);
-        grid.drawNode(node.x, node.y);
+        grid.drawNode(node);
     }
 }
 
@@ -494,10 +490,10 @@ const dragStart = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
         oldStart.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(oldStart.x, oldStart.y);
+        grid.drawNode(oldStart);
 
-        aStar.setStartNode(node.x, node.y);
-        grid.drawNode(node.x, node.y);
+        aStar.setStartNode(node);
+        grid.drawNode(node);
     }
 }
 
@@ -507,10 +503,10 @@ const dragEnd = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
         oldEnd.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(oldEnd.x, oldEnd.y);
+        grid.drawNode(oldEnd);
 
-        aStar.setEndNode(node.x, node.y);
-        grid.drawNode(node.x, node.y);
+        aStar.setEndNode(node);
+        grid.drawNode(node);
     }
 }
 
