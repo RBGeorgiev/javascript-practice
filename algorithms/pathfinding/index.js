@@ -300,6 +300,7 @@ class AStar {
             for (let y = 0; y < gridHeight; y++) {
                 let node = this.gridClass.getNode(x, y);
                 if (node.gCost === null) continue;
+                this.gridClass.drawNode(node);
                 node.resetAStarValues();
             }
         }
