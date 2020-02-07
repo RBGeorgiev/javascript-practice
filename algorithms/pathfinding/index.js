@@ -250,16 +250,9 @@ class Grid {
 
         return this.getNode(gridX, gridY);
     }
-}
-
-class GridVisualization {
-    constructor(grid) {
-        this.gridClass = grid;
-        this.grid = grid.grid;
-    }
 
     drawNode = (x, y) => {
-        let size = this.gridClass.nodeSize;
+        let size = this.nodeSize;
         let xPos = size * x;
         let yPos = size * y;
         let color = this.getNodeColor(x, y);
@@ -284,7 +277,7 @@ class GridVisualization {
     }
 
     getNodeColor = (x, y) => {
-        let node = this.gridClass.getNode(x, y);
+        let node = this.getNode(x, y);
         return NODE_COLORS[node.type];
     }
 }
@@ -464,17 +457,16 @@ class AStar {
 }
 
 let grid = new Grid;
-let gridVis = new GridVisualization(grid);
 let aStar = new AStar(grid);
 
-gridVis.drawAllNodes();
+grid.drawAllNodes();
 
 const addUnwalkable = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.UNWALKABLE);
-        gridVis.drawNode(node.x, node.y);
+        grid.drawNode(node.x, node.y);
     }
 }
 
@@ -483,7 +475,7 @@ const addEmpty = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
         node.setType(NODE_TYPES.EMPTY);
-        gridVis.drawNode(node.x, node.y);
+        grid.drawNode(node.x, node.y);
     }
 }
 
@@ -492,7 +484,7 @@ const addSwamp = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.SWAMP);
-        gridVis.drawNode(node.x, node.y);
+        grid.drawNode(node.x, node.y);
     }
 }
 
@@ -502,10 +494,10 @@ const dragStart = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
         oldStart.setType(NODE_TYPES.EMPTY);
-        gridVis.drawNode(oldStart.x, oldStart.y);
+        grid.drawNode(oldStart.x, oldStart.y);
 
         aStar.setStartNode(node.x, node.y);
-        gridVis.drawNode(node.x, node.y);
+        grid.drawNode(node.x, node.y);
     }
 }
 
@@ -515,10 +507,10 @@ const dragEnd = (e) => {
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
         oldEnd.setType(NODE_TYPES.EMPTY);
-        gridVis.drawNode(oldEnd.x, oldEnd.y);
+        grid.drawNode(oldEnd.x, oldEnd.y);
 
         aStar.setEndNode(node.x, node.y);
-        gridVis.drawNode(node.x, node.y);
+        grid.drawNode(node.x, node.y);
     }
 }
 
