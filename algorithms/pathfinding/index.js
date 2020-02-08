@@ -358,13 +358,6 @@ class AStar {
             for (let i = 0; i < neighbors.length; i++) {
                 let adjNode = neighbors[i];
 
-                if (adjNode.isEnd) {
-                    adjNode.setParent(curNode);
-                    path = this.getPath(adjNode);
-                    console.timeEnd('test');
-                    return path;
-                }
-
                 if (adjNode.unwalkable || adjNode.closed) {
                     continue;
                 }
@@ -372,6 +365,13 @@ class AStar {
                 if (curNode.x - adjNode.x !== 0 && curNode.y - adjNode.y !== 0) {
                     let blocked = this.isDiagonalBlocked(curNode, adjNode);
                     if (blocked) continue;
+                }
+
+                if (adjNode.isEnd) {
+                    adjNode.setParent(curNode);
+                    path = this.getPath(adjNode);
+                    console.timeEnd('test');
+                    return path;
                 }
 
                 let newAdjNodeGCost = curNode.gCost + this.calcCost(curNode, adjNode) + adjNode.moveCost;
