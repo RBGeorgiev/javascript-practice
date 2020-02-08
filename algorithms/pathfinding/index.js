@@ -304,6 +304,8 @@ class AStar {
                 node.resetAStarValues();
             }
         }
+        this.gridClass.drawNode(this.startNode);
+        this.gridClass.drawNode(this.endNode);
 
         this.openList.reset();
     }
