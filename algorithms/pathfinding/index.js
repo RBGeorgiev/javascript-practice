@@ -503,6 +503,7 @@ const dragStart = (e) => {
         grid.drawNode(node);
 
         if (aStar.complete === true) {
+            oldStart.resetAStarValues();
             aStar.reset();
             aStar.findPath();
         }
@@ -521,6 +522,7 @@ const dragEnd = (e) => {
         grid.drawNode(node);
 
         if (aStar.complete === true) {
+            oldEnd.resetAStarValues();
             aStar.reset();
             aStar.findPath();
         }
@@ -566,6 +568,10 @@ const handleMouseDown = (e) => {
 }
 
 canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
+
+canvas.addEventListener('mousedown', (e) => {
+    if (e.buttons === 4) console.log(grid.getNodeFromCoordinates(e.offsetX, e.offsetY))
+});
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
