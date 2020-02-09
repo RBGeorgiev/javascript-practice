@@ -287,6 +287,7 @@ class AStar {
         this.startNode = null;
         this.endNode = null;
         this.openList = new MinHeap(this.scoreFunction);
+        this.complete = false;
 
         this.setStartNode(this.gridClass.getNode(10, 8));
         this.setEndNode(this.gridClass.getNode(23, 8));
@@ -319,6 +320,8 @@ class AStar {
         node.setType(NODE_TYPES.END);
         this.endNode = node;
     }
+
+    setComplete = (bool) => this.complete = bool;
 
     getPath = (endNode) => {
         let path = [];
@@ -371,6 +374,7 @@ class AStar {
                     adjNode.setParent(curNode);
                     path = this.getPath(adjNode);
                     console.timeEnd('test');
+                    this.setComplete(true);
                     return path;
                 }
 
@@ -391,9 +395,9 @@ class AStar {
                 }
             }
         }
-
         console.timeEnd('test');
-        return alert("Path doesn't exist");
+        this.setComplete(true);
+        return console.log("Path doesn't exist");
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -497,6 +501,11 @@ const dragStart = (e) => {
 
         aStar.setStartNode(node);
         grid.drawNode(node);
+
+        if (aStar.complete === true) {
+            aStar.reset();
+            aStar.findPath();
+        }
     }
 }
 
@@ -510,6 +519,11 @@ const dragEnd = (e) => {
 
         aStar.setEndNode(node);
         grid.drawNode(node);
+
+        if (aStar.complete === true) {
+            aStar.reset();
+            aStar.findPath();
+        }
     }
 }
 
