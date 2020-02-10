@@ -475,6 +475,10 @@ const addUnwalkable = (e) => {
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.UNWALKABLE);
         grid.drawNode(node);
+
+        if (aStar.complete === true) {
+            aStar.run();
+        }
     }
 }
 
@@ -484,6 +488,10 @@ const addEmpty = (e) => {
     if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
         node.setType(NODE_TYPES.EMPTY);
         grid.drawNode(node);
+
+        if (aStar.complete === true) {
+            aStar.run();
+        }
     }
 }
 
@@ -493,6 +501,10 @@ const addSwamp = (e) => {
     if (node.type === NODE_TYPES.EMPTY) {
         node.setType(NODE_TYPES.SWAMP);
         grid.drawNode(node);
+
+        if (aStar.complete === true) {
+            aStar.run();
+        }
     }
 }
 
