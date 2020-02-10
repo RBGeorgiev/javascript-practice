@@ -293,6 +293,11 @@ class AStar {
         this.setEndNode(this.gridClass.getNode(23, 8));
     }
 
+    run = () => {
+        this.reset();
+        this.findPath();
+    }
+
     reset = () => {
         let gridWidth = this.gridClass.gridSizeX;
         let gridHeight = this.gridClass.gridSizeY;
@@ -504,8 +509,7 @@ const dragStart = (e) => {
 
         if (aStar.complete === true) {
             oldStart.resetAStarValues();
-            aStar.reset();
-            aStar.findPath();
+            aStar.run();
         }
     }
 }
@@ -523,8 +527,7 @@ const dragEnd = (e) => {
 
         if (aStar.complete === true) {
             oldEnd.resetAStarValues();
-            aStar.reset();
-            aStar.findPath();
+            aStar.run();
         }
     }
 }
@@ -569,13 +572,8 @@ const handleMouseDown = (e) => {
 
 canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
-canvas.addEventListener('mousedown', (e) => {
-    if (e.buttons === 4) console.log(grid.getNodeFromCoordinates(e.offsetX, e.offsetY))
-});
-
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
-        aStar.reset();
-        aStar.findPath();
+        aStar.run();
     }
 });
