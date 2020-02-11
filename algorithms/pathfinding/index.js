@@ -343,7 +343,6 @@ class AStar {
                 return path;
             }
 
-            // this.drawPath(curNode, curNode.parent);
             curNode = curNode.parent;
         }
     }
@@ -424,14 +423,20 @@ class AStar {
 
     addToOpenList = (node) => {
         this.openList.add(node);
-        // this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST);
-        this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST));
+        if (this.complete) {
+            this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST);
+        } else {
+            this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST));
+        }
     }
 
     addToClosedList = (node) => {
         node.closed = true;
-        // this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST);
-        this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST));
+        if (this.complete) {
+            this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST);
+        } else {
+            this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST));
+        }
     }
 
     drawAStarNode = (node, color) => {
@@ -480,7 +485,11 @@ class AStar {
         for (let i = len - 1; i > 0; i--) {
             let a = path[i];
             let b = path[i - 1];
-            this.animate(() => this.drawPath(a, b));
+            if (this.complete) {
+                this.drawPath(a, b);
+            } else {
+                this.animate(() => this.drawPath(a, b));
+            }
         }
     }
 }
