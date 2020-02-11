@@ -291,6 +291,8 @@ class AStar {
 
         this.setStartNode(this.gridClass.getNode(10, 8));
         this.setEndNode(this.gridClass.getNode(23, 8));
+
+        this.lastTime = 0;
     }
 
     run = () => {
@@ -314,6 +316,8 @@ class AStar {
         this.gridClass.drawNode(this.endNode);
 
         this.openList.reset();
+
+        this.lastTime = 0;
     }
 
     setStartNode = (node) => {
@@ -339,7 +343,7 @@ class AStar {
                 return path;
             }
 
-            this.drawPath(curNode, curNode.parent);
+            // this.drawPath(curNode, curNode.parent);
             curNode = curNode.parent;
         }
     }
@@ -378,8 +382,9 @@ class AStar {
                 if (adjNode.isEnd) {
                     adjNode.setParent(curNode);
                     path = this.getPath(adjNode);
-                    console.timeEnd('test');
+                    this.animatePath(path);
                     this.setComplete(true);
+                    console.timeEnd('test');
                     return path;
                 }
 
@@ -400,8 +405,8 @@ class AStar {
                 }
             }
         }
-        console.timeEnd('test');
         this.setComplete(true);
+        console.timeEnd('test');
         return console.log("Path doesn't exist");
     }
 
@@ -419,12 +424,14 @@ class AStar {
 
     addToOpenList = (node) => {
         this.openList.add(node);
-        this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST);
+        // this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST);
+        this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST));
     }
 
     addToClosedList = (node) => {
         node.closed = true;
-        this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST);
+        // this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST);
+        this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST));
     }
 
     drawAStarNode = (node, color) => {
@@ -461,6 +468,20 @@ class AStar {
         ctx.moveTo(aX, aY);
         ctx.lineTo(bX, bY);
         ctx.stroke();
+    }
+
+    animate = (callback) => {
+        this.lastTime += 5;
+        setTimeout(callback, this.lastTime);
+    }
+
+    animatePath = (path) => {
+        let len = path.length;
+        for (let i = len - 1; i > 0; i--) {
+            let a = path[i];
+            let b = path[i - 1];
+            this.animate(() => this.drawPath(a, b));
+        }
     }
 }
 
