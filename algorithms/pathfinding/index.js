@@ -292,6 +292,7 @@ class AStar {
         this.setStartNode(this.gridClass.getNode(10, 8));
         this.setEndNode(this.gridClass.getNode(23, 8));
 
+        this.stepsTaken = [];
         this.lastTime = 0;
     }
 
@@ -317,6 +318,7 @@ class AStar {
 
         this.openList.reset();
 
+        this.stepsTaken = [];
         this.lastTime = 0;
     }
 
@@ -343,6 +345,8 @@ class AStar {
                 return path;
             }
 
+            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
+
             curNode = curNode.parent;
         }
     }
@@ -355,7 +359,7 @@ class AStar {
     }
 
     findPath = () => {
-        console.time('test');
+        console.time('A*');
         let path = null;
         this.addToOpenList(this.startNode);
 
@@ -381,9 +385,7 @@ class AStar {
                 if (adjNode.isEnd) {
                     adjNode.setParent(curNode);
                     path = this.getPath(adjNode);
-                    this.animatePath(path);
-                    this.setComplete(true);
-                    console.timeEnd('test');
+                    console.timeEnd('A*');
                     return path;
                 }
 
@@ -404,8 +406,8 @@ class AStar {
                 }
             }
         }
-        this.setComplete(true);
-        console.timeEnd('test');
+
+        console.timeEnd('A*');
         return console.log("Path doesn't exist");
     }
 
@@ -423,20 +425,12 @@ class AStar {
 
     addToOpenList = (node) => {
         this.openList.add(node);
-        if (this.complete) {
-            this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST);
-        } else {
-            this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.OPEN_LIST));
-        }
+        this.addToStepsTaken(node, ASTAR_TYPES.OPEN_LIST);
     }
 
     addToClosedList = (node) => {
         node.closed = true;
-        if (this.complete) {
-            this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST);
-        } else {
-            this.animate(() => this.drawAStarNode(node, ASTAR_COLORS.CLOSED_LIST));
-        }
+        this.addToStepsTaken(node, ASTAR_TYPES.CLOSED_LIST);
     }
 
     drawAStarNode = (node, color) => {
@@ -475,22 +469,43 @@ class AStar {
         ctx.stroke();
     }
 
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
+    }
+
     animate = (callback) => {
         this.lastTime += 5;
         setTimeout(callback, this.lastTime);
     }
 
-    animatePath = (path) => {
-        let len = path.length;
-        for (let i = len - 1; i > 0; i--) {
-            let a = path[i];
-            let b = path[i - 1];
-            if (this.complete) {
-                this.drawPath(a, b);
+    drawOrAnimateSteps = () => {
+        let len = this.stepsTaken.length
+        for (let i = 0; i < len; i++) {
+            let curNode = this.stepsTaken[i].node;
+            let curType = this.stepsTaken[i].type;
+
+            if (curType === ASTAR_TYPES.PATH) {
+                if (i + 1 >= len) break;
+                let nextNode = this.stepsTaken[i + 1].node;
+                if (this.complete) {
+                    this.drawPath(curNode, nextNode);
+                } else {
+                    this.animate(() => this.drawPath(curNode, nextNode));
+                }
             } else {
-                this.animate(() => this.drawPath(a, b));
+                if (this.complete) {
+                    this.drawAStarNode(curNode, ASTAR_COLORS[curType]);
+                } else {
+                    this.animate(() => this.drawAStarNode(curNode, ASTAR_COLORS[curType]));
+                }
             }
         }
+
+        this.setComplete(true);
     }
 }
 
@@ -618,5 +633,6 @@ document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
         aStar.setComplete(false);
         aStar.run();
+        aStar.drawOrAnimateSteps();
     }
 });
