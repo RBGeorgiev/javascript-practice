@@ -616,6 +616,7 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
+        aStar.setComplete(false);
         aStar.run();
     }
 });
