@@ -299,7 +299,7 @@ class AStar {
     run = () => {
         this.reset();
         this.findPath();
-        this.drawOrAnimateSteps();
+        this.visualizeSteps();
         this.setComplete(true);
     }
 
@@ -484,7 +484,7 @@ class AStar {
         setTimeout(callback, this.lastTime);
     }
 
-    drawOrAnimateSteps = () => {
+    visualizeSteps = () => {
         let len = this.stepsTaken.length
         for (let i = 0; i < len; i++) {
             let curNode = this.stepsTaken[i].node;
@@ -493,21 +493,15 @@ class AStar {
             if (curType === ASTAR_TYPES.PATH) {
                 if (i + 1 >= len) break;
                 let nextNode = this.stepsTaken[i + 1].node;
-
-                (this.complete)
-                    ?
-                    this.drawPath(curNode, nextNode)
-                    :
-                    this.animate(() => this.drawPath(curNode, nextNode));
-            } else {
-                (this.complete)
-                    ?
-                    this.drawAStarNode(curNode, ASTAR_COLORS[curType])
-                    :
-                    this.animate(() => this.drawAStarNode(curNode, ASTAR_COLORS[curType]));
+                this.visualizationController(() => this.drawPath(curNode, nextNode));
+            }
+            else {
+                this.visualizationController(() => this.drawAStarNode(curNode, ASTAR_COLORS[curType]));
             }
         }
     }
+
+    visualizationController = (callback) => (this.complete) ? callback() : this.animate(callback);
 }
 
 let grid = new Grid;
