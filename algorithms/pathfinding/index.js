@@ -293,13 +293,12 @@ class AStar {
         this.setEndNode(this.gridClass.getNode(23, 8));
 
         this.stepsTaken = [];
-        this.lastTime = 0;
     }
 
     run = () => {
         this.reset();
         this.findPath();
-        this.visualizeSteps();
+        this.visualizationController();
         this.setComplete(true);
     }
 
@@ -321,7 +320,6 @@ class AStar {
         this.openList.reset();
 
         this.stepsTaken = [];
-        this.lastTime = 0;
     }
 
     setStartNode = (node) => {
@@ -479,29 +477,54 @@ class AStar {
         this.stepsTaken.push(step);
     }
 
-    animate = (callback) => {
-        this.lastTime += 5;
-        setTimeout(callback, this.lastTime);
+    animateSteps = () => {
+        var start = null;
+        let deltaTime = 0;
+        let frameTime = 0
+        let i = 0;
+        let len = this.stepsTaken.length;
+
+        const step = (timestamp) => {
+            deltaTime = timestamp - start;
+            start = timestamp;
+
+            frameTime += deltaTime;
+
+            if (frameTime > 5 && i + 1 < len) {
+                this.visualizeStep(i);
+                i++;
+                frameTime = 0;
+                window.requestAnimationFrame(step);
+            } else {
+                return console.log('anim end');
+            }
+        }
+
+        window.requestAnimationFrame(step);
     }
 
-    visualizeSteps = () => {
-        let len = this.stepsTaken.length
-        for (let i = 0; i < len; i++) {
-            let curNode = this.stepsTaken[i].node;
-            let curType = this.stepsTaken[i].type;
+    visualizeStep = (i) => {
+        let curNode = this.stepsTaken[i].node;
+        let curType = this.stepsTaken[i].type;
 
-            if (curType === ASTAR_TYPES.PATH) {
-                if (i + 1 >= len) break;
-                let nextNode = this.stepsTaken[i + 1].node;
-                this.visualizationController(() => this.drawPath(curNode, nextNode));
-            }
-            else {
-                this.visualizationController(() => this.drawAStarNode(curNode, ASTAR_COLORS[curType]));
-            }
+        if (curType === ASTAR_TYPES.PATH) {
+            let nextNode = this.stepsTaken[i + 1].node;
+            this.drawPath(curNode, nextNode);
+        }
+        else {
+            this.drawAStarNode(curNode, ASTAR_COLORS[curType]);
         }
     }
 
-    visualizationController = (callback) => (this.complete) ? callback() : this.animate(callback);
+    drawSteps = () => {
+        let len = this.stepsTaken.length;
+        for (let i = 0; i < len; i++) {
+            if (i + 1 >= len) break;
+            this.visualizeStep(i);
+        }
+    }
+
+    visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
 }
 
 let grid = new Grid;
