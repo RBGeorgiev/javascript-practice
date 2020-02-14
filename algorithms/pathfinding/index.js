@@ -477,10 +477,18 @@ class AStar {
         this.stepsTaken.push(step);
     }
 
+    visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
+
+    drawSteps = () => {
+        let len = this.stepsTaken.length;
+        for (let i = 0; i < len; i++) {
+            this.visualizeStep(i);
+        }
+    }
+
     animateSteps = () => {
-        var start = null;
+        let start = 0;
         let deltaTime = 0;
-        let frameTime = 0
         let i = 0;
         let len = this.stepsTaken.length;
 
@@ -488,16 +496,11 @@ class AStar {
             deltaTime = timestamp - start;
             start = timestamp;
 
-            frameTime += deltaTime;
+            if (i + 1 >= len) return;
 
-            if (frameTime > 5 && i + 1 < len) {
-                this.visualizeStep(i);
-                i++;
-                frameTime = 0;
-                window.requestAnimationFrame(step);
-            } else {
-                return console.log('anim end');
-            }
+            this.visualizeStep(i);
+            i++;
+            window.requestAnimationFrame(step);
         }
 
         window.requestAnimationFrame(step);
@@ -515,16 +518,6 @@ class AStar {
             this.drawAStarNode(curNode, ASTAR_COLORS[curType]);
         }
     }
-
-    drawSteps = () => {
-        let len = this.stepsTaken.length;
-        for (let i = 0; i < len; i++) {
-            if (i + 1 >= len) break;
-            this.visualizeStep(i);
-        }
-    }
-
-    visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
 }
 
 let grid = new Grid;
