@@ -498,8 +498,19 @@ class AStar {
 
             if (i + 1 >= len) return;
 
-            this.visualizeStep(i);
-            i++;
+            let speed = 10;
+            let timeout = deltaTime / speed;
+            let j = 0;
+
+            while (j < speed) {
+                setTimeout(this.visualizeStep(i + j), timeout * j)
+                j++;
+            }
+
+            i += speed;
+
+            // this.visualizeStep(i);
+            // i++;
             window.requestAnimationFrame(step);
         }
 
