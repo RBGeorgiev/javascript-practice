@@ -509,8 +509,6 @@ class AStar {
 
             i += speed;
 
-            // this.visualizeStep(i);
-            // i++;
             window.requestAnimationFrame(step);
         }
 
@@ -518,6 +516,8 @@ class AStar {
     }
 
     visualizeStep = (i) => {
+        if (i + 1 >= this.stepsTaken.length) return;
+
         let curNode = this.stepsTaken[i].node;
         let curType = this.stepsTaken[i].type;
 
