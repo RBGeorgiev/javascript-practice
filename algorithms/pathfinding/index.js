@@ -1,3 +1,8 @@
+let animSpeedInput = document.getElementById('animSpeedInput');
+let animSpeedSpan = document.getElementById('animSpeedSpan');
+
+// ___________________________________________________________________
+
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
@@ -293,6 +298,8 @@ class AStar {
         this.setEndNode(this.gridClass.getNode(23, 8));
 
         this.stepsTaken = [];
+
+        this.animSpeed = +animSpeedInput.value;
     }
 
     run = () => {
@@ -491,6 +498,9 @@ class AStar {
         let deltaTime = 0;
         let i = 0;
         let len = this.stepsTaken.length;
+        let speed = +animSpeedInput.value;
+
+        let timeout, j;
 
         const step = (timestamp) => {
             deltaTime = timestamp - start;
@@ -498,9 +508,8 @@ class AStar {
 
             if (i + 1 >= len) return;
 
-            let speed = 10;
-            let timeout = deltaTime / speed;
-            let j = 0;
+            timeout = deltaTime / speed;
+            j = 0;
 
             while (j < speed) {
                 setTimeout(this.visualizeStep(i + j), timeout * j)
@@ -657,3 +666,13 @@ document.addEventListener('keydown', (e) => {
         aStar.run();
     }
 });
+
+
+// ___________________________________________________
+// Options
+
+animSpeedInput.oninput = (e) => {
+    let val = +e.target.value;
+    aStar.animSpeed = val;
+    animSpeedSpan.innerHTML = val;
+}
