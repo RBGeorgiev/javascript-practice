@@ -50,14 +50,20 @@ Object.freeze(ASTAR_COLORS);
 
 
 class Node {
-    constructor(x, y, type = NODE_TYPES.EMPTY) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.parent = null;
+    }
+}
+
+class AStarNode extends Node {
+    constructor(x, y, type = NODE_TYPES.EMPTY) {
+        super(x, y);
         this.type = type;
         this.moveCost = 0;
         this.unwalkable = false;
         this.isEnd = false;
-        this.parent = null;
         this.gCost = null;
         this.hCost = null;
         this.heapIdx = null;
@@ -213,7 +219,7 @@ class Grid {
         for (let x = 0; x < this.gridSizeX; x++) {
             this.grid.push([]);
             for (let y = 0; y < this.gridSizeY; y++) {
-                this.grid[x][y] = new Node(x, y);
+                this.grid[x][y] = new AStarNode(x, y);
             }
         }
     }
