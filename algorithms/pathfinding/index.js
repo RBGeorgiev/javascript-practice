@@ -546,8 +546,31 @@ class AStar {
     }
 }
 
+class Dijkstra {
+    constructor() {
+        this.gridClass = grid;
+        this.grid = grid.grid;
+        this.startNode = null;
+        this.endNode = null;
+
+        this.setStartNode(this.gridClass.getNode(15, 5));
+        this.setEndNode(this.gridClass.getNode(15, 15));
+    }
+
+    setStartNode = (node) => {
+        node.setType(NODE_TYPES.START);
+        this.startNode = node;
+    }
+
+    setEndNode = (node) => {
+        node.setType(NODE_TYPES.END);
+        this.endNode = node;
+    }
+}
+
 let grid = new Grid;
 let aStar = new AStar(grid);
+// let dijkstra = new Dijkstra(grid);
 
 grid.drawAllNodes();
 
