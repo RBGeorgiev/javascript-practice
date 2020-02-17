@@ -50,20 +50,27 @@ Object.freeze(ASTAR_COLORS);
 
 
 class Node {
-    constructor(x, y) {
+    constructor(x, y, type = NODE_TYPES.EMPTY) {
         this.x = x;
         this.y = y;
         this.parent = null;
-    }
-}
-
-class AStarNode extends Node {
-    constructor(x, y, type = NODE_TYPES.EMPTY) {
-        super(x, y);
         this.type = type;
         this.moveCost = 0;
         this.unwalkable = false;
         this.isEnd = false;
+    }
+
+    setType = (type) => {
+        this.type = type;
+        this.moveCost = (type === NODE_TYPES.SWAMP) ? 5 : 0;
+        this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
+        this.isEnd = !!(type === NODE_TYPES.END);
+    }
+}
+
+class AStarNode extends Node {
+    constructor(x, y, type) {
+        super(x, y, type);
         this.gCost = null;
         this.hCost = null;
         this.heapIdx = null;
@@ -77,13 +84,6 @@ class AStarNode extends Node {
     setHCost = (val) => this.hCost = val;
 
     setParent = (parent) => this.parent = parent;
-
-    setType = (type) => {
-        this.type = type;
-        this.moveCost = (type === NODE_TYPES.SWAMP) ? 5 : 0;
-        this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
-        this.isEnd = !!(type === NODE_TYPES.END);
-    }
 
     setHeapIdx = (idx) => this.heapIdx = idx;
 
