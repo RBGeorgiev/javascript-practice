@@ -657,15 +657,18 @@ const handleMouseDown = (e) => {
         case NODE_TYPES.EMPTY:
             if (e.buttons === 1) {
                 listener = addUnwalkable;
+                addUnwalkable();
                 canvas.addEventListener('mousemove', addUnwalkable);
             } else if (e.buttons === 2) {
                 listener = addSwamp;
+                addSwamp();
                 canvas.addEventListener('mousemove', addSwamp);
             }
             break;
 
         case NODE_TYPES.UNWALKABLE:
             listener = addEmpty;
+            addEmpty();
             canvas.addEventListener('mousemove', addEmpty);
             break;
 
