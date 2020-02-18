@@ -458,10 +458,13 @@ class AStar {
 
         ctx.lineWidth = 1;
         ctx.strokeStyle = color;
-        ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
-
-        // ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
-
+        
+        if (color === ASTAR_COLORS.CLOSED_LIST){
+            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
+        } else {
+            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+        }
+        
         ctx.fill();
         ctx.stroke();
     }
