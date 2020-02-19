@@ -507,9 +507,8 @@ class AStar {
         let deltaTime = 0;
         let i = 0;
         let len = this.stepsTaken.length;
-        let speed = +animSpeedInput.value;
 
-        let timeout, j;
+        let timeout, j, speed;
 
         const step = (timestamp) => {
             deltaTime = timestamp - start;
@@ -517,6 +516,8 @@ class AStar {
 
             if (i + 1 >= len) return;
 
+            speed = +animSpeedInput.value;
+            
             timeout = deltaTime / speed;
             j = 0;
 
