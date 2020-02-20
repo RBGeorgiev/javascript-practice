@@ -96,6 +96,18 @@ class AStarNode extends Node {
     }
 }
 
+class DijkstraNode extends Node {
+    constructor(x, y, type) {
+        super(x, y, type);
+        this.dist = Infinity;
+        this.closed = false;
+    }
+
+    setDist = (val) => this.dist = val;
+    
+    setParent = (parent) => this.parent = parent;
+}
+
 class MinHeap {
     constructor(scoreFunction) {
         this.heap = [];
