@@ -595,7 +595,25 @@ class Dijkstra {
         this.endNode = node;
     }
 
+    getPath = (endNode) => {
+        let path = [];
+        let curNode = endNode;
+
+        while (true) {
+            path.unshift(curNode);
+
+            // this.addToStepsTaken(curNode, DIJKSTRA_TYPES.PATH);
+
+            if (curNode.type === NODE_TYPES.START) {
+                return path;
+            }
+
+            curNode = curNode.parent;
+        }
+    }
+
     findPath = () => {
+        console.time('Dijkstra');
         for (let x = 0; x < this.gridClass.gridSizeX; x++) {
             for (let y = 0; y < this.gridClass.gridSizeY; y++) {
                 let node = this.gridClass.getNode(x, y);
@@ -607,7 +625,10 @@ class Dijkstra {
         while (true) {
             curNode = this.unvisitedList.popMin();
 
-            if (curNode.dist === Infinity) return console.log('path doesnt exist')
+            if (curNode.dist === Infinity) {
+                console.timeEnd('Dijkstra');
+                return console.log("Path doesn't exist");
+            }
 
             let neighbors = this.gridClass.getNeighbors(curNode);
             for (let adjNode of neighbors) {
@@ -623,7 +644,11 @@ class Dijkstra {
             }
 
             curNode.setVisited();
-            if (curNode.isEnd) return console.log('path found');
+            if (curNode.isEnd) {
+                let path = this.getPath(curNode);
+                console.timeEnd('Dijkstra');
+                return console.log(path);
+            }
         }
 
     }
