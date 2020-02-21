@@ -87,12 +87,14 @@ class AStarNode extends Node {
 
     setHeapIdx = (idx) => this.heapIdx = idx;
 
+    setClosed = (bool = true) => this.closed = bool;
+
     resetAStarValues = () => {
         this.parent = null;
         this.gCost = null;
         this.hCost = null;
         this.heapIdx = null;
-        this.closed = false;
+        this.setClosed(false);
     }
 }
 
@@ -100,12 +102,16 @@ class DijkstraNode extends Node {
     constructor(x, y, type) {
         super(x, y, type);
         this.dist = Infinity;
-        this.closed = false;
+        this.visited = false;
     }
 
+    getDist = () => this.dist;
+
     setDist = (val) => this.dist = val;
-    
+
     setParent = (parent) => this.parent = parent;
+
+    setVisited = (bool = true) => this.visited = bool;
 }
 
 class MinHeap {
@@ -454,7 +460,7 @@ class AStar {
     }
 
     addToClosedList = (node) => {
-        node.closed = true;
+        node.setClosed();
         this.addToStepsTaken(node, ASTAR_TYPES.CLOSED_LIST);
     }
 
@@ -470,13 +476,13 @@ class AStar {
 
         ctx.lineWidth = 1;
         ctx.strokeStyle = color;
-        
-        if (color === ASTAR_COLORS.CLOSED_LIST){
+
+        if (color === ASTAR_COLORS.CLOSED_LIST) {
             ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
         } else {
             ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
         }
-        
+
         ctx.fill();
         ctx.stroke();
     }
@@ -529,7 +535,7 @@ class AStar {
             if (i + 1 >= len) return;
 
             speed = +animSpeedInput.value;
-            
+
             timeout = deltaTime / speed;
             j = 0;
 
@@ -568,6 +574,8 @@ class Dijkstra {
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
+        this.unvisitedList = new MinHeap(this.scoreFunction);
+        this.complete = false;
 
         this.setStartNode(this.gridClass.getNode(15, 5));
         this.setEndNode(this.gridClass.getNode(15, 15));
@@ -575,6 +583,7 @@ class Dijkstra {
 
     setStartNode = (node) => {
         node.setType(NODE_TYPES.START);
+        node.setDist(0);
         this.startNode = node;
     }
 
@@ -582,6 +591,8 @@ class Dijkstra {
         node.setType(NODE_TYPES.END);
         this.endNode = node;
     }
+
+    scoreFunction = (node) => node.getDist();
 }
 
 let grid = new Grid;
