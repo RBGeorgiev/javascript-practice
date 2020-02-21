@@ -112,6 +112,8 @@ class DijkstraNode extends Node {
     setParent = (parent) => this.parent = parent;
 
     setVisited = (bool = true) => this.visited = bool;
+
+    setHeapIdx = (idx) => this.heapIdx = idx;
 }
 
 class MinHeap {
@@ -237,7 +239,8 @@ class Grid {
         for (let x = 0; x < this.gridSizeX; x++) {
             this.grid.push([]);
             for (let y = 0; y < this.gridSizeY; y++) {
-                this.grid[x][y] = new AStarNode(x, y);
+                // this.grid[x][y] = new AStarNode(x, y);
+                this.grid[x][y] = new DijkstraNode(x, y);
             }
         }
     }
@@ -592,12 +595,45 @@ class Dijkstra {
         this.endNode = node;
     }
 
+    findPath = () => {
+        for (let x = 0; x < this.gridClass.gridSizeX; x++) {
+            for (let y = 0; y < this.gridClass.gridSizeY; y++) {
+                let node = this.gridClass.getNode(x, y);
+                this.unvisitedList.add(node);
+            }
+        }
+
+        let curNode;
+        while (true) {
+            curNode = this.unvisitedList.popMin();
+
+            if (curNode.dist === Infinity) return console.log('path doesnt exist')
+
+            let neighbors = this.gridClass.getNeighbors(curNode);
+            for (let adjNode of neighbors) {
+                if (adjNode.visited || adjNode.unwalkable) continue;
+
+                let newDist = (adjNode.x - curNode.x !== 0 && adjNode.y - curNode.y !== 0) ? curNode.dist + 14 : curNode.dist + 10;
+
+                if (newDist < adjNode.dist) {
+                    adjNode.setDist(newDist);
+                    this.unvisitedList.update(adjNode.heapIdx);
+                    adjNode.setParent(curNode);
+                }
+            }
+
+            curNode.setVisited();
+            if (curNode.isEnd) return console.log('path found');
+        }
+
+    }
+
     scoreFunction = (node) => node.getDist();
 }
 
 let grid = new Grid;
-let aStar = new AStar(grid);
-// let dijkstra = new Dijkstra(grid);
+// let aStar = new AStar(grid);
+let dijkstra = new Dijkstra(grid);
 
 grid.drawAllNodes();
 
@@ -721,8 +757,10 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
-        aStar.setComplete(false);
-        aStar.run();
+        // aStar.setComplete(false);
+        dijkstra.findPath();
+        // aStar.setComplete(false);
+        // aStar.run();
     }
 });
 
