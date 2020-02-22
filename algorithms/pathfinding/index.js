@@ -671,7 +671,15 @@ class Dijkstra {
             for (let adjNode of neighbors) {
                 if (adjNode.visited || adjNode.unwalkable) continue;
 
-                let newDist = (adjNode.x - curNode.x !== 0 && adjNode.y - curNode.y !== 0) ? curNode.dist + 14 : curNode.dist + 10;
+                let newDist;
+
+                if (adjNode.x - curNode.x !== 0 && adjNode.y - curNode.y !== 0) {
+                    let blocked = this.isDiagonalBlocked(curNode, adjNode);
+                    if (blocked) continue;
+                    newDist = curNode.dist + 14;
+                } else {
+                    newDist = curNode.dist + 10;
+                }
 
                 if (newDist < adjNode.dist) {
                     adjNode.setDist(newDist);
@@ -694,6 +702,13 @@ class Dijkstra {
     scoreFunction = (node) => node.getDist();
 
     setComplete = (bool) => this.complete = bool;
+
+    isDiagonalBlocked = (curNode, adjNode) => {
+        let sideNodeX = this.gridClass.getNode(adjNode.x, curNode.y);
+        let sideNodeY = this.gridClass.getNode(curNode.x, adjNode.y);
+
+        return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
+    }
 }
 
 let grid = new Grid;
