@@ -90,10 +90,10 @@ class AStarNode extends Node {
     setClosed = (bool = true) => this.closed = bool;
 
     resetAStarValues = () => {
-        this.parent = null;
-        this.gCost = null;
-        this.hCost = null;
-        this.heapIdx = null;
+        this.setGCost(null);
+        this.setHCost(null);
+        this.setParent(null);
+        this.setHeapIdx(null);
         this.setClosed(false);
     }
 }
@@ -111,9 +111,16 @@ class DijkstraNode extends Node {
 
     setParent = (parent) => this.parent = parent;
 
-    setVisited = (bool = true) => this.visited = bool;
-
     setHeapIdx = (idx) => this.heapIdx = idx;
+
+    setVisited = (bool) => this.visited = bool;
+
+    resetDijkstraValues = () => {
+        this.setDist(Infinity);
+        this.setParent(null);
+        this.setHeapIdx(null);
+        this.setVisited(false);
+    }
 }
 
 class MinHeap {
@@ -463,7 +470,7 @@ class AStar {
     }
 
     addToClosedList = (node) => {
-        node.setClosed();
+        node.setClosed(true);
         this.addToStepsTaken(node, ASTAR_TYPES.CLOSED_LIST);
     }
 
@@ -582,6 +589,36 @@ class Dijkstra {
 
         this.setStartNode(this.gridClass.getNode(15, 5));
         this.setEndNode(this.gridClass.getNode(15, 15));
+
+        this.stepsTaken = [];
+    }
+
+    run = () => {
+        this.reset();
+        this.findPath();
+        // this.visualizationController();
+        this.setComplete(true);
+    }
+
+    reset = () => {
+        let gridWidth = this.gridClass.gridSizeX;
+        let gridHeight = this.gridClass.gridSizeY;
+
+        for (let x = 0; x < gridWidth; x++) {
+            for (let y = 0; y < gridHeight; y++) {
+                let node = this.gridClass.getNode(x, y);
+                if (node.dist === Infinity) continue;
+                this.gridClass.drawNode(node);
+                node.resetDijkstraValues();
+            }
+        }
+        this.startNode.setDist(0);
+        this.gridClass.drawNode(this.startNode);
+        this.gridClass.drawNode(this.endNode);
+
+        this.unvisitedList.reset();
+
+        this.stepsTaken = [];
     }
 
     setStartNode = (node) => {
@@ -643,8 +680,9 @@ class Dijkstra {
                 }
             }
 
-            curNode.setVisited();
+            curNode.setVisited(true);
             if (curNode.isEnd) {
+                this.setComplete(true);
                 let path = this.getPath(curNode);
                 console.timeEnd('Dijkstra');
                 return console.log(path);
@@ -654,6 +692,8 @@ class Dijkstra {
     }
 
     scoreFunction = (node) => node.getDist();
+
+    setComplete = (bool) => this.complete = bool;
 }
 
 let grid = new Grid;
@@ -782,8 +822,8 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
-        // aStar.setComplete(false);
-        dijkstra.findPath();
+        dijkstra.setComplete(false);
+        dijkstra.run();
         // aStar.setComplete(false);
         // aStar.run();
     }
