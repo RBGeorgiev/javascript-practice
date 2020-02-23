@@ -474,7 +474,15 @@ class AStar {
         this.addToStepsTaken(node, ASTAR_TYPES.CLOSED_LIST);
     }
 
-    drawAStarNode = (node, color) => {
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
+    }
+
+    drawPathfindingNode = (node, color) => {
         if (Object.is(node, this.startNode) || node.isEnd) return;
         let size = this.gridClass.nodeSize;
         let xPos = size * node.x;
@@ -513,14 +521,6 @@ class AStar {
         ctx.stroke();
     }
 
-    addToStepsTaken = (node, type) => {
-        let step = {
-            node: node,
-            type: type
-        };
-        this.stepsTaken.push(step);
-    }
-
     visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
 
     drawSteps = () => {
@@ -544,7 +544,7 @@ class AStar {
 
             if (i + 1 >= len) return;
 
-            speed = +animSpeedInput.value;
+            speed = this.animSpeed;
 
             timeout = deltaTime / speed;
             j = 0;
@@ -573,7 +573,7 @@ class AStar {
             this.drawPath(curNode, nextNode);
         }
         else {
-            this.drawAStarNode(curNode, ASTAR_COLORS[curType]);
+            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
         }
     }
 }
@@ -591,12 +591,14 @@ class Dijkstra {
         this.setEndNode(this.gridClass.getNode(15, 15));
 
         this.stepsTaken = [];
+
+        this.animSpeed = +animSpeedInput.value;
     }
 
     run = () => {
         this.reset();
         this.findPath();
-        // this.visualizationController();
+        this.visualizationController();
         this.setComplete(true);
     }
 
@@ -639,7 +641,7 @@ class Dijkstra {
         while (true) {
             path.unshift(curNode);
 
-            // this.addToStepsTaken(curNode, DIJKSTRA_TYPES.PATH);
+            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
 
             if (curNode.type === NODE_TYPES.START) {
                 return path;
@@ -681,6 +683,8 @@ class Dijkstra {
                     newDist = curNode.dist + 10 + adjNode.moveCost;
                 }
 
+                this.addToStepsTaken(adjNode, ASTAR_TYPES.OPEN_LIST);
+
                 if (newDist < adjNode.dist) {
                     adjNode.setDist(newDist);
                     this.unvisitedList.update(adjNode.heapIdx);
@@ -689,8 +693,8 @@ class Dijkstra {
             }
 
             curNode.setVisited(true);
+            this.addToStepsTaken(curNode, ASTAR_TYPES.CLOSED_LIST);
             if (curNode.isEnd) {
-                this.setComplete(true);
                 let path = this.getPath(curNode);
                 console.timeEnd('Dijkstra');
                 return console.log(path);
@@ -708,6 +712,109 @@ class Dijkstra {
         let sideNodeY = this.gridClass.getNode(curNode.x, adjNode.y);
 
         return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
+    }
+
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
+    }
+
+    drawPathfindingNode = (node, color) => {
+        if (Object.is(node, this.startNode) || node.isEnd) return;
+        let size = this.gridClass.nodeSize;
+        let xPos = size * node.x;
+        let yPos = size * node.y;
+
+        ctx.beginPath();
+
+        ctx.fillStyle = color;
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = color;
+
+        if (color === ASTAR_COLORS.CLOSED_LIST) {
+            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
+        } else {
+            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+        }
+
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    drawPath = (nodeA, nodeB) => {
+        let size = this.gridClass.nodeSize;
+        let aX = size * nodeA.x + size / 2;
+        let aY = size * nodeA.y + size / 2;
+        let bX = size * nodeB.x + size / 2;
+        let bY = size * nodeB.y + size / 2;
+
+        ctx.strokeStyle = ASTAR_COLORS.PATH;
+        ctx.lineWidth = 5;
+
+        ctx.beginPath();
+        ctx.moveTo(aX, aY);
+        ctx.lineTo(bX, bY);
+        ctx.stroke();
+    }
+
+    visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
+
+    drawSteps = () => {
+        let len = this.stepsTaken.length;
+        for (let i = 0; i < len; i++) {
+            this.visualizeStep(i);
+        }
+    }
+
+    animateSteps = () => {
+        let start = 0;
+        let deltaTime = 0;
+        let i = 0;
+        let len = this.stepsTaken.length;
+
+        let timeout, j, speed;
+
+        const step = (timestamp) => {
+            deltaTime = timestamp - start;
+            start = timestamp;
+
+            if (i + 1 >= len) return;
+
+            speed = this.animSpeed;
+
+            timeout = deltaTime / speed;
+            j = 0;
+
+            while (j < speed) {
+                setTimeout(this.visualizeStep(i + j), timeout * j)
+                j++;
+            }
+
+            i += speed;
+
+            window.requestAnimationFrame(step);
+        }
+
+        window.requestAnimationFrame(step);
+    }
+
+    visualizeStep = (i) => {
+        if (i + 1 >= this.stepsTaken.length) return;
+
+        let curNode = this.stepsTaken[i].node;
+        let curType = this.stepsTaken[i].type;
+
+        if (curType === ASTAR_TYPES.PATH) {
+            let nextNode = this.stepsTaken[i + 1].node;
+            this.drawPath(curNode, nextNode);
+        }
+        else {
+            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
+        }
     }
 }
 
