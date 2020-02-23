@@ -676,9 +676,9 @@ class Dijkstra {
                 if (adjNode.x - curNode.x !== 0 && adjNode.y - curNode.y !== 0) {
                     let blocked = this.isDiagonalBlocked(curNode, adjNode);
                     if (blocked) continue;
-                    newDist = curNode.dist + 14;
+                    newDist = curNode.dist + 14 + adjNode.moveCost;
                 } else {
-                    newDist = curNode.dist + 10;
+                    newDist = curNode.dist + 10 + adjNode.moveCost;
                 }
 
                 if (newDist < adjNode.dist) {
