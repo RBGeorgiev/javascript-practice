@@ -54,6 +54,7 @@ class Node {
         this.x = x;
         this.y = y;
         this.parent = null;
+        this.heapIdx = null;
         this.type = type;
         this.moveCost = 0;
         this.unwalkable = false;
@@ -66,6 +67,10 @@ class Node {
         this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
         this.isEnd = !!(type === NODE_TYPES.END);
     }
+
+    setParent = (parent) => this.parent = parent;
+
+    setHeapIdx = (idx) => this.heapIdx = idx;
 }
 
 class AStarNode extends Node {
@@ -73,7 +78,6 @@ class AStarNode extends Node {
         super(x, y, type);
         this.gCost = null;
         this.hCost = null;
-        this.heapIdx = null;
         this.closed = false;
     }
 
@@ -82,10 +86,6 @@ class AStarNode extends Node {
     setGCost = (val) => this.gCost = val;
 
     setHCost = (val) => this.hCost = val;
-
-    setParent = (parent) => this.parent = parent;
-
-    setHeapIdx = (idx) => this.heapIdx = idx;
 
     setClosed = (bool = true) => this.closed = bool;
 
@@ -108,10 +108,6 @@ class DijkstraNode extends Node {
     getDist = () => this.dist;
 
     setDist = (val) => this.dist = val;
-
-    setParent = (parent) => this.parent = parent;
-
-    setHeapIdx = (idx) => this.heapIdx = idx;
 
     setVisited = (bool) => this.visited = bool;
 
