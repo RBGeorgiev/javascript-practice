@@ -89,7 +89,7 @@ class AStarNode extends Node {
 
     setClosed = (bool = true) => this.closed = bool;
 
-    resetAStarValues = () => {
+    resetPathfindingValues = () => {
         this.setGCost(null);
         this.setHCost(null);
         this.setParent(null);
@@ -115,7 +115,7 @@ class DijkstraNode extends Node {
 
     setVisited = (bool) => this.visited = bool;
 
-    resetDijkstraValues = () => {
+    resetPathfindingValues = () => {
         this.setDist(Infinity);
         this.setParent(null);
         this.setHeapIdx(null);
@@ -352,7 +352,7 @@ class AStar {
                 let node = this.gridClass.getNode(x, y);
                 if (node.gCost === null) continue;
                 this.gridClass.drawNode(node);
-                node.resetAStarValues();
+                node.resetPathfindingValues();
             }
         }
         this.gridClass.drawNode(this.startNode);
@@ -611,7 +611,7 @@ class Dijkstra {
                 let node = this.gridClass.getNode(x, y);
                 if (node.dist === Infinity) continue;
                 this.gridClass.drawNode(node);
-                node.resetDijkstraValues();
+                node.resetPathfindingValues();
             }
         }
         this.startNode.setDist(0);
@@ -876,7 +876,7 @@ const dragStart = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            oldStart.resetAStarValues();
+            oldStart.resetPathfindingValues();
             currentAlgorithm.run();
         }
     }
@@ -894,7 +894,7 @@ const dragEnd = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            oldEnd.resetAStarValues();
+            oldEnd.resetPathfindingValues();
             currentAlgorithm.run();
         }
     }
