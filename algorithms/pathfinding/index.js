@@ -820,7 +820,8 @@ class Dijkstra {
 
 let grid = new Grid;
 // let aStar = new AStar(grid);
-let dijkstra = new Dijkstra(grid);
+// let dijkstra = new Dijkstra(grid);
+let currentAlgorithm = new Dijkstra(grid);
 
 grid.drawAllNodes();
 
@@ -831,8 +832,8 @@ const addUnwalkable = (e) => {
         node.setType(NODE_TYPES.UNWALKABLE);
         grid.drawNode(node);
 
-        if (aStar.complete === true) {
-            aStar.run();
+        if (currentAlgorithm.complete === true) {
+            currentAlgorithm.run();
         }
     }
 }
@@ -844,8 +845,8 @@ const addEmpty = (e) => {
         node.setType(NODE_TYPES.EMPTY);
         grid.drawNode(node);
 
-        if (aStar.complete === true) {
-            aStar.run();
+        if (currentAlgorithm.complete === true) {
+            currentAlgorithm.run();
         }
     }
 }
@@ -857,44 +858,44 @@ const addSwamp = (e) => {
         node.setType(NODE_TYPES.SWAMP);
         grid.drawNode(node);
 
-        if (aStar.complete === true) {
-            aStar.run();
+        if (currentAlgorithm.complete === true) {
+            currentAlgorithm.run();
         }
     }
 }
 
 const dragStart = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    let oldStart = aStar.startNode;
+    let oldStart = currentAlgorithm.startNode;
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
         oldStart.setType(NODE_TYPES.EMPTY);
         grid.drawNode(oldStart);
 
-        aStar.setStartNode(node);
+        currentAlgorithm.setStartNode(node);
         grid.drawNode(node);
 
-        if (aStar.complete === true) {
+        if (currentAlgorithm.complete === true) {
             oldStart.resetAStarValues();
-            aStar.run();
+            currentAlgorithm.run();
         }
     }
 }
 
 const dragEnd = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    let oldEnd = aStar.endNode;
+    let oldEnd = currentAlgorithm.endNode;
     if (node === null) return;
     if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
         oldEnd.setType(NODE_TYPES.EMPTY);
         grid.drawNode(oldEnd);
 
-        aStar.setEndNode(node);
+        currentAlgorithm.setEndNode(node);
         grid.drawNode(node);
 
-        if (aStar.complete === true) {
+        if (currentAlgorithm.complete === true) {
             oldEnd.resetAStarValues();
-            aStar.run();
+            currentAlgorithm.run();
         }
     }
 }
@@ -944,10 +945,8 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
-        dijkstra.setComplete(false);
-        dijkstra.run();
-        // aStar.setComplete(false);
-        // aStar.run();
+        currentAlgorithm.setComplete(false);
+        currentAlgorithm.run();
     }
 });
 
@@ -957,6 +956,6 @@ document.addEventListener('keydown', (e) => {
 
 animSpeedInput.oninput = (e) => {
     let val = +e.target.value;
-    aStar.animSpeed = val;
+    currentAlgorithm.animSpeed = val;
     animSpeedSpan.innerHTML = val;
 }
