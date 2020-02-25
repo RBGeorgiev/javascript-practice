@@ -238,12 +238,11 @@ class Grid {
         this.initGrid();
     }
 
-    initGrid = () => {
+    initGrid = (pathfindingNode = AStarNode) => {
         for (let x = 0; x < this.gridSizeX; x++) {
             this.grid.push([]);
             for (let y = 0; y < this.gridSizeY; y++) {
-                // this.grid[x][y] = new AStarNode(x, y);
-                this.grid[x][y] = new DijkstraNode(x, y);
+                this.grid[x][y] = new pathfindingNode(x, y);
             }
         }
     }
@@ -815,9 +814,7 @@ class Dijkstra {
 }
 
 let grid = new Grid;
-// let aStar = new AStar(grid);
-// let dijkstra = new Dijkstra(grid);
-let currentAlgorithm = new Dijkstra(grid);
+let currentAlgorithm = new AStar(grid);
 
 grid.drawAllNodes();
 
@@ -940,9 +937,20 @@ const handleMouseDown = (e) => {
 canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 
 document.addEventListener('keydown', (e) => {
+    // Space and Enter
     if (e.keyCode === 13 || e.keyCode === 32) {
         currentAlgorithm.setComplete(false);
         currentAlgorithm.run();
+    }
+    // A
+    if (e.keyCode === 65) {
+        grid.initGrid(AStarNode)
+        currentAlgorithm = new AStar(grid);
+    }
+    // S
+    if (e.keyCode === 83) {
+        grid.initGrid(DijkstraNode)
+        currentAlgorithm = new Dijkstra(grid);
     }
 });
 
