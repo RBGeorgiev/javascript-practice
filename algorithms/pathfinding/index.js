@@ -235,10 +235,9 @@ class Grid {
         this.gridSizeY = this.gridSizeX / 2;
         this.nodeSize = canvas.width / this.gridSizeX;
         this.grid = [];
-        this.initGrid();
     }
 
-    initGrid = (pathfindingNode = AStarNode) => {
+    initGrid = (pathfindingNode) => {
         for (let x = 0; x < this.gridSizeX; x++) {
             this.grid.push([]);
             for (let y = 0; y < this.gridSizeY; y++) {
@@ -317,6 +316,7 @@ class Grid {
 class AStar {
     constructor(grid) {
         this.gridClass = grid;
+        this.gridClass.initGrid(AStarNode);
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
@@ -325,6 +325,8 @@ class AStar {
 
         this.setStartNode(this.gridClass.getNode(10, 8));
         this.setEndNode(this.gridClass.getNode(23, 8));
+
+        this.gridClass.drawAllNodes();
 
         this.stepsTaken = [];
 
@@ -576,6 +578,7 @@ class AStar {
 class Dijkstra {
     constructor() {
         this.gridClass = grid;
+        this.gridClass.initGrid(DijkstraNode);
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
@@ -584,6 +587,8 @@ class Dijkstra {
 
         this.setStartNode(this.gridClass.getNode(15, 5));
         this.setEndNode(this.gridClass.getNode(15, 15));
+
+        this.gridClass.drawAllNodes();
 
         this.stepsTaken = [];
 
