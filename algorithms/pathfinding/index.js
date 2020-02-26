@@ -59,6 +59,7 @@ class Node {
         this.moveCost = 0;
         this.unwalkable = false;
         this.isEnd = false;
+        this.setType(type);
     }
 
     setType = (type) => {
@@ -238,10 +239,21 @@ class Grid {
     }
 
     initGrid = (pathfindingNode) => {
+        this.grid = [];
         for (let x = 0; x < this.gridSizeX; x++) {
             this.grid.push([]);
             for (let y = 0; y < this.gridSizeY; y++) {
                 this.grid[x][y] = new pathfindingNode(x, y);
+            }
+        }
+    }
+
+    transferGridState = (pathfindingNode) => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            for (let y = 0; y < this.gridSizeY; y++) {
+                let oldNode = this.getNode(x, y);
+                let type = oldNode.type;
+                this.grid[x][y] = new pathfindingNode(x, y, type);
             }
         }
     }
@@ -316,17 +328,12 @@ class Grid {
 class AStar {
     constructor(grid) {
         this.gridClass = grid;
-        this.gridClass.initGrid(AStarNode);
+        this.gridClass.transferGridState(AStarNode);
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
         this.openList = new MinHeap(this.scoreFunction);
         this.complete = false;
-
-        this.setStartNode(this.gridClass.getNode(10, 8));
-        this.setEndNode(this.gridClass.getNode(23, 8));
-
-        this.gridClass.drawAllNodes();
 
         this.stepsTaken = [];
 
@@ -578,17 +585,12 @@ class AStar {
 class Dijkstra {
     constructor() {
         this.gridClass = grid;
-        this.gridClass.initGrid(DijkstraNode);
+        this.gridClass.transferGridState(DijkstraNode);
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
         this.unvisitedList = new MinHeap(this.scoreFunction);
         this.complete = false;
-
-        this.setStartNode(this.gridClass.getNode(15, 5));
-        this.setEndNode(this.gridClass.getNode(15, 15));
-
-        this.gridClass.drawAllNodes();
 
         this.stepsTaken = [];
 
@@ -819,7 +821,10 @@ class Dijkstra {
 }
 
 let grid = new Grid;
+grid.initGrid(AStarNode);
 let currentAlgorithm = new AStar(grid);
+currentAlgorithm.setStartNode(grid.getNode(10, 8));
+currentAlgorithm.setEndNode(grid.getNode(23, 8));
 
 grid.drawAllNodes();
 
@@ -949,13 +954,25 @@ document.addEventListener('keydown', (e) => {
     }
     // A
     if (e.keyCode === 65) {
-        grid.initGrid(AStarNode)
+        let startX = currentAlgorithm.startNode.x;
+        let startY = currentAlgorithm.startNode.y;
+        let endX = currentAlgorithm.endNode.x;
+        let endY = currentAlgorithm.endNode.y;
         currentAlgorithm = new AStar(grid);
+        currentAlgorithm.setStartNode(grid.getNode(startX, startY));
+        currentAlgorithm.setEndNode(grid.getNode(endX, endY));
+        grid.drawAllNodes();
     }
     // S
     if (e.keyCode === 83) {
-        grid.initGrid(DijkstraNode)
+        let startX = currentAlgorithm.startNode.x;
+        let startY = currentAlgorithm.startNode.y;
+        let endX = currentAlgorithm.endNode.x;
+        let endY = currentAlgorithm.endNode.y;
         currentAlgorithm = new Dijkstra(grid);
+        currentAlgorithm.setStartNode(grid.getNode(startX, startY));
+        currentAlgorithm.setEndNode(grid.getNode(endX, endY));
+        grid.drawAllNodes();
     }
 });
 
