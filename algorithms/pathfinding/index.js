@@ -828,6 +828,20 @@ currentAlgorithm.setEndNode(grid.getNode(23, 8));
 
 grid.drawAllNodes();
 
+const changeAlgorithm = (algorithm) => {
+    let startX = currentAlgorithm.startNode.x;
+    let startY = currentAlgorithm.startNode.y;
+    let endX = currentAlgorithm.endNode.x;
+    let endY = currentAlgorithm.endNode.y;
+
+    currentAlgorithm = new algorithm(grid);
+
+    currentAlgorithm.setStartNode(grid.getNode(startX, startY));
+    currentAlgorithm.setEndNode(grid.getNode(endX, endY));
+
+    grid.drawAllNodes();
+}
+
 const addUnwalkable = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     if (node === null) return;
@@ -954,25 +968,11 @@ document.addEventListener('keydown', (e) => {
     }
     // A
     if (e.keyCode === 65) {
-        let startX = currentAlgorithm.startNode.x;
-        let startY = currentAlgorithm.startNode.y;
-        let endX = currentAlgorithm.endNode.x;
-        let endY = currentAlgorithm.endNode.y;
-        currentAlgorithm = new AStar(grid);
-        currentAlgorithm.setStartNode(grid.getNode(startX, startY));
-        currentAlgorithm.setEndNode(grid.getNode(endX, endY));
-        grid.drawAllNodes();
+        changeAlgorithm(AStar);
     }
     // S
     if (e.keyCode === 83) {
-        let startX = currentAlgorithm.startNode.x;
-        let startY = currentAlgorithm.startNode.y;
-        let endX = currentAlgorithm.endNode.x;
-        let endY = currentAlgorithm.endNode.y;
-        currentAlgorithm = new Dijkstra(grid);
-        currentAlgorithm.setStartNode(grid.getNode(startX, startY));
-        currentAlgorithm.setEndNode(grid.getNode(endX, endY));
-        grid.drawAllNodes();
+        changeAlgorithm(Dijkstra);
     }
 });
 
