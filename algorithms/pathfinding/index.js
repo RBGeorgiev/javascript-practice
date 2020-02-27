@@ -951,6 +951,7 @@ const handleMouseDown = (e) => {
 
         default:
             listener = addEmpty;
+            addEmpty(e);
             canvas.addEventListener('mousemove', addEmpty);
     }
 
