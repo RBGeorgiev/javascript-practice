@@ -685,12 +685,11 @@ class Dijkstra {
                     newDist = curNode.dist + 10 + adjNode.moveCost;
                 }
 
-                this.addToStepsTaken(adjNode, ASTAR_TYPES.OPEN_LIST);
-
                 if (newDist < adjNode.dist) {
                     adjNode.setDist(newDist);
-                    this.unvisitedList.update(adjNode.heapIdx);
                     adjNode.setParent(curNode);
+                    this.unvisitedList.update(adjNode.heapIdx);
+                    this.addToStepsTaken(adjNode, ASTAR_TYPES.OPEN_LIST);
                 }
             }
 
@@ -699,7 +698,7 @@ class Dijkstra {
             if (curNode.isEnd) {
                 let path = this.getPath(curNode);
                 console.timeEnd('Dijkstra');
-                return console.log(path);
+                return path;
             }
         }
 
