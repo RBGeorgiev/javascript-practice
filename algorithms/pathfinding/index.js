@@ -1,5 +1,6 @@
 let animSpeedInput = document.getElementById('animSpeedInput');
 let animSpeedSpan = document.getElementById('animSpeedSpan');
+let clearWallsBtn = document.getElementById('clearWallsBtn');
 
 // ___________________________________________________________________
 
@@ -328,7 +329,8 @@ class Grid {
 class AStar {
     constructor(grid) {
         this.gridClass = grid;
-        this.gridClass.transferGridState(AStarNode);
+        this.algorithmNode = AStarNode;
+        this.gridClass.transferGridState(this.algorithmNode);
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
@@ -585,7 +587,8 @@ class AStar {
 class Dijkstra {
     constructor() {
         this.gridClass = grid;
-        this.gridClass.transferGridState(DijkstraNode);
+        this.algorithmNode = DijkstraNode;
+        this.gridClass.transferGridState(this.algorithmNode);
         this.grid = grid.grid;
         this.startNode = null;
         this.endNode = null;
@@ -984,4 +987,18 @@ animSpeedInput.oninput = (e) => {
     let val = +e.target.value;
     currentAlgorithm.animSpeed = val;
     animSpeedSpan.innerHTML = val;
+}
+
+clearWallsBtn.onclick = () => {
+    let startX = currentAlgorithm.startNode.x;
+    let startY = currentAlgorithm.startNode.y;
+    let endX = currentAlgorithm.endNode.x;
+    let endY = currentAlgorithm.endNode.y;
+
+    grid.initGrid(currentAlgorithm.algorithmNode);
+
+    currentAlgorithm.setStartNode(grid.getNode(startX, startY));
+    currentAlgorithm.setEndNode(grid.getNode(endX, endY));
+
+    grid.drawAllNodes();
 }
