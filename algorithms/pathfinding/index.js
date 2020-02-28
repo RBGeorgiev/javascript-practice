@@ -14,11 +14,11 @@ canvas.height = 800;
 
 // #region eNums
 const NODE_COLORS = {
-    EMPTY: "white",
-    UNWALKABLE: "black",
-    SWAMP: "burlywood",
-    START: "green",
-    END: "red"
+    EMPTY: "#FFFFFF",
+    UNWALKABLE: "#000000",
+    SWAMP: "#CCC769",
+    START: "#00FF00",
+    END: "#FF0000"
 }
 Object.freeze(NODE_COLORS);
 
@@ -39,9 +39,9 @@ const ASTAR_TYPES = {
 Object.freeze(ASTAR_TYPES);
 
 const ASTAR_COLORS = {
-    PATH: "orange",
-    OPEN_LIST: "lightblue",
-    CLOSED_LIST: "cornflowerblue"
+    PATH: "#FFA500",
+    OPEN_LIST: "#00CDCD",
+    CLOSED_LIST: "#0000FF"
     // PATH: "rgba(247, 153, 58, 0.82)",
     // OPEN_LIST: "rgba(63, 191, 191, 0.42)",
     // CLOSED_LIST: "rgba(63, 127, 191, 0.57)"
