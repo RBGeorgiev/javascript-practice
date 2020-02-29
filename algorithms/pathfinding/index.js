@@ -1,6 +1,7 @@
 let animSpeedInput = document.getElementById('animSpeedInput');
 let animSpeedSpan = document.getElementById('animSpeedSpan');
 let clearWallsBtn = document.getElementById('clearWallsBtn');
+let algorithmSelect = document.getElementById('algorithmSelect');
 
 // ___________________________________________________________________
 
@@ -969,19 +970,24 @@ document.addEventListener('keydown', (e) => {
         currentAlgorithm.setComplete(false);
         currentAlgorithm.run();
     }
-    // A
-    if (e.keyCode === 65) {
-        changeAlgorithm(AStar);
-    }
-    // S
-    if (e.keyCode === 83) {
-        changeAlgorithm(Dijkstra);
-    }
 });
 
 
 // ___________________________________________________
 // Options
+
+algorithmSelect.onchange = () => {
+    switch (algorithmSelect.value) {
+        case 'AStar':
+            changeAlgorithm(AStar);
+            break;
+        case 'Dijkstra':
+            changeAlgorithm(Dijkstra);
+            break;
+        default:
+            console.error('Error determining algorithm');
+    }
+}
 
 animSpeedInput.oninput = (e) => {
     let val = +e.target.value;
