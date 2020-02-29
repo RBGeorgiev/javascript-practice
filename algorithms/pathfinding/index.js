@@ -2,6 +2,7 @@ let animSpeedInput = document.getElementById('animSpeedInput');
 let animSpeedSpan = document.getElementById('animSpeedSpan');
 let clearWallsBtn = document.getElementById('clearWallsBtn');
 let algorithmSelect = document.getElementById('algorithmSelect');
+let runAlgorithmBtn = document.getElementById('runAlgorithmBtn');
 
 // ___________________________________________________________________
 
@@ -975,6 +976,11 @@ document.addEventListener('keydown', (e) => {
 
 // ___________________________________________________
 // Options
+
+runAlgorithmBtn.onclick = () => {
+    currentAlgorithm.setComplete(false);
+    currentAlgorithm.run();
+}
 
 algorithmSelect.onchange = () => {
     switch (algorithmSelect.value) {
