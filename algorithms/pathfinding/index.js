@@ -1011,6 +1011,7 @@ clearWallsBtn.onclick = () => {
 
     currentAlgorithm.setStartNode(grid.getNode(startX, startY));
     currentAlgorithm.setEndNode(grid.getNode(endX, endY));
+    currentAlgorithm.setComplete(false);
 
     grid.drawAllNodes();
 }
