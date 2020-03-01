@@ -503,7 +503,7 @@ class AStar {
         ctx.lineWidth = 1;
         ctx.strokeStyle = color;
 
-        if (color === ASTAR_COLORS.CLOSED_LIST) {
+        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
             ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
         } else {
             ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
@@ -579,6 +579,7 @@ class AStar {
         if (curType === ASTAR_TYPES.PATH) {
             let nextNode = this.stepsTaken[i + 1].node;
             this.drawPath(curNode, nextNode);
+            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
         }
         else {
             this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
@@ -741,7 +742,7 @@ class Dijkstra {
         ctx.lineWidth = 1;
         ctx.strokeStyle = color;
 
-        if (color === ASTAR_COLORS.CLOSED_LIST) {
+        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
             ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
         } else {
             ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
@@ -817,6 +818,7 @@ class Dijkstra {
         if (curType === ASTAR_TYPES.PATH) {
             let nextNode = this.stepsTaken[i + 1].node;
             this.drawPath(curNode, nextNode);
+            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
         }
         else {
             this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
