@@ -834,15 +834,13 @@ currentAlgorithm.setEndNode(grid.getNode(23, 8));
 grid.drawAllNodes();
 
 const changeAlgorithm = (algorithm) => {
-    let startX = currentAlgorithm.startNode.x;
-    let startY = currentAlgorithm.startNode.y;
-    let endX = currentAlgorithm.endNode.x;
-    let endY = currentAlgorithm.endNode.y;
+    let start = currentAlgorithm.startNode;
+    let end = currentAlgorithm.endNode;
 
     currentAlgorithm = new algorithm(grid);
 
-    currentAlgorithm.setStartNode(grid.getNode(startX, startY));
-    currentAlgorithm.setEndNode(grid.getNode(endX, endY));
+    currentAlgorithm.setStartNode(grid.getNode(start.x, start.y));
+    currentAlgorithm.setEndNode(grid.getNode(end.x, end.y));
 
     grid.drawAllNodes();
 }
@@ -939,12 +937,6 @@ const handleMouseDown = (e) => {
             }
             break;
 
-        case NODE_TYPES.UNWALKABLE:
-            listener = addEmpty;
-            addEmpty(e);
-            canvas.addEventListener('mousemove', addEmpty);
-            break;
-
         case NODE_TYPES.START:
             listener = dragStart;
             canvas.addEventListener('mousemove', dragStart);
@@ -1003,15 +995,13 @@ animSpeedInput.oninput = (e) => {
 }
 
 clearWallsBtn.onclick = () => {
-    let startX = currentAlgorithm.startNode.x;
-    let startY = currentAlgorithm.startNode.y;
-    let endX = currentAlgorithm.endNode.x;
-    let endY = currentAlgorithm.endNode.y;
+    let start = currentAlgorithm.startNode;
+    let end = currentAlgorithm.endNode;
 
     grid.initGrid(currentAlgorithm.algorithmNode);
 
-    currentAlgorithm.setStartNode(grid.getNode(startX, startY));
-    currentAlgorithm.setEndNode(grid.getNode(endX, endY));
+    currentAlgorithm.setStartNode(grid.getNode(start.x, start.y));
+    currentAlgorithm.setEndNode(grid.getNode(end.x, end.y));
     currentAlgorithm.setComplete(false);
 
     grid.drawAllNodes();
