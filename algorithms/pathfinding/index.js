@@ -65,16 +65,16 @@ class Node {
         this.setType(type);
     }
 
+    setHeapIdx = (idx) => this.heapIdx = idx;
+
+    setParent = (parent) => this.parent = parent;
+
     setType = (type) => {
         this.type = type;
         this.moveCost = (type === NODE_TYPES.SWAMP) ? 5 : 0;
         this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
         this.isEnd = !!(type === NODE_TYPES.END);
     }
-
-    setParent = (parent) => this.parent = parent;
-
-    setHeapIdx = (idx) => this.heapIdx = idx;
 }
 
 class AStarNode extends Node {
@@ -87,12 +87,6 @@ class AStarNode extends Node {
 
     getFCost = () => this.gCost + this.hCost;
 
-    setGCost = (val) => this.gCost = val;
-
-    setHCost = (val) => this.hCost = val;
-
-    setClosed = (bool = true) => this.closed = bool;
-
     resetPathfindingValues = () => {
         this.setGCost(null);
         this.setHCost(null);
@@ -100,6 +94,12 @@ class AStarNode extends Node {
         this.setHeapIdx(null);
         this.setClosed(false);
     }
+
+    setClosed = (bool = true) => this.closed = bool;
+
+    setGCost = (val) => this.gCost = val;
+
+    setHCost = (val) => this.hCost = val;
 }
 
 class DijkstraNode extends Node {
@@ -111,16 +111,16 @@ class DijkstraNode extends Node {
 
     getDist = () => this.dist;
 
-    setDist = (val) => this.dist = val;
-
-    setVisited = (bool) => this.visited = bool;
-
     resetPathfindingValues = () => {
         this.setDist(Infinity);
         this.setParent(null);
         this.setHeapIdx(null);
         this.setVisited(false);
     }
+
+    setDist = (val) => this.dist = val;
+
+    setVisited = (bool) => this.visited = bool;
 }
 
 class MinHeap {
@@ -128,8 +128,6 @@ class MinHeap {
         this.heap = [];
         this.scoreFunction = scoreFunction;
     }
-
-    reset = () => this.heap = [];
 
     add = (el) => {
         this.heap.push(el);
@@ -159,29 +157,9 @@ class MinHeap {
         this.sortDown(i);
     }
 
-    update = (idx) => {
-        this.sortUp(idx);
-        this.sortDown(idx);
-    }
+    reset = () => this.heap = [];
 
     size = () => this.heap.length;
-
-    sortUp = (idx) => {
-        let el = this.heap[idx];
-        let score = this.scoreFunction(el);
-
-        while (idx > 0) {
-            let parentIdx = Math.floor((idx + 1) / 2) - 1;
-            let parent = this.heap[parentIdx];
-
-            if (score > this.scoreFunction(parent)) {
-                break;
-            }
-
-            this.swap(idx, parentIdx);
-            idx = parentIdx;
-        }
-    }
 
     sortDown = (idx) => {
         let length = this.heap.length;
@@ -220,6 +198,23 @@ class MinHeap {
         }
     }
 
+    sortUp = (idx) => {
+        let el = this.heap[idx];
+        let score = this.scoreFunction(el);
+
+        while (idx > 0) {
+            let parentIdx = Math.floor((idx + 1) / 2) - 1;
+            let parent = this.heap[parentIdx];
+
+            if (score > this.scoreFunction(parent)) {
+                break;
+            }
+
+            this.swap(idx, parentIdx);
+            idx = parentIdx;
+        }
+    }
+
     swap = (idx1, idx2) => {
         let el1 = this.heap[idx1];
         let el2 = this.heap[idx2];
@@ -231,6 +226,10 @@ class MinHeap {
         this.heap[idx2] = el1;
     }
 
+    update = (idx) => {
+        this.sortUp(idx);
+        this.sortDown(idx);
+    }
 }
 
 class Grid {
@@ -241,27 +240,31 @@ class Grid {
         this.grid = [];
     }
 
-    initGrid = (pathfindingNode) => {
-        this.grid = [];
-        for (let x = 0; x < this.gridSizeX; x++) {
-            this.grid.push([]);
-            for (let y = 0; y < this.gridSizeY; y++) {
-                this.grid[x][y] = new pathfindingNode(x, y);
+    drawAllNodes = () => {
+        for (let x = 0; x < this.grid.length; x++) {
+            for (let y = 0; y < this.grid[x].length; y++) {
+                let node = this.getNode(x, y);
+                this.drawNode(node);
             }
         }
     }
 
-    transferGridState = (pathfindingNode) => {
-        for (let x = 0; x < this.gridSizeX; x++) {
-            for (let y = 0; y < this.gridSizeY; y++) {
-                let oldNode = this.getNode(x, y);
-                let type = oldNode.type;
-                this.grid[x][y] = new pathfindingNode(x, y, type);
-            }
-        }
-    }
+    drawNode = (node) => {
+        let size = this.nodeSize;
+        let xPos = size * node.x;
+        let yPos = size * node.y;
+        let color = this.getNodeColor(node);
 
-    getNode = (x, y) => this.grid[x][y];
+        ctx.beginPath();
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "darkgray";
+        ctx.rect(xPos, yPos, size, size);
+        ctx.fillStyle = color;
+
+        ctx.fill();
+        ctx.stroke();
+    }
 
     getNeighbors = (node) => {
         let neighbors = [];
@@ -287,6 +290,10 @@ class Grid {
         return neighbors;
     }
 
+    getNode = (x, y) => this.grid[x][y];
+
+    getNodeColor = (node) => NODE_COLORS[node.type];
+
     getNodeFromCoordinates = (x, y) => {
         let gridX = Math.floor(x / this.nodeSize);
         let gridY = Math.floor(y / this.nodeSize);
@@ -299,33 +306,25 @@ class Grid {
         return this.getNode(gridX, gridY);
     }
 
-    drawNode = (node) => {
-        let size = this.nodeSize;
-        let xPos = size * node.x;
-        let yPos = size * node.y;
-        let color = this.getNodeColor(node);
-
-        ctx.beginPath();
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "darkgray";
-        ctx.rect(xPos, yPos, size, size);
-        ctx.fillStyle = color;
-
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    drawAllNodes = () => {
-        for (let x = 0; x < this.grid.length; x++) {
-            for (let y = 0; y < this.grid[x].length; y++) {
-                let node = this.getNode(x, y);
-                this.drawNode(node);
+    initGrid = (pathfindingNode) => {
+        this.grid = [];
+        for (let x = 0; x < this.gridSizeX; x++) {
+            this.grid.push([]);
+            for (let y = 0; y < this.gridSizeY; y++) {
+                this.grid[x][y] = new pathfindingNode(x, y);
             }
         }
     }
 
-    getNodeColor = (node) => NODE_COLORS[node.type];
+    transferGridState = (pathfindingNode) => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            for (let y = 0; y < this.gridSizeY; y++) {
+                let oldNode = this.getNode(x, y);
+                let type = oldNode.type;
+                this.grid[x][y] = new pathfindingNode(x, y, type);
+            }
+        }
+    }
 }
 
 class AStar {
@@ -344,67 +343,110 @@ class AStar {
         this.animSpeed = +animSpeedInput.value;
     }
 
-    run = () => {
-        this.reset();
-        this.findPath();
-        this.visualizationController();
-        this.setComplete(true);
+    addToClosedList = (node) => {
+        node.setClosed(true);
+        this.addToStepsTaken(node, ASTAR_TYPES.CLOSED_LIST);
     }
 
-    reset = () => {
-        let gridWidth = this.gridClass.gridSizeX;
-        let gridHeight = this.gridClass.gridSizeY;
-
-        for (let x = 0; x < gridWidth; x++) {
-            for (let y = 0; y < gridHeight; y++) {
-                let node = this.gridClass.getNode(x, y);
-                if (node.gCost === null) continue;
-                this.gridClass.drawNode(node);
-                node.resetPathfindingValues();
-            }
-        }
-        this.gridClass.drawNode(this.startNode);
-        this.gridClass.drawNode(this.endNode);
-
-        this.openList.reset();
-
-        this.stepsTaken = [];
+    addToOpenList = (node) => {
+        this.openList.add(node);
+        this.addToStepsTaken(node, ASTAR_TYPES.OPEN_LIST);
     }
 
-    setStartNode = (node) => {
-        node.setType(NODE_TYPES.START);
-        this.startNode = node;
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
     }
 
-    setEndNode = (node) => {
-        node.setType(NODE_TYPES.END);
-        this.endNode = node;
-    }
+    animateSteps = () => {
+        let start = 0;
+        let deltaTime = 0;
+        let i = 0;
+        let len = this.stepsTaken.length;
 
-    setComplete = (bool) => this.complete = bool;
+        let timeout, j, speed;
 
-    getPath = (endNode) => {
-        let path = [];
-        let curNode = endNode;
+        const step = (timestamp) => {
+            deltaTime = timestamp - start;
+            start = timestamp;
 
-        while (true) {
-            path.unshift(curNode);
+            if (i + 1 >= len) return;
 
-            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
+            speed = this.animSpeed;
 
-            if (curNode.type === NODE_TYPES.START) {
-                return path;
+            timeout = deltaTime / speed;
+            j = 0;
+
+            while (j < speed) {
+                setTimeout(this.visualizeStep(i + j), timeout * j)
+                j++;
             }
 
-            curNode = curNode.parent;
+            i += speed;
+
+            window.requestAnimationFrame(step);
         }
+
+        window.requestAnimationFrame(step);
     }
 
-    isDiagonalBlocked = (curNode, adjNode) => {
-        let sideNodeX = this.gridClass.getNode(adjNode.x, curNode.y);
-        let sideNodeY = this.gridClass.getNode(curNode.x, adjNode.y);
+    calcCost = (nodeA, nodeB) => {
+        let distX = Math.abs(nodeA.x - nodeB.x);
+        let distY = Math.abs(nodeA.y - nodeB.y);
 
-        return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
+        if (distX > distY) {
+            return 14 * distY + 10 * (distX - distY);
+        }
+        return 14 * distX + 10 * (distY - distX);
+    }
+
+    drawPath = (nodeA, nodeB) => {
+        let size = this.gridClass.nodeSize;
+        let aX = size * nodeA.x + size / 2;
+        let aY = size * nodeA.y + size / 2;
+        let bX = size * nodeB.x + size / 2;
+        let bY = size * nodeB.y + size / 2;
+
+        ctx.strokeStyle = ASTAR_COLORS.PATH;
+        ctx.lineWidth = 5;
+
+        ctx.beginPath();
+        ctx.moveTo(aX, aY);
+        ctx.lineTo(bX, bY);
+        ctx.stroke();
+    }
+
+    drawPathfindingNode = (node, color) => {
+        if (Object.is(node, this.startNode) || node.isEnd) return;
+        let size = this.gridClass.nodeSize;
+        let xPos = size * node.x;
+        let yPos = size * node.y;
+
+        ctx.beginPath();
+
+        ctx.fillStyle = color;
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = color;
+
+        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
+            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
+        } else {
+            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+        }
+
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    drawSteps = () => {
+        let len = this.stepsTaken.length;
+        for (let i = 0; i < len; i++) {
+            this.visualizeStep(i);
+        }
     }
 
     findPath = () => {
@@ -460,115 +502,72 @@ class AStar {
         return console.log("Path doesn't exist");
     }
 
-    calcCost = (nodeA, nodeB) => {
-        let distX = Math.abs(nodeA.x - nodeB.x);
-        let distY = Math.abs(nodeA.y - nodeB.y);
+    getPath = (endNode) => {
+        let path = [];
+        let curNode = endNode;
 
-        if (distX > distY) {
-            return 14 * distY + 10 * (distX - distY);
+        while (true) {
+            path.unshift(curNode);
+
+            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
+
+            if (curNode.type === NODE_TYPES.START) {
+                return path;
+            }
+
+            curNode = curNode.parent;
         }
-        return 14 * distX + 10 * (distY - distX);
+    }
+
+    isDiagonalBlocked = (curNode, adjNode) => {
+        let sideNodeX = this.gridClass.getNode(adjNode.x, curNode.y);
+        let sideNodeY = this.gridClass.getNode(curNode.x, adjNode.y);
+
+        return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
+    }
+
+    reset = () => {
+        let gridWidth = this.gridClass.gridSizeX;
+        let gridHeight = this.gridClass.gridSizeY;
+
+        for (let x = 0; x < gridWidth; x++) {
+            for (let y = 0; y < gridHeight; y++) {
+                let node = this.gridClass.getNode(x, y);
+                if (node.gCost === null) continue;
+                this.gridClass.drawNode(node);
+                node.resetPathfindingValues();
+            }
+        }
+        this.gridClass.drawNode(this.startNode);
+        this.gridClass.drawNode(this.endNode);
+
+        this.openList.reset();
+
+        this.stepsTaken = [];
+    }
+
+    run = () => {
+        this.reset();
+        this.findPath();
+        this.visualizationController();
+        this.setComplete(true);
     }
 
     scoreFunction = (node) => node.getFCost();
 
-    addToOpenList = (node) => {
-        this.openList.add(node);
-        this.addToStepsTaken(node, ASTAR_TYPES.OPEN_LIST);
+    setComplete = (bool) => this.complete = bool;
+
+    setEndNode = (node) => {
+        node.setType(NODE_TYPES.END);
+        this.endNode = node;
     }
 
-    addToClosedList = (node) => {
-        node.setClosed(true);
-        this.addToStepsTaken(node, ASTAR_TYPES.CLOSED_LIST);
-    }
-
-    addToStepsTaken = (node, type) => {
-        let step = {
-            node: node,
-            type: type
-        };
-        this.stepsTaken.push(step);
-    }
-
-    drawPathfindingNode = (node, color) => {
-        if (Object.is(node, this.startNode) || node.isEnd) return;
-        let size = this.gridClass.nodeSize;
-        let xPos = size * node.x;
-        let yPos = size * node.y;
-
-        ctx.beginPath();
-
-        ctx.fillStyle = color;
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = color;
-
-        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
-            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
-        } else {
-            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
-        }
-
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    drawPath = (nodeA, nodeB) => {
-        let size = this.gridClass.nodeSize;
-        let aX = size * nodeA.x + size / 2;
-        let aY = size * nodeA.y + size / 2;
-        let bX = size * nodeB.x + size / 2;
-        let bY = size * nodeB.y + size / 2;
-
-        ctx.strokeStyle = ASTAR_COLORS.PATH;
-        ctx.lineWidth = 5;
-
-        ctx.beginPath();
-        ctx.moveTo(aX, aY);
-        ctx.lineTo(bX, bY);
-        ctx.stroke();
+    setStartNode = (node) => {
+        node.setType(NODE_TYPES.START);
+        this.startNode = node;
     }
 
     visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
-
-    drawSteps = () => {
-        let len = this.stepsTaken.length;
-        for (let i = 0; i < len; i++) {
-            this.visualizeStep(i);
-        }
-    }
-
-    animateSteps = () => {
-        let start = 0;
-        let deltaTime = 0;
-        let i = 0;
-        let len = this.stepsTaken.length;
-
-        let timeout, j, speed;
-
-        const step = (timestamp) => {
-            deltaTime = timestamp - start;
-            start = timestamp;
-
-            if (i + 1 >= len) return;
-
-            speed = this.animSpeed;
-
-            timeout = deltaTime / speed;
-            j = 0;
-
-            while (j < speed) {
-                setTimeout(this.visualizeStep(i + j), timeout * j)
-                j++;
-            }
-
-            i += speed;
-
-            window.requestAnimationFrame(step);
-        }
-
-        window.requestAnimationFrame(step);
-    }
 
     visualizeStep = (i) => {
         if (i + 1 >= this.stepsTaken.length) return;
@@ -603,59 +602,89 @@ class Dijkstra {
         this.animSpeed = +animSpeedInput.value;
     }
 
-    run = () => {
-        this.reset();
-        this.findPath();
-        this.visualizationController();
-        this.setComplete(true);
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
     }
 
-    reset = () => {
-        let gridWidth = this.gridClass.gridSizeX;
-        let gridHeight = this.gridClass.gridSizeY;
+    animateSteps = () => {
+        let start = 0;
+        let deltaTime = 0;
+        let i = 0;
+        let len = this.stepsTaken.length;
 
-        for (let x = 0; x < gridWidth; x++) {
-            for (let y = 0; y < gridHeight; y++) {
-                let node = this.gridClass.getNode(x, y);
-                if (node.dist === Infinity) continue;
-                this.gridClass.drawNode(node);
-                node.resetPathfindingValues();
+        let timeout, j, speed;
+
+        const step = (timestamp) => {
+            deltaTime = timestamp - start;
+            start = timestamp;
+
+            if (i + 1 >= len) return;
+
+            speed = this.animSpeed;
+
+            timeout = deltaTime / speed;
+            j = 0;
+
+            while (j < speed) {
+                setTimeout(this.visualizeStep(i + j), timeout * j)
+                j++;
             }
+
+            i += speed;
+
+            window.requestAnimationFrame(step);
         }
-        this.startNode.setDist(0);
-        this.gridClass.drawNode(this.startNode);
-        this.gridClass.drawNode(this.endNode);
 
-        this.unvisitedList.reset();
-
-        this.stepsTaken = [];
+        window.requestAnimationFrame(step);
     }
 
-    setStartNode = (node) => {
-        node.setType(NODE_TYPES.START);
-        node.setDist(0);
-        this.startNode = node;
+    drawPath = (nodeA, nodeB) => {
+        let size = this.gridClass.nodeSize;
+        let aX = size * nodeA.x + size / 2;
+        let aY = size * nodeA.y + size / 2;
+        let bX = size * nodeB.x + size / 2;
+        let bY = size * nodeB.y + size / 2;
+
+        ctx.strokeStyle = ASTAR_COLORS.PATH;
+        ctx.lineWidth = 5;
+
+        ctx.beginPath();
+        ctx.moveTo(aX, aY);
+        ctx.lineTo(bX, bY);
+        ctx.stroke();
     }
 
-    setEndNode = (node) => {
-        node.setType(NODE_TYPES.END);
-        this.endNode = node;
+    drawPathfindingNode = (node, color) => {
+        if (Object.is(node, this.startNode) || node.isEnd) return;
+        let size = this.gridClass.nodeSize;
+        let xPos = size * node.x;
+        let yPos = size * node.y;
+
+        ctx.beginPath();
+
+        ctx.fillStyle = color;
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = color;
+
+        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
+            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
+        } else {
+            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+        }
+
+        ctx.fill();
+        ctx.stroke();
     }
 
-    getPath = (endNode) => {
-        let path = [];
-        let curNode = endNode;
-
-        while (true) {
-            path.unshift(curNode);
-
-            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
-
-            if (curNode.type === NODE_TYPES.START) {
-                return path;
-            }
-
-            curNode = curNode.parent;
+    drawSteps = () => {
+        let len = this.stepsTaken.length;
+        for (let i = 0; i < len; i++) {
+            this.visualizeStep(i);
         }
     }
 
@@ -710,9 +739,22 @@ class Dijkstra {
 
     }
 
-    scoreFunction = (node) => node.getDist();
+    getPath = (endNode) => {
+        let path = [];
+        let curNode = endNode;
 
-    setComplete = (bool) => this.complete = bool;
+        while (true) {
+            path.unshift(curNode);
+
+            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
+
+            if (curNode.type === NODE_TYPES.START) {
+                return path;
+            }
+
+            curNode = curNode.parent;
+        }
+    }
 
     isDiagonalBlocked = (curNode, adjNode) => {
         let sideNodeX = this.gridClass.getNode(adjNode.x, curNode.y);
@@ -721,93 +763,50 @@ class Dijkstra {
         return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
     }
 
-    addToStepsTaken = (node, type) => {
-        let step = {
-            node: node,
-            type: type
-        };
-        this.stepsTaken.push(step);
-    }
+    reset = () => {
+        let gridWidth = this.gridClass.gridSizeX;
+        let gridHeight = this.gridClass.gridSizeY;
 
-    drawPathfindingNode = (node, color) => {
-        if (Object.is(node, this.startNode) || node.isEnd) return;
-        let size = this.gridClass.nodeSize;
-        let xPos = size * node.x;
-        let yPos = size * node.y;
-
-        ctx.beginPath();
-
-        ctx.fillStyle = color;
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = color;
-
-        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
-            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
-        } else {
-            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+        for (let x = 0; x < gridWidth; x++) {
+            for (let y = 0; y < gridHeight; y++) {
+                let node = this.gridClass.getNode(x, y);
+                if (node.dist === Infinity) continue;
+                this.gridClass.drawNode(node);
+                node.resetPathfindingValues();
+            }
         }
+        this.startNode.setDist(0);
+        this.gridClass.drawNode(this.startNode);
+        this.gridClass.drawNode(this.endNode);
 
-        ctx.fill();
-        ctx.stroke();
+        this.unvisitedList.reset();
+
+        this.stepsTaken = [];
     }
 
-    drawPath = (nodeA, nodeB) => {
-        let size = this.gridClass.nodeSize;
-        let aX = size * nodeA.x + size / 2;
-        let aY = size * nodeA.y + size / 2;
-        let bX = size * nodeB.x + size / 2;
-        let bY = size * nodeB.y + size / 2;
+    run = () => {
+        this.reset();
+        this.findPath();
+        this.visualizationController();
+        this.setComplete(true);
+    }
 
-        ctx.strokeStyle = ASTAR_COLORS.PATH;
-        ctx.lineWidth = 5;
+    scoreFunction = (node) => node.getDist();
 
-        ctx.beginPath();
-        ctx.moveTo(aX, aY);
-        ctx.lineTo(bX, bY);
-        ctx.stroke();
+    setComplete = (bool) => this.complete = bool;
+
+    setEndNode = (node) => {
+        node.setType(NODE_TYPES.END);
+        this.endNode = node;
+    }
+
+    setStartNode = (node) => {
+        node.setType(NODE_TYPES.START);
+        node.setDist(0);
+        this.startNode = node;
     }
 
     visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
-
-    drawSteps = () => {
-        let len = this.stepsTaken.length;
-        for (let i = 0; i < len; i++) {
-            this.visualizeStep(i);
-        }
-    }
-
-    animateSteps = () => {
-        let start = 0;
-        let deltaTime = 0;
-        let i = 0;
-        let len = this.stepsTaken.length;
-
-        let timeout, j, speed;
-
-        const step = (timestamp) => {
-            deltaTime = timestamp - start;
-            start = timestamp;
-
-            if (i + 1 >= len) return;
-
-            speed = this.animSpeed;
-
-            timeout = deltaTime / speed;
-            j = 0;
-
-            while (j < speed) {
-                setTimeout(this.visualizeStep(i + j), timeout * j)
-                j++;
-            }
-
-            i += speed;
-
-            window.requestAnimationFrame(step);
-        }
-
-        window.requestAnimationFrame(step);
-    }
 
     visualizeStep = (i) => {
         if (i + 1 >= this.stepsTaken.length) return;
