@@ -10,9 +10,12 @@ class Node {
         this.y = y;
         this.cellVisited = false;
         this.numOfNeighborCells = undefined;
+        this.isMazePath = false;
     }
 
     setCellVisited = (bool) => this.cellVisited = bool;
+
+    setIsMazePath = (bool) => this.isMazePath = bool;
 
     setNumOfNeighborCells = (num) => this.numOfNeighborCells = num;
 }
@@ -28,15 +31,17 @@ class Grid {
     drawAllNodes = () => {
         for (let x = 0; x < this.gridSizeX; x++) {
             for (let y = 0; y < this.gridSizeY; y++) {
-                this.drawNode(x, y);
+                this.drawNode(
+                    this.getNode(x, y)
+                );
             }
         }
     }
 
-    drawNode = (x, y, color = "#FFFFFF") => {
+    drawNode = (node, color = "#FFFFFF") => {
         let size = this.nodeSize;
-        let posX = x * size;
-        let posY = y * size;
+        let posX = node.x * size;
+        let posY = node.y * size;
 
         ctx.beginPath();
 
@@ -135,13 +140,23 @@ class MazeBuilder {
 
             if (next === undefined) break;
 
-            let offsetX = (next.x - cur.x) / this.cellSize;
-            let offsetY = (next.y - cur.y) / this.cellSize;
-            this.gridClass.drawNode(cur.x, cur.y, "black");
-            this.gridClass.drawNode(cur.x + offsetX, cur.y + offsetY, "black");
+            this.setMazePathNode(cur, next);
 
             cur = next;
         }
+    }
+
+    setMazePathNode = (cur, next) => {
+        let dirX = (next.x - cur.x) / this.cellSize;
+        let dirY = (next.y - cur.y) / this.cellSize;
+
+        let midNode = this.gridClass.getNode(cur.x + dirX, cur.y + dirY);
+
+        this.gridClass.drawNode(cur, "black");
+        cur.setIsMazePath(true);
+
+        this.gridClass.drawNode(midNode, "black");
+        midNode.setIsMazePath(true);
     }
 }
 
