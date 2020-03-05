@@ -971,11 +971,13 @@ document.addEventListener('keydown', (e) => {
 // Options
 
 runAlgorithmBtn.onclick = () => {
+    runAlgorithmBtn.blur();
     currentAlgorithm.setComplete(false);
     currentAlgorithm.run();
 }
 
 algorithmSelect.onchange = () => {
+    algorithmSelect.blur();
     switch (algorithmSelect.value) {
         case 'AStar':
             changeAlgorithm(AStar);
@@ -989,12 +991,14 @@ algorithmSelect.onchange = () => {
 }
 
 animSpeedInput.oninput = (e) => {
+    animSpeedInput.blur();
     let val = +e.target.value;
     currentAlgorithm.animSpeed = val;
     animSpeedSpan.innerHTML = val;
 }
 
 clearWallsBtn.onclick = () => {
+    clearWallsBtn.blur();
     let start = currentAlgorithm.startNode;
     let end = currentAlgorithm.endNode;
 
