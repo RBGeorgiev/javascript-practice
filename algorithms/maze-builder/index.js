@@ -31,9 +31,9 @@ class Grid {
     drawAllNodes = () => {
         for (let x = 0; x < this.gridSizeX; x++) {
             for (let y = 0; y < this.gridSizeY; y++) {
-                this.drawNode(
-                    this.getNode(x, y)
-                );
+                let node = this.getNode(x, y);
+                let color = (node.isMazePath) ? "white" : "black";
+                this.drawNode(node, color);
             }
         }
     }
@@ -152,17 +152,14 @@ class MazeBuilder {
 
         let midNode = this.gridClass.getNode(cur.x + dirX, cur.y + dirY);
 
-        this.gridClass.drawNode(cur, "black");
         cur.setIsMazePath(true);
-
-        this.gridClass.drawNode(midNode, "black");
         midNode.setIsMazePath(true);
     }
 }
 
 let grid = new Grid;
 grid.init();
-grid.drawAllNodes();
 
 let mazeBuilder = new MazeBuilder(grid);
 mazeBuilder.run();
+grid.drawAllNodes();
