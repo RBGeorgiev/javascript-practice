@@ -8,6 +8,12 @@ class Node {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+    }
+}
+
+class MazeNode extends Node {
+    constructor(x, y) {
+        super(x, y);
         this.cellVisited = false;
         this.numOfNeighborCells = undefined;
         this.isMazePath = false;
@@ -20,10 +26,10 @@ class Node {
     setNumOfNeighborCells = (num) => this.numOfNeighborCells = num;
 }
 
-class Grid {
-    constructor() {
-        this.gridSizeX = 50;
-        this.gridSizeY = 25;
+class GridViz {
+    constructor(gridSizeX, gridSizeY) {
+        this.gridSizeX = gridSizeX;
+        this.gridSizeY = gridSizeY;
         this.nodeSize = canvas.width / this.gridSizeX;
         this.grid = [];
     }
@@ -64,22 +70,25 @@ class Grid {
             }
         }
     }
+
+    replaceGrid = (newGrid) => this.grid = newGrid;
 }
 
 class MazeBuilder {
-    constructor(grid) {
-        this.gridClass = grid;
-        this.grid = grid.grid;
+    constructor(gridSizeX, gridSizeY) {
+        this.gridSizeX = gridSizeX;
+        this.gridSizeY = gridSizeY;
+        this.grid = [];
 
         this.cellSize = 2;
-        this.numOfCells = Math.ceil(this.gridClass.gridSizeX / this.cellSize) * Math.ceil(this.gridClass.gridSizeY / this.cellSize);
+        this.numOfCells = Math.ceil(this.gridSizeX / this.cellSize) * Math.ceil(this.gridSizeY / this.cellSize);
     }
 
     getNeighborCells = (node) => {
         let neighbors = [];
         let cellSize = this.cellSize;
-        let width = this.gridClass.gridSizeX;
-        let height = this.gridClass.gridSizeY;
+        let width = this.gridSizeX;
+        let height = this.gridSizeY;
 
         for (let x = -cellSize; x <= cellSize; x += cellSize) {
             for (let y = -cellSize; y <= cellSize; y += cellSize) {
@@ -92,7 +101,7 @@ class MazeBuilder {
                     adjX >= 0 && adjX < width &&
                     adjY >= 0 && adjY < height
                 ) {
-                    let neighbor = this.gridClass.getNode(adjX, adjY);
+                    let neighbor = this.getNode(adjX, adjY);
                     if (!neighbor.cellVisited) neighbors.push(neighbor);
                 }
             }
@@ -101,7 +110,9 @@ class MazeBuilder {
         return neighbors;
     }
 
-    run = () => {
+    getNode = (x, y) => this.grid[x][y];
+
+    generateNewMaze = () => {
         let cellsChecked = 0;
         let numOfCells = this.numOfCells;
 
@@ -114,7 +125,7 @@ class MazeBuilder {
         }
 
         let stack = [];
-        let cur = this.gridClass.getNode(0, 0);
+        let cur = this.getNode(0, 0);
 
         while (cellsChecked <= numOfCells) {
             let next;
@@ -144,22 +155,41 @@ class MazeBuilder {
 
             cur = next;
         }
+
+        return this.grid;
+    }
+
+    initGrid = () => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            this.grid[x] = [];
+            for (let y = 0; y < this.gridSizeY; y++) {
+                this.grid[x][y] = new MazeNode(x, y);
+            }
+        }
+    }
+
+    run = () => {
+        this.initGrid();
+        return this.generateNewMaze();
     }
 
     setMazePathNode = (cur, next) => {
         let dirX = (next.x - cur.x) / this.cellSize;
         let dirY = (next.y - cur.y) / this.cellSize;
 
-        let midNode = this.gridClass.getNode(cur.x + dirX, cur.y + dirY);
+        let midNode = this.getNode(cur.x + dirX, cur.y + dirY);
 
         cur.setIsMazePath(true);
         midNode.setIsMazePath(true);
     }
 }
 
-let grid = new Grid;
-grid.init();
+let gridSizeX = 150;
+let gridSizeY = gridSizeX / 2;
 
-let mazeBuilder = new MazeBuilder(grid);
-mazeBuilder.run();
-grid.drawAllNodes();
+let gridViz = new GridViz(gridSizeX, gridSizeY);
+let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
+
+let mazeGrid = mazeBuilder.run();
+gridViz.replaceGrid(mazeGrid);
+gridViz.drawAllNodes();
