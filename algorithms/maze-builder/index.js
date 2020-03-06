@@ -1,5 +1,6 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
+let createMazeBtn = document.getElementById("createMazeBtn");
 
 canvas.width = 1600;
 canvas.height = 800;
@@ -184,7 +185,7 @@ class MazeBuilder {
     }
 }
 
-let gridSizeX = 150;
+let gridSizeX = 50;
 let gridSizeY = gridSizeX / 2;
 
 let gridViz = new GridViz(gridSizeX, gridSizeY);
@@ -193,3 +194,9 @@ let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
 let mazeGrid = mazeBuilder.run();
 gridViz.replaceGrid(mazeGrid);
 gridViz.drawAllNodes();
+
+createMazeBtn.onclick = () => {
+    let mazeGrid = mazeBuilder.run();
+    gridViz.replaceGrid(mazeGrid);
+    gridViz.drawAllNodes();
+}
