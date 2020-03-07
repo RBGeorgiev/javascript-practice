@@ -75,7 +75,7 @@ class GridViz {
     replaceGrid = (newGrid) => this.grid = newGrid;
 }
 
-class MazeBuilder {
+export default class MazeBuilder {
     constructor(gridSizeX, gridSizeY) {
         this.gridSizeX = gridSizeX;
         this.gridSizeY = gridSizeY;
@@ -195,8 +195,8 @@ let mazeGrid = mazeBuilder.run();
 gridViz.replaceGrid(mazeGrid);
 gridViz.drawAllNodes();
 
-createMazeBtn.onclick = () => {
-    let mazeGrid = mazeBuilder.run();
-    gridViz.replaceGrid(mazeGrid);
-    gridViz.drawAllNodes();
-}
+// createMazeBtn.onclick = () => {
+//     let mazeGrid = mazeBuilder.run();
+//     gridViz.replaceGrid(mazeGrid);
+//     gridViz.drawAllNodes();
+// }

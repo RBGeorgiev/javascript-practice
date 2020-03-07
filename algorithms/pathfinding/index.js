@@ -1,3 +1,7 @@
+import MazeBuilder from '../maze-builder/index.js';
+
+// ___________________________________________________________________
+
 let animSpeedInput = document.getElementById('animSpeedInput');
 let animSpeedSpan = document.getElementById('animSpeedSpan');
 let clearWallsBtn = document.getElementById('clearWallsBtn');
@@ -831,7 +835,12 @@ let currentAlgorithm = new AStar(grid);
 currentAlgorithm.setStartNode(grid.getNode(10, 8));
 currentAlgorithm.setEndNode(grid.getNode(23, 8));
 
+let mazeBuilder = new MazeBuilder(50, 25);
+let maze = mazeBuilder.run();
+console.log(maze);
+
 grid.drawAllNodes();
+
 
 const changeAlgorithm = (algorithm) => {
     let start = currentAlgorithm.startNode;
