@@ -313,7 +313,7 @@ class Grid {
     initGrid = (pathfindingNode) => {
         this.grid = [];
         for (let x = 0; x < this.gridSizeX; x++) {
-            this.grid.push([]);
+            this.grid[x] = [];
             for (let y = 0; y < this.gridSizeY; y++) {
                 this.grid[x][y] = new pathfindingNode(x, y);
             }
@@ -325,6 +325,17 @@ class Grid {
             for (let y = 0; y < this.gridSizeY; y++) {
                 let oldNode = this.getNode(x, y);
                 let type = oldNode.type;
+                this.grid[x][y] = new pathfindingNode(x, y, type);
+            }
+        }
+    }
+
+    transferMazeToGrid = (maze, pathfindingNode) => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            for (let y = 0; y < this.gridSizeY; y++) {
+                // let oldNode = this.getNode(x, y);
+                let type = (maze[x][y].isMazePath) ? NODE_TYPES.EMPTY : NODE_TYPES.UNWALKABLE;
+                // let type = oldNode.type;
                 this.grid[x][y] = new pathfindingNode(x, y, type);
             }
         }
@@ -528,6 +539,37 @@ class AStar {
         let sideNodeY = this.gridClass.getNode(curNode.x, adjNode.y);
 
         return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
+    }
+
+    placeStartAndEndInMaze = () => {
+        let [startX, startY] = [this.startNode.x, this.startNode.y];
+        let [endX, endY] = [this.endNode.x, this.endNode.y];
+
+        let newStartNode = this.gridClass.getNode(startX, startY);
+        if (newStartNode.type === NODE_TYPES.EMPTY) {
+            this.setStartNode(newStartNode);
+        } else {
+            let neighbors = this.gridClass.getNeighbors(newStartNode);
+            for (let adj of neighbors) {
+                if (adj.type === NODE_TYPES.EMPTY) {
+                    this.setStartNode(adj);
+                    break;
+                }
+            }
+        }
+
+        let newEndNode = this.gridClass.getNode(endX, endY);
+        if (newEndNode.type === NODE_TYPES.EMPTY) {
+            this.setEndNode(newEndNode);
+        } else {
+            let neighbors = this.gridClass.getNeighbors(newEndNode);
+            for (let adj of neighbors) {
+                if (adj.type === NODE_TYPES.EMPTY) {
+                    this.setEndNode(adj);
+                    break;
+                }
+            }
+        }
     }
 
     reset = () => {
@@ -767,6 +809,37 @@ class Dijkstra {
         return !!(sideNodeX.unwalkable && sideNodeY.unwalkable);
     }
 
+    placeStartAndEndInMaze = () => {
+        let [startX, startY] = [this.startNode.x, this.startNode.y];
+        let [endX, endY] = [this.endNode.x, this.endNode.y];
+
+        let newStartNode = this.gridClass.getNode(startX, startY);
+        if (newStartNode.type === NODE_TYPES.EMPTY) {
+            this.setStartNode(newStartNode);
+        } else {
+            let neighbors = this.gridClass.getNeighbors(newStartNode);
+            for (let adj of neighbors) {
+                if (adj.type === NODE_TYPES.EMPTY) {
+                    this.setStartNode(adj);
+                    break;
+                }
+            }
+        }
+
+        let newEndNode = this.gridClass.getNode(endX, endY);
+        if (newEndNode.type === NODE_TYPES.EMPTY) {
+            this.setEndNode(newEndNode);
+        } else {
+            let neighbors = this.gridClass.getNeighbors(newEndNode);
+            for (let adj of neighbors) {
+                if (adj.type === NODE_TYPES.EMPTY) {
+                    this.setEndNode(adj);
+                    break;
+                }
+            }
+        }
+    }
+
     reset = () => {
         let gridWidth = this.gridClass.gridSizeX;
         let gridHeight = this.gridClass.gridSizeY;
@@ -837,7 +910,8 @@ currentAlgorithm.setEndNode(grid.getNode(23, 8));
 
 let mazeBuilder = new MazeBuilder(50, 25);
 let maze = mazeBuilder.run();
-console.log(maze);
+grid.transferMazeToGrid(maze, currentAlgorithm.algorithmNode);
+currentAlgorithm.placeStartAndEndInMaze();
 
 grid.drawAllNodes();
 
