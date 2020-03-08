@@ -237,9 +237,9 @@ class MinHeap {
 }
 
 class Grid {
-    constructor() {
-        this.gridSizeX = 50;
-        this.gridSizeY = this.gridSizeX / 2;
+    constructor(sizeX = 50, sizeY) {
+        this.gridSizeX = sizeX;
+        this.gridSizeY = sizeY || this.gridSizeX / 2;
         this.nodeSize = canvas.width / this.gridSizeX;
         this.grid = [];
     }
@@ -908,7 +908,7 @@ let currentAlgorithm = new AStar(grid);
 currentAlgorithm.setStartNode(grid.getNode(10, 8));
 currentAlgorithm.setEndNode(grid.getNode(23, 8));
 
-let mazeBuilder = new MazeBuilder(50, 25);
+let mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY);
 let maze = mazeBuilder.run();
 grid.transferMazeToGrid(maze, currentAlgorithm.algorithmNode);
 currentAlgorithm.placeStartAndEndInMaze();
