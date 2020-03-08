@@ -240,7 +240,7 @@ class MinHeap {
 class Grid {
     constructor(sizeX = 50, sizeY) {
         this.gridSizeX = sizeX;
-        this.gridSizeY = sizeY || this.gridSizeX / 2;
+        this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
         this.nodeSize = canvas.width / this.gridSizeX;
         this.grid = [];
     }
@@ -1096,6 +1096,7 @@ createMazeBtn.onclick = () => {
     let maze = mazeBuilder.run();
     grid.transferMazeToGrid(maze, currentAlgorithm.algorithmNode);
     currentAlgorithm.placeStartAndEndInMaze();
+    currentAlgorithm.setComplete(false);
 
     grid.drawAllNodes();
 }
