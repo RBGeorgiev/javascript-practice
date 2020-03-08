@@ -7,6 +7,7 @@ let animSpeedSpan = document.getElementById('animSpeedSpan');
 let clearWallsBtn = document.getElementById('clearWallsBtn');
 let algorithmSelect = document.getElementById('algorithmSelect');
 let runAlgorithmBtn = document.getElementById('runAlgorithmBtn');
+let createMazeBtn = document.getElementById('createMazeBtn');
 
 // ___________________________________________________________________
 
@@ -908,11 +909,6 @@ let currentAlgorithm = new AStar(grid);
 currentAlgorithm.setStartNode(grid.getNode(10, 8));
 currentAlgorithm.setEndNode(grid.getNode(23, 8));
 
-let mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY);
-let maze = mazeBuilder.run();
-grid.transferMazeToGrid(maze, currentAlgorithm.algorithmNode);
-currentAlgorithm.placeStartAndEndInMaze();
-
 grid.drawAllNodes();
 
 
@@ -1090,6 +1086,16 @@ clearWallsBtn.onclick = () => {
     currentAlgorithm.setStartNode(grid.getNode(start.x, start.y));
     currentAlgorithm.setEndNode(grid.getNode(end.x, end.y));
     currentAlgorithm.setComplete(false);
+
+    grid.drawAllNodes();
+}
+
+createMazeBtn.onclick = () => {
+    createMazeBtn.blur();
+    let mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY);
+    let maze = mazeBuilder.run();
+    grid.transferMazeToGrid(maze, currentAlgorithm.algorithmNode);
+    currentAlgorithm.placeStartAndEndInMaze();
 
     grid.drawAllNodes();
 }
