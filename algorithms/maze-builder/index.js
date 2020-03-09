@@ -198,12 +198,14 @@ let gridSizeY = gridSizeX / 2;
 let gridViz = new GridViz(gridSizeX, gridSizeY);
 let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
 
-let mazeGrid = mazeBuilder.run();
-gridViz.replaceGrid(mazeGrid);
-gridViz.drawAllNodes();
+const buildMaze = () => {
+    console.time('Generate Maze');
+    let mazeGrid = mazeBuilder.run();
+    gridViz.replaceGrid(mazeGrid);
+    gridViz.drawAllNodes();
+    console.timeEnd('Generate Maze');
+}
 
-// createMazeBtn.onclick = () => {
-//     let mazeGrid = mazeBuilder.run();
-//     gridViz.replaceGrid(mazeGrid);
-//     gridViz.drawAllNodes();
-// }
+createMazeBtn.onclick = () => {
+    buildMaze();
+}
