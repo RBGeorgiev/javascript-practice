@@ -91,21 +91,28 @@ export default class MazeBuilder {
         let width = this.gridSizeX;
         let height = this.gridSizeY;
 
-        for (let x = -cellSize; x <= cellSize; x += cellSize) {
-            for (let y = -cellSize; y <= cellSize; y += cellSize) {
-                if (x === 0 & y === 0 || Math.abs(x) === Math.abs(y)) continue;
+        let neighborPositions = [
+            [cellSize, 0], // East
+            [-cellSize, 0], // West
+            [0, cellSize], // South
+            [0, -cellSize] //North
+        ]
 
-                let adjX = node.x + x;
-                let adjY = node.y + y;
+        for (let i = 0; i < neighborPositions.length; i++) {
+            let offsetX = neighborPositions[i][0];
+            let offsetY = neighborPositions[i][1];
 
-                if (
-                    adjX >= 0 && adjX < width &&
-                    adjY >= 0 && adjY < height
-                ) {
-                    let neighbor = this.getNode(adjX, adjY);
-                    if (!neighbor.cellVisited) neighbors.push(neighbor);
-                }
+            let adjX = node.x + offsetX;
+            let adjY = node.y + offsetY;
+
+            if (
+                adjX >= 0 && adjX < width &&
+                adjY >= 0 && adjY < height
+            ) {
+                let neighbor = this.getNode(adjX, adjY);
+                if (!neighbor.cellVisited) neighbors.push(neighbor);
             }
+
         }
 
         return neighbors;
