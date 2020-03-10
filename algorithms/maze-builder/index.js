@@ -5,6 +5,11 @@ let createMazeBtn = document.getElementById("createMazeBtn");
 canvas.width = 1600;
 canvas.height = 800;
 
+const MAZE_VIZ_TYPE = {
+    PATH: "#FFFFFF",
+    TRACEBACK: "#FF0000"
+}
+
 class Node {
     constructor(x, y) {
         this.x = x;
@@ -80,9 +85,18 @@ export default class MazeBuilder {
         this.gridSizeX = gridSizeX;
         this.gridSizeY = gridSizeY;
         this.grid = [];
+        this.stepsTaken = [];
 
         this.cellSize = 2;
         this.numOfCells = Math.ceil(this.gridSizeX / this.cellSize) * Math.ceil(this.gridSizeY / this.cellSize);
+    }
+
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
     }
 
     getNeighborCells = (node) => {
@@ -120,6 +134,8 @@ export default class MazeBuilder {
 
     getNode = (x, y) => this.grid[x][y];
 
+    getStepsTaken = () => this.stepsTaken;
+
     generateNewMaze = () => {
         let cellsChecked = 0;
         let numOfCells = this.numOfCells;
@@ -148,6 +164,7 @@ export default class MazeBuilder {
 
             if (!neighbors.length) {
                 for (let i = stack.length - 1; i >= 0; i--) {
+                    this.addToStepsTaken(stack[i], MAZE_VIZ_TYPE.TRACEBACK);
                     if (stack[i].numOfNeighborCells > 0) {
                         next = stack[i];
                         break;
@@ -176,7 +193,10 @@ export default class MazeBuilder {
         }
     }
 
+    resetStepsTaken = () => this.stepsTaken = [];
+
     run = () => {
+        this.resetStepsTaken();
         this.initGrid();
         return this.generateNewMaze();
     }
@@ -189,6 +209,9 @@ export default class MazeBuilder {
 
         cur.setIsMazePath(true);
         midNode.setIsMazePath(true);
+
+        this.addToStepsTaken(cur, MAZE_VIZ_TYPE.PATH);
+        this.addToStepsTaken(midNode, MAZE_VIZ_TYPE.PATH);
     }
 }
 
@@ -208,4 +231,6 @@ const buildMaze = () => {
 
 createMazeBtn.onclick = () => {
     buildMaze();
+    let stepsTaken = mazeBuilder.getStepsTaken();
+    console.log(stepsTaken)
 }
