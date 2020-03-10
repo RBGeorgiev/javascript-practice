@@ -215,22 +215,96 @@ export default class MazeBuilder {
     }
 }
 
+class MazeBuilderVisualization {
+    constructor(gridSizeX, gridSizeY) {
+        this.gridSizeX = gridSizeX;
+        this.gridSizeY = gridSizeY;
+        this.nodeSize = canvas.width / this.gridSizeX;
+        this.stepsTaken = [];
+        this.animSpeed = 3;
+    }
+
+    animateSteps = () => {
+        console.log('asd', this.stepsTaken)
+        let start = 0;
+        let deltaTime = 0;
+        let i = 0;
+        let len = this.stepsTaken.length;
+
+        let timeout, j, speed;
+
+        const step = (timestamp) => {
+            deltaTime = timestamp - start;
+            start = timestamp;
+
+            if (i >= len - 1) return;
+
+            speed = this.animSpeed;
+
+            timeout = deltaTime / speed;
+            j = 0;
+
+            while (j < speed) {
+                setTimeout(this.visualizeStep(i + j), timeout * j)
+                j++;
+            }
+
+            i += speed;
+
+            window.requestAnimationFrame(step);
+        }
+
+        window.requestAnimationFrame(step);
+    }
+
+    visualizeStep = (i) => {
+        if (i >= this.stepsTaken.length - 1) return;
+
+        let curNode = this.stepsTaken[i].node;
+        let curType = this.stepsTaken[i].type;
+
+        this.drawNode(curNode, curType);
+    }
+
+    drawNode = (node, color = "#FFFFFF") => {
+        let size = this.nodeSize;
+        let posX = node.x * size;
+        let posY = node.y * size;
+
+        ctx.beginPath();
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "darkgray";
+        ctx.rect(posX, posY, size, size);
+        ctx.fillStyle = color;
+
+        ctx.fill();
+        ctx.stroke();
+    }
+}
+
+
 let gridSizeX = 50;
 let gridSizeY = gridSizeX / 2;
 
 let gridViz = new GridViz(gridSizeX, gridSizeY);
 let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
+let mazeBuilderViz = new MazeBuilderVisualization(gridSizeX, gridSizeY);
+
 
 const buildMaze = () => {
     console.time('Generate Maze');
-    let mazeGrid = mazeBuilder.run();
-    gridViz.replaceGrid(mazeGrid);
+    gridViz.init();
     gridViz.drawAllNodes();
+    let mazeGrid = mazeBuilder.run();
+    // gridViz.replaceGrid(mazeGrid);
     console.timeEnd('Generate Maze');
 }
 
 createMazeBtn.onclick = () => {
     buildMaze();
     let stepsTaken = mazeBuilder.getStepsTaken();
-    console.log(stepsTaken)
+    mazeBuilderViz.stepsTaken = stepsTaken;
+    mazeBuilderViz.animateSteps();
+    // console.log(stepsTaken)
 }
