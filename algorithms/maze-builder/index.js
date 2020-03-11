@@ -164,8 +164,8 @@ export default class MazeBuilder {
 
             if (!neighbors.length) {
                 for (let i = stack.length - 1; i >= 0; i--) {
-                    this.addToStepsTaken(stack[i], MAZE_VIZ_TYPE.TRACEBACK);
                     if (stack[i].numOfNeighborCells > 0) {
+                        this.addToStepsTaken(stack[i], MAZE_VIZ_TYPE.TRACEBACK);
                         next = stack[i];
                         break;
                     }
