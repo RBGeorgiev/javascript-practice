@@ -221,7 +221,6 @@ class MazeBuilderVisualization {
         this.gridSizeY = gridSizeY;
         this.nodeSize = canvas.width / this.gridSizeX;
         this.stepsTaken = [];
-        this.animSpeed = 3;
     }
 
     animateSteps = () => {
@@ -231,25 +230,15 @@ class MazeBuilderVisualization {
         let i = 0;
         let len = this.stepsTaken.length;
 
-        let timeout, j, speed;
-
         const step = (timestamp) => {
             deltaTime = timestamp - start;
             start = timestamp;
 
             if (i >= len - 1) return;
 
-            speed = this.animSpeed;
+            this.visualizeStep(i);
 
-            timeout = deltaTime / speed;
-            j = 0;
-
-            while (j < speed) {
-                setTimeout(this.visualizeStep(i + j), timeout * j)
-                j++;
-            }
-
-            i += speed;
+            i++;
 
             window.requestAnimationFrame(step);
         }
