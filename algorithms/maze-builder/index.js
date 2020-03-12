@@ -279,6 +279,8 @@ let gridSizeY = gridSizeX / 2;
 let gridViz = new GridViz(gridSizeX, gridSizeY);
 let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
 let mazeBuilderViz = new MazeBuilderVisualization(gridSizeX, gridSizeY);
+gridViz.init();
+gridViz.drawAllNodes();
 
 
 const buildMaze = () => {
