@@ -276,7 +276,7 @@ class Grid {
 
         for (let x = -1; x <= 1; x++) {
             for (let y = -1; y <= 1; y++) {
-                if (x === 0 & y === 0) continue;
+                if (x === 0 && y === 0) continue;
 
                 let adjX = node.x + x;
                 let adjY = node.y + y;
@@ -389,7 +389,7 @@ class AStar {
             deltaTime = timestamp - start;
             start = timestamp;
 
-            if (i + 1 >= len) return;
+            if (i >= len - 1) return;
 
             speed = this.animSpeed;
 
@@ -617,7 +617,7 @@ class AStar {
     visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
 
     visualizeStep = (i) => {
-        if (i + 1 >= this.stepsTaken.length) return;
+        if (i >= this.stepsTaken.length - 1) return;
 
         let curNode = this.stepsTaken[i].node;
         let curType = this.stepsTaken[i].type;

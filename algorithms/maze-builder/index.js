@@ -224,7 +224,6 @@ class MazeBuilderVisualization {
     }
 
     animateSteps = () => {
-        console.log('asd', this.stepsTaken)
         let start = 0;
         let deltaTime = 0;
         let i = 0;
@@ -287,8 +286,7 @@ const buildMaze = () => {
     console.time('Generate Maze');
     gridViz.init();
     gridViz.drawAllNodes();
-    let mazeGrid = mazeBuilder.run();
-    // gridViz.replaceGrid(mazeGrid);
+    mazeBuilder.run();
     console.timeEnd('Generate Maze');
 }
 
@@ -297,5 +295,4 @@ createMazeBtn.onclick = () => {
     let stepsTaken = mazeBuilder.getStepsTaken();
     mazeBuilderViz.stepsTaken = stepsTaken;
     mazeBuilderViz.animateSteps();
-    // console.log(stepsTaken)
 }
