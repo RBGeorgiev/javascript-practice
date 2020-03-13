@@ -356,6 +356,7 @@ class AStar {
 
         this.stepsTaken = [];
 
+        this.animFrameId = null;
         this.animSpeed = +animSpeedInput.value;
     }
 
@@ -403,10 +404,14 @@ class AStar {
 
             i += speed;
 
-            window.requestAnimationFrame(step);
+            this.setAnimFrameId(
+                window.requestAnimationFrame(step)
+            );
         }
 
-        window.requestAnimationFrame(step);
+        this.setAnimFrameId(
+            window.requestAnimationFrame(step)
+        );
     }
 
     calcCost = (nodeA, nodeB) => {
@@ -602,6 +607,8 @@ class AStar {
 
     scoreFunction = (node) => node.getFCost();
 
+    setAnimFrameId = (id) => this.animFrameId = id;
+
     setComplete = (bool) => this.complete = bool;
 
     setEndNode = (node) => {
@@ -613,6 +620,8 @@ class AStar {
         node.setType(NODE_TYPES.START);
         this.startNode = node;
     }
+
+    stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
     visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
 
@@ -646,6 +655,7 @@ class Dijkstra {
 
         this.stepsTaken = [];
 
+        this.animFrameId = null;
         this.animSpeed = +animSpeedInput.value;
     }
 
@@ -683,10 +693,14 @@ class Dijkstra {
 
             i += speed;
 
-            window.requestAnimationFrame(step);
+            this.setAnimFrameId(
+                window.requestAnimationFrame(step)
+            );
         }
 
-        window.requestAnimationFrame(step);
+        this.setAnimFrameId(
+            window.requestAnimationFrame(step)
+        );
     }
 
     drawPath = (nodeA, nodeB) => {
@@ -871,6 +885,8 @@ class Dijkstra {
 
     scoreFunction = (node) => node.getDist();
 
+    setAnimFrameId = (id) => this.animFrameId = id;
+
     setComplete = (bool) => this.complete = bool;
 
     setEndNode = (node) => {
@@ -883,6 +899,8 @@ class Dijkstra {
         node.setDist(0);
         this.startNode = node;
     }
+
+    stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
     visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
 
@@ -1040,6 +1058,7 @@ canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
 document.addEventListener('keydown', (e) => {
     // Space and Enter
     if (e.keyCode === 13 || e.keyCode === 32) {
+        currentAlgorithm.stopAnimFrame();
         currentAlgorithm.setComplete(false);
         currentAlgorithm.run();
     }
@@ -1051,6 +1070,7 @@ document.addEventListener('keydown', (e) => {
 
 runAlgorithmBtn.onclick = () => {
     runAlgorithmBtn.blur();
+    currentAlgorithm.stopAnimFrame();
     currentAlgorithm.setComplete(false);
     currentAlgorithm.run();
 }
