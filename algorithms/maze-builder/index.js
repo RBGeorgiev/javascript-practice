@@ -221,6 +221,8 @@ class MazeBuilderVisualization {
         this.gridSizeY = gridSizeY;
         this.nodeSize = canvas.width / this.gridSizeX;
         this.stepsTaken = [];
+
+        this.animFrameId = null;
     }
 
     animateSteps = () => {
@@ -239,11 +241,19 @@ class MazeBuilderVisualization {
 
             i++;
 
-            window.requestAnimationFrame(step);
+            this.setAnimFrameId(
+                window.requestAnimationFrame(step)
+            );
         }
 
-        window.requestAnimationFrame(step);
+        this.setAnimFrameId(
+            window.requestAnimationFrame(step)
+        );
     }
+
+    stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
+
+    setAnimFrameId = (id) => this.animFrameId = id;
 
     visualizeStep = (i) => {
         if (i >= this.stepsTaken.length - 1) return;
@@ -291,6 +301,7 @@ const buildMaze = () => {
 }
 
 createMazeBtn.onclick = () => {
+    mazeBuilderViz.stopAnimFrame();
     buildMaze();
     let stepsTaken = mazeBuilder.getStepsTaken();
     mazeBuilderViz.stepsTaken = stepsTaken;
