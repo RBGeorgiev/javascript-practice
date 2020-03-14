@@ -471,7 +471,8 @@ class AStar {
     }
 
     findPath = () => {
-        console.time('A*');
+        let timeStart = window.performance.now();
+
         let path = null;
         this.addToOpenList(this.startNode);
 
@@ -497,7 +498,8 @@ class AStar {
                 if (adjNode.isEnd) {
                     adjNode.setParent(curNode);
                     path = this.getPath(adjNode);
-                    console.timeEnd('A*');
+                    let timeEnd = window.performance.now();
+                    console.log(`A*: ${timeEnd - timeStart}ms`);
                     return path;
                 }
 
@@ -519,7 +521,8 @@ class AStar {
             }
         }
 
-        console.timeEnd('A*');
+        let timeEnd = window.performance.now();
+        console.log(`A*: ${timeEnd - timeStart}ms`);
         return console.log("Path doesn't exist");
     }
 
@@ -750,7 +753,8 @@ class Dijkstra {
     }
 
     findPath = () => {
-        console.time('Dijkstra');
+        let timeStart = window.performance.now();
+
         for (let x = 0; x < this.gridClass.gridSizeX; x++) {
             for (let y = 0; y < this.gridClass.gridSizeY; y++) {
                 let node = this.gridClass.getNode(x, y);
@@ -763,7 +767,8 @@ class Dijkstra {
             curNode = this.unvisitedList.popMin();
 
             if (curNode.dist === Infinity) {
-                console.timeEnd('Dijkstra');
+                let timeEnd = window.performance.now();
+                console.log(`Dijkstra: ${timeEnd - timeStart}ms`);
                 return console.log("Path doesn't exist");
             }
 
@@ -793,7 +798,8 @@ class Dijkstra {
             this.addToStepsTaken(curNode, ASTAR_TYPES.CLOSED_LIST);
             if (curNode.isEnd) {
                 let path = this.getPath(curNode);
-                console.timeEnd('Dijkstra');
+                let timeEnd = window.performance.now();
+                console.log(`Dijkstra: ${timeEnd - timeStart}ms`);
                 return path;
             }
         }
