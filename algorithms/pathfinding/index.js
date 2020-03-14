@@ -931,6 +931,8 @@ grid.drawAllNodes();
 
 
 const changeAlgorithm = (algorithm) => {
+    currentAlgorithm.stopAnimFrame();
+
     let start = currentAlgorithm.startNode;
     let end = currentAlgorithm.endNode;
 
@@ -1053,7 +1055,10 @@ const handleMouseDown = (e) => {
     canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', listener));
 }
 
-canvas.addEventListener('mousedown', (e) => handleMouseDown(e));
+canvas.addEventListener('mousedown', (e) => {
+    currentAlgorithm.stopAnimFrame();
+    handleMouseDown(e)
+});
 
 document.addEventListener('keydown', (e) => {
     // Space and Enter
