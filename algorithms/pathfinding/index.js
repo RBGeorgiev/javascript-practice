@@ -8,6 +8,8 @@ let clearWallsBtn = document.getElementById('clearWallsBtn');
 let algorithmSelect = document.getElementById('algorithmSelect');
 let runAlgorithmBtn = document.getElementById('runAlgorithmBtn');
 let createMazeBtn = document.getElementById('createMazeBtn');
+let timerTextSpan = document.getElementById('timerTextSpan');
+let timerNumberSpan = document.getElementById('timerNumberSpan');
 
 // ___________________________________________________________________
 
@@ -499,7 +501,10 @@ class AStar {
                     adjNode.setParent(curNode);
                     path = this.getPath(adjNode);
                     let timeEnd = window.performance.now();
-                    console.log(`A*: ${timeEnd - timeStart}ms`);
+                    let timeTaken = timeEnd - timeStart;
+                    timerTextSpan.innerText = "Path found:";
+                    timerNumberSpan.innerText = timeTaken;
+                    console.log(`A*: ${timeTaken}ms`);
                     return path;
                 }
 
@@ -522,7 +527,10 @@ class AStar {
         }
 
         let timeEnd = window.performance.now();
-        console.log(`A*: ${timeEnd - timeStart}ms`);
+        let timeTaken = timeEnd - timeStart;
+        timerTextSpan.innerText = "Path doesn't exist:";
+        timerNumberSpan.innerText = timeTaken;
+        console.log(`A*: ${timeTaken}ms`);
         return console.log("Path doesn't exist");
     }
 
@@ -768,7 +776,10 @@ class Dijkstra {
 
             if (curNode.dist === Infinity) {
                 let timeEnd = window.performance.now();
-                console.log(`Dijkstra: ${timeEnd - timeStart}ms`);
+                let timeTaken = timeEnd - timeStart;
+                timerTextSpan.innerText = "Path doesn't exist:";
+                timerNumberSpan.innerText = timeTaken;
+                console.log(`Dijkstra: ${timeTaken}ms`);
                 return console.log("Path doesn't exist");
             }
 
@@ -799,7 +810,10 @@ class Dijkstra {
             if (curNode.isEnd) {
                 let path = this.getPath(curNode);
                 let timeEnd = window.performance.now();
-                console.log(`Dijkstra: ${timeEnd - timeStart}ms`);
+                let timeTaken = timeEnd - timeStart;
+                timerTextSpan.innerText = "Path found:";
+                timerNumberSpan.innerText = timeTaken;
+                console.log(`Dijkstra: ${timeTaken}ms`);
                 return path;
             }
         }
