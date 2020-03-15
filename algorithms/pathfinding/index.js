@@ -426,6 +426,13 @@ class AStar {
         return 14 * distX + 10 * (distY - distX);
     }
 
+    displayTimeInHTML = (timeTaken, successBool) => {
+        let displayStr = `A*: ${timeTaken}ms`;
+        timerTextSpan.innerText = (successBool) ? "Path found:" : "Path doesn't exist:";
+        timerNumberSpan.innerText = displayStr;
+        console.log(displayStr);
+    }
+
     drawPath = (nodeA, nodeB) => {
         let size = this.gridClass.nodeSize;
         let aX = size * nodeA.x + size / 2;
@@ -502,9 +509,7 @@ class AStar {
                     path = this.getPath(adjNode);
                     let timeEnd = window.performance.now();
                     let timeTaken = timeEnd - timeStart;
-                    timerTextSpan.innerText = "Path found:";
-                    timerNumberSpan.innerText = timeTaken;
-                    console.log(`A*: ${timeTaken}ms`);
+                    this.displayTimeInHTML(timeTaken, true);
                     return path;
                 }
 
@@ -528,10 +533,7 @@ class AStar {
 
         let timeEnd = window.performance.now();
         let timeTaken = timeEnd - timeStart;
-        timerTextSpan.innerText = "Path doesn't exist:";
-        timerNumberSpan.innerText = timeTaken;
-        console.log(`A*: ${timeTaken}ms`);
-        return console.log("Path doesn't exist");
+        return this.displayTimeInHTML(timeTaken, false);
     }
 
     getPath = (endNode) => {
@@ -714,6 +716,13 @@ class Dijkstra {
         );
     }
 
+    displayTimeInHTML = (timeTaken, successBool) => {
+        let displayStr = `Dijkstra: ${timeTaken}ms`;
+        timerTextSpan.innerText = (successBool) ? "Path found:" : "Path doesn't exist:";
+        timerNumberSpan.innerText = displayStr;
+        console.log(displayStr);
+    }
+
     drawPath = (nodeA, nodeB) => {
         let size = this.gridClass.nodeSize;
         let aX = size * nodeA.x + size / 2;
@@ -777,10 +786,7 @@ class Dijkstra {
             if (curNode.dist === Infinity) {
                 let timeEnd = window.performance.now();
                 let timeTaken = timeEnd - timeStart;
-                timerTextSpan.innerText = "Path doesn't exist:";
-                timerNumberSpan.innerText = timeTaken;
-                console.log(`Dijkstra: ${timeTaken}ms`);
-                return console.log("Path doesn't exist");
+                return this.displayTimeInHTML(timeTaken, false);
             }
 
             let neighbors = this.gridClass.getNeighbors(curNode);
@@ -811,9 +817,7 @@ class Dijkstra {
                 let path = this.getPath(curNode);
                 let timeEnd = window.performance.now();
                 let timeTaken = timeEnd - timeStart;
-                timerTextSpan.innerText = "Path found:";
-                timerNumberSpan.innerText = timeTaken;
-                console.log(`Dijkstra: ${timeTaken}ms`);
+                this.displayTimeInHTML(timeTaken, true);
                 return path;
             }
         }
