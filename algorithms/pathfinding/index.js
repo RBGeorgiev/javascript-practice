@@ -1106,6 +1106,9 @@ runAlgorithmBtn.onclick = () => {
 
 algorithmSelect.onchange = () => {
     algorithmSelect.blur();
+    timerTextSpan.innerText = "";
+    timerNumberSpan.innerText = "";
+
     switch (algorithmSelect.value) {
         case 'AStar':
             changeAlgorithm(AStar);
