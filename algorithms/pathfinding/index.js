@@ -4,6 +4,7 @@ import MazeBuilder from '../maze-builder/index.js';
 
 let animSpeedInput = document.getElementById('animSpeedInput');
 let animSpeedSpan = document.getElementById('animSpeedSpan');
+let clearPathBtn = document.getElementById('clearPathBtn');
 let clearWallsBtn = document.getElementById('clearWallsBtn');
 let algorithmSelect = document.getElementById('algorithmSelect');
 let runAlgorithmBtn = document.getElementById('runAlgorithmBtn');
@@ -1126,6 +1127,12 @@ animSpeedInput.oninput = (e) => {
     let val = +e.target.value;
     currentAlgorithm.animSpeed = val;
     animSpeedSpan.innerHTML = val;
+}
+
+clearPathBtn.onclick = () => {
+    clearPathBtn.blur();
+    currentAlgorithm.reset();
+    currentAlgorithm.setComplete(false);
 }
 
 clearWallsBtn.onclick = () => {
