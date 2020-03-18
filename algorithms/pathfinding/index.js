@@ -381,42 +381,6 @@ class AStar {
         this.stepsTaken.push(step);
     }
 
-    animateSteps = () => {
-        let start = 0;
-        let deltaTime = 0;
-        let i = 0;
-        let len = this.stepsTaken.length;
-
-        let timeout, j, speed;
-
-        const step = (timestamp) => {
-            deltaTime = timestamp - start;
-            start = timestamp;
-
-            if (i >= len - 1) return;
-
-            speed = this.animSpeed;
-
-            timeout = deltaTime / speed;
-            j = 0;
-
-            while (j < speed) {
-                setTimeout(this.visualizeStep(i + j), timeout * j)
-                j++;
-            }
-
-            i += speed;
-
-            this.setAnimFrameId(
-                window.requestAnimationFrame(step)
-            );
-        }
-
-        this.setAnimFrameId(
-            window.requestAnimationFrame(step)
-        );
-    }
-
     calcCost = (nodeA, nodeB) => {
         let distX = Math.abs(nodeA.x - nodeB.x);
         let distY = Math.abs(nodeA.y - nodeB.y);
@@ -425,59 +389,6 @@ class AStar {
             return 14 * distY + 10 * (distX - distY);
         }
         return 14 * distX + 10 * (distY - distX);
-    }
-
-    displayTimeInHTML = (timeTaken, successBool) => {
-        let displayStr = `A*: ${timeTaken}ms`;
-        timerTextSpan.innerText = (successBool) ? "Path found:" : "Path doesn't exist:";
-        timerNumberSpan.innerText = displayStr;
-        console.log(displayStr);
-    }
-
-    drawPath = (nodeA, nodeB) => {
-        let size = this.gridClass.nodeSize;
-        let aX = size * nodeA.x + size / 2;
-        let aY = size * nodeA.y + size / 2;
-        let bX = size * nodeB.x + size / 2;
-        let bY = size * nodeB.y + size / 2;
-
-        ctx.strokeStyle = ASTAR_COLORS.PATH;
-        ctx.lineWidth = 5;
-
-        ctx.beginPath();
-        ctx.moveTo(aX, aY);
-        ctx.lineTo(bX, bY);
-        ctx.stroke();
-    }
-
-    drawPathfindingNode = (node, color) => {
-        if (Object.is(node, this.startNode) || node.isEnd) return;
-        let size = this.gridClass.nodeSize;
-        let xPos = size * node.x;
-        let yPos = size * node.y;
-
-        ctx.beginPath();
-
-        ctx.fillStyle = color;
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = color;
-
-        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
-            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
-        } else {
-            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
-        }
-
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    drawSteps = () => {
-        let len = this.stepsTaken.length;
-        for (let i = 0; i < len; i++) {
-            this.visualizeStep(i);
-        }
     }
 
     findPath = () => {
@@ -621,8 +532,6 @@ class AStar {
 
     scoreFunction = (node) => node.getFCost();
 
-    setAnimFrameId = (id) => this.animFrameId = id;
-
     setComplete = (bool) => this.complete = bool;
 
     setEndNode = (node) => {
@@ -633,26 +542,6 @@ class AStar {
     setStartNode = (node) => {
         node.setType(NODE_TYPES.START);
         this.startNode = node;
-    }
-
-    stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
-
-    visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
-
-    visualizeStep = (i) => {
-        if (i >= this.stepsTaken.length - 1) return;
-
-        let curNode = this.stepsTaken[i].node;
-        let curType = this.stepsTaken[i].type;
-
-        if (curType === ASTAR_TYPES.PATH) {
-            let nextNode = this.stepsTaken[i + 1].node;
-            this.drawPath(curNode, nextNode);
-            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
-        }
-        else {
-            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
-        }
     }
 }
 
@@ -679,95 +568,6 @@ class Dijkstra {
             type: type
         };
         this.stepsTaken.push(step);
-    }
-
-    animateSteps = () => {
-        let start = 0;
-        let deltaTime = 0;
-        let i = 0;
-        let len = this.stepsTaken.length;
-
-        let timeout, j, speed;
-
-        const step = (timestamp) => {
-            deltaTime = timestamp - start;
-            start = timestamp;
-
-            if (i + 1 >= len) return;
-
-            speed = this.animSpeed;
-
-            timeout = deltaTime / speed;
-            j = 0;
-
-            while (j < speed) {
-                setTimeout(this.visualizeStep(i + j), timeout * j)
-                j++;
-            }
-
-            i += speed;
-
-            this.setAnimFrameId(
-                window.requestAnimationFrame(step)
-            );
-        }
-
-        this.setAnimFrameId(
-            window.requestAnimationFrame(step)
-        );
-    }
-
-    displayTimeInHTML = (timeTaken, successBool) => {
-        let displayStr = `Dijkstra: ${timeTaken}ms`;
-        timerTextSpan.innerText = (successBool) ? "Path found:" : "Path doesn't exist:";
-        timerNumberSpan.innerText = displayStr;
-        console.log(displayStr);
-    }
-
-    drawPath = (nodeA, nodeB) => {
-        let size = this.gridClass.nodeSize;
-        let aX = size * nodeA.x + size / 2;
-        let aY = size * nodeA.y + size / 2;
-        let bX = size * nodeB.x + size / 2;
-        let bY = size * nodeB.y + size / 2;
-
-        ctx.strokeStyle = ASTAR_COLORS.PATH;
-        ctx.lineWidth = 5;
-
-        ctx.beginPath();
-        ctx.moveTo(aX, aY);
-        ctx.lineTo(bX, bY);
-        ctx.stroke();
-    }
-
-    drawPathfindingNode = (node, color) => {
-        if (Object.is(node, this.startNode) || node.isEnd) return;
-        let size = this.gridClass.nodeSize;
-        let xPos = size * node.x;
-        let yPos = size * node.y;
-
-        ctx.beginPath();
-
-        ctx.fillStyle = color;
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = color;
-
-        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
-            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
-        } else {
-            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
-        }
-
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    drawSteps = () => {
-        let len = this.stepsTaken.length;
-        for (let i = 0; i < len; i++) {
-            this.visualizeStep(i);
-        }
     }
 
     findPath = () => {
@@ -910,8 +710,6 @@ class Dijkstra {
 
     scoreFunction = (node) => node.getDist();
 
-    setAnimFrameId = (id) => this.animFrameId = id;
-
     setComplete = (bool) => this.complete = bool;
 
     setEndNode = (node) => {
@@ -924,10 +722,75 @@ class Dijkstra {
         node.setDist(0);
         this.startNode = node;
     }
+}
+
+class PathfindingVisualization {
+    constructor() {
+
+    }
+
+    animateSteps = () => {
+        let start = 0;
+        let deltaTime = 0;
+        let i = 0;
+        let len = this.stepsTaken.length;
+
+        let timeout, j, speed;
+
+        const step = (timestamp) => {
+            deltaTime = timestamp - start;
+            start = timestamp;
+
+            if (i >= len - 1) return;
+
+            speed = this.animSpeed;
+
+            timeout = deltaTime / speed;
+            j = 0;
+
+            while (j < speed) {
+                setTimeout(this.visualizeStep(i + j), timeout * j)
+                j++;
+            }
+
+            i += speed;
+
+            this.setAnimFrameId(
+                window.requestAnimationFrame(step)
+            );
+        }
+
+        this.setAnimFrameId(
+            window.requestAnimationFrame(step)
+        );
+    }
+
+    displayTimeInHTML = (timeTaken, successBool) => {
+        let displayStr = `${algorithmSelect.value}: ${timeTaken}ms`;
+        timerTextSpan.innerText = (successBool) ? "Path found:" : "Path doesn't exist:";
+        timerNumberSpan.innerText = displayStr;
+        console.log(displayStr);
+    }
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
     visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
+
+    visualizeStep = (i) => {
+        if (i >= this.stepsTaken.length - 1) return;
+
+        let curNode = this.stepsTaken[i].node;
+        let curType = this.stepsTaken[i].type;
+
+        if (curType === ASTAR_TYPES.PATH) {
+            let nextNode = this.stepsTaken[i + 1].node;
+            this.drawPath(curNode, nextNode);
+            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
+        }
+        else {
+            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
+        }
+    }
 
     visualizeStep = (i) => {
         if (i + 1 >= this.stepsTaken.length) return;
@@ -944,13 +807,64 @@ class Dijkstra {
             this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
         }
     }
+
+    setAnimFrameId = (id) => this.animFrameId = id;
+
+    drawPath = (nodeA, nodeB) => {
+        let size = this.gridClass.nodeSize;
+        let aX = size * nodeA.x + size / 2;
+        let aY = size * nodeA.y + size / 2;
+        let bX = size * nodeB.x + size / 2;
+        let bY = size * nodeB.y + size / 2;
+
+        ctx.strokeStyle = ASTAR_COLORS.PATH;
+        ctx.lineWidth = 5;
+
+        ctx.beginPath();
+        ctx.moveTo(aX, aY);
+        ctx.lineTo(bX, bY);
+        ctx.stroke();
+    }
+
+    drawPathfindingNode = (node, color) => {
+        if (Object.is(node, this.startNode) || node.isEnd) return;
+        let size = this.gridClass.nodeSize;
+        let xPos = size * node.x;
+        let yPos = size * node.y;
+
+        ctx.beginPath();
+
+        ctx.fillStyle = color;
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = color;
+
+        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
+            ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
+        } else {
+            ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+        }
+
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    drawSteps = () => {
+        let len = this.stepsTaken.length;
+        for (let i = 0; i < len; i++) {
+            this.visualizeStep(i);
+        }
+    }
 }
 
-let grid = new Grid;
+let gridWidth = 50;
+
+let grid = new Grid(gridWidth);
 grid.initGrid(AStarNode);
 let currentAlgorithm = new AStar(grid);
 currentAlgorithm.setStartNode(grid.getNode(10, 8));
 currentAlgorithm.setEndNode(grid.getNode(23, 8));
+let pathfindingViz = new PathfindingVisualization;
 
 grid.drawAllNodes();
 
