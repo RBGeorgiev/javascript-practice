@@ -525,7 +525,6 @@ class AStar {
         this.reset();
         this.findPath();
         return this.stepsTaken;
-        // this.setComplete(true);
     }
 
     scoreFunction = (node) => node.getFCost();
@@ -701,7 +700,6 @@ class Dijkstra {
         this.reset();
         this.findPath();
         return this.stepsTaken;
-        // this.setComplete(true);
     }
 
     scoreFunction = (node) => node.getDist();
@@ -773,7 +771,7 @@ class PathfindingVisualization {
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
-    visualizationController = (stepsTaken) => (this.complete) ? this.drawSteps(stepsTaken) : this.animateSteps(stepsTaken);
+    visualizationController = (stepsTaken, complete) => (complete) ? this.drawSteps(stepsTaken) : this.animateSteps(stepsTaken);
 
     visualizeStep = (stepsTaken, idx) => {
         if (idx >= stepsTaken.length - 1) return;
@@ -835,7 +833,7 @@ class PathfindingVisualization {
     drawSteps = (stepsTaken) => {
         let len = stepsTaken.length;
         for (let i = 0; i < len; i++) {
-            this.visualizeStep(i);
+            this.visualizeStep(stepsTaken, i);
         }
     }
 }
@@ -853,7 +851,7 @@ grid.drawAllNodes();
 
 
 const changeAlgorithm = (algorithm) => {
-    currentAlgorithm.stopAnimFrame();
+    pathfindingViz.stopAnimFrame();
 
     let start = currentAlgorithm.startNode;
     let end = currentAlgorithm.endNode;
@@ -874,7 +872,8 @@ const addUnwalkable = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            currentAlgorithm.run();
+            let stepsTaken = currentAlgorithm.run();
+            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
 }
@@ -887,7 +886,8 @@ const addEmpty = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            currentAlgorithm.run();
+            let stepsTaken = currentAlgorithm.run();
+            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
 }
@@ -900,7 +900,8 @@ const addSwamp = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            currentAlgorithm.run();
+            let stepsTaken = currentAlgorithm.run();
+            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
 }
@@ -918,7 +919,8 @@ const dragStart = (e) => {
 
         if (currentAlgorithm.complete === true) {
             oldStart.resetPathfindingValues();
-            currentAlgorithm.run();
+            let stepsTaken = currentAlgorithm.run();
+            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
 }
@@ -936,7 +938,8 @@ const dragEnd = (e) => {
 
         if (currentAlgorithm.complete === true) {
             oldEnd.resetPathfindingValues();
-            currentAlgorithm.run();
+            let stepsTaken = currentAlgorithm.run();
+            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
 }
@@ -988,7 +991,8 @@ document.addEventListener('keydown', (e) => {
         pathfindingViz.stopAnimFrame();
         currentAlgorithm.setComplete(false);
         let stepsTaken = currentAlgorithm.run();
-        pathfindingViz.visualizationController(stepsTaken);
+        pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+        currentAlgorithm.setComplete(true);
     }
 });
 
@@ -1001,7 +1005,8 @@ runAlgorithmBtn.onclick = () => {
     pathfindingViz.stopAnimFrame();
     currentAlgorithm.setComplete(false);
     let stepsTaken = currentAlgorithm.run();
-    pathfindingViz.visualizationController(stepsTaken);
+    pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+    currentAlgorithm.setComplete(true);
 }
 
 algorithmSelect.onchange = () => {
