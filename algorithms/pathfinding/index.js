@@ -347,20 +347,17 @@ class Grid {
 }
 
 class AStar {
-    constructor(grid) {
-        this.gridClass = grid;
+    constructor(gridClass) {
+        this.gridClass = gridClass;
         this.algorithmNode = AStarNode;
         this.gridClass.transferGridState(this.algorithmNode);
-        this.grid = grid.grid;
+        this.grid = gridClass.grid;
         this.startNode = null;
         this.endNode = null;
         this.openList = new MinHeap(this.scoreFunction);
         this.complete = false;
 
         this.stepsTaken = [];
-
-        this.animFrameId = null;
-        this.animSpeed = +animSpeedInput.value;
     }
 
     addToClosedList = (node) => {
@@ -392,7 +389,7 @@ class AStar {
     }
 
     findPath = () => {
-        let timeStart = window.performance.now();
+        // let timeStart = window.performance.now();
 
         let path = null;
         this.addToOpenList(this.startNode);
@@ -419,9 +416,9 @@ class AStar {
                 if (adjNode.isEnd) {
                     adjNode.setParent(curNode);
                     path = this.getPath(adjNode);
-                    let timeEnd = window.performance.now();
-                    let timeTaken = timeEnd - timeStart;
-                    this.displayTimeInHTML(timeTaken, true);
+                    // let timeEnd = window.performance.now();
+                    // let timeTaken = timeEnd - timeStart;
+                    // this.displayTimeInHTML(timeTaken, true);
                     return path;
                 }
 
@@ -443,9 +440,10 @@ class AStar {
             }
         }
 
-        let timeEnd = window.performance.now();
-        let timeTaken = timeEnd - timeStart;
-        return this.displayTimeInHTML(timeTaken, false);
+        // let timeEnd = window.performance.now();
+        // let timeTaken = timeEnd - timeStart;
+        // return this.displayTimeInHTML(timeTaken, false);
+        return;
     }
 
     getPath = (endNode) => {
@@ -526,8 +524,8 @@ class AStar {
     run = () => {
         this.reset();
         this.findPath();
-        this.visualizationController();
-        this.setComplete(true);
+        return this.stepsTaken;
+        // this.setComplete(true);
     }
 
     scoreFunction = (node) => node.getFCost();
@@ -546,20 +544,17 @@ class AStar {
 }
 
 class Dijkstra {
-    constructor() {
-        this.gridClass = grid;
+    constructor(gridClass) {
+        this.gridClass = gridClass;
         this.algorithmNode = DijkstraNode;
         this.gridClass.transferGridState(this.algorithmNode);
-        this.grid = grid.grid;
+        this.grid = gridClass.grid;
         this.startNode = null;
         this.endNode = null;
         this.unvisitedList = new MinHeap(this.scoreFunction);
         this.complete = false;
 
         this.stepsTaken = [];
-
-        this.animFrameId = null;
-        this.animSpeed = +animSpeedInput.value;
     }
 
     addToStepsTaken = (node, type) => {
@@ -571,7 +566,7 @@ class Dijkstra {
     }
 
     findPath = () => {
-        let timeStart = window.performance.now();
+        // let timeStart = window.performance.now();
 
         for (let x = 0; x < this.gridClass.gridSizeX; x++) {
             for (let y = 0; y < this.gridClass.gridSizeY; y++) {
@@ -585,9 +580,10 @@ class Dijkstra {
             curNode = this.unvisitedList.popMin();
 
             if (curNode.dist === Infinity) {
-                let timeEnd = window.performance.now();
-                let timeTaken = timeEnd - timeStart;
-                return this.displayTimeInHTML(timeTaken, false);
+                // let timeEnd = window.performance.now();
+                // let timeTaken = timeEnd - timeStart;
+                // return this.displayTimeInHTML(timeTaken, false);
+                return;
             }
 
             let neighbors = this.gridClass.getNeighbors(curNode);
@@ -616,9 +612,9 @@ class Dijkstra {
             this.addToStepsTaken(curNode, ASTAR_TYPES.CLOSED_LIST);
             if (curNode.isEnd) {
                 let path = this.getPath(curNode);
-                let timeEnd = window.performance.now();
-                let timeTaken = timeEnd - timeStart;
-                this.displayTimeInHTML(timeTaken, true);
+                // let timeEnd = window.performance.now();
+                // let timeTaken = timeEnd - timeStart;
+                // this.displayTimeInHTML(timeTaken, true);
                 return path;
             }
         }
@@ -704,8 +700,8 @@ class Dijkstra {
     run = () => {
         this.reset();
         this.findPath();
-        this.visualizationController();
-        this.setComplete(true);
+        return this.stepsTaken;
+        // this.setComplete(true);
     }
 
     scoreFunction = (node) => node.getDist();
@@ -725,15 +721,18 @@ class Dijkstra {
 }
 
 class PathfindingVisualization {
-    constructor() {
-
+    constructor(gridClass) {
+        this.gridClass = gridClass;
+        this.grid = gridClass.grid;
+        this.animFrameId = null;
+        this.animSpeed = +animSpeedInput.value;
     }
 
-    animateSteps = () => {
+    animateSteps = (stepsTaken) => {
         let start = 0;
         let deltaTime = 0;
         let i = 0;
-        let len = this.stepsTaken.length;
+        let len = stepsTaken.length;
 
         let timeout, j, speed;
 
@@ -749,7 +748,7 @@ class PathfindingVisualization {
             j = 0;
 
             while (j < speed) {
-                setTimeout(this.visualizeStep(i + j), timeout * j)
+                setTimeout(this.visualizeStep(stepsTaken, i + j), timeout * j)
                 j++;
             }
 
@@ -774,32 +773,16 @@ class PathfindingVisualization {
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
-    visualizationController = () => (this.complete) ? this.drawSteps() : this.animateSteps();
+    visualizationController = (stepsTaken) => (this.complete) ? this.drawSteps(stepsTaken) : this.animateSteps(stepsTaken);
 
-    visualizeStep = (i) => {
-        if (i >= this.stepsTaken.length - 1) return;
+    visualizeStep = (stepsTaken, idx) => {
+        if (idx >= stepsTaken.length - 1) return;
 
-        let curNode = this.stepsTaken[i].node;
-        let curType = this.stepsTaken[i].type;
-
-        if (curType === ASTAR_TYPES.PATH) {
-            let nextNode = this.stepsTaken[i + 1].node;
-            this.drawPath(curNode, nextNode);
-            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
-        }
-        else {
-            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
-        }
-    }
-
-    visualizeStep = (i) => {
-        if (i + 1 >= this.stepsTaken.length) return;
-
-        let curNode = this.stepsTaken[i].node;
-        let curType = this.stepsTaken[i].type;
+        let curNode = stepsTaken[idx].node;
+        let curType = stepsTaken[idx].type;
 
         if (curType === ASTAR_TYPES.PATH) {
-            let nextNode = this.stepsTaken[i + 1].node;
+            let nextNode = stepsTaken[idx + 1].node;
             this.drawPath(curNode, nextNode);
             this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
         }
@@ -849,8 +832,8 @@ class PathfindingVisualization {
         ctx.stroke();
     }
 
-    drawSteps = () => {
-        let len = this.stepsTaken.length;
+    drawSteps = (stepsTaken) => {
+        let len = stepsTaken.length;
         for (let i = 0; i < len; i++) {
             this.visualizeStep(i);
         }
@@ -864,7 +847,7 @@ grid.initGrid(AStarNode);
 let currentAlgorithm = new AStar(grid);
 currentAlgorithm.setStartNode(grid.getNode(10, 8));
 currentAlgorithm.setEndNode(grid.getNode(23, 8));
-let pathfindingViz = new PathfindingVisualization;
+let pathfindingViz = new PathfindingVisualization(grid);
 
 grid.drawAllNodes();
 
@@ -995,16 +978,17 @@ const handleMouseDown = (e) => {
 }
 
 canvas.addEventListener('mousedown', (e) => {
-    currentAlgorithm.stopAnimFrame();
+    pathfindingViz.stopAnimFrame();
     handleMouseDown(e)
 });
 
 document.addEventListener('keydown', (e) => {
     // Space and Enter
     if (e.keyCode === 13 || e.keyCode === 32) {
-        currentAlgorithm.stopAnimFrame();
+        pathfindingViz.stopAnimFrame();
         currentAlgorithm.setComplete(false);
-        currentAlgorithm.run();
+        let stepsTaken = currentAlgorithm.run();
+        pathfindingViz.visualizationController(stepsTaken);
     }
 });
 
@@ -1014,9 +998,10 @@ document.addEventListener('keydown', (e) => {
 
 runAlgorithmBtn.onclick = () => {
     runAlgorithmBtn.blur();
-    currentAlgorithm.stopAnimFrame();
+    pathfindingViz.stopAnimFrame();
     currentAlgorithm.setComplete(false);
-    currentAlgorithm.run();
+    let stepsTaken = currentAlgorithm.run();
+    pathfindingViz.visualizationController(stepsTaken);
 }
 
 algorithmSelect.onchange = () => {
