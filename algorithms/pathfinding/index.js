@@ -389,9 +389,6 @@ class AStar {
     }
 
     findPath = () => {
-        // let timeStart = window.performance.now();
-
-        let path = null;
         this.addToOpenList(this.startNode);
 
         while (this.openList.size() > 0) {
@@ -415,11 +412,8 @@ class AStar {
 
                 if (adjNode.isEnd) {
                     adjNode.setParent(curNode);
-                    path = this.getPath(adjNode);
-                    // let timeEnd = window.performance.now();
-                    // let timeTaken = timeEnd - timeStart;
-                    // this.displayTimeInHTML(timeTaken, true);
-                    return path;
+                    this.getPath(adjNode);
+                    return true;
                 }
 
                 let newAdjNodeGCost = curNode.gCost + this.calcCost(curNode, adjNode) + adjNode.moveCost;
@@ -440,10 +434,7 @@ class AStar {
             }
         }
 
-        // let timeEnd = window.performance.now();
-        // let timeTaken = timeEnd - timeStart;
-        // return this.displayTimeInHTML(timeTaken, false);
-        return;
+        return false;
     }
 
     getPath = (endNode) => {
@@ -462,6 +453,8 @@ class AStar {
             curNode = curNode.parent;
         }
     }
+
+    getStepsTaken = () => this.stepsTaken;
 
     isDiagonalBlocked = (curNode, adjNode) => {
         let sideNodeX = this.gridClass.getNode(adjNode.x, curNode.y);
@@ -523,8 +516,7 @@ class AStar {
 
     run = () => {
         this.reset();
-        this.findPath();
-        return this.stepsTaken;
+        return this.findPath();
     }
 
     scoreFunction = (node) => node.getFCost();
@@ -565,8 +557,6 @@ class Dijkstra {
     }
 
     findPath = () => {
-        // let timeStart = window.performance.now();
-
         for (let x = 0; x < this.gridClass.gridSizeX; x++) {
             for (let y = 0; y < this.gridClass.gridSizeY; y++) {
                 let node = this.gridClass.getNode(x, y);
@@ -579,10 +569,7 @@ class Dijkstra {
             curNode = this.unvisitedList.popMin();
 
             if (curNode.dist === Infinity) {
-                // let timeEnd = window.performance.now();
-                // let timeTaken = timeEnd - timeStart;
-                // return this.displayTimeInHTML(timeTaken, false);
-                return;
+                return false;
             }
 
             let neighbors = this.gridClass.getNeighbors(curNode);
@@ -610,11 +597,8 @@ class Dijkstra {
             curNode.setVisited(true);
             this.addToStepsTaken(curNode, ASTAR_TYPES.CLOSED_LIST);
             if (curNode.isEnd) {
-                let path = this.getPath(curNode);
-                // let timeEnd = window.performance.now();
-                // let timeTaken = timeEnd - timeStart;
-                // this.displayTimeInHTML(timeTaken, true);
-                return path;
+                this.getPath(curNode);
+                return true;
             }
         }
 
@@ -636,6 +620,8 @@ class Dijkstra {
             curNode = curNode.parent;
         }
     }
+
+    getStepsTaken = () => this.stepsTaken;
 
     isDiagonalBlocked = (curNode, adjNode) => {
         let sideNodeX = this.gridClass.getNode(adjNode.x, curNode.y);
@@ -698,8 +684,7 @@ class Dijkstra {
 
     run = () => {
         this.reset();
-        this.findPath();
-        return this.stepsTaken;
+        return this.findPath();
     }
 
     scoreFunction = (node) => node.getDist();
@@ -725,6 +710,8 @@ class PathfindingVisualization {
         this.animFrameId = null;
         this.animSpeed = +animSpeedInput.value;
     }
+
+    setAnimSpeed = (val) => this.animSpeed = val;
 
     animateSteps = (stepsTaken) => {
         let start = 0;
@@ -760,13 +747,6 @@ class PathfindingVisualization {
         this.setAnimFrameId(
             window.requestAnimationFrame(step)
         );
-    }
-
-    displayTimeInHTML = (timeTaken, successBool) => {
-        let displayStr = `${algorithmSelect.value}: ${timeTaken}ms`;
-        timerTextSpan.innerText = (successBool) ? "Path found:" : "Path doesn't exist:";
-        timerNumberSpan.innerText = displayStr;
-        console.log(displayStr);
     }
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
@@ -864,6 +844,13 @@ const changeAlgorithm = (algorithm) => {
     grid.drawAllNodes();
 }
 
+const displayTimeInHTML = (timeTaken, success) => {
+    let displayStr = `${algorithmSelect.value}: ${timeTaken}ms`;
+    timerTextSpan.innerText = (success) ? "Path found:" : "Path doesn't exist:";
+    timerNumberSpan.innerText = displayStr;
+    console.log(displayStr);
+}
+
 const addUnwalkable = (e) => {
     let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
     if (node === null) return;
@@ -872,7 +859,12 @@ const addUnwalkable = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            let stepsTaken = currentAlgorithm.run();
+            let timeStart = window.performance.now();
+            let success = currentAlgorithm.run();
+            let timeEnd = window.performance.now();
+            let timeTaken = timeEnd - timeStart;
+            displayTimeInHTML(timeTaken, success);
+            let stepsTaken = currentAlgorithm.getStepsTaken();
             pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
@@ -886,7 +878,12 @@ const addEmpty = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            let stepsTaken = currentAlgorithm.run();
+            let timeStart = window.performance.now();
+            let success = currentAlgorithm.run();
+            let timeEnd = window.performance.now();
+            let timeTaken = timeEnd - timeStart;
+            displayTimeInHTML(timeTaken, success);
+            let stepsTaken = currentAlgorithm.getStepsTaken();
             pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
@@ -900,7 +897,12 @@ const addSwamp = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            let stepsTaken = currentAlgorithm.run();
+            let timeStart = window.performance.now();
+            let success = currentAlgorithm.run();
+            let timeEnd = window.performance.now();
+            let timeTaken = timeEnd - timeStart;
+            displayTimeInHTML(timeTaken, success);
+            let stepsTaken = currentAlgorithm.getStepsTaken();
             pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
@@ -919,7 +921,12 @@ const dragStart = (e) => {
 
         if (currentAlgorithm.complete === true) {
             oldStart.resetPathfindingValues();
-            let stepsTaken = currentAlgorithm.run();
+            let timeStart = window.performance.now();
+            let success = currentAlgorithm.run();
+            let timeEnd = window.performance.now();
+            let timeTaken = timeEnd - timeStart;
+            displayTimeInHTML(timeTaken, success);
+            let stepsTaken = currentAlgorithm.getStepsTaken();
             pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
@@ -938,7 +945,12 @@ const dragEnd = (e) => {
 
         if (currentAlgorithm.complete === true) {
             oldEnd.resetPathfindingValues();
-            let stepsTaken = currentAlgorithm.run();
+            let timeStart = window.performance.now();
+            let success = currentAlgorithm.run();
+            let timeEnd = window.performance.now();
+            let timeTaken = timeEnd - timeStart;
+            displayTimeInHTML(timeTaken, success);
+            let stepsTaken = currentAlgorithm.getStepsTaken();
             pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         }
     }
@@ -990,7 +1002,12 @@ document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
         pathfindingViz.stopAnimFrame();
         currentAlgorithm.setComplete(false);
-        let stepsTaken = currentAlgorithm.run();
+        let timeStart = window.performance.now();
+        let success = currentAlgorithm.run();
+        let timeEnd = window.performance.now();
+        let timeTaken = timeEnd - timeStart;
+        displayTimeInHTML(timeTaken, success);
+        let stepsTaken = currentAlgorithm.getStepsTaken();
         pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
         currentAlgorithm.setComplete(true);
     }
@@ -1004,7 +1021,12 @@ runAlgorithmBtn.onclick = () => {
     runAlgorithmBtn.blur();
     pathfindingViz.stopAnimFrame();
     currentAlgorithm.setComplete(false);
-    let stepsTaken = currentAlgorithm.run();
+    let timeStart = window.performance.now();
+    let success = currentAlgorithm.run();
+    let timeEnd = window.performance.now();
+    let timeTaken = timeEnd - timeStart;
+    displayTimeInHTML(timeTaken, success);
+    let stepsTaken = currentAlgorithm.getStepsTaken();
     pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
     currentAlgorithm.setComplete(true);
 }
@@ -1029,7 +1051,7 @@ algorithmSelect.onchange = () => {
 animSpeedInput.oninput = (e) => {
     animSpeedInput.blur();
     let val = +e.target.value;
-    currentAlgorithm.animSpeed = val;
+    pathfindingViz.setAnimSpeed(val);
     animSpeedSpan.innerHTML = val;
 }
 
