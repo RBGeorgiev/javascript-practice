@@ -844,11 +844,23 @@ const changeAlgorithm = (algorithm) => {
     grid.drawAllNodes();
 }
 
-const displayTimeInHTML = (timeTaken, success) => {
+const displayTimeInHTML = (timeTaken, pathFoundBool) => {
     let displayStr = `${algorithmSelect.value}: ${timeTaken}ms`;
-    timerTextSpan.innerText = (success) ? "Path found:" : "Path doesn't exist:";
+    timerTextSpan.innerText = (pathFoundBool) ? "Path found:" : "Path doesn't exist:";
     timerNumberSpan.innerText = displayStr;
     console.log(displayStr);
+}
+
+const runCurrentAlgorithm = () => {
+    let timeStart = window.performance.now();
+    let pathFoundBool = currentAlgorithm.run();
+    let timeEnd = window.performance.now();
+
+    let timeTaken = timeEnd - timeStart;
+    displayTimeInHTML(timeTaken, pathFoundBool);
+
+    let stepsTaken = currentAlgorithm.getStepsTaken();
+    pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
 }
 
 const addUnwalkable = (e) => {
@@ -859,13 +871,7 @@ const addUnwalkable = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            let timeStart = window.performance.now();
-            let success = currentAlgorithm.run();
-            let timeEnd = window.performance.now();
-            let timeTaken = timeEnd - timeStart;
-            displayTimeInHTML(timeTaken, success);
-            let stepsTaken = currentAlgorithm.getStepsTaken();
-            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+            runCurrentAlgorithm();
         }
     }
 }
@@ -878,13 +884,7 @@ const addEmpty = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            let timeStart = window.performance.now();
-            let success = currentAlgorithm.run();
-            let timeEnd = window.performance.now();
-            let timeTaken = timeEnd - timeStart;
-            displayTimeInHTML(timeTaken, success);
-            let stepsTaken = currentAlgorithm.getStepsTaken();
-            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+            runCurrentAlgorithm();
         }
     }
 }
@@ -897,13 +897,7 @@ const addSwamp = (e) => {
         grid.drawNode(node);
 
         if (currentAlgorithm.complete === true) {
-            let timeStart = window.performance.now();
-            let success = currentAlgorithm.run();
-            let timeEnd = window.performance.now();
-            let timeTaken = timeEnd - timeStart;
-            displayTimeInHTML(timeTaken, success);
-            let stepsTaken = currentAlgorithm.getStepsTaken();
-            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+            runCurrentAlgorithm();
         }
     }
 }
@@ -921,13 +915,7 @@ const dragStart = (e) => {
 
         if (currentAlgorithm.complete === true) {
             oldStart.resetPathfindingValues();
-            let timeStart = window.performance.now();
-            let success = currentAlgorithm.run();
-            let timeEnd = window.performance.now();
-            let timeTaken = timeEnd - timeStart;
-            displayTimeInHTML(timeTaken, success);
-            let stepsTaken = currentAlgorithm.getStepsTaken();
-            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+            runCurrentAlgorithm();
         }
     }
 }
@@ -945,13 +933,7 @@ const dragEnd = (e) => {
 
         if (currentAlgorithm.complete === true) {
             oldEnd.resetPathfindingValues();
-            let timeStart = window.performance.now();
-            let success = currentAlgorithm.run();
-            let timeEnd = window.performance.now();
-            let timeTaken = timeEnd - timeStart;
-            displayTimeInHTML(timeTaken, success);
-            let stepsTaken = currentAlgorithm.getStepsTaken();
-            pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+            runCurrentAlgorithm();
         }
     }
 }
@@ -1002,13 +984,7 @@ document.addEventListener('keydown', (e) => {
     if (e.keyCode === 13 || e.keyCode === 32) {
         pathfindingViz.stopAnimFrame();
         currentAlgorithm.setComplete(false);
-        let timeStart = window.performance.now();
-        let success = currentAlgorithm.run();
-        let timeEnd = window.performance.now();
-        let timeTaken = timeEnd - timeStart;
-        displayTimeInHTML(timeTaken, success);
-        let stepsTaken = currentAlgorithm.getStepsTaken();
-        pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+        runCurrentAlgorithm();
         currentAlgorithm.setComplete(true);
     }
 });
@@ -1021,13 +997,7 @@ runAlgorithmBtn.onclick = () => {
     runAlgorithmBtn.blur();
     pathfindingViz.stopAnimFrame();
     currentAlgorithm.setComplete(false);
-    let timeStart = window.performance.now();
-    let success = currentAlgorithm.run();
-    let timeEnd = window.performance.now();
-    let timeTaken = timeEnd - timeStart;
-    displayTimeInHTML(timeTaken, success);
-    let stepsTaken = currentAlgorithm.getStepsTaken();
-    pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
+    runCurrentAlgorithm();
     currentAlgorithm.setComplete(true);
 }
 
