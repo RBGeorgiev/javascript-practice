@@ -70,6 +70,7 @@ class Node {
         this.moveCost = 0;
         this.unwalkable = false;
         this.isEnd = false;
+        this.isStart = false;
         this.setType(type);
     }
 
@@ -82,6 +83,7 @@ class Node {
         this.moveCost = (type === NODE_TYPES.SWAMP) ? 5 : 0;
         this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
         this.isEnd = !!(type === NODE_TYPES.END);
+        this.isStart = !!(type === NODE_TYPES.START);
     }
 }
 
@@ -788,7 +790,7 @@ class PathfindingVisualization {
     }
 
     drawPathfindingNode = (node, color) => {
-        if (Object.is(node, this.startNode) || node.isEnd) return;
+        if (node.isStart || node.isEnd) return;
         let size = this.gridClass.nodeSize;
         let xPos = size * node.x;
         let yPos = size * node.y;
