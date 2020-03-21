@@ -820,16 +820,21 @@ class PathfindingVisualization {
     }
 }
 
+const start = (gridWidth) => {
+    grid = new Grid(gridWidth);
+    grid.initGrid(AStarNode);
+
+    currentAlgorithm = new AStar(grid);
+    currentAlgorithm.setStartNode(grid.getNode(10, 8));
+    currentAlgorithm.setEndNode(grid.getNode(23, 8));
+    pathfindingViz = new PathfindingVisualization(grid);
+
+    grid.drawAllNodes();
+}
+
+let grid, currentAlgorithm, pathfindingViz;
 let gridWidth = 50;
-
-let grid = new Grid(gridWidth);
-grid.initGrid(AStarNode);
-let currentAlgorithm = new AStar(grid);
-currentAlgorithm.setStartNode(grid.getNode(10, 8));
-currentAlgorithm.setEndNode(grid.getNode(23, 8));
-let pathfindingViz = new PathfindingVisualization(grid);
-
-grid.drawAllNodes();
+start(gridWidth);
 
 
 const changeAlgorithm = (algorithm) => {
