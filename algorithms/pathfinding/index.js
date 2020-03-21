@@ -847,7 +847,8 @@ const changeAlgorithm = (algorithm) => {
 }
 
 const displayTimeInHTML = (timeTaken, pathFoundBool) => {
-    let displayStr = `${algorithmSelect.value}: ${timeTaken}ms`;
+    let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
+    let displayStr = `${algorithmSelect.value}: ${time}ms`;
     timerTextSpan.innerText = (pathFoundBool) ? "Path found:" : "Path doesn't exist:";
     timerNumberSpan.innerText = displayStr;
     console.log(displayStr);
