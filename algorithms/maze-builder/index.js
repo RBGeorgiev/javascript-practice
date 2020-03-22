@@ -269,7 +269,7 @@ class Kruskal {
                 adjY >= 0 && adjY < height
             ) {
                 let neighbor = this.getNode(adjX, adjY);
-                neighbors.push(neighbor);
+                if (neighbor.root !== node.root) neighbors.push(neighbor);
             }
 
         }
@@ -281,26 +281,46 @@ class Kruskal {
 
     getStepsTaken = () => this.stepsTaken;
 
-    generateNewMaze = () => {
+    generateNewMaze = (arr) => {
 
     }
 
     initGrid = () => {
+        let cellsArr = [];
+
         for (let x = 0; x < this.gridSizeX; x++) {
             this.grid[x] = [];
             for (let y = 0; y < this.gridSizeY; y++) {
-                this.grid[x][y] = new KruskalNode(x, y);
+                let node = new KruskalNode(x, y);
+                this.grid[x][y] = node;
+                if (x % 2 === 0 && y % 2 === 0) cellsArr.push(node);
             }
         }
-        console.log(this.grid)
+
+        return cellsArr;
     }
 
     resetStepsTaken = () => this.stepsTaken = [];
 
     run = () => {
         this.resetStepsTaken();
-        this.initGrid();
-        return this.generateNewMaze();
+        let cellsArr = this.initGrid();
+        let shuffledArr = this.shuffleArray(cellsArr);
+        return this.generateNewMaze(shuffledArr);
+    }
+
+    shuffleArray(arr) {
+        let m = arr.length, temp, i;
+
+        while (m) {
+            i = Math.floor(Math.random() * m--);
+
+            temp = arr[m];
+            arr[m] = arr[i];
+            arr[i] = temp;
+        }
+
+        return arr;
     }
 }
 
@@ -392,4 +412,4 @@ createMazeBtn.onclick = () => {
 
 
 let kruskal = new Kruskal(gridSizeX, gridSizeY);
-kruskal.initGrid();
+kruskal.run();
