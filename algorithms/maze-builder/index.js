@@ -80,6 +80,7 @@ class GridViz {
     replaceGrid = (newGrid) => this.grid = newGrid;
 }
 
+// Recursive Backtracking
 export default class MazeBuilder {
     constructor(gridSizeX, gridSizeY) {
         this.gridSizeX = gridSizeX;
@@ -215,6 +216,94 @@ export default class MazeBuilder {
     }
 }
 
+class KruskalNode extends Node {
+    constructor(x, y) {
+        super(x, y);
+        this.root = this;
+    }
+
+    setRoot = (node) => this.root = node;
+}
+
+// Kruskal's Algorithm
+class Kruskal {
+    constructor(gridSizeX, gridSizeY) {
+        this.gridSizeX = gridSizeX;
+        this.gridSizeY = gridSizeY;
+        this.grid = [];
+        this.stepsTaken = [];
+
+        this.cellSize = 2;
+    }
+
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
+    }
+
+    getNeighborCells = (node) => {
+        let neighbors = [];
+        let cellSize = this.cellSize;
+        let width = this.gridSizeX;
+        let height = this.gridSizeY;
+
+        let neighborPositions = [
+            [cellSize, 0], // East
+            [-cellSize, 0], // West
+            [0, cellSize], // South
+            [0, -cellSize] //North
+        ]
+
+        for (let i = 0; i < neighborPositions.length; i++) {
+            let offsetX = neighborPositions[i][0];
+            let offsetY = neighborPositions[i][1];
+
+            let adjX = node.x + offsetX;
+            let adjY = node.y + offsetY;
+
+            if (
+                adjX >= 0 && adjX < width &&
+                adjY >= 0 && adjY < height
+            ) {
+                let neighbor = this.getNode(adjX, adjY);
+                neighbors.push(neighbor);
+            }
+
+        }
+
+        return neighbors;
+    }
+
+    getNode = (x, y) => this.grid[x][y];
+
+    getStepsTaken = () => this.stepsTaken;
+
+    generateNewMaze = () => {
+
+    }
+
+    initGrid = () => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            this.grid[x] = [];
+            for (let y = 0; y < this.gridSizeY; y++) {
+                this.grid[x][y] = new KruskalNode(x, y);
+            }
+        }
+        console.log(this.grid)
+    }
+
+    resetStepsTaken = () => this.stepsTaken = [];
+
+    run = () => {
+        this.resetStepsTaken();
+        this.initGrid();
+        return this.generateNewMaze();
+    }
+}
+
 class MazeBuilderVisualization {
     constructor(gridSizeX, gridSizeY) {
         this.gridSizeX = gridSizeX;
@@ -298,3 +387,9 @@ createMazeBtn.onclick = () => {
     let stepsTaken = mazeBuilder.getStepsTaken();
     mazeBuilderViz.animateSteps(stepsTaken);
 }
+
+
+
+
+let kruskal = new Kruskal(gridSizeX, gridSizeY);
+kruskal.initGrid();
