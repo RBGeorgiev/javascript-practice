@@ -110,7 +110,7 @@ export default class MazeBuilder {
             [cellSize, 0], // East
             [-cellSize, 0], // West
             [0, cellSize], // South
-            [0, -cellSize] //North
+            [0, -cellSize] // North
         ]
 
         for (let i = 0; i < neighborPositions.length; i++) {
@@ -224,8 +224,6 @@ class KruskalNode extends Node {
 
     getRoot = () => this.parent ? this.parent.getRoot() : this;
 
-    // setParent = (node) => this.parent = node;
-
     connect = (node) => {
         let root = node.getRoot();
         root.parent = this;
@@ -251,23 +249,6 @@ class Kruskal {
         this.stepsTaken.push(step);
     }
 
-    // connectCells = (cur, adj) => {
-    //     adj.setRoot(cur.root);
-
-    //     let dirX = (adj.x - cur.x) / this.cellSize;
-    //     let dirY = (adj.y - cur.y) / this.cellSize;
-
-    //     let mid = this.getNode(cur.x + dirX, cur.y + dirY);
-
-    //     cur.setIsMazePath(true);
-    //     mid.setIsMazePath(true);
-    //     adj.setIsMazePath(true);
-
-    //     this.addToStepsTaken(cur, MAZE_VIZ_TYPE.PATH);
-    //     this.addToStepsTaken(mid, MAZE_VIZ_TYPE.PATH);
-    //     this.addToStepsTaken(adj, MAZE_VIZ_TYPE.PATH);
-    // }
-
     getEdges = (cellsArr) => {
         let edges = [];
         let len = cellsArr.length;
@@ -279,54 +260,14 @@ class Kruskal {
         return edges;
     }
 
-    getNeighborCells = (node) => {
-        let neighbors = [];
-        let cellSize = this.cellSize;
-        let width = this.gridSizeX;
-        let height = this.gridSizeY;
-
-        let neighborPositions = [
-            [cellSize, 0], // East
-            [-cellSize, 0], // West
-            [0, cellSize], // South
-            [0, -cellSize] //North
-        ]
-
-        for (let i = 0; i < neighborPositions.length; i++) {
-            let offsetX = neighborPositions[i][0];
-            let offsetY = neighborPositions[i][1];
-
-            let adjX = node.x + offsetX;
-            let adjY = node.y + offsetY;
-
-            if (
-                adjX >= 0 && adjX < width &&
-                adjY >= 0 && adjY < height
-            ) {
-                let neighbor = this.getNode(adjX, adjY);
-                if (neighbor.root !== node.root) neighbors.push(neighbor);
-            }
-
-        }
-
-        return neighbors;
-    }
-
     getNode = (x, y) => this.grid[x][y];
 
     getStepsTaken = () => this.stepsTaken;
 
     generateNewMaze = (edges) => {
         let len = edges.length;
-        let DX = {
-            "N": 0,
-            "W": -1
-        }
-        let DY = {
-            "N": -1,
-            "W": 0
-        }
-
+        let DX = { "N": 0, "W": -1 };
+        let DY = { "N": -1, "W": 0 };
 
         for (let i = 0; i < len; i++) {
             let [x, y, d] = edges[i];
@@ -337,44 +278,22 @@ class Kruskal {
             let adj2 = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
 
             if (adj1.getRoot() !== adj2.getRoot()) {
-                this.drawNode(adj1, MAZE_VIZ_TYPE.PATH);
-                this.drawNode(edgeNode, MAZE_VIZ_TYPE.PATH);
-                this.drawNode(adj2, MAZE_VIZ_TYPE.PATH);
-                // debugger;
-
                 adj1.connect(adj2);
 
                 adj1.setIsMazePath(true);
                 edgeNode.setIsMazePath(true);
                 adj2.setIsMazePath(true);
 
-
-
                 this.addToStepsTaken(adj1, MAZE_VIZ_TYPE.PATH);
                 this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
                 this.addToStepsTaken(adj2, MAZE_VIZ_TYPE.PATH);
             }
         }
-        // for (let i = 0; i < len; i++) {
-        //     let cur = edges[i]
-        //     let neighbors = this.getNeighborCells(cur);
-        //     if (!neighbors) {
-        //         continue;
-        //     } else if (neighbors.length > 1) {
-        //         neighbors = this.shuffleArray(neighbors);
-        //     }
 
-        //     for (let j = 0; j < neighbors.length; j++) {
-        //         let adj = neighbors[j];
-        //         if (cur.root !== adj.root) {
-        //             this.connectCells(cur, adj);
-        //             break;
-        //         }
-        //     }
-        // }
+        return this.grid;
     }
 
-    initGrid = () => {
+    init = () => {
         let cellsArr = [];
 
         for (let x = 0; x < this.gridSizeX; x++) {
@@ -393,7 +312,7 @@ class Kruskal {
 
     run = () => {
         this.resetStepsTaken();
-        let cellsArr = this.initGrid();
+        let cellsArr = this.init();
         let edges = this.getEdges(cellsArr);
         let shuffledEdges = this.shuffleArray(edges);
         return this.generateNewMaze(shuffledEdges);
@@ -411,28 +330,6 @@ class Kruskal {
         }
 
         return arr;
-    }
-
-
-
-
-
-    // ___________________________________________
-
-    drawNode = (node, color = "#FFFFFF") => {
-        let size = canvas.width / this.gridSizeX;;
-        let posX = node.x * size;
-        let posY = node.y * size;
-
-        ctx.beginPath();
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "darkgray";
-        ctx.rect(posX, posY, size, size);
-        ctx.fillStyle = color;
-
-        ctx.fill();
-        ctx.stroke();
     }
 }
 
@@ -499,28 +396,23 @@ let gridSizeX = 50;
 let gridSizeY = gridSizeX / 2;
 
 let gridViz = new GridViz(gridSizeX, gridSizeY);
-// let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
+let mazeBuilder = new Kruskal(gridSizeX, gridSizeY);
 let mazeBuilderViz = new MazeBuilderVisualization(gridSizeX, gridSizeY);
 gridViz.init();
 gridViz.drawAllNodes();
-
-let kruskal = new Kruskal(gridSizeX, gridSizeY);
-// kruskal.run();
 
 
 const buildMaze = () => {
     console.time('Generate Maze');
     gridViz.init();
     gridViz.drawAllNodes();
-    kruskal.run();
-    // mazeBuilder.run();
+    mazeBuilder.run();
     console.timeEnd('Generate Maze');
 }
 
 createMazeBtn.onclick = () => {
     mazeBuilderViz.stopAnimFrame();
     buildMaze();
-    let stepsTaken = kruskal.getStepsTaken();
-    // let stepsTaken = mazeBuilder.getStepsTaken();
+    let stepsTaken = mazeBuilder.getStepsTaken();
     mazeBuilderViz.animateSteps(stepsTaken);
 }
