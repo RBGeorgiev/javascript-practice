@@ -14,7 +14,10 @@ class Node {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.isMazePath = false;
     }
+
+    setIsMazePath = (bool) => this.isMazePath = bool;
 }
 
 class MazeNode extends Node {
@@ -22,12 +25,9 @@ class MazeNode extends Node {
         super(x, y);
         this.cellVisited = false;
         this.numOfNeighborCells = undefined;
-        this.isMazePath = false;
     }
 
     setCellVisited = (bool) => this.cellVisited = bool;
-
-    setIsMazePath = (bool) => this.isMazePath = bool;
 
     setNumOfNeighborCells = (num) => this.numOfNeighborCells = num;
 }
@@ -219,10 +219,17 @@ export default class MazeBuilder {
 class KruskalNode extends Node {
     constructor(x, y) {
         super(x, y);
-        this.root = this;
+        this.parent = null;
     }
 
-    setRoot = (node) => this.root = node;
+    getRoot = () => this.parent ? this.parent.getRoot() : this;
+
+    // setParent = (node) => this.parent = node;
+
+    connect = (node) => {
+        let root = node.getRoot();
+        root.parent = this;
+    }
 }
 
 // Kruskal's Algorithm
@@ -242,6 +249,34 @@ class Kruskal {
             type: type
         };
         this.stepsTaken.push(step);
+    }
+
+    // connectCells = (cur, adj) => {
+    //     adj.setRoot(cur.root);
+
+    //     let dirX = (adj.x - cur.x) / this.cellSize;
+    //     let dirY = (adj.y - cur.y) / this.cellSize;
+
+    //     let mid = this.getNode(cur.x + dirX, cur.y + dirY);
+
+    //     cur.setIsMazePath(true);
+    //     mid.setIsMazePath(true);
+    //     adj.setIsMazePath(true);
+
+    //     this.addToStepsTaken(cur, MAZE_VIZ_TYPE.PATH);
+    //     this.addToStepsTaken(mid, MAZE_VIZ_TYPE.PATH);
+    //     this.addToStepsTaken(adj, MAZE_VIZ_TYPE.PATH);
+    // }
+
+    getEdges = (cellsArr) => {
+        let edges = [];
+        let len = cellsArr.length;
+        for (let i = 0; i < len; i++) {
+            let cur = cellsArr[i];
+            if (cur.x - 1 > 0) edges.push([cur.x - 1, cur.y, 'W']);
+            if (cur.y - 1 > 0) edges.push([cur.x, cur.y - 1, 'N']);
+        }
+        return edges;
     }
 
     getNeighborCells = (node) => {
@@ -281,8 +316,62 @@ class Kruskal {
 
     getStepsTaken = () => this.stepsTaken;
 
-    generateNewMaze = (arr) => {
+    generateNewMaze = (edges) => {
+        let len = edges.length;
+        let DX = {
+            "N": 0,
+            "W": -1
+        }
+        let DY = {
+            "N": -1,
+            "W": 0
+        }
 
+
+        for (let i = 0; i < len; i++) {
+            let [x, y, d] = edges[i];
+
+            let edgeNode = this.getNode(x, y);
+
+            let adj1 = this.getNode(x + DX[d], y + DY[d]);
+            let adj2 = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
+
+            if (adj1.getRoot() !== adj2.getRoot()) {
+                this.drawNode(adj1, MAZE_VIZ_TYPE.PATH);
+                this.drawNode(edgeNode, MAZE_VIZ_TYPE.PATH);
+                this.drawNode(adj2, MAZE_VIZ_TYPE.PATH);
+                // debugger;
+
+                adj1.connect(adj2);
+
+                adj1.setIsMazePath(true);
+                edgeNode.setIsMazePath(true);
+                adj2.setIsMazePath(true);
+
+
+
+                this.addToStepsTaken(adj1, MAZE_VIZ_TYPE.PATH);
+                this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
+                this.addToStepsTaken(adj2, MAZE_VIZ_TYPE.PATH);
+            }
+        }
+        // for (let i = 0; i < len; i++) {
+        //     let cur = edges[i]
+        //     let neighbors = this.getNeighborCells(cur);
+        //     if (!neighbors) {
+        //         continue;
+        //     } else if (neighbors.length > 1) {
+        //         neighbors = this.shuffleArray(neighbors);
+        //     }
+
+        //     for (let j = 0; j < neighbors.length; j++) {
+        //         let adj = neighbors[j];
+        //         if (cur.root !== adj.root) {
+        //             this.connectCells(cur, adj);
+        //             break;
+        //         }
+        //     }
+        // }
     }
 
     initGrid = () => {
@@ -305,8 +394,9 @@ class Kruskal {
     run = () => {
         this.resetStepsTaken();
         let cellsArr = this.initGrid();
-        let shuffledArr = this.shuffleArray(cellsArr);
-        return this.generateNewMaze(shuffledArr);
+        let edges = this.getEdges(cellsArr);
+        let shuffledEdges = this.shuffleArray(edges);
+        return this.generateNewMaze(shuffledEdges);
     }
 
     shuffleArray(arr) {
@@ -321,6 +411,28 @@ class Kruskal {
         }
 
         return arr;
+    }
+
+
+
+
+
+    // ___________________________________________
+
+    drawNode = (node, color = "#FFFFFF") => {
+        let size = canvas.width / this.gridSizeX;;
+        let posX = node.x * size;
+        let posY = node.y * size;
+
+        ctx.beginPath();
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "darkgray";
+        ctx.rect(posX, posY, size, size);
+        ctx.fillStyle = color;
+
+        ctx.fill();
+        ctx.stroke();
     }
 }
 
@@ -387,29 +499,28 @@ let gridSizeX = 50;
 let gridSizeY = gridSizeX / 2;
 
 let gridViz = new GridViz(gridSizeX, gridSizeY);
-let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
+// let mazeBuilder = new MazeBuilder(gridSizeX, gridSizeY);
 let mazeBuilderViz = new MazeBuilderVisualization(gridSizeX, gridSizeY);
 gridViz.init();
 gridViz.drawAllNodes();
+
+let kruskal = new Kruskal(gridSizeX, gridSizeY);
+// kruskal.run();
 
 
 const buildMaze = () => {
     console.time('Generate Maze');
     gridViz.init();
     gridViz.drawAllNodes();
-    mazeBuilder.run();
+    kruskal.run();
+    // mazeBuilder.run();
     console.timeEnd('Generate Maze');
 }
 
 createMazeBtn.onclick = () => {
     mazeBuilderViz.stopAnimFrame();
     buildMaze();
-    let stepsTaken = mazeBuilder.getStepsTaken();
+    let stepsTaken = kruskal.getStepsTaken();
+    // let stepsTaken = mazeBuilder.getStepsTaken();
     mazeBuilderViz.animateSteps(stepsTaken);
 }
-
-
-
-
-let kruskal = new Kruskal(gridSizeX, gridSizeY);
-kruskal.run();
