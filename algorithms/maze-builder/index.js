@@ -391,49 +391,62 @@ class MazeBuilderVisualization {
     }
 }
 
+class MazeBuilder {
+    constructor(sizeX = 50, sizeY) {
+        this.gridSizeX = sizeX;
+        this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
 
-let gridSizeX = 50;
-let gridSizeY = gridSizeX / 2;
+        this.init();
+    }
 
-let gridViz = new GridViz(gridSizeX, gridSizeY);
-let mazeBuilder = new RecursiveBacktracking(gridSizeX, gridSizeY);
-let mazeBuilderViz = new MazeBuilderVisualization(gridSizeX, gridSizeY);
-gridViz.init();
-gridViz.drawAllNodes();
+    buildMaze = () => {
+        console.time('Generate Maze');
+        this.gridViz.init();
+        this.gridViz.drawAllNodes();
+        this.mazeBuilder.run();
+        console.timeEnd('Generate Maze');
+    }
 
+    changeAlgorithm = (algorithm) => {
+        this.mazeBuilderViz.stopAnimFrame();
+        this.mazeBuilder = new algorithm(this.gridSizeX, this.gridSizeY);
+        this.gridViz.drawAllNodes();
+    }
 
-const buildMaze = () => {
-    console.time('Generate Maze');
-    gridViz.init();
-    gridViz.drawAllNodes();
-    mazeBuilder.run();
-    console.timeEnd('Generate Maze');
-}
+    init = () => {
+        this.gridViz = new GridViz(this.gridSizeX, this.gridSizeY);
+        this.mazeBuilder = new RecursiveBacktracking(this.gridSizeX, this.gridSizeY);
+        this.mazeBuilderViz = new MazeBuilderVisualization(this.gridSizeX, this.gridSizeY);
+        this.gridViz.init();
+        this.gridViz.drawAllNodes();
 
-const changeAlgorithm = (algorithm) => {
-    mazeBuilderViz.stopAnimFrame();
-    mazeBuilder = new algorithm(gridSizeX, gridSizeY);
-    gridViz.drawAllNodes();
-}
+        this.initEventListeners();
+    }
 
-createMazeBtn.onclick = () => {
-    mazeBuilderViz.stopAnimFrame();
-    buildMaze();
-    let stepsTaken = mazeBuilder.getStepsTaken();
-    mazeBuilderViz.animateSteps(stepsTaken);
-}
+    initEventListeners = () => {
+        createMazeBtn.onclick = () => {
+            this.mazeBuilderViz.stopAnimFrame();
+            this.buildMaze();
+            let stepsTaken = this.mazeBuilder.getStepsTaken();
+            this.mazeBuilderViz.animateSteps(stepsTaken);
+        }
 
-algorithmSelect.onchange = () => {
-    algorithmSelect.blur();
+        algorithmSelect.onchange = () => {
+            algorithmSelect.blur();
 
-    switch (algorithmSelect.value) {
-        case 'RecursiveBacktracking':
-            changeAlgorithm(RecursiveBacktracking);
-            break;
-        case 'Kruskal':
-            changeAlgorithm(Kruskal);
-            break;
-        default:
-            console.error('Error determining algorithm');
+            switch (algorithmSelect.value) {
+                case 'RecursiveBacktracking':
+                    this.changeAlgorithm(RecursiveBacktracking);
+                    break;
+                case 'Kruskal':
+                    this.changeAlgorithm(Kruskal);
+                    break;
+                default:
+                    console.error('Error determining algorithm');
+            }
+        }
     }
 }
+
+let gridSizeX = 50;
+new MazeBuilder(gridSizeX);
