@@ -81,7 +81,7 @@ class GridViz {
 }
 
 // Recursive Backtracking
-export default class MazeBuilder {
+export default class RecursiveBacktracking {
     constructor(gridSizeX, gridSizeY) {
         this.gridSizeX = gridSizeX;
         this.gridSizeY = gridSizeY;
@@ -396,7 +396,7 @@ let gridSizeX = 50;
 let gridSizeY = gridSizeX / 2;
 
 let gridViz = new GridViz(gridSizeX, gridSizeY);
-let mazeBuilder = new Kruskal(gridSizeX, gridSizeY);
+let mazeBuilder = new RecursiveBacktracking(gridSizeX, gridSizeY);
 let mazeBuilderViz = new MazeBuilderVisualization(gridSizeX, gridSizeY);
 gridViz.init();
 gridViz.drawAllNodes();
@@ -410,9 +410,30 @@ const buildMaze = () => {
     console.timeEnd('Generate Maze');
 }
 
+const changeAlgorithm = (algorithm) => {
+    mazeBuilderViz.stopAnimFrame();
+    mazeBuilder = new algorithm(gridSizeX, gridSizeY);
+    gridViz.drawAllNodes();
+}
+
 createMazeBtn.onclick = () => {
     mazeBuilderViz.stopAnimFrame();
     buildMaze();
     let stepsTaken = mazeBuilder.getStepsTaken();
     mazeBuilderViz.animateSteps(stepsTaken);
+}
+
+algorithmSelect.onchange = () => {
+    algorithmSelect.blur();
+
+    switch (algorithmSelect.value) {
+        case 'RecursiveBacktracking':
+            changeAlgorithm(RecursiveBacktracking);
+            break;
+        case 'Kruskal':
+            changeAlgorithm(Kruskal);
+            break;
+        default:
+            console.error('Error determining algorithm');
+    }
 }
