@@ -339,9 +339,7 @@ class Grid {
     transferMazeToGrid = (maze, pathfindingNode) => {
         for (let x = 0; x < this.gridSizeX; x++) {
             for (let y = 0; y < this.gridSizeY; y++) {
-                // let oldNode = this.getNode(x, y);
                 let type = (maze[x][y].isMazePath) ? NODE_TYPES.EMPTY : NODE_TYPES.UNWALKABLE;
-                // let type = oldNode.type;
                 this.grid[x][y] = new pathfindingNode(x, y, type);
             }
         }
@@ -856,7 +854,7 @@ const displayTimeInHTML = (timeTaken, pathFoundBool) => {
     let displayStr = `${algorithmSelect.value}: ${time}ms`;
     timerTextSpan.innerText = (pathFoundBool) ? "Path found:" : "Path doesn't exist:";
     timerNumberSpan.innerText = displayStr;
-    console.log(displayStr);
+    console.log(displayStr, `(${timeTaken})`);
 }
 
 const runCurrentAlgorithm = () => {

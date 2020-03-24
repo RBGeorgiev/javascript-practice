@@ -274,19 +274,19 @@ class Kruskal {
 
             let edgeNode = this.getNode(x, y);
 
-            let adj1 = this.getNode(x + DX[d], y + DY[d]);
-            let adj2 = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
+            let nodeA = this.getNode(x + DX[d], y + DY[d]);
+            let nodeB = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
 
-            if (adj1.getRoot() !== adj2.getRoot()) {
-                adj1.connect(adj2);
+            if (nodeA.getRoot() !== nodeB.getRoot()) {
+                nodeA.connect(nodeB);
 
-                adj1.setIsMazePath(true);
+                nodeA.setIsMazePath(true);
                 edgeNode.setIsMazePath(true);
-                adj2.setIsMazePath(true);
+                nodeB.setIsMazePath(true);
 
-                this.addToStepsTaken(adj1, MAZE_VIZ_TYPE.PATH);
+                this.addToStepsTaken(nodeA, MAZE_VIZ_TYPE.PATH);
                 this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
-                this.addToStepsTaken(adj2, MAZE_VIZ_TYPE.PATH);
+                this.addToStepsTaken(nodeB, MAZE_VIZ_TYPE.PATH);
             }
         }
 
