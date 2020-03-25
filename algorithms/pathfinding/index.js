@@ -826,11 +826,12 @@ const start = (gridWidth) => {
     currentAlgorithm.setStartNode(grid.getNode(10, 8));
     currentAlgorithm.setEndNode(grid.getNode(23, 8));
     pathfindingViz = new PathfindingVisualization(grid);
+    mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY);
 
     grid.drawAllNodes();
 }
 
-let grid, currentAlgorithm, pathfindingViz;
+let grid, currentAlgorithm, pathfindingViz, mazeBuilder;
 let gridWidth = 50;
 start(gridWidth);
 
@@ -1053,7 +1054,6 @@ clearWallsBtn.onclick = () => {
 
 createMazeBtn.onclick = () => {
     createMazeBtn.blur();
-    let mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY);
     let maze = mazeBuilder.run();
     grid.transferMazeToGrid(maze, currentAlgorithm.algorithmNode);
     currentAlgorithm.placeStartAndEndInMaze();

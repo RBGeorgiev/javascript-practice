@@ -422,11 +422,13 @@ export default class MazeBuilder {
     init = () => {
         this.gridViz = new GridViz(this.gridSizeX, this.gridSizeY);
         this.mazeBuilder = new RecursiveBacktracking(this.gridSizeX, this.gridSizeY);
+        this.initEventListeners();
+    }
+
+    initViz = () => {
         this.mazeBuilderViz = new MazeBuilderVisualization(this.gridSizeX, this.gridSizeY);
         this.gridViz.init();
         this.gridViz.drawAllNodes();
-
-        this.initEventListeners();
     }
 
     initEventListeners = () => {
@@ -455,4 +457,5 @@ export default class MazeBuilder {
 }
 
 let gridSizeX = 50;
-new MazeBuilder(gridSizeX);
+let mazeBuilder = new MazeBuilder(gridSizeX);
+mazeBuilder.initViz();
