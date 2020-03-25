@@ -81,7 +81,7 @@ class GridViz {
 }
 
 // Recursive Backtracking
-export default class RecursiveBacktracking {
+class RecursiveBacktracking {
     constructor(gridSizeX, gridSizeY) {
         this.gridSizeX = gridSizeX;
         this.gridSizeY = gridSizeY;
@@ -391,19 +391,25 @@ class MazeBuilderVisualization {
     }
 }
 
-class MazeBuilder {
+export default class MazeBuilder {
     constructor(sizeX = 50, sizeY) {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
 
+        this.gridViz;
+        this.mazeBuilder;
+        this.mazeBuilderViz;
+
         this.init();
     }
+
+    run = () => this.mazeBuilder.run();
 
     buildMaze = () => {
         console.time('Generate Maze');
         this.gridViz.init();
         this.gridViz.drawAllNodes();
-        this.mazeBuilder.run();
+        this.run();
         console.timeEnd('Generate Maze');
     }
 
