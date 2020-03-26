@@ -9,6 +9,7 @@ let clearWallsBtn = document.getElementById('clearWallsBtn');
 let algorithmSelect = document.getElementById('algorithmSelect');
 let runAlgorithmBtn = document.getElementById('runAlgorithmBtn');
 let createMazeBtn = document.getElementById('createMazeBtn');
+let mazeAlgorithmSelect = document.getElementById('mazeAlgorithmSelect');
 let timerTextSpan = document.getElementById('timerTextSpan');
 let timerNumberSpan = document.getElementById('timerNumberSpan');
 
@@ -1019,6 +1020,21 @@ algorithmSelect.onchange = () => {
             break;
         case 'Dijkstra':
             changeAlgorithm(Dijkstra);
+            break;
+        default:
+            console.error('Error determining algorithm');
+    }
+}
+
+mazeAlgorithmSelect.onchange = () => {
+    mazeAlgorithmSelect.blur();
+
+    switch (mazeAlgorithmSelect.value) {
+        case 'RecursiveBacktracking':
+            mazeBuilder.changeAlgorithm(RecursiveBacktracking);
+            break;
+        case 'Kruskal':
+            mazeBuilder.changeAlgorithm(Kruskal);
             break;
         default:
             console.error('Error determining algorithm');
