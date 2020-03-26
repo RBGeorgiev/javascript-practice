@@ -1,4 +1,4 @@
-import MazeBuilder from '../maze-builder/index.js';
+import MazeBuilder, { MAZE_ALGORITHMS } from '../maze-builder/index.js';
 
 // ___________________________________________________________________
 
@@ -1031,10 +1031,10 @@ mazeAlgorithmSelect.onchange = () => {
 
     switch (mazeAlgorithmSelect.value) {
         case 'RecursiveBacktracking':
-            mazeBuilder.changeAlgorithm(RecursiveBacktracking);
+            mazeBuilder.setAlgorithm(MAZE_ALGORITHMS['RecursiveBacktracking']);
             break;
         case 'Kruskal':
-            mazeBuilder.changeAlgorithm(Kruskal);
+            mazeBuilder.setAlgorithm(MAZE_ALGORITHMS['Kruskal']);
             break;
         default:
             console.error('Error determining algorithm');

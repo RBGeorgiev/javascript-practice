@@ -415,7 +415,7 @@ export default class MazeBuilder {
 
     changeAlgorithm = (algorithm) => {
         this.mazeBuilderViz.stopAnimFrame();
-        this.mazeBuilder = new algorithm(this.gridSizeX, this.gridSizeY);
+        this.setAlgorithm(new algorithm(this.gridSizeX, this.gridSizeY));
         this.gridViz.drawAllNodes();
     }
 
@@ -454,6 +454,13 @@ export default class MazeBuilder {
             }
         }
     }
+
+    setAlgorithm = (algorithm) => this.mazeBuilder = new algorithm(this.gridSizeX, this.gridSizeY);
+}
+
+export const MAZE_ALGORITHMS = {
+    'RecursiveBacktracking': RecursiveBacktracking,
+    'Kruskal': Kruskal
 }
 
 let gridSizeX = 50;
