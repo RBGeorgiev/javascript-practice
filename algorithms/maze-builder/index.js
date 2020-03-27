@@ -415,7 +415,7 @@ export default class MazeBuilder {
 
     changeAlgorithm = (algorithm) => {
         this.mazeBuilderViz.stopAnimFrame();
-        this.setAlgorithm(new algorithm(this.gridSizeX, this.gridSizeY));
+        this.setAlgorithm(algorithm);
         this.gridViz.drawAllNodes();
     }
 
@@ -441,17 +441,7 @@ export default class MazeBuilder {
 
         algorithmSelect.onchange = () => {
             algorithmSelect.blur();
-
-            switch (algorithmSelect.value) {
-                case 'RecursiveBacktracking':
-                    this.changeAlgorithm(RecursiveBacktracking);
-                    break;
-                case 'Kruskal':
-                    this.changeAlgorithm(Kruskal);
-                    break;
-                default:
-                    console.error('Error determining algorithm');
-            }
+            this.changeAlgorithm(MAZE_ALGORITHMS[algorithmSelect.value]);
         }
     }
 
@@ -462,6 +452,7 @@ export const MAZE_ALGORITHMS = {
     'RecursiveBacktracking': RecursiveBacktracking,
     'Kruskal': Kruskal
 }
+Object.freeze(MAZE_ALGORITHMS);
 
 let gridSizeX = 50;
 let mazeBuilder = new MazeBuilder(gridSizeX);
