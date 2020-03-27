@@ -6,7 +6,7 @@ let animSpeedInput = document.getElementById('animSpeedInput');
 let animSpeedSpan = document.getElementById('animSpeedSpan');
 let clearPathBtn = document.getElementById('clearPathBtn');
 let clearWallsBtn = document.getElementById('clearWallsBtn');
-let algorithmSelect = document.getElementById('algorithmSelect');
+let pathfindingAlgorithmSelect = document.getElementById('pathfindingAlgorithmSelect');
 let runAlgorithmBtn = document.getElementById('runAlgorithmBtn');
 let createMazeBtn = document.getElementById('createMazeBtn');
 let mazeAlgorithmSelect = document.getElementById('mazeAlgorithmSelect');
@@ -819,6 +819,12 @@ class PathfindingVisualization {
     }
 }
 
+const PATHFINDING_ALGORITHMS = {
+    'AStar': AStar,
+    'Dijkstra': Dijkstra
+}
+Object.freeze(PATHFINDING_ALGORITHMS);
+
 const start = (gridWidth) => {
     grid = new Grid(gridWidth);
     grid.initGrid(AStarNode);
@@ -853,7 +859,7 @@ const changeAlgorithm = (algorithm) => {
 
 const displayTimeInHTML = (timeTaken, pathFoundBool) => {
     let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
-    let displayStr = `${algorithmSelect.value}: ${time}ms`;
+    let displayStr = `${pathfindingAlgorithmSelect.value}: ${time}ms`;
     timerTextSpan.innerText = (pathFoundBool) ? "Path found:" : "Path doesn't exist:";
     timerNumberSpan.innerText = displayStr;
     console.log(displayStr, `(${timeTaken})`);
@@ -1009,36 +1015,16 @@ runAlgorithmBtn.onclick = () => {
     currentAlgorithm.setComplete(true);
 }
 
-algorithmSelect.onchange = () => {
-    algorithmSelect.blur();
+pathfindingAlgorithmSelect.onchange = () => {
+    pathfindingAlgorithmSelect.blur();
     timerTextSpan.innerText = "";
     timerNumberSpan.innerText = "";
-
-    switch (algorithmSelect.value) {
-        case 'AStar':
-            changeAlgorithm(AStar);
-            break;
-        case 'Dijkstra':
-            changeAlgorithm(Dijkstra);
-            break;
-        default:
-            console.error('Error determining algorithm');
-    }
+    changeAlgorithm(PATHFINDING_ALGORITHMS[pathfindingAlgorithmSelect.value]);
 }
 
 mazeAlgorithmSelect.onchange = () => {
     mazeAlgorithmSelect.blur();
-
-    switch (mazeAlgorithmSelect.value) {
-        case 'RecursiveBacktracking':
-            mazeBuilder.setAlgorithm(MAZE_ALGORITHMS['RecursiveBacktracking']);
-            break;
-        case 'Kruskal':
-            mazeBuilder.setAlgorithm(MAZE_ALGORITHMS['Kruskal']);
-            break;
-        default:
-            console.error('Error determining algorithm');
-    }
+    mazeBuilder.setAlgorithm(MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
 }
 
 animSpeedInput.oninput = (e) => {
