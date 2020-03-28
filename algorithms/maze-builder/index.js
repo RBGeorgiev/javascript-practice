@@ -1,6 +1,7 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let createMazeBtn = document.getElementById("createMazeBtn");
+let algorithmSelect = document.getElementById('algorithmSelect');
 
 canvas.width = 1600;
 canvas.height = 800;
@@ -422,7 +423,6 @@ export default class MazeBuilder {
     init = () => {
         this.gridViz = new GridViz(this.gridSizeX, this.gridSizeY);
         this.mazeBuilder = new RecursiveBacktracking(this.gridSizeX, this.gridSizeY);
-        this.initEventListeners();
     }
 
     initViz = () => {
@@ -456,4 +456,5 @@ Object.freeze(MAZE_ALGORITHMS);
 
 let gridSizeX = 50;
 let mazeBuilder = new MazeBuilder(gridSizeX);
-mazeBuilder.initViz();
+// mazeBuilder.initViz();
+// mazeBuilder.initEventListeners();
