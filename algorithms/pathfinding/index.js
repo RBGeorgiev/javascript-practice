@@ -1,4 +1,5 @@
-import MazeBuilder, { MAZE_ALGORITHMS } from '../maze-builder/index.js';
+import MazeBuilder from '../maze-builder/maze-builder.js';
+import MAZE_ALGORITHMS from '../maze-builder/algorithms-enum.js';
 
 // ___________________________________________________________________
 
