@@ -1,3 +1,8 @@
+import { Node } from './nodes.js';
+
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+
 export const MAZE_VIZ_TYPE = {
     PATH: "#FFFFFF",
     TRACEBACK: "#FF0000"
@@ -51,7 +56,7 @@ export class GridViz {
     replaceGrid = (newGrid) => this.grid = newGrid;
 }
 
-class MazeBuilderVisualization {
+export class MazeBuilderVisualization {
     constructor(gridSizeX, gridSizeY) {
         this.gridSizeX = gridSizeX;
         this.gridSizeY = gridSizeY;

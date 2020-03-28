@@ -1,4 +1,4 @@
-import { GridViz } from './algorithms-viz.js';
+import { GridViz, MazeBuilderVisualization } from './algorithms-viz.js';
 import { RecursiveBacktracking, Kruskal } from './algorithms.js';
 import MAZE_ALGORITHMS from './algorithms-enum.js';
 
