@@ -1,4 +1,5 @@
 import MazeBuilder from './maze-builder.js';
+import { MazeBuilderVisualization } from './algorithms-viz.js';
 
 // let canvas = document.getElementById("canvas");
 // let ctx = canvas.getContext("2d");
@@ -10,5 +11,6 @@ canvas.height = 800;
 
 let gridSizeX = 50;
 let mazeBuilder = new MazeBuilder(gridSizeX);
-mazeBuilder.initViz();
-mazeBuilder.initEventListeners();
+let mazeBuilderViz = new MazeBuilderVisualization(mazeBuilder);
+mazeBuilderViz.initViz();
+mazeBuilderViz.initEventListeners();
