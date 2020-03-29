@@ -1,5 +1,5 @@
 import MazeBuilder from './maze-builder.js';
-import { MazeBuilderVisualization } from './algorithms-viz.js';
+import { MazeBuilderVisualization } from './maze-builder-viz.js';
 
 // let canvas = document.getElementById("canvas");
 // let ctx = canvas.getContext("2d");

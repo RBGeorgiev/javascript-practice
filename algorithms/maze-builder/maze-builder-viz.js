@@ -1,4 +1,5 @@
 import { Node } from './nodes.js';
+import MAZE_ALGORITHMS from './algorithms-enum.js';
 
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");

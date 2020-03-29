@@ -1,4 +1,3 @@
-import { RecursiveBacktracking, Kruskal } from './algorithms.js';
 import MAZE_ALGORITHMS from './algorithms-enum.js';
 
 export default class MazeBuilder {
@@ -6,9 +5,7 @@ export default class MazeBuilder {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
 
-        this.currentBuilder;
-
-        this.init();
+        this.currentBuilder = this.setAlgorithm(MAZE_ALGORITHMS['RecursiveBacktracking']);
     }
 
     run = () => {
@@ -19,8 +16,6 @@ export default class MazeBuilder {
     }
 
     getStepsTaken = () => this.currentBuilder.getStepsTaken();
-
-    init = () => this.currentBuilder = new RecursiveBacktracking(this.gridSizeX, this.gridSizeY);
 
     setAlgorithm = (algorithm) => this.currentBuilder = new algorithm(this.gridSizeX, this.gridSizeY);
 }

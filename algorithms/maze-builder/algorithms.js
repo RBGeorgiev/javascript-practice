@@ -1,5 +1,5 @@
 import { RecBacktrNode, KruskalNode } from './nodes.js';
-import { MAZE_VIZ_TYPE } from './algorithms-viz.js';
+import { MAZE_VIZ_TYPE } from './maze-builder-viz.js';
 
 // Recursive Backtracking
 export class RecursiveBacktracking {
