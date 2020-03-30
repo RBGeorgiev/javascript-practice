@@ -93,7 +93,9 @@ export class MazeBuilderVisualization extends GridViz {
 
     buildMaze = () => {
         this.initViz();
+        console.time('Generate Maze');
         this.mazeBuilder.run();
+        console.timeEnd('Generate Maze');
     }
 
     changeAlgorithm = (algorithm) => {

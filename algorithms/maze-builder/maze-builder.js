@@ -8,12 +8,7 @@ export default class MazeBuilder {
         this.currentBuilder = this.setAlgorithm(MAZE_ALGORITHMS['RecursiveBacktracking']);
     }
 
-    run = () => {
-        console.time('Generate Maze');
-        let maze = this.currentBuilder.run();
-        console.timeEnd('Generate Maze');
-        return maze;
-    }
+    run = () => this.currentBuilder.run();
 
     getStepsTaken = () => this.currentBuilder.getStepsTaken();
 
