@@ -9,59 +9,14 @@ export const MAZE_VIZ_TYPE = {
     TRACEBACK: "#FF0000"
 }
 
-export class GridViz {
-    constructor(gridSizeX, gridSizeY) {
-        this.gridSizeX = gridSizeX;
-        this.gridSizeY = gridSizeY;
-        this.nodeSize = canvas.width / this.gridSizeX;
-        this.grid = [];
-    }
-
-    drawAllNodes = () => {
-        for (let x = 0; x < this.gridSizeX; x++) {
-            for (let y = 0; y < this.gridSizeY; y++) {
-                let node = this.getNode(x, y);
-                let color = (node.isMazePath) ? "white" : "black";
-                this.drawNode(node, color);
-            }
-        }
-    }
-
-    drawNode = (node, color = "#FFFFFF") => {
-        let size = this.nodeSize;
-        let posX = node.x * size;
-        let posY = node.y * size;
-
-        ctx.beginPath();
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "darkgray";
-        ctx.rect(posX, posY, size, size);
-        ctx.fillStyle = color;
-
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    getNode = (x, y) => this.grid[x][y];
-
-    init = () => {
-        for (let x = 0; x < this.gridSizeX; x++) {
-            this.grid[x] = [];
-            for (let y = 0; y < this.gridSizeY; y++) {
-                this.grid[x][y] = new Node(x, y);
-            }
-        }
-    }
-
-    replaceGrid = (newGrid) => this.grid = newGrid;
-}
-
-export class MazeBuilderVisualization extends GridViz {
+export class MazeBuilderVisualization {
     constructor(mazeBuilder) {
-        super(mazeBuilder.gridSizeX, mazeBuilder.gridSizeY);
+        this.gridSizeX = mazeBuilder.gridSizeX;
+        this.gridSizeY = mazeBuilder.gridSizeY;
         this.mazeBuilder = mazeBuilder;
+        this.grid = [];
 
+        this.nodeSize = canvas.width / this.gridSizeX;
         this.animFrameId = null;
     }
 
@@ -104,6 +59,34 @@ export class MazeBuilderVisualization extends GridViz {
         this.drawAllNodes();
     }
 
+    drawAllNodes = () => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            for (let y = 0; y < this.gridSizeY; y++) {
+                let node = this.getNode(x, y);
+                let color = (node.isMazePath) ? "white" : "black";
+                this.drawNode(node, color);
+            }
+        }
+    }
+
+    drawNode = (node, color = "#FFFFFF") => {
+        let size = this.nodeSize;
+        let posX = node.x * size;
+        let posY = node.y * size;
+
+        ctx.beginPath();
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "darkgray";
+        ctx.rect(posX, posY, size, size);
+        ctx.fillStyle = color;
+
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    getNode = (x, y) => this.grid[x][y];
+
     initEventListeners = () => {
         createMazeBtn.onclick = () => {
             this.stopAnimFrame();
@@ -118,10 +101,21 @@ export class MazeBuilderVisualization extends GridViz {
         }
     }
 
+    init = () => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            this.grid[x] = [];
+            for (let y = 0; y < this.gridSizeY; y++) {
+                this.grid[x][y] = new Node(x, y);
+            }
+        }
+    }
+
     initViz = () => {
         this.init();
         this.drawAllNodes();
     }
+
+    replaceGrid = (newGrid) => this.grid = newGrid;
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
