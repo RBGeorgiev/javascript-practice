@@ -1,5 +1,4 @@
 import { Node } from './nodes.js';
-import MAZE_ALGORITHMS from './algorithms-enum.js';
 
 export const MAZE_VIZ_TYPE = {
     PATH: "#FFFFFF",
@@ -85,20 +84,6 @@ export class MazeBuilderVisualization {
     }
 
     getNode = (x, y) => this.grid[x][y];
-
-    initEventListeners = () => {
-        createMazeBtn.onclick = () => {
-            this.stopAnimFrame();
-            this.buildMaze();
-            let stepsTaken = this.mazeBuilder.getStepsTaken();
-            this.animateSteps(stepsTaken);
-        }
-
-        algorithmSelect.onchange = () => {
-            algorithmSelect.blur();
-            this.changeAlgorithm(MAZE_ALGORITHMS[algorithmSelect.value]);
-        }
-    }
 
     init = () => {
         for (let x = 0; x < this.gridSizeX; x++) {
