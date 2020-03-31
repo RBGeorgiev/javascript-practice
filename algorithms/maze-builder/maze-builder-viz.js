@@ -1,21 +1,19 @@
 import { Node } from './nodes.js';
 import MAZE_ALGORITHMS from './algorithms-enum.js';
 
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-
 export const MAZE_VIZ_TYPE = {
     PATH: "#FFFFFF",
     TRACEBACK: "#FF0000"
 }
 
 export class MazeBuilderVisualization {
-    constructor(mazeBuilder) {
+    constructor(mazeBuilder, ctx) {
         this.gridSizeX = mazeBuilder.gridSizeX;
         this.gridSizeY = mazeBuilder.gridSizeY;
         this.mazeBuilder = mazeBuilder;
         this.grid = [];
 
+        this.ctx = ctx;
         this.nodeSize = canvas.width / this.gridSizeX;
         this.animFrameId = null;
     }
@@ -70,6 +68,7 @@ export class MazeBuilderVisualization {
     }
 
     drawNode = (node, color = "#FFFFFF") => {
+        let ctx = this.ctx;
         let size = this.nodeSize;
         let posX = node.x * size;
         let posY = node.y * size;
