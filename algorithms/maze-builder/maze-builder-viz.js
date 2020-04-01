@@ -45,9 +45,7 @@ export class MazeBuilderVisualization {
 
     buildMaze = () => {
         this.initViz();
-        console.time('Generate Maze');
         this.mazeBuilder.run();
-        console.timeEnd('Generate Maze');
     }
 
     changeAlgorithm = (algorithm) => {

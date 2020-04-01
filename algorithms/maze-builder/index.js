@@ -19,7 +19,14 @@ initEventListeners();
 function initEventListeners() {
     createMazeBtn.onclick = () => {
         mazeBuilderViz.stopAnimFrame();
+
+        let timeStart = window.performance.now();
         mazeBuilderViz.buildMaze();
+        let timeEnd = window.performance.now();
+
+        let timeTaken = timeEnd - timeStart;
+        displayTime(timeTaken);
+
         let stepsTaken = mazeBuilder.getStepsTaken();
         mazeBuilderViz.animateSteps(stepsTaken);
     }
@@ -28,4 +35,10 @@ function initEventListeners() {
         algorithmSelect.blur();
         mazeBuilderViz.changeAlgorithm(MAZE_ALGORITHMS[algorithmSelect.value]);
     }
+}
+
+function displayTime(timeTaken) {
+    let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
+    let displayStr = `${algorithmSelect.value}: ${time}ms`;
+    console.log(displayStr, `(${timeTaken})`);
 }
