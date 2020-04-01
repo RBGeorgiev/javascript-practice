@@ -6,6 +6,7 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let createMazeBtn = document.getElementById("createMazeBtn");
 let algorithmSelect = document.getElementById('algorithmSelect');
+let timerNumberSpan = document.getElementById('timerNumberSpan');
 
 canvas.width = 1600;
 canvas.height = 800;
@@ -40,5 +41,6 @@ function initEventListeners() {
 function displayTime(timeTaken) {
     let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
     let displayStr = `${algorithmSelect.value}: ${time}ms`;
+    timerNumberSpan.innerText = displayStr;
     console.log(displayStr, `(${timeTaken})`);
 }
