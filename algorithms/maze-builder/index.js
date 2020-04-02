@@ -11,36 +11,42 @@ let timerNumberSpan = document.getElementById('timerNumberSpan');
 canvas.width = 1600;
 canvas.height = 800;
 
-let gridSizeX = 50;
-let mazeBuilder = new MazeBuilder(gridSizeX);
-let mazeBuilderViz = new MazeBuilderVisualization(mazeBuilder, ctx);
-mazeBuilderViz.initViz();
-initEventListeners();
-
-function initEventListeners() {
-    createMazeBtn.onclick = () => {
-        mazeBuilderViz.stopAnimFrame();
-
-        let timeStart = window.performance.now();
-        mazeBuilderViz.buildMaze();
-        let timeEnd = window.performance.now();
-
-        let timeTaken = timeEnd - timeStart;
-        displayTime(timeTaken);
-
-        let stepsTaken = mazeBuilder.getStepsTaken();
-        mazeBuilderViz.animateSteps(stepsTaken);
+class Options {
+    constructor() {
+        this.gridSizeX = 50;
+        this.mazeBuilder = new MazeBuilder(this.gridSizeX);
+        this.mazeBuilderViz = new MazeBuilderVisualization(this.mazeBuilder, ctx);
+        this.mazeBuilderViz.initViz();
+        this.initEventListeners();
     }
 
-    algorithmSelect.onchange = () => {
-        algorithmSelect.blur();
-        mazeBuilderViz.changeAlgorithm(MAZE_ALGORITHMS[algorithmSelect.value]);
+    initEventListeners = () => {
+        createMazeBtn.onclick = () => {
+            this.mazeBuilderViz.stopAnimFrame();
+
+            let timeStart = window.performance.now();
+            this.mazeBuilderViz.buildMaze();
+            let timeEnd = window.performance.now();
+
+            let timeTaken = timeEnd - timeStart;
+            this.displayTime(timeTaken);
+
+            let stepsTaken = this.mazeBuilder.getStepsTaken();
+            this.mazeBuilderViz.animateSteps(stepsTaken);
+        }
+
+        algorithmSelect.onchange = () => {
+            algorithmSelect.blur();
+            this.mazeBuilderViz.changeAlgorithm(MAZE_ALGORITHMS[algorithmSelect.value]);
+        }
+    }
+
+    displayTime = (timeTaken) => {
+        let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
+        let displayStr = `${algorithmSelect.value}: ${time}ms`;
+        timerNumberSpan.innerText = displayStr;
+        console.log(displayStr, `(${timeTaken})`);
     }
 }
 
-function displayTime(timeTaken) {
-    let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
-    let displayStr = `${algorithmSelect.value}: ${time}ms`;
-    timerNumberSpan.innerText = displayStr;
-    console.log(displayStr, `(${timeTaken})`);
-}
+new Options;
