@@ -12,9 +12,10 @@ canvas.width = 1600;
 canvas.height = 800;
 
 class Options {
-    constructor() {
-        this.gridSizeX = 50;
-        this.mazeBuilder = new MazeBuilder(this.gridSizeX);
+    constructor(sizeX = 50, sizeY) {
+        this.gridSizeX = sizeX;
+        this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
+        this.mazeBuilder = new MazeBuilder(this.gridSizeX, this.gridSizeY, MAZE_ALGORITHMS[algorithmSelect.value]);
         this.mazeBuilderViz = new MazeBuilderVisualization(this.mazeBuilder, ctx);
         this.mazeBuilderViz.initViz();
         this.initEventListeners();

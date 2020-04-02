@@ -1,11 +1,8 @@
-import MAZE_ALGORITHMS from './algorithms-enum.js';
-
 export default class MazeBuilder {
-    constructor(sizeX = 50, sizeY) {
+    constructor(sizeX = 50, sizeY, algorithm) {
         this.gridSizeX = sizeX;
-        this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
-
-        this.currentBuilder = this.setAlgorithm(MAZE_ALGORITHMS['RecursiveBacktracking']);
+        this.gridSizeY = sizeY;
+        this.currentBuilder = this.setAlgorithm(algorithm);
     }
 
     run = () => this.currentBuilder.run();
