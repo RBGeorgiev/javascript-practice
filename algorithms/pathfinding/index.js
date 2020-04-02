@@ -834,7 +834,7 @@ const start = (gridWidth) => {
     currentAlgorithm.setStartNode(grid.getNode(10, 8));
     currentAlgorithm.setEndNode(grid.getNode(23, 8));
     pathfindingViz = new PathfindingVisualization(grid);
-    mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY);
+    mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY, MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
 
     grid.drawAllNodes();
 }
