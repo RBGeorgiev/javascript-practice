@@ -1,12 +1,6 @@
 import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
-import MAZE_ALGORITHMS from './algorithms-enum.js';
-
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-let createMazeBtn = document.getElementById("createMazeBtn");
-let algorithmSelect = document.getElementById('algorithmSelect');
-let timerNumberSpan = document.getElementById('timerNumberSpan');
+import { MAZE_ALGORITHMS, canvas, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
 
 canvas.width = 1600;
 canvas.height = 800;
