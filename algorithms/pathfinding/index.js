@@ -1,5 +1,5 @@
-import MazeBuilder from '../maze-builder/maze-builder.js';
-import { MAZE_ALGORITHMS } from '../maze-builder/constants.js';
+import MazeBuilder from '../maze-builder/src/maze-builder.js';
+import { MAZE_ALGORITHMS } from '../maze-builder/src/constants.js';
 
 // ___________________________________________________________________
 
