@@ -1,23 +1,24 @@
 import MazeBuilder from '../maze-builder/maze-builder.js';
-import MAZE_ALGORITHMS from '../maze-builder/algorithms-enum.js';
+import { MAZE_ALGORITHMS } from '../maze-builder/constants.js';
 
 // ___________________________________________________________________
 
-let animSpeedInput = document.getElementById('animSpeedInput');
-let animSpeedSpan = document.getElementById('animSpeedSpan');
-let clearPathBtn = document.getElementById('clearPathBtn');
-let clearWallsBtn = document.getElementById('clearWallsBtn');
-let pathfindingAlgorithmSelect = document.getElementById('pathfindingAlgorithmSelect');
-let runAlgorithmBtn = document.getElementById('runAlgorithmBtn');
-let createMazeBtn = document.getElementById('createMazeBtn');
-let mazeAlgorithmSelect = document.getElementById('mazeAlgorithmSelect');
-let timerTextSpan = document.getElementById('timerTextSpan');
-let timerNumberSpan = document.getElementById('timerNumberSpan');
+const el = (id) => document.getElementById(id),
+
+    canvas = el("canvas"),
+    ctx = canvas.getContext("2d"),
+    animSpeedInput = el('animSpeedInput'),
+    animSpeedSpan = el('animSpeedSpan'),
+    clearPathBtn = el('clearPathBtn'),
+    clearWallsBtn = el('clearWallsBtn'),
+    pathfindingAlgorithmSelect = el('pathfindingAlgorithmSelect'),
+    runAlgorithmBtn = el('runAlgorithmBtn'),
+    createMazeBtn = el('createMazeBtn'),
+    mazeAlgorithmSelect = el('mazeAlgorithmSelect'),
+    timerTextSpan = el('timerTextSpan'),
+    timerNumberSpan = el('timerNumberSpan');
 
 // ___________________________________________________________________
-
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
 
 canvas.oncontextmenu = () => false;
 
