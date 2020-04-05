@@ -1,10 +1,5 @@
 import { Node } from './nodes.js';
 
-export const MAZE_VIZ_TYPE = {
-    PATH: "#FFFFFF",
-    TRACEBACK: "#FF0000"
-}
-
 export class MazeBuilderVisualization {
     constructor(mazeBuilder, ctx) {
         this.gridSizeX = mazeBuilder.gridSizeX;

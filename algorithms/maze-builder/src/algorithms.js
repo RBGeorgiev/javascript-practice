@@ -1,5 +1,9 @@
 import { RecBacktrNode, KruskalNode } from './nodes.js';
-import { MAZE_VIZ_TYPE } from './maze-builder-viz.js';
+
+const MAZE_VIZ_TYPE = {
+    PATH: "#FFFFFF",
+    TRACEBACK: "#FF0000"
+}
 
 // Recursive Backtracking
 export class RecursiveBacktracking {
