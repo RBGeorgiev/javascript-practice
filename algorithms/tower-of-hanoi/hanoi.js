@@ -138,7 +138,9 @@ class Hanoi {
 }
 
 class HanoiVisualization {
-    constructor() {
+    constructor(options) {
+        this.hanoi = new Hanoi;
+        this.options = options;
         this.init();
     }
 
@@ -171,57 +173,57 @@ class HanoiVisualization {
         let pegsIds = [];
 
         for (let i = 0; i < this.pegsArr.length; i++) {
-            if (i === options.startingPeg || i === options.endingPeg) continue;
+            if (i === this.options.startingPeg || i === this.options.endingPeg) continue;
             pegsIds.push(this.pegsArr[i].id);
         }
 
-        pegsIds.unshift(options.startingPeg);
-        pegsIds.push(options.endingPeg);
+        pegsIds.unshift(this.options.startingPeg);
+        pegsIds.push(this.options.endingPeg);
 
         return pegsIds;
     }
 
     getHanoiSolution = () => {
-        let diskAmount = options.diskAmount;
+        let diskAmount = this.options.diskAmount;
         let pegs = this.getPegsIds();
 
-        switch (options.pegsAmount) {
+        switch (this.options.pegsAmount) {
             case 3:
-                hanoi.ThreePegs(diskAmount, ...pegs);
+                this.hanoi.ThreePegs(diskAmount, ...pegs);
                 break;
             case 4:
-                hanoi.FourPegs(diskAmount, ...pegs);
+                this.hanoi.FourPegs(diskAmount, ...pegs);
                 break;
             case 5:
-                hanoi.FivePegs(diskAmount, ...pegs);
+                this.hanoi.FivePegs(diskAmount, ...pegs);
                 break;
             case 6:
-                hanoi.SixPegs(diskAmount, ...pegs);
+                this.hanoi.SixPegs(diskAmount, ...pegs);
                 break;
             case 7:
-                hanoi.SevenPegs(diskAmount, ...pegs);
+                this.hanoi.SevenPegs(diskAmount, ...pegs);
                 break;
             case 8:
-                hanoi.EightPegs(diskAmount, ...pegs);
+                this.hanoi.EightPegs(diskAmount, ...pegs);
                 break;
             case 9:
-                hanoi.NinePegs(diskAmount, ...pegs);
+                this.hanoi.NinePegs(diskAmount, ...pegs);
                 break;
             case 10:
-                hanoi.TenPegs(diskAmount, ...pegs);
+                this.hanoi.TenPegs(diskAmount, ...pegs);
                 break;
             default:
                 alert("Error determining number of pegs");
                 throw "Error determining number of pegs";
         }
 
-        this.displayMovesInHtml(hanoi.movesArr);
+        this.displayMovesInHtml(this.hanoi.movesArr);
 
-        this.fillQueue(hanoi.movesArr);
+        this.fillQueue(this.hanoi.movesArr);
 
         this.setTotalMoves(this.queuedSteps[0].totalMoves);
 
-        hanoi.init();
+        this.hanoi.init();
     }
 
     startAnimating = () => this.setAnimating(true);
@@ -231,7 +233,7 @@ class HanoiVisualization {
         movesArr.forEach((move, idx) => {
             let moveNumber = idx + 1;
             let moveDiv = document.createElement("div");
-            moveDiv.innerHTML = `${moveNumber}) Move disk ${move.target} from ${options.getPegChar(move.from)} to ${options.getPegChar(move.to)}`;
+            moveDiv.innerHTML = `${moveNumber}) Move disk ${move.target} from ${this.options.getPegChar(move.from)} to ${this.options.getPegChar(move.to)}`;
             answer.appendChild(moveDiv);
         });
     }
@@ -246,16 +248,16 @@ class HanoiVisualization {
 
             ctx.font = `20px Arial`;
             ctx.fillStyle = "black";
-            let text = options.getPegChar(pegsPos[i].id);
+            let text = this.options.getPegChar(pegsPos[i].id);
             ctx.fillText(text, pegsPos[i].x2, pegsPos[i].y2 - 5);
         }
     }
 
     getDiskColor = (i) => {
-        let n = options.diskAmount;
-        let red = (options.redGradient) ? this.calculateDiskColor(options.redVal, n, i) : options.redVal;
-        let green = (options.greenGradient) ? this.calculateDiskColor(options.greenVal, n, i) : options.greenVal;
-        let blue = (options.blueGradient) ? this.calculateDiskColor(options.blueVal, n, i) : options.blueVal;
+        let n = this.options.diskAmount;
+        let red = (this.options.redGradient) ? this.calculateDiskColor(this.options.redVal, n, i) : this.options.redVal;
+        let green = (this.options.greenGradient) ? this.calculateDiskColor(this.options.greenVal, n, i) : this.options.greenVal;
+        let blue = (this.options.blueGradient) ? this.calculateDiskColor(this.options.blueVal, n, i) : options.blueVal;
         return `rgb(${red}, ${green}, ${blue})`;
     }
 
@@ -280,7 +282,7 @@ class HanoiVisualization {
 
     initPegs = () => {
         let pegsArr = [];
-        let pegsAmount = options.pegsAmount;
+        let pegsAmount = this.options.pegsAmount;
 
         let pegSpacing = canvas.width / (pegsAmount + 1);
         let lastPegPos = pegSpacing * (pegsAmount - 1);
@@ -304,10 +306,11 @@ class HanoiVisualization {
     }
 
     initDisks = (pegsArr) => {
-        let diskAmount = options.diskAmount;
+        let diskAmount = this.options.diskAmount;
+        let startingPeg = this.options.startingPeg;
 
         let height = 40;
-        let floor = pegsArr[options.startingPeg].y1 - height;
+        let floor = pegsArr[startingPeg].y1 - height;
 
         let pegSpacing = canvas.width / (pegsArr.length + 1);
         let biggestDisk = pegSpacing / 1.5;
@@ -320,8 +323,8 @@ class HanoiVisualization {
         for (let i = diskAmount; i > 0; i--) {
             let width = smallestDisk + (averageSizeChange * (i + 1));
 
-            let x = pegsArr[options.startingPeg].x1 - width / 2;
-            let y = floor - height * pegsArr[options.startingPeg].disks.length;
+            let x = pegsArr[startingPeg].x1 - width / 2;
+            let y = floor - height * pegsArr[startingPeg].disks.length;
 
             let diskObj = {
                 id: i,
@@ -332,7 +335,7 @@ class HanoiVisualization {
                 draw: true
             }
 
-            pegsArr[options.startingPeg].disks.push(diskObj);
+            pegsArr[startingPeg].disks.push(diskObj);
         }
     }
 
@@ -376,7 +379,7 @@ class HanoiVisualization {
                 {
                     oldPeg: this.pegsArr[from],
                     newPeg: this.pegsArr[to],
-                    moveDesc: `Move disk ${target} from ${options.getPegChar(from)} to ${options.getPegChar(to)}`,
+                    moveDesc: `Move disk ${target} from ${this.options.getPegChar(from)} to ${this.options.getPegChar(to)}`,
                     curMove: i + 1,
                     totalMoves: movesArr.length
                 }
@@ -491,7 +494,7 @@ class HanoiVisualization {
 
             let disk = moveData.oldPeg.disks.pop();
 
-            if (options.playFullAnim) {
+            if (this.options.playFullAnim) {
                 this.fillAnimationQueue(disk, moveData.newPeg);
             }
 
@@ -526,7 +529,7 @@ class HanoiVisualization {
         timeout += deltaTime;
 
         if (timeout > animSpeed) {
-            hanoiVis.executeQueuedStep();
+            this.executeQueuedStep();
             timeout = 0;
         }
     }
@@ -534,7 +537,7 @@ class HanoiVisualization {
     draw = (deltaTime, animSpeed) => {
         this.drawPegs(this.pegsArr);
 
-        if (this.animating && !options.paused) {
+        if (this.animating && !this.options.paused) {
             this.animateSolution(deltaTime, animSpeed);
         }
 
@@ -553,6 +556,8 @@ class Options {
     constructor() {
         this.initVariables();
         this.initEventListeners();
+
+        this.hanoiVis = new HanoiVisualization(this);
     }
 
     initVariables = () => {
@@ -580,7 +585,7 @@ class Options {
         diskAmountInput.oninput = (e) => {
             let num = this.clampNumber(e.target);
             this.diskAmount = diskAmountInput.value = num;
-            hanoiVis.init();
+            this.hanoiVis.init();
         }
 
         pegsAmountInput.onchange = (e) => {
@@ -589,19 +594,19 @@ class Options {
             this.populateTargetPegsInputs();
             this.startingPeg = +startingPegInput.value;
             this.endingPeg = +endingPegInput.value;
-            hanoiVis.init();
+            this.hanoiVis.init();
         }
 
         startingPegInput.onchange = (e) => {
             this.startingPeg = +e.target.value;
             this.populateTargetPegsInputs(this.startingPeg, this.endingPeg);
-            hanoiVis.init();
+            this.hanoiVis.init();
         }
 
         endingPegInput.onchange = (e) => {
             this.endingPeg = +e.target.value;
             this.populateTargetPegsInputs(this.startingPeg, this.endingPeg);
-            hanoiVis.init();
+            this.hanoiVis.init();
         }
         //#endregion - Disk and peg options listeners
 
@@ -619,8 +624,8 @@ class Options {
         }
 
         animateHanoiBtn.onclick = () => {
-            hanoiVis.init();
-            hanoiVis.startAnimating();
+            this.hanoiVis.init();
+            this.hanoiVis.startAnimating();
             pauseCheckbox.disabled = false;
         }
 
@@ -638,8 +643,8 @@ class Options {
             fullAnimationCheckbox.onchange();
         }
 
-        nextStepBtn.onclick = () => hanoiVis.executeQueuedStep();
-        prevStepBtn.onclick = () => hanoiVis.getPrevStep();
+        nextStepBtn.onclick = () => this.hanoiVis.executeQueuedStep();
+        prevStepBtn.onclick = () => this.hanoiVis.getPrevStep();
         //#endregion - Pause and step options listeners
 
         //#region - Color options listeners
@@ -699,8 +704,6 @@ class Options {
 
 
 const options = new Options;
-const hanoi = new Hanoi;
-const hanoiVis = new HanoiVisualization;
 
 let lastTime = timeout = 0, deltaTime;
 
@@ -710,7 +713,7 @@ function step(timestamp) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    hanoiVis.draw(deltaTime, options.animSpeed);
+    options.hanoiVis.draw(deltaTime, options.animSpeed);
 
     window.requestAnimationFrame(step);
 }
