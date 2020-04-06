@@ -142,6 +142,7 @@ class HanoiVisualization {
         this.hanoi = new Hanoi;
         this.options = options;
         this.init();
+        this.timeout = 0;
     }
 
     init = () => {
@@ -526,11 +527,11 @@ class HanoiVisualization {
     }
 
     animateSolution = (deltaTime, animSpeed) => {
-        timeout += deltaTime;
+        this.timeout += deltaTime;
 
-        if (timeout > animSpeed) {
+        if (this.timeout > animSpeed) {
             this.executeQueuedStep();
-            timeout = 0;
+            this.timeout = 0;
         }
     }
 
@@ -558,6 +559,8 @@ class Options {
         this.initEventListeners();
 
         this.hanoiVis = new HanoiVisualization(this);
+        this.lastTime = 0;
+        this.deltaTime;
     }
 
     initVariables = () => {
@@ -700,22 +703,21 @@ class Options {
         if (val > max) return max;
         return val;
     }
+
+    step = (timestamp) => {
+        this.deltaTime = timestamp - this.lastTime;
+        this.lastTime = timestamp;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        this.hanoiVis.draw(this.deltaTime, this.animSpeed);
+
+        window.requestAnimationFrame(this.step);
+    }
+
+    startAnimationFrame = () => window.requestAnimationFrame(this.step);
 }
 
 
 const options = new Options;
-
-let lastTime = timeout = 0, deltaTime;
-
-function step(timestamp) {
-    deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    options.hanoiVis.draw(deltaTime, options.animSpeed);
-
-    window.requestAnimationFrame(step);
-}
-
-window.requestAnimationFrame(step);
+options.startAnimationFrame();
