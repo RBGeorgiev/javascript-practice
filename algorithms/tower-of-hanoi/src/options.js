@@ -9,6 +9,8 @@ export default class Options {
         this.hanoiVis = new HanoiVisualization(this);
         this.lastTime = 0;
         this.deltaTime;
+
+        this.startAnimationFrame();
     }
 
     initVariables = () => {
