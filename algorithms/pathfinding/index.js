@@ -1,22 +1,7 @@
 import MazeBuilder from '../maze-builder/src/maze-builder.js';
 import { MAZE_ALGORITHMS } from '../maze-builder/src/constants.js';
-
-// ___________________________________________________________________
-
-const el = (id) => document.getElementById(id),
-
-    canvas = el("canvas"),
-    ctx = canvas.getContext("2d"),
-    animSpeedInput = el('animSpeedInput'),
-    animSpeedSpan = el('animSpeedSpan'),
-    clearPathBtn = el('clearPathBtn'),
-    clearWallsBtn = el('clearWallsBtn'),
-    pathfindingAlgorithmSelect = el('pathfindingAlgorithmSelect'),
-    runAlgorithmBtn = el('runAlgorithmBtn'),
-    createMazeBtn = el('createMazeBtn'),
-    mazeAlgorithmSelect = el('mazeAlgorithmSelect'),
-    timerTextSpan = el('timerTextSpan'),
-    timerNumberSpan = el('timerNumberSpan');
+import { NODE_COLORS, NODE_TYPES, ASTAR_TYPES, ASTAR_COLORS } from './enums.js';
+import { canvas, ctx, animSpeedInput, animSpeedSpan, clearPathBtn, clearWallsBtn, pathfindingAlgorithmSelect, runAlgorithmBtn, createMazeBtn, mazeAlgorithmSelect, timerTextSpan, timerNumberSpan } from './constants.js';
 
 // ___________________________________________________________________
 
@@ -24,43 +9,6 @@ canvas.oncontextmenu = () => false;
 
 canvas.width = 1600;
 canvas.height = 800;
-
-// #region eNums
-const NODE_COLORS = {
-    EMPTY: "#FFFFFF",
-    UNWALKABLE: "#000000",
-    SWAMP: "#CCC769",
-    START: "#00FF00",
-    END: "#FF0000"
-}
-Object.freeze(NODE_COLORS);
-
-const NODE_TYPES = {
-    EMPTY: "EMPTY",
-    UNWALKABLE: 'UNWALKABLE',
-    SWAMP: "SWAMP",
-    START: "START",
-    END: "END"
-}
-Object.freeze(NODE_TYPES);
-
-const ASTAR_TYPES = {
-    PATH: "PATH",
-    OPEN_LIST: "OPEN_LIST",
-    CLOSED_LIST: "CLOSED_LIST"
-}
-Object.freeze(ASTAR_TYPES);
-
-const ASTAR_COLORS = {
-    PATH: "#FFA500",
-    OPEN_LIST: "#00CDCD",
-    CLOSED_LIST: "#0000FF"
-    // PATH: "rgba(247, 153, 58, 0.82)",
-    // OPEN_LIST: "rgba(63, 191, 191, 0.42)",
-    // CLOSED_LIST: "rgba(63, 127, 191, 0.57)"
-}
-Object.freeze(ASTAR_COLORS);
-// #endregion eNums
 
 
 class Node {
