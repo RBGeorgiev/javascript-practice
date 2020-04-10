@@ -1,3 +1,5 @@
+import { AStar, Dijkstra } from './pf.js';
+
 export const NODE_COLORS = {
     EMPTY: "#FFFFFF",
     UNWALKABLE: "#000000",
@@ -29,3 +31,9 @@ export const ASTAR_COLORS = {
     CLOSED_LIST: "#0000FF"
 }
 Object.freeze(ASTAR_COLORS);
+
+export const PATHFINDING_ALGORITHMS = {
+    'AStar': AStar,
+    'Dijkstra': Dijkstra
+}
+Object.freeze(PATHFINDING_ALGORITHMS);

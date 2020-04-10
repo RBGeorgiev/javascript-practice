@@ -1,11 +1,24 @@
+import Grid from './grid.js'
+import { Node } from './nodes.js';
+import { NODE_TYPES, PATHFINDING_ALGORITHMS } from './enums.js';
+import { AStar } from './pf.js';
+import PathfindingVisualization from './pf-viz.js';
+import {
+    canvas,
+    animSpeedInput,
+    animSpeedSpan,
+    clearPathBtn,
+    clearWallsBtn,
+    pathfindingAlgorithmSelect,
+    runAlgorithmBtn,
+    createMazeBtn,
+    mazeAlgorithmSelect,
+    timerTextSpan,
+    timerNumberSpan
+} from './constants.js';
 import MazeBuilder from '../maze-builder/src/maze-builder.js';
 import { MAZE_ALGORITHMS } from '../maze-builder/src/constants.js';
-import { NODE_TYPES } from './enums.js';
-import { canvas, animSpeedInput, animSpeedSpan, clearPathBtn, clearWallsBtn, pathfindingAlgorithmSelect, runAlgorithmBtn, createMazeBtn, mazeAlgorithmSelect, timerTextSpan, timerNumberSpan } from './constants.js';
-import { Node } from './nodes.js';
-import Grid from './grid.js';
-import { AStar, Dijkstra } from './pf.js';
-import PathfindingVisualization from './pf-viz.js';
+
 // ___________________________________________________________________
 
 canvas.oncontextmenu = () => false;
@@ -13,12 +26,6 @@ canvas.oncontextmenu = () => false;
 canvas.width = 1600;
 canvas.height = 800;
 
-
-const PATHFINDING_ALGORITHMS = {
-    'AStar': AStar,
-    'Dijkstra': Dijkstra
-}
-Object.freeze(PATHFINDING_ALGORITHMS);
 
 const start = (gridWidth) => {
     grid = new Grid(gridWidth);
