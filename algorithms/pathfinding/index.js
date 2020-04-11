@@ -21,11 +21,6 @@ import { MAZE_ALGORITHMS } from '../maze-builder/src/constants.js';
 
 // ___________________________________________________________________
 
-canvas.oncontextmenu = () => false;
-
-canvas.width = 1600;
-canvas.height = 800;
-
 
 const start = (gridWidth) => {
     grid = new Grid(gridWidth);
