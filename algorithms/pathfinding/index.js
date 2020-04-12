@@ -22,241 +22,248 @@ import { MAZE_ALGORITHMS } from '../maze-builder/src/constants.js';
 // ___________________________________________________________________
 
 
-const start = (gridWidth) => {
-    grid = new Grid(gridWidth);
-    grid.initGrid(Node);
+class Main {
+    constructor(gridWidth = 50) {
+        this.grid = new Grid(gridWidth);
+        this.grid.initGrid(Node);
 
-    currentAlgorithm = new AStar(grid);
-    currentAlgorithm.setStartNode(grid.getNode(10, 8));
-    currentAlgorithm.setEndNode(grid.getNode(23, 8));
-    pathfindingViz = new PathfindingVisualization(grid);
-    mazeBuilder = new MazeBuilder(grid.gridSizeX, grid.gridSizeY, MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+        this.currentAlgorithm = new AStar(this.grid);
+        this.pathfindingViz = new PathfindingVisualization(this.grid);
+        this.mazeBuilder = new MazeBuilder(this.grid.gridSizeX, this.grid.gridSizeY, MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
 
-    grid.drawAllNodes();
-}
-
-let grid, currentAlgorithm, pathfindingViz, mazeBuilder;
-let gridWidth = 50;
-start(gridWidth);
-
-
-const changeAlgorithm = (algorithm) => {
-    pathfindingViz.stopAnimFrame();
-
-    let start = currentAlgorithm.startNode;
-    let end = currentAlgorithm.endNode;
-
-    currentAlgorithm = new algorithm(grid);
-
-    currentAlgorithm.setStartNode(grid.getNode(start.x, start.y));
-    currentAlgorithm.setEndNode(grid.getNode(end.x, end.y));
-
-    grid.drawAllNodes();
-}
-
-const displayTimeInHTML = (timeTaken, pathFoundBool) => {
-    let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
-    let displayStr = `${pathfindingAlgorithmSelect.value}: ${time}ms`;
-    timerTextSpan.innerText = (pathFoundBool) ? "Path found:" : "Path doesn't exist:";
-    timerNumberSpan.innerText = displayStr;
-    console.log(displayStr, `(${timeTaken})`);
-}
-
-const runCurrentAlgorithm = () => {
-    let timeStart = window.performance.now();
-    let pathFoundBool = currentAlgorithm.run();
-    let timeEnd = window.performance.now();
-
-    let timeTaken = timeEnd - timeStart;
-    displayTimeInHTML(timeTaken, pathFoundBool);
-
-    let stepsTaken = currentAlgorithm.getStepsTaken();
-    pathfindingViz.visualizationController(stepsTaken, currentAlgorithm.complete);
-}
-
-const addUnwalkable = (e) => {
-    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    if (node === null) return;
-    if (node.type === NODE_TYPES.EMPTY) {
-        node.setType(NODE_TYPES.UNWALKABLE);
-        grid.drawNode(node);
-
-        if (currentAlgorithm.complete === true) {
-            runCurrentAlgorithm();
-        }
+        this.init();
+        this.initEventListeners();
+        this.initOptions();
     }
-}
 
-const addEmpty = (e) => {
-    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    if (node === null) return;
-    if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
-        node.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(node);
+    init = () => {
+        this.currentAlgorithm.setStartNode(this.grid.getNode(10, 8));
+        this.currentAlgorithm.setEndNode(this.grid.getNode(23, 8));
 
-        if (currentAlgorithm.complete === true) {
-            runCurrentAlgorithm();
-        }
+        this.grid.drawAllNodes();
     }
-}
 
-const addSwamp = (e) => {
-    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    if (node === null) return;
-    if (node.type === NODE_TYPES.EMPTY) {
-        node.setType(NODE_TYPES.SWAMP);
-        grid.drawNode(node);
+    changeAlgorithm = (algorithm) => {
+        this.pathfindingViz.stopAnimFrame();
 
-        if (currentAlgorithm.complete === true) {
-            runCurrentAlgorithm();
-        }
+        let start = this.currentAlgorithm.startNode;
+        let end = this.currentAlgorithm.endNode;
+
+        this.currentAlgorithm = new algorithm(this.grid);
+
+        this.currentAlgorithm.setStartNode(this.grid.getNode(start.x, start.y));
+        this.currentAlgorithm.setEndNode(this.grid.getNode(end.x, end.y));
+
+        this.grid.drawAllNodes();
     }
-}
 
-const dragStart = (e) => {
-    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    let oldStart = currentAlgorithm.startNode;
-    if (node === null) return;
-    if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
-        oldStart.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(oldStart);
-
-        currentAlgorithm.setStartNode(node);
-        grid.drawNode(node);
-
-        if (currentAlgorithm.complete === true) {
-            oldStart.resetPathfindingValues();
-            runCurrentAlgorithm();
-        }
+    displayTimeInHTML = (timeTaken, pathFoundBool) => {
+        let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
+        let displayStr = `${pathfindingAlgorithmSelect.value}: ${time}ms`;
+        timerTextSpan.innerText = (pathFoundBool) ? "Path found:" : "Path doesn't exist:";
+        timerNumberSpan.innerText = displayStr;
+        console.log(displayStr, `(${timeTaken})`);
     }
-}
 
-const dragEnd = (e) => {
-    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    let oldEnd = currentAlgorithm.endNode;
-    if (node === null) return;
-    if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
-        oldEnd.setType(NODE_TYPES.EMPTY);
-        grid.drawNode(oldEnd);
+    runCurrentAlgorithm = () => {
+        let timeStart = window.performance.now();
+        let pathFoundBool = this.currentAlgorithm.run();
+        let timeEnd = window.performance.now();
 
-        currentAlgorithm.setEndNode(node);
-        grid.drawNode(node);
+        let timeTaken = timeEnd - timeStart;
+        this.displayTimeInHTML(timeTaken, pathFoundBool);
 
-        if (currentAlgorithm.complete === true) {
-            oldEnd.resetPathfindingValues();
-            runCurrentAlgorithm();
-        }
+        let stepsTaken = this.currentAlgorithm.getStepsTaken();
+        this.pathfindingViz.visualizationController(stepsTaken, this.currentAlgorithm.complete);
     }
-}
 
-const handleMouseDown = (e) => {
-    let node = grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
-    let listener;
+    addUnwalkable = (e) => {
+        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        if (node === null) return;
+        if (node.type === NODE_TYPES.EMPTY) {
+            node.setType(NODE_TYPES.UNWALKABLE);
+            this.grid.drawNode(node);
 
-    switch (node.type) {
-        case NODE_TYPES.EMPTY:
-            if (e.buttons === 1) {
-                listener = addUnwalkable;
-                addUnwalkable(e);
-                canvas.addEventListener('mousemove', addUnwalkable);
-            } else if (e.buttons === 2) {
-                listener = addSwamp;
-                addSwamp(e);
-                canvas.addEventListener('mousemove', addSwamp);
+            if (this.currentAlgorithm.complete === true) {
+                this.runCurrentAlgorithm();
             }
-            break;
-
-        case NODE_TYPES.START:
-            listener = dragStart;
-            canvas.addEventListener('mousemove', dragStart);
-            break;
-
-        case NODE_TYPES.END:
-            listener = dragEnd;
-            canvas.addEventListener('mousemove', dragEnd);
-            break;
-
-        default:
-            listener = addEmpty;
-            addEmpty(e);
-            canvas.addEventListener('mousemove', addEmpty);
+        }
     }
 
-    canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', listener));
-}
+    addEmpty = (e) => {
+        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        if (node === null) return;
+        if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
+            node.setType(NODE_TYPES.EMPTY);
+            this.grid.drawNode(node);
 
-canvas.addEventListener('mousedown', (e) => {
-    pathfindingViz.stopAnimFrame();
-    handleMouseDown(e)
-});
-
-document.addEventListener('keydown', (e) => {
-    // Space and Enter
-    if (e.keyCode === 13 || e.keyCode === 32) {
-        pathfindingViz.stopAnimFrame();
-        currentAlgorithm.setComplete(false);
-        runCurrentAlgorithm();
-        currentAlgorithm.setComplete(true);
+            if (this.currentAlgorithm.complete === true) {
+                this.runCurrentAlgorithm();
+            }
+        }
     }
-});
+
+    addSwamp = (e) => {
+        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        if (node === null) return;
+        if (node.type === NODE_TYPES.EMPTY) {
+            node.setType(NODE_TYPES.SWAMP);
+            this.grid.drawNode(node);
+
+            if (this.currentAlgorithm.complete === true) {
+                this.runCurrentAlgorithm();
+            }
+        }
+    }
+
+    dragStart = (e) => {
+        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let oldStart = this.currentAlgorithm.startNode;
+        if (node === null) return;
+        if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
+            oldStart.setType(NODE_TYPES.EMPTY);
+            this.grid.drawNode(oldStart);
+
+            this.currentAlgorithm.setStartNode(node);
+            this.grid.drawNode(node);
+
+            if (this.currentAlgorithm.complete === true) {
+                oldStart.resetPathfindingValues();
+                this.runCurrentAlgorithm();
+            }
+        }
+    }
+
+    dragEnd = (e) => {
+        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let oldEnd = this.currentAlgorithm.endNode;
+        if (node === null) return;
+        if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
+            oldEnd.setType(NODE_TYPES.EMPTY);
+            this.grid.drawNode(oldEnd);
+
+            this.currentAlgorithm.setEndNode(node);
+            this.grid.drawNode(node);
+
+            if (this.currentAlgorithm.complete === true) {
+                oldEnd.resetPathfindingValues();
+                this.runCurrentAlgorithm();
+            }
+        }
+    }
+
+    handleMouseDown = (e) => {
+        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let listener;
+
+        switch (node.type) {
+            case NODE_TYPES.EMPTY:
+                if (e.buttons === 1) {
+                    listener = this.addUnwalkable;
+                    this.addUnwalkable(e);
+                    canvas.addEventListener('mousemove', this.addUnwalkable);
+                } else if (e.buttons === 2) {
+                    listener = this.addSwamp;
+                    this.addSwamp(e);
+                    canvas.addEventListener('mousemove', this.addSwamp);
+                }
+                break;
+
+            case NODE_TYPES.START:
+                listener = this.dragStart;
+                canvas.addEventListener('mousemove', this.dragStart);
+                break;
+
+            case NODE_TYPES.END:
+                listener = this.dragEnd;
+                canvas.addEventListener('mousemove', this.dragEnd);
+                break;
+
+            default:
+                listener = this.addEmpty;
+                this.addEmpty(e);
+                canvas.addEventListener('mousemove', this.addEmpty);
+        }
+
+        canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', listener));
+    }
+
+    initEventListeners = () => {
+        canvas.addEventListener('mousedown', (e) => {
+            this.pathfindingViz.stopAnimFrame();
+            this.handleMouseDown(e)
+        });
+
+        document.addEventListener('keydown', (e) => {
+            // Space and Enter
+            if (e.keyCode === 13 || e.keyCode === 32) {
+                this.pathfindingViz.stopAnimFrame();
+                this.currentAlgorithm.setComplete(false);
+                this.runCurrentAlgorithm();
+                this.currentAlgorithm.setComplete(true);
+            }
+        });
+    }
 
 
-// ___________________________________________________
-// Options
+    initOptions = () => {
+        runAlgorithmBtn.onclick = () => {
+            runAlgorithmBtn.blur();
+            this.pathfindingViz.stopAnimFrame();
+            this.currentAlgorithm.setComplete(false);
+            this.runCurrentAlgorithm();
+            this.currentAlgorithm.setComplete(true);
+        }
 
-runAlgorithmBtn.onclick = () => {
-    runAlgorithmBtn.blur();
-    pathfindingViz.stopAnimFrame();
-    currentAlgorithm.setComplete(false);
-    runCurrentAlgorithm();
-    currentAlgorithm.setComplete(true);
+        pathfindingAlgorithmSelect.onchange = () => {
+            pathfindingAlgorithmSelect.blur();
+            timerTextSpan.innerText = "";
+            timerNumberSpan.innerText = "";
+            this.changeAlgorithm(PATHFINDING_ALGORITHMS[pathfindingAlgorithmSelect.value]);
+        }
+
+        mazeAlgorithmSelect.onchange = () => {
+            mazeAlgorithmSelect.blur();
+            this.mazeBuilder.setAlgorithm(MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+        }
+
+        animSpeedInput.oninput = (e) => {
+            animSpeedInput.blur();
+            let val = +e.target.value;
+            this.pathfindingViz.setAnimSpeed(val);
+            animSpeedSpan.innerHTML = val;
+        }
+
+        clearPathBtn.onclick = () => {
+            clearPathBtn.blur();
+            this.currentAlgorithm.reset();
+            this.currentAlgorithm.setComplete(false);
+        }
+
+        clearWallsBtn.onclick = () => {
+            clearWallsBtn.blur();
+            let start = this.currentAlgorithm.startNode;
+            let end = this.currentAlgorithm.endNode;
+
+            this.grid.initGrid(this.currentAlgorithm.algorithmNode);
+
+            this.currentAlgorithm.setStartNode(this.grid.getNode(start.x, start.y));
+            this.currentAlgorithm.setEndNode(this.grid.getNode(end.x, end.y));
+            this.currentAlgorithm.setComplete(false);
+
+            this.grid.drawAllNodes();
+        }
+
+        createMazeBtn.onclick = () => {
+            createMazeBtn.blur();
+            let maze = this.mazeBuilder.run();
+            this.grid.transferMazeToGrid(maze, this.currentAlgorithm.algorithmNode);
+            this.currentAlgorithm.placeStartAndEndInMaze();
+            this.currentAlgorithm.setComplete(false);
+
+            this.grid.drawAllNodes();
+        }
+    }
 }
 
-pathfindingAlgorithmSelect.onchange = () => {
-    pathfindingAlgorithmSelect.blur();
-    timerTextSpan.innerText = "";
-    timerNumberSpan.innerText = "";
-    changeAlgorithm(PATHFINDING_ALGORITHMS[pathfindingAlgorithmSelect.value]);
-}
-
-mazeAlgorithmSelect.onchange = () => {
-    mazeAlgorithmSelect.blur();
-    mazeBuilder.setAlgorithm(MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
-}
-
-animSpeedInput.oninput = (e) => {
-    animSpeedInput.blur();
-    let val = +e.target.value;
-    pathfindingViz.setAnimSpeed(val);
-    animSpeedSpan.innerHTML = val;
-}
-
-clearPathBtn.onclick = () => {
-    clearPathBtn.blur();
-    currentAlgorithm.reset();
-    currentAlgorithm.setComplete(false);
-}
-
-clearWallsBtn.onclick = () => {
-    clearWallsBtn.blur();
-    let start = currentAlgorithm.startNode;
-    let end = currentAlgorithm.endNode;
-
-    grid.initGrid(currentAlgorithm.algorithmNode);
-
-    currentAlgorithm.setStartNode(grid.getNode(start.x, start.y));
-    currentAlgorithm.setEndNode(grid.getNode(end.x, end.y));
-    currentAlgorithm.setComplete(false);
-
-    grid.drawAllNodes();
-}
-
-createMazeBtn.onclick = () => {
-    createMazeBtn.blur();
-    let maze = mazeBuilder.run();
-    grid.transferMazeToGrid(maze, currentAlgorithm.algorithmNode);
-    currentAlgorithm.placeStartAndEndInMaze();
-    currentAlgorithm.setComplete(false);
-
-    grid.drawAllNodes();
-}
+new Main;
