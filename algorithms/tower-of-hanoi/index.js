@@ -1,6 +1,6 @@
-import Options from './src/options.js';
+import Main from './src/main.js';
 
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
-new Options(ctx);
+new Main(ctx);

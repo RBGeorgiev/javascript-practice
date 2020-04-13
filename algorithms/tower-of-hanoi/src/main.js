@@ -1,6 +1,6 @@
 import HanoiVisualization from './hanoi-viz.js';
 
-export default class Options {
+export default class Main {
     constructor(ctx) {
         this.initVariables();
         this.initEventListeners();

@@ -2,7 +2,7 @@ import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
 import { MAZE_ALGORITHMS, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
 
-export default class Options {
+export default class Main {
     constructor(sizeX = 50, sizeY) {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);

@@ -1,3 +1,3 @@
-import Options from './src/options.js'
+import Main from './src/main.js'
 
-new Options;
+new Main;
