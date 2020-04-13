@@ -16,8 +16,8 @@ import {
     timerTextSpan,
     timerNumberSpan
 } from './constants.js';
-import MazeBuilder from '../maze-builder/src/maze-builder.js';
-import { MAZE_ALGORITHMS } from '../maze-builder/src/constants.js';
+import MazeBuilder from '../../maze-builder/src/maze-builder.js';
+import { MAZE_ALGORITHMS } from '../../maze-builder/src/constants.js';
 
 export default class Main {
     constructor(gridWidth = 50) {
