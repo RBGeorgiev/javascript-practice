@@ -12,7 +12,7 @@ Object.freeze(GRID_NODE_TYPES);
 export const GRID_NODE_COLORS = {
     EMPTY: "#FFFFFF",
     UNWALKABLE: "#000000",
-    SWAMP: "#CCC769",
+    SWAMP: "#778899",
     START: "#00FF00",
     END: "#FF0000"
 }

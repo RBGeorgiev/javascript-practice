@@ -96,7 +96,6 @@ export default class PathfindingVisualization {
         ctx.fillStyle = color;
 
         ctx.lineWidth = 1;
-        ctx.strokeStyle = color;
 
         if (color === PF_NODE_COLORS.CLOSED_LIST || color === PF_NODE_COLORS.PATH) {
             ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
