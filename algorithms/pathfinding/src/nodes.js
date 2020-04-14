@@ -1,7 +1,7 @@
-import { NODE_TYPES } from './enums.js';
+import { GRID_NODE_TYPES } from './enums.js';
 
 export class Node {
-    constructor(x, y, type = NODE_TYPES.EMPTY) {
+    constructor(x, y, type = GRID_NODE_TYPES.EMPTY) {
         this.x = x;
         this.y = y;
         this.parent = null;
@@ -20,10 +20,10 @@ export class Node {
 
     setType = (type) => {
         this.type = type;
-        this.moveCost = (type === NODE_TYPES.SWAMP) ? 5 : 0;
-        this.unwalkable = !!(type === NODE_TYPES.UNWALKABLE);
-        this.isEnd = !!(type === NODE_TYPES.END);
-        this.isStart = !!(type === NODE_TYPES.START);
+        this.moveCost = (type === GRID_NODE_TYPES.SWAMP) ? 5 : 0;
+        this.unwalkable = !!(type === GRID_NODE_TYPES.UNWALKABLE);
+        this.isEnd = !!(type === GRID_NODE_TYPES.END);
+        this.isStart = !!(type === GRID_NODE_TYPES.START);
     }
 }
 

@@ -1,4 +1,4 @@
-import { NODE_COLORS, NODE_TYPES } from './enums.js';
+import { GRID_NODE_TYPES, GRID_NODE_COLORS } from './enums.js';
 import { canvas, ctx } from './constants.js';
 
 export default class Grid {
@@ -61,7 +61,7 @@ export default class Grid {
 
     getNode = (x, y) => this.grid[x][y];
 
-    getNodeColor = (node) => NODE_COLORS[node.type];
+    getNodeColor = (node) => GRID_NODE_COLORS[node.type];
 
     getNodeFromCoordinates = (x, y) => {
         let gridX = Math.floor(x / this.nodeSize);
@@ -98,7 +98,7 @@ export default class Grid {
     transferMazeToGrid = (maze, pathfindingNode) => {
         for (let x = 0; x < this.gridSizeX; x++) {
             for (let y = 0; y < this.gridSizeY; y++) {
-                let type = (maze[x][y].isMazePath) ? NODE_TYPES.EMPTY : NODE_TYPES.UNWALKABLE;
+                let type = (maze[x][y].isMazePath) ? GRID_NODE_TYPES.EMPTY : GRID_NODE_TYPES.UNWALKABLE;
                 this.grid[x][y] = new pathfindingNode(x, y, type);
             }
         }

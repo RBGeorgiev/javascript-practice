@@ -1,6 +1,6 @@
 import MinHeap from './min-heap.js';
 import { AStarNode, DijkstraNode } from './nodes.js';
-import { NODE_TYPES, ASTAR_TYPES } from './enums.js';
+import { GRID_NODE_TYPES, PF_NODE_TYPES } from './enums.js';
 
 export class AStar {
     constructor(gridClass) {
@@ -18,12 +18,12 @@ export class AStar {
 
     addToClosedList = (node) => {
         node.setClosed(true);
-        this.addToStepsTaken(node, ASTAR_TYPES.CLOSED_LIST);
+        this.addToStepsTaken(node, PF_NODE_TYPES.CLOSED_LIST);
     }
 
     addToOpenList = (node) => {
         this.openList.add(node);
-        this.addToStepsTaken(node, ASTAR_TYPES.OPEN_LIST);
+        this.addToStepsTaken(node, PF_NODE_TYPES.OPEN_LIST);
     }
 
     addToStepsTaken = (node, type) => {
@@ -100,9 +100,9 @@ export class AStar {
         while (true) {
             path.unshift(curNode);
 
-            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
+            this.addToStepsTaken(curNode, PF_NODE_TYPES.PATH);
 
-            if (curNode.type === NODE_TYPES.START) {
+            if (curNode.type === GRID_NODE_TYPES.START) {
                 return path;
             }
 
@@ -124,12 +124,12 @@ export class AStar {
         let [endX, endY] = [this.endNode.x, this.endNode.y];
 
         let newStartNode = this.gridClass.getNode(startX, startY);
-        if (newStartNode.type === NODE_TYPES.EMPTY) {
+        if (newStartNode.type === GRID_NODE_TYPES.EMPTY) {
             this.setStartNode(newStartNode);
         } else {
             let neighbors = this.gridClass.getNeighbors(newStartNode);
             for (let adj of neighbors) {
-                if (adj.type === NODE_TYPES.EMPTY) {
+                if (adj.type === GRID_NODE_TYPES.EMPTY) {
                     this.setStartNode(adj);
                     break;
                 }
@@ -137,12 +137,12 @@ export class AStar {
         }
 
         let newEndNode = this.gridClass.getNode(endX, endY);
-        if (newEndNode.type === NODE_TYPES.EMPTY) {
+        if (newEndNode.type === GRID_NODE_TYPES.EMPTY) {
             this.setEndNode(newEndNode);
         } else {
             let neighbors = this.gridClass.getNeighbors(newEndNode);
             for (let adj of neighbors) {
-                if (adj.type === NODE_TYPES.EMPTY) {
+                if (adj.type === GRID_NODE_TYPES.EMPTY) {
                     this.setEndNode(adj);
                     break;
                 }
@@ -180,12 +180,12 @@ export class AStar {
     setComplete = (bool) => this.complete = bool;
 
     setEndNode = (node) => {
-        node.setType(NODE_TYPES.END);
+        node.setType(GRID_NODE_TYPES.END);
         this.endNode = node;
     }
 
     setStartNode = (node) => {
-        node.setType(NODE_TYPES.START);
+        node.setType(GRID_NODE_TYPES.START);
         this.startNode = node;
     }
 }
@@ -246,12 +246,12 @@ export class Dijkstra {
                     adjNode.setDist(newDist);
                     adjNode.setParent(curNode);
                     this.unvisitedList.update(adjNode.heapIdx);
-                    this.addToStepsTaken(adjNode, ASTAR_TYPES.OPEN_LIST);
+                    this.addToStepsTaken(adjNode, PF_NODE_TYPES.OPEN_LIST);
                 }
             }
 
             curNode.setVisited(true);
-            this.addToStepsTaken(curNode, ASTAR_TYPES.CLOSED_LIST);
+            this.addToStepsTaken(curNode, PF_NODE_TYPES.CLOSED_LIST);
             if (curNode.isEnd) {
                 this.getPath(curNode);
                 return true;
@@ -267,9 +267,9 @@ export class Dijkstra {
         while (true) {
             path.unshift(curNode);
 
-            this.addToStepsTaken(curNode, ASTAR_TYPES.PATH);
+            this.addToStepsTaken(curNode, PF_NODE_TYPES.PATH);
 
-            if (curNode.type === NODE_TYPES.START) {
+            if (curNode.type === GRID_NODE_TYPES.START) {
                 return path;
             }
 
@@ -291,12 +291,12 @@ export class Dijkstra {
         let [endX, endY] = [this.endNode.x, this.endNode.y];
 
         let newStartNode = this.gridClass.getNode(startX, startY);
-        if (newStartNode.type === NODE_TYPES.EMPTY) {
+        if (newStartNode.type === GRID_NODE_TYPES.EMPTY) {
             this.setStartNode(newStartNode);
         } else {
             let neighbors = this.gridClass.getNeighbors(newStartNode);
             for (let adj of neighbors) {
-                if (adj.type === NODE_TYPES.EMPTY) {
+                if (adj.type === GRID_NODE_TYPES.EMPTY) {
                     this.setStartNode(adj);
                     break;
                 }
@@ -304,12 +304,12 @@ export class Dijkstra {
         }
 
         let newEndNode = this.gridClass.getNode(endX, endY);
-        if (newEndNode.type === NODE_TYPES.EMPTY) {
+        if (newEndNode.type === GRID_NODE_TYPES.EMPTY) {
             this.setEndNode(newEndNode);
         } else {
             let neighbors = this.gridClass.getNeighbors(newEndNode);
             for (let adj of neighbors) {
-                if (adj.type === NODE_TYPES.EMPTY) {
+                if (adj.type === GRID_NODE_TYPES.EMPTY) {
                     this.setEndNode(adj);
                     break;
                 }
@@ -348,12 +348,12 @@ export class Dijkstra {
     setComplete = (bool) => this.complete = bool;
 
     setEndNode = (node) => {
-        node.setType(NODE_TYPES.END);
+        node.setType(GRID_NODE_TYPES.END);
         this.endNode = node;
     }
 
     setStartNode = (node) => {
-        node.setType(NODE_TYPES.START);
+        node.setType(GRID_NODE_TYPES.START);
         node.setDist(0);
         this.startNode = node;
     }

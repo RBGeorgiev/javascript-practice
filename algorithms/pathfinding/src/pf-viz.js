@@ -1,4 +1,4 @@
-import { ASTAR_TYPES, ASTAR_COLORS } from './enums.js';
+import { PF_NODE_TYPES, PF_NODE_COLORS } from './enums.js';
 import { ctx, animSpeedInput } from './constants.js';
 
 export default class PathfindingVisualization {
@@ -57,13 +57,13 @@ export default class PathfindingVisualization {
         let curNode = stepsTaken[idx].node;
         let curType = stepsTaken[idx].type;
 
-        if (curType === ASTAR_TYPES.PATH) {
+        if (curType === PF_NODE_TYPES.PATH) {
             let nextNode = stepsTaken[idx + 1].node;
             this.drawPath(curNode, nextNode);
-            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
+            this.drawPathfindingNode(curNode, PF_NODE_COLORS[curType]);
         }
         else {
-            this.drawPathfindingNode(curNode, ASTAR_COLORS[curType]);
+            this.drawPathfindingNode(curNode, PF_NODE_COLORS[curType]);
         }
     }
 
@@ -76,7 +76,7 @@ export default class PathfindingVisualization {
         let bX = size * nodeB.x + size / 2;
         let bY = size * nodeB.y + size / 2;
 
-        ctx.strokeStyle = ASTAR_COLORS.PATH;
+        ctx.strokeStyle = PF_NODE_COLORS.PATH;
         ctx.lineWidth = 5;
 
         ctx.beginPath();
@@ -98,7 +98,7 @@ export default class PathfindingVisualization {
         ctx.lineWidth = 1;
         ctx.strokeStyle = color;
 
-        if (color === ASTAR_COLORS.CLOSED_LIST || color === ASTAR_COLORS.PATH) {
+        if (color === PF_NODE_COLORS.CLOSED_LIST || color === PF_NODE_COLORS.PATH) {
             ctx.arc(xPos + size / 2, yPos + size / 2, size / 3, 0, 2 * Math.PI);
         } else {
             ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);

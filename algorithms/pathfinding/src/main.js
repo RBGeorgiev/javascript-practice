@@ -1,6 +1,6 @@
 import Grid from './grid.js'
 import { Node } from './nodes.js';
-import { NODE_TYPES, PATHFINDING_ALGORITHMS } from './enums.js';
+import { GRID_NODE_TYPES, PATHFINDING_ALGORITHMS } from './enums.js';
 import { AStar } from './pf.js';
 import PathfindingVisualization from './pf-viz.js';
 import {
@@ -77,8 +77,8 @@ export default class Main {
     addUnwalkable = (e) => {
         let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
-        if (node.type === NODE_TYPES.EMPTY) {
-            node.setType(NODE_TYPES.UNWALKABLE);
+        if (node.type === GRID_NODE_TYPES.EMPTY) {
+            node.setType(GRID_NODE_TYPES.UNWALKABLE);
             this.grid.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
@@ -90,8 +90,8 @@ export default class Main {
     addEmpty = (e) => {
         let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
-        if (node.type === NODE_TYPES.UNWALKABLE || node.type === NODE_TYPES.SWAMP) {
-            node.setType(NODE_TYPES.EMPTY);
+        if (node.type === GRID_NODE_TYPES.UNWALKABLE || node.type === GRID_NODE_TYPES.SWAMP) {
+            node.setType(GRID_NODE_TYPES.EMPTY);
             this.grid.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
@@ -103,8 +103,8 @@ export default class Main {
     addSwamp = (e) => {
         let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
-        if (node.type === NODE_TYPES.EMPTY) {
-            node.setType(NODE_TYPES.SWAMP);
+        if (node.type === GRID_NODE_TYPES.EMPTY) {
+            node.setType(GRID_NODE_TYPES.SWAMP);
             this.grid.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
@@ -117,8 +117,8 @@ export default class Main {
         let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
         let oldStart = this.currentAlgorithm.startNode;
         if (node === null) return;
-        if (node.type === NODE_TYPES.EMPTY && oldStart !== node) {
-            oldStart.setType(NODE_TYPES.EMPTY);
+        if (node.type === GRID_NODE_TYPES.EMPTY && oldStart !== node) {
+            oldStart.setType(GRID_NODE_TYPES.EMPTY);
             this.grid.drawNode(oldStart);
 
             this.currentAlgorithm.setStartNode(node);
@@ -135,8 +135,8 @@ export default class Main {
         let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
         let oldEnd = this.currentAlgorithm.endNode;
         if (node === null) return;
-        if (node.type === NODE_TYPES.EMPTY && oldEnd !== node) {
-            oldEnd.setType(NODE_TYPES.EMPTY);
+        if (node.type === GRID_NODE_TYPES.EMPTY && oldEnd !== node) {
+            oldEnd.setType(GRID_NODE_TYPES.EMPTY);
             this.grid.drawNode(oldEnd);
 
             this.currentAlgorithm.setEndNode(node);
@@ -154,7 +154,7 @@ export default class Main {
         let listener;
 
         switch (node.type) {
-            case NODE_TYPES.EMPTY:
+            case GRID_NODE_TYPES.EMPTY:
                 if (e.buttons === 1) {
                     listener = this.addUnwalkable;
                     this.addUnwalkable(e);
@@ -166,12 +166,12 @@ export default class Main {
                 }
                 break;
 
-            case NODE_TYPES.START:
+            case GRID_NODE_TYPES.START:
                 listener = this.dragStart;
                 canvas.addEventListener('mousemove', this.dragStart);
                 break;
 
-            case NODE_TYPES.END:
+            case GRID_NODE_TYPES.END:
                 listener = this.dragEnd;
                 canvas.addEventListener('mousemove', this.dragEnd);
                 break;
