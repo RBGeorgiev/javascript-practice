@@ -62,7 +62,7 @@ export class RecursiveBacktracking {
 
     getStepsTaken = () => this.stepsTaken;
 
-    generateNewMaze = () => {
+    generateMaze = () => {
         let cellsChecked = 0;
         let numOfCells = this.numOfCells;
 
@@ -124,7 +124,7 @@ export class RecursiveBacktracking {
     run = () => {
         this.resetStepsTaken();
         this.initGrid();
-        return this.generateNewMaze();
+        return this.generateMaze();
     }
 
     setMazePathNode = (cur, next) => {
@@ -175,7 +175,7 @@ export class Kruskal {
 
     getStepsTaken = () => this.stepsTaken;
 
-    generateNewMaze = (edges) => {
+    generateMaze = (edges) => {
         let len = edges.length;
         let DX = { "N": 0, "W": -1 };
         let DY = { "N": -1, "W": 0 };
@@ -226,7 +226,7 @@ export class Kruskal {
         let cellsArr = this.init();
         let edges = this.getEdges(cellsArr);
         let shuffledEdges = this.shuffleArray(edges);
-        return this.generateNewMaze(shuffledEdges);
+        return this.generateMaze(shuffledEdges);
     }
 
     shuffleArray(arr) {
@@ -242,4 +242,35 @@ export class Kruskal {
 
         return arr;
     }
+}
+
+export class Euler {
+    constructor(gridSizeX, gridSizeY) {
+        this.gridSizeX = gridSizeX;
+        this.gridSizeY = gridSizeY;
+        this.grid = [];
+        this.stepsTaken = [];
+
+        this.cellSize = 2;
+    }
+
+    addToStepsTaken = (node, type) => {
+        let step = {
+            node: node,
+            type: type
+        };
+        this.stepsTaken.push(step);
+    }
+
+    getNode = (x, y) => this.grid[x][y];
+
+    getStepsTaken = () => this.stepsTaken;
+
+    generateMaze = () => { }
+
+    init = () => { }
+
+    resetStepsTaken = () => this.stepsTaken = [];
+
+    run = () => { }
 }
