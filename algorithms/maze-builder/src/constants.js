@@ -1,4 +1,4 @@
-import { RecursiveBacktracking, Kruskal } from './algorithms.js';
+import { RecursiveBacktracking, Kruskal, Eller } from './algorithms.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -10,6 +10,7 @@ export const timerNumberSpan = el('timerNumberSpan');
 
 export const MAZE_ALGORITHMS = {
     'RecursiveBacktracking': RecursiveBacktracking,
-    'Kruskal': Kruskal
+    'Kruskal': Kruskal,
+    'Eller': Eller
 }
 Object.freeze(MAZE_ALGORITHMS);

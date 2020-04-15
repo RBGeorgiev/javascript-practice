@@ -1,4 +1,4 @@
-import { RecBacktrNode, KruskalNode } from './nodes.js';
+import { RecBacktrNode, KruskalNode, EllerNode } from './nodes.js';
 
 const MAZE_VIZ_TYPE = {
     PATH: "#FFFFFF",
@@ -110,7 +110,7 @@ export class RecursiveBacktracking {
         return this.grid;
     }
 
-    initGrid = () => {
+    init = () => {
         for (let x = 0; x < this.gridSizeX; x++) {
             this.grid[x] = [];
             for (let y = 0; y < this.gridSizeY; y++) {
@@ -123,7 +123,7 @@ export class RecursiveBacktracking {
 
     run = () => {
         this.resetStepsTaken();
-        this.initGrid();
+        this.init();
         return this.generateMaze();
     }
 
@@ -244,7 +244,7 @@ export class Kruskal {
     }
 }
 
-export class Euler {
+export class Eller {
     constructor(gridSizeX, gridSizeY) {
         this.gridSizeX = gridSizeX;
         this.gridSizeY = gridSizeY;
@@ -252,6 +252,20 @@ export class Euler {
         this.stepsTaken = [];
 
         this.cellSize = 2;
+    }
+
+    addStep = (node1, node2) => {
+        let dx = (node2.x - node1.x) / this.cellSize;
+        let dy = (node2.y - node1.y) / this.cellSize;
+        let edgeNode = this.getNode(node1.x + dx, node1.y + dy);
+
+        node1.setIsMazePath(true);
+        edgeNode.setIsMazePath(true);
+        node2.setIsMazePath(true);
+
+        this.addToStepsTaken(node1, MAZE_VIZ_TYPE.PATH);
+        this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
+        this.addToStepsTaken(node2, MAZE_VIZ_TYPE.PATH);
     }
 
     addToStepsTaken = (node, type) => {
@@ -266,11 +280,81 @@ export class Euler {
 
     getStepsTaken = () => this.stepsTaken;
 
-    generateMaze = () => { }
+    generateMaze = () => {
+        let sizeX = this.gridSizeX;
+        let sizeY = this.gridSizeY;
+        let cellSize = this.cellSize;
 
-    init = () => { }
+        let lastRow = false;
+
+        for (let y = 0; y < sizeY; y += cellSize) {
+            let hasAtLeastOneVerticalConnection = false;
+            let nextRowTest = this.getNode(0, y + cellSize);
+            if (nextRowTest === undefined) lastRow = true;
+
+            for (let x = 0; x < sizeX; x += cellSize) {
+                let nodeA = this.getNode(x, y);
+                let nodeB = (x + cellSize >= sizeX) ? undefined : this.getNode(x + cellSize, y);
+
+                if (lastRow) {
+                    if (nodeB && nodeA.getRoot() !== nodeB.getRoot()) {
+                        nodeB.connect(nodeA);
+                        this.addStep(nodeA, nodeB);
+                    }
+                    continue;
+                }
+
+                let nodeC = this.getNode(x, y + cellSize);
+
+                if (nodeB && nodeA.getRoot() !== nodeB.getRoot()) {
+                    if (this.randBool()) {
+                        nodeB.connect(nodeA);
+                        this.addStep(nodeA, nodeB);
+                        if (this.randBool()) {
+                            nodeC.connect(nodeA);
+                            hasAtLeastOneVerticalConnection = true;
+                            this.addStep(nodeA, nodeC);
+                        }
+                    } else {
+                        if (hasAtLeastOneVerticalConnection) {
+                            if (this.randBool()) {
+                                nodeC.connect(nodeA);
+                                this.addStep(nodeA, nodeC);
+                            }
+                        } else {
+                            nodeC.connect(nodeA);
+                            this.addStep(nodeA, nodeC);
+                        }
+                        hasAtLeastOneVerticalConnection = false;
+                    }
+                } else {
+                    if (this.randBool()) {
+                        nodeC.connect(nodeA);
+                        this.addStep(nodeA, nodeC);
+                    }
+                }
+            }
+        }
+
+        return this.grid;
+    }
+
+    init = () => {
+        for (let x = 0; x < this.gridSizeX; x++) {
+            this.grid[x] = [];
+            for (let y = 0; y < this.gridSizeY; y++) {
+                this.grid[x][y] = new EllerNode(x, y);
+            }
+        }
+    }
+
+    randBool = () => !!(Math.random() > 0.5);
 
     resetStepsTaken = () => this.stepsTaken = [];
 
-    run = () => { }
+    run = () => {
+        this.resetStepsTaken();
+        this.init();
+        return this.generateMaze();
+    }
 }
