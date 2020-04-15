@@ -328,7 +328,12 @@ export class Eller {
                         hasAtLeastOneVerticalConnection = false;
                     }
                 } else {
-                    if (this.randBool()) {
+                    if (hasAtLeastOneVerticalConnection) {
+                        if (this.randBool()) {
+                            nodeC.connect(nodeA);
+                            this.addStep(nodeA, nodeC);
+                        }
+                    } else {
                         nodeC.connect(nodeA);
                         this.addStep(nodeA, nodeC);
                     }
