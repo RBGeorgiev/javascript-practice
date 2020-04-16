@@ -328,14 +328,15 @@ export class Eller {
                         hasAtLeastOneVerticalConnection = false;
                     }
                 } else {
-                    if (hasAtLeastOneVerticalConnection) {
+                    if (nodeA.getRoot() === nodeA) {
+                        nodeC.connect(nodeA);
+                        this.addStep(nodeA, nodeC);
+
+                    } else {
                         if (this.randBool()) {
                             nodeC.connect(nodeA);
                             this.addStep(nodeA, nodeC);
                         }
-                    } else {
-                        nodeC.connect(nodeA);
-                        this.addStep(nodeA, nodeC);
                     }
                 }
             }
