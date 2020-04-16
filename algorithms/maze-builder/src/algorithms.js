@@ -288,7 +288,6 @@ export class Eller {
         let lastRow = false;
 
         for (let y = 0; y < sizeY; y += cellSize) {
-            let hasAtLeastOneVerticalConnection = false;
             let nextRowTest = this.getNode(0, y + cellSize);
             if (nextRowTest === undefined) lastRow = true;
 
@@ -310,33 +309,16 @@ export class Eller {
                     if (this.randBool()) {
                         nodeB.connect(nodeA);
                         this.addStep(nodeA, nodeB);
-                        if (this.randBool()) {
-                            nodeC.connect(nodeA);
-                            hasAtLeastOneVerticalConnection = true;
-                            this.addStep(nodeA, nodeC);
-                        }
-                    } else {
-                        if (hasAtLeastOneVerticalConnection) {
-                            if (this.randBool()) {
-                                nodeC.connect(nodeA);
-                                this.addStep(nodeA, nodeC);
-                            }
-                        } else {
-                            nodeC.connect(nodeA);
-                            this.addStep(nodeA, nodeC);
-                        }
-                        hasAtLeastOneVerticalConnection = false;
                     }
+                }
+
+                if (nodeA.getRoot() === nodeA) {
+                    nodeC.connect(nodeA);
+                    this.addStep(nodeA, nodeC);
                 } else {
-                    if (nodeA.getRoot() === nodeA) {
+                    if (this.randBool()) {
                         nodeC.connect(nodeA);
                         this.addStep(nodeA, nodeC);
-
-                    } else {
-                        if (this.randBool()) {
-                            nodeC.connect(nodeA);
-                            this.addStep(nodeA, nodeC);
-                        }
                     }
                 }
             }
