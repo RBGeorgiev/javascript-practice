@@ -22,7 +22,7 @@ export class MazeBuilderVisualization {
             deltaTime = timestamp - start;
             start = timestamp;
 
-            if (i >= len - 1) return;
+            if (i > len - 1) return;
 
             this.visualizeStep(stepsTaken[i]);
 
