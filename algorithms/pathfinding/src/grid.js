@@ -2,7 +2,7 @@ import { GRID_NODE_TYPES, GRID_NODE_COLORS } from './enums.js';
 import { canvas, ctx } from './constants.js';
 
 export default class Grid {
-    constructor(sizeX = 50, sizeY) {
+    constructor(sizeX, sizeY) {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
         this.nodeSize = canvas.width / this.gridSizeX;

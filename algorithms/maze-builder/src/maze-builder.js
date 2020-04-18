@@ -1,5 +1,5 @@
 export default class MazeBuilder {
-    constructor(sizeX = 50, sizeY, algorithm) {
+    constructor(sizeX, sizeY, algorithm) {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY;
         this.currentBuilder = this.setAlgorithm(algorithm);
