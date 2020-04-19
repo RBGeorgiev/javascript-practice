@@ -31,7 +31,7 @@ export default class HexGrid {
         }
     }
 
-    drawHexNode = (node) => {
+    drawHexNode = (node, color = 'white') => {
         let x = node.vertices[0][0];
         let y = node.vertices[0][1];
 
@@ -46,7 +46,8 @@ export default class HexGrid {
 
         ctx.closePath();
 
-        ctx.fillStyle = this.getNodeColor(node);
+        // ctx.fillStyle = this.getNodeColor(node);
+        ctx.fillStyle = color;
         ctx.lineWidth = 1;
         ctx.strokeStyle = "darkgray";
 
@@ -125,7 +126,7 @@ export default class HexGrid {
                 let h = Math.sqrt(3) * adjustedSize;
                 let posX = (w * 3 / 4) * x
                 let posY = h * y;
-                let offset = (x % 2 === 1) ? h / 2 : 0;
+                let offset = (x % 2 === 0) ? h / 2 : 0;
 
                 // get vertices positions based on center position
                 let vertices = this.getHexCorners(
@@ -168,3 +169,58 @@ let hexGrid = new HexGrid(51);
 
 hexGrid.initHexGrid(Node);
 hexGrid.drawAllHexNodes();
+
+
+const getHexNodeFromCoordinates = (x, y) => {
+    const cube_round = (x, y, z) => {
+        let rx = Math.round(x);
+        let ry = Math.round(y);
+        let rz = Math.round(z);
+
+        let x_diff = Math.abs(rx - x);
+        let y_diff = Math.abs(ry - y);
+        let z_diff = Math.abs(rz - z);
+
+        if (x_diff > y_diff && x_diff > z_diff) {
+            rx = -ry - rz;
+        } else if (y_diff > z_diff) {
+            ry = -rx - rz;
+        } else {
+            rz = -rx - ry;
+        }
+
+        return {
+            x: rx,
+            y: ry,
+            z: rz
+        };
+    }
+
+    const cube_to_evenq = (obj) => {
+        let col = obj.x
+        let row = obj.z + (obj.x + (obj.x & 1)) / 2
+        return hexGrid.getNode(col, row)
+    }
+
+    let size = hexGrid.nodeSize / 1.5;
+
+    let w = 2 * size;
+    let h = Math.sqrt(3) * size;
+
+    let posX = x - w / 2;
+    let offset = (posX % 2 === 0) ? h / 2 : 0;
+    let posY = y - h + offset
+
+    let q = (2 / 3 * posX) / size;
+    let r = (-1 / 3 * posX + Math.sqrt(3) / 3 * posY) / size;
+
+    return cube_to_evenq(
+        cube_round(q, -q - r, r)
+    )
+
+}
+
+canvas.addEventListener('click', (e) => {
+    let node = getHexNodeFromCoordinates(e.offsetX, e.offsetY);
+    hexGrid.drawHexNode(node, "green");
+});
