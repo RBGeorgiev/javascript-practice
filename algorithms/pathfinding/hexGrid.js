@@ -76,29 +76,41 @@ export default class HexGrid {
     }
 
 
-    // getNeighbors = (node) => {
-    //     let neighbors = [];
+    getNeighbors = (node) => {
+        let directions = [
+            // for odd columns
+            [
+                [+1, 0], [+1, -1], [0, -1],
+                [-1, -1], [-1, 0], [0, +1]
+            ],
+            // for even columns
+            [
+                [+1, +1], [+1, 0], [0, -1],
+                [-1, 0], [-1, +1], [0, +1]
+            ],
+        ]
 
-    //     for (let x = -1; x <= 1; x++) {
-    //         for (let y = -1; y <= 1; y++) {
-    //             if (x === 0 && y === 0) continue;
+        let neighbors = [];
 
-    //             let adjX = node.x + x;
-    //             let adjY = node.y + y;
+        for (let i = 0; i < 6; i++) {
+            var parity = +(node.x % 2 === 0);
+            var dir = directions[parity][i];
 
-    //             if (
-    //                 adjX >= 0 && adjX < this.gridSizeX &&
-    //                 adjY >= 0 && adjY < this.gridSizeY
-    //             ) {
-    //                 neighbors.push(
-    //                     this.getNode(adjX, adjY)
-    //                 );
-    //             }
-    //         }
-    //     }
+            let adjX = node.x + dir[0];
+            let adjY = node.y + dir[1];
 
-    //     return neighbors;
-    // }
+            if (
+                adjX >= 0 && adjX < this.gridSizeX &&
+                adjY >= 0 && adjY < this.gridSizeY
+            ) {
+                neighbors.push(
+                    this.getNode(adjX, adjY)
+                );
+            }
+        }
+
+        return neighbors;
+    }
 
     getNode = (x, y) => this.grid[x][y];
 
@@ -223,4 +235,10 @@ const getHexNodeFromCoordinates = (x, y) => {
 canvas.addEventListener('click', (e) => {
     let node = getHexNodeFromCoordinates(e.offsetX, e.offsetY);
     hexGrid.drawHexNode(node, "green");
+    let neighbors = hexGrid.getNeighbors(node);
+    for (let i = 0; i < neighbors.length; i++) {
+        let color = `lightgreen`;
+        hexGrid.drawHexNode(neighbors[i], color);
+    }
+    console.log('node', node, ', neighbors', neighbors)
 });
