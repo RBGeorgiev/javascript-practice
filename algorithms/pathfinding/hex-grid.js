@@ -45,12 +45,12 @@ export default class HexGrid {
             let height = this.grid[x].length;
             for (let y = 0; y < height; y++) {
                 let node = this.getNode(x, y);
-                this.drawHexNode(node);
+                this.drawNode(node);
             }
         }
     }
 
-    drawHexNode = (node) => {
+    drawNode = (node) => {
         let x = node.vertices[0][0];
         let y = node.vertices[0][1];
 
@@ -79,24 +79,6 @@ export default class HexGrid {
         let cornerX = x + size * Math.cos(angle_rad);
         let cornerY = y + size * Math.sin(angle_rad);
         return (cornerX > canvas.width || cornerY > canvas.height) ? null : [cornerX, cornerY];
-    }
-
-    getHexNodeFromCanvasCoordinates = (x, y) => {
-        let size = this.nodeSize / 1.5;
-
-        let w = 2 * size;
-        let h = Math.sqrt(3) * size;
-
-        let posX = x - w / 2;
-        let offset = (posX % 2 === 0) ? h / 2 : 0;
-        let posY = y - h + offset;
-
-        let q = (2 / 3 * posX) / size;
-        let r = (-1 / 3 * posX + Math.sqrt(3) / 3 * posY) / size;
-
-        return this.getNodeFromCubeCoord(
-            this.cubeCoordRound(q, -q - r, r)
-        );
     }
 
     getHexCorners = (x, y, size) => {
@@ -151,6 +133,24 @@ export default class HexGrid {
     getNode = (x, y) => this.grid[x][y];
 
     getNodeColor = (node) => GRID_NODE_COLORS[node.type];
+
+    getNodeFromCanvasCoordinates = (x, y) => {
+        let size = this.nodeSize / 1.5;
+
+        let w = 2 * size;
+        let h = Math.sqrt(3) * size;
+
+        let posX = x - w / 2;
+        let offset = (posX % 2 === 0) ? h / 2 : 0;
+        let posY = y - h + offset;
+
+        let q = (2 / 3 * posX) / size;
+        let r = (-1 / 3 * posX + Math.sqrt(3) / 3 * posY) / size;
+
+        return this.getNodeFromCubeCoord(
+            this.cubeCoordRound(q, -q - r, r)
+        );
+    }
 
     getNodeFromCubeCoord = (obj) => {
         let col = obj.x;

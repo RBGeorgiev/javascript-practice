@@ -76,7 +76,7 @@ export default class Main {
     }
 
     addUnwalkable = (e) => {
-        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY) {
             node.setType(GRID_NODE_TYPES.UNWALKABLE);
@@ -89,7 +89,7 @@ export default class Main {
     }
 
     addEmpty = (e) => {
-        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.UNWALKABLE || node.type === GRID_NODE_TYPES.SWAMP) {
             node.setType(GRID_NODE_TYPES.EMPTY);
@@ -102,7 +102,7 @@ export default class Main {
     }
 
     addSwamp = (e) => {
-        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY) {
             node.setType(GRID_NODE_TYPES.SWAMP);
@@ -115,7 +115,7 @@ export default class Main {
     }
 
     dragStart = (e) => {
-        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         let oldStart = this.currentAlgorithm.startNode;
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY && oldStart !== node) {
@@ -133,7 +133,7 @@ export default class Main {
     }
 
     dragEnd = (e) => {
-        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         let oldEnd = this.currentAlgorithm.endNode;
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY && oldEnd !== node) {
@@ -151,7 +151,7 @@ export default class Main {
     }
 
     handleMouseDown = (e) => {
-        let node = this.grid.getNodeFromCoordinates(e.offsetX, e.offsetY);
+        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         let listener;
 
         switch (node.type) {
