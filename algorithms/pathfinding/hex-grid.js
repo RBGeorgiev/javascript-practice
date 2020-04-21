@@ -1,10 +1,5 @@
-import { Node } from './src/nodes.js';
 import { GRID_NODE_TYPES, GRID_NODE_COLORS } from './src/enums.js';
-// import { canvas, ctx } from './constants.js';
-
-let canvas = document.getElementById("testCanvas");
-let ctx = canvas.getContext("2d");
-canvas.style.border = "1px solid black";
+import { canvas, ctx } from './src/constants.js';
 
 // pointyHexCorner = (x, y, size, i) => {
 //     let angle_deg = 60 * i - 30;
@@ -44,7 +39,7 @@ export default class HexGrid {
         };
     }
 
-    drawAllHexNodes = () => {
+    drawAllNodes = () => {
         let width = this.grid.length;
         for (let x = 0; x < width; x++) {
             let height = this.grid[x].length;
@@ -55,7 +50,7 @@ export default class HexGrid {
         }
     }
 
-    drawHexNode = (node, color = 'white') => {
+    drawHexNode = (node) => {
         let x = node.vertices[0][0];
         let y = node.vertices[0][1];
 
@@ -70,8 +65,7 @@ export default class HexGrid {
 
         ctx.closePath();
 
-        // ctx.fillStyle = this.getNodeColor(node);
-        ctx.fillStyle = color;
+        ctx.fillStyle = this.getNodeColor(node);
         ctx.lineWidth = 1;
         ctx.strokeStyle = "darkgray";
 
@@ -164,7 +158,7 @@ export default class HexGrid {
         return this.getNode(col, row);
     }
 
-    initHexGrid = (pathfindingNode) => {
+    initGrid = (pathfindingNode) => {
         let adjustedSize = this.nodeSize / 1.5;
 
         for (let x = 0; x < this.gridSizeX; x++) {
@@ -193,15 +187,19 @@ export default class HexGrid {
         }
     }
 
-    // transferGridState = (pathfindingNode) => {
-    //     for (let x = 0; x < this.gridSizeX; x++) {
-    //         for (let y = 0; y < this.gridSizeY; y++) {
-    //             let oldNode = this.getNode(x, y);
-    //             let type = oldNode.type;
-    //             this.grid[x][y] = new pathfindingNode(x, y, type);
-    //         }
-    //     }
-    // }
+    transferGridState = (pathfindingNode) => {
+        let sizeX = this.grid.length;
+        for (let x = 0; x < sizeX; x++) {
+            let sizeY = this.grid[x].length;
+            for (let y = 0; y < sizeY; y++) {
+                let oldNode = this.getNode(x, y);
+                let type = oldNode.type;
+                let newNode = new pathfindingNode(x, y, type);
+                newNode.vertices = oldNode.vertices;
+                this.grid[x][y] = newNode;
+            }
+        }
+    }
 
     // transferMazeToGrid = (maze, pathfindingNode) => {
     //     for (let x = 0; x < this.gridSizeX; x++) {
@@ -212,19 +210,3 @@ export default class HexGrid {
     //     }
     // }
 }
-
-let hexGrid = new HexGrid(51);
-
-hexGrid.initHexGrid(Node);
-hexGrid.drawAllHexNodes();
-
-canvas.addEventListener('click', (e) => {
-    let node = hexGrid.getHexNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
-    hexGrid.drawHexNode(node, "green");
-    let neighbors = hexGrid.getNeighbors(node);
-    for (let i = 0; i < neighbors.length; i++) {
-        let color = `lightgreen`;
-        hexGrid.drawHexNode(neighbors[i], color);
-    }
-    console.log('node', node, ', neighbors', neighbors)
-});

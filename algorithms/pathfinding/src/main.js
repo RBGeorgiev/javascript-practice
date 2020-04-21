@@ -1,4 +1,5 @@
-import Grid from './grid.js'
+// import Grid from './grid.js';
+import Grid from '../hex-grid.js';
 import { Node } from './nodes.js';
 import { GRID_NODE_TYPES, PATHFINDING_ALGORITHMS } from './enums.js';
 import { AStar } from './pf.js';
