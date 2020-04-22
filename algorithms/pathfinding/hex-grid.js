@@ -118,8 +118,8 @@ export default class HexGrid {
             let adjY = node.y + dir[1];
 
             if (
-                adjX >= 0 && adjX < this.gridSizeX &&
-                adjY >= 0 && adjY < this.gridSizeY
+                adjX >= 0 && adjX < this.grid.length &&
+                adjY >= 0 && adjY < this.grid[adjX].length
             ) {
                 neighbors.push(
                     this.getNode(adjX, adjY)

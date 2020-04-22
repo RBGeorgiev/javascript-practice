@@ -61,9 +61,13 @@ export class AStar {
                     continue;
                 }
 
-                if (curNode.x - adjNode.x !== 0 && curNode.y - adjNode.y !== 0) {
-                    let blocked = this.isDiagonalBlocked(curNode, adjNode);
-                    if (blocked) continue;
+                // if not a hex node
+                if (!curNode.center) {
+                    // check if diagonal is blocked
+                    if (curNode.x - adjNode.x !== 0 && curNode.y - adjNode.y !== 0) {
+                        let blocked = this.isDiagonalBlocked(curNode, adjNode);
+                        if (blocked) continue;
+                    }
                 }
 
                 if (adjNode.isEnd) {
