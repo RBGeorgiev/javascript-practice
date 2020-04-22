@@ -63,7 +63,7 @@ export default class Grid {
 
     getNodeColor = (node) => GRID_NODE_COLORS[node.type];
 
-    getNodeFromCoordinates = (x, y) => {
+    getNodeFromCanvasCoordinates = (x, y) => {
         let gridX = Math.floor(x / this.nodeSize);
         let gridY = Math.floor(y / this.nodeSize);
 

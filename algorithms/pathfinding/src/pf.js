@@ -151,10 +151,10 @@ export class AStar {
     }
 
     reset = () => {
-        let gridWidth = this.gridClass.gridSizeX;
-        let gridHeight = this.gridClass.gridSizeY;
+        let gridWidth = this.grid.length;
 
         for (let x = 0; x < gridWidth; x++) {
+            let gridHeight = this.grid[x].length;
             for (let y = 0; y < gridHeight; y++) {
                 let node = this.gridClass.getNode(x, y);
                 if (node.gCost === null) continue;
@@ -318,10 +318,10 @@ export class Dijkstra {
     }
 
     reset = () => {
-        let gridWidth = this.gridClass.gridSizeX;
-        let gridHeight = this.gridClass.gridSizeY;
+        let gridWidth = this.grid.length;
 
         for (let x = 0; x < gridWidth; x++) {
+            let gridHeight = this.grid[x].length;
             for (let y = 0; y < gridHeight; y++) {
                 let node = this.gridClass.getNode(x, y);
                 if (node.dist === Infinity) continue;

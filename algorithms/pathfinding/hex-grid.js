@@ -11,7 +11,7 @@ export default class HexGrid {
     constructor(sizeX, sizeY) {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
-        this.nodeSize = canvas.width / this.gridSizeX;
+        this.nodeSize = (canvas.width / this.gridSizeX);
         this.grid = [];
     }
 
@@ -170,16 +170,21 @@ export default class HexGrid {
                 let posY = h * y;
                 let offset = (x % 2 === 0) ? h / 2 : 0;
 
+                let center = {
+                    x: posX + w / 2,
+                    y: posY + h / 2 + offset
+                }
                 // get vertices positions based on center position
                 let vertices = this.getHexCorners(
-                    posX + w / 2,
-                    posY + h / 2 + offset,
+                    center.x,
+                    center.y,
                     adjustedSize
                 );
 
                 if (vertices) {
                     if (!this.grid[x]) this.grid[x] = [];
                     let node = new pathfindingNode(x, y);
+                    node.center = center;
                     node.vertices = vertices;
                     this.grid[x][y] = node;
                 }
@@ -195,6 +200,7 @@ export default class HexGrid {
                 let oldNode = this.getNode(x, y);
                 let type = oldNode.type;
                 let newNode = new pathfindingNode(x, y, type);
+                newNode.center = oldNode.center;
                 newNode.vertices = oldNode.vertices;
                 this.grid[x][y] = newNode;
             }
