@@ -100,11 +100,7 @@ export default class PathfindingVisualization {
         if (color === PF_NODE_COLORS.CLOSED_LIST || color === PF_NODE_COLORS.PATH) {
             ctx.arc(xPos, yPos, size / 3, 0, 2 * Math.PI)
         } else {
-            (node.isHex)
-                ?
-                ctx.rect(xPos - size / 4, yPos - size / 4, size / 2, size / 2)
-                :
-                ctx.rect(xPos + size / 4, yPos + size / 4, size / 2, size / 2);
+            ctx.rect(xPos - size / 4, yPos - size / 4, size / 2, size / 2);
         }
 
         ctx.fill();
