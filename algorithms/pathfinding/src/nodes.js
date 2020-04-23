@@ -11,10 +11,19 @@ export class Node {
         this.unwalkable = false;
         this.isEnd = false;
         this.isStart = false;
+        this.isHex = false;
+        this.hexCenter = null;
+        this.hexVertices = null;
         this.setType(type);
     }
 
     setHeapIdx = (idx) => this.heapIdx = idx;
+
+    setHexCenter = (obj) => this.hexCenter = obj;
+
+    setHexVertices = (arr) => this.hexVertices = arr;
+
+    setIsHex = (bool) => this.isHex = bool;
 
     setParent = (parent) => this.parent = parent;
 

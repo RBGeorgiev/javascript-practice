@@ -51,15 +51,15 @@ export default class HexGrid {
     }
 
     drawNode = (node) => {
-        let x = node.vertices[0][0];
-        let y = node.vertices[0][1];
+        let x = node.hexVertices[0][0];
+        let y = node.hexVertices[0][1];
 
         ctx.beginPath();
         ctx.moveTo(x, y);
 
         for (let i = 1; i < 6; i++) {
-            x = node.vertices[i][0];
-            y = node.vertices[i][1];
+            x = node.hexVertices[i][0];
+            y = node.hexVertices[i][1];
             ctx.lineTo(x, y);
         }
 
@@ -81,7 +81,7 @@ export default class HexGrid {
         return (cornerX > canvas.width || cornerY > canvas.height) ? null : [cornerX, cornerY];
     }
 
-    getHexCorners = (x, y, size) => {
+    getHexVertices = (x, y, size) => {
         let vertices = [];
 
         for (let i = 0; i < 6; i++) {
@@ -175,7 +175,7 @@ export default class HexGrid {
                     y: posY + h / 2 + offset
                 }
                 // get vertices positions based on center position
-                let vertices = this.getHexCorners(
+                let vertices = this.getHexVertices(
                     center.x,
                     center.y,
                     adjustedSize
@@ -184,8 +184,9 @@ export default class HexGrid {
                 if (vertices) {
                     if (!this.grid[x]) this.grid[x] = [];
                     let node = new pathfindingNode(x, y);
-                    node.center = center;
-                    node.vertices = vertices;
+                    node.setHexCenter(center);
+                    node.setHexVertices(vertices);
+                    node.setIsHex(true);
                     this.grid[x][y] = node;
                 }
             }
@@ -200,8 +201,9 @@ export default class HexGrid {
                 let oldNode = this.getNode(x, y);
                 let type = oldNode.type;
                 let newNode = new pathfindingNode(x, y, type);
-                newNode.center = oldNode.center;
-                newNode.vertices = oldNode.vertices;
+                newNode.setHexCenter(oldNode.hexCenter);
+                newNode.setHexVertices(oldNode.hexVertices);
+                newNode.setIsHex(true);
                 this.grid[x][y] = newNode;
             }
         }

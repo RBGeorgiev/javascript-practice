@@ -71,10 +71,10 @@ export default class PathfindingVisualization {
 
     drawPath = (nodeA, nodeB) => {
         let size = this.gridClass.nodeSize;
-        let aX = nodeA.center.x || size * nodeA.x + size / 2;
-        let aY = nodeA.center.y || size * nodeA.y + size / 2;
-        let bX = nodeB.center.x || size * nodeB.x + size / 2;
-        let bY = nodeB.center.y || size * nodeB.y + size / 2;
+        let aX = (nodeA.isHex) ? nodeA.hexCenter.x : size * nodeA.x + size / 2;
+        let aY = (nodeA.isHex) ? nodeA.hexCenter.y : size * nodeA.y + size / 2;
+        let bX = (nodeB.isHex) ? nodeB.hexCenter.x : size * nodeB.x + size / 2;
+        let bY = (nodeB.isHex) ? nodeB.hexCenter.y : size * nodeB.y + size / 2;
 
         ctx.strokeStyle = PF_NODE_COLORS.PATH;
         ctx.lineWidth = 5;
@@ -88,8 +88,8 @@ export default class PathfindingVisualization {
     drawPathfindingNode = (node, color) => {
         if (node.isStart || node.isEnd) return;
         let size = this.gridClass.nodeSize;
-        let xPos = node.center.x || size * node.x + size / 2;
-        let yPos = node.center.y || size * node.y + size / 2;
+        let xPos = (node.isHex) ? node.hexCenter.x : size * node.x + size / 2;
+        let yPos = (node.isHex) ? node.hexCenter.y : size * node.y + size / 2;
 
         ctx.beginPath();
 
@@ -100,7 +100,7 @@ export default class PathfindingVisualization {
         if (color === PF_NODE_COLORS.CLOSED_LIST || color === PF_NODE_COLORS.PATH) {
             ctx.arc(xPos, yPos, size / 3, 0, 2 * Math.PI)
         } else {
-            (node.center.x)
+            (node.isHex)
                 ?
                 ctx.rect(xPos - size / 4, yPos - size / 4, size / 2, size / 2)
                 :
