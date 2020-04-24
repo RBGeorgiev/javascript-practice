@@ -217,8 +217,11 @@ export class Dijkstra {
     }
 
     findPath = () => {
-        for (let x = 0; x < this.gridClass.gridSizeX; x++) {
-            for (let y = 0; y < this.gridClass.gridSizeY; y++) {
+        let width = this.grid.length;
+
+        for (let x = 0; x < width; x++) {
+            let height = this.grid[x].length;
+            for (let y = 0; y < height; y++) {
                 let node = this.gridClass.getNode(x, y);
                 this.unvisitedList.add(node);
             }
