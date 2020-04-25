@@ -7,14 +7,13 @@ const MAZE_VIZ_TYPE = {
 
 // Recursive Backtracking
 export class RecursiveBacktracking {
-    constructor(gridSizeX, gridSizeY) {
-        this.gridSizeX = gridSizeX;
-        this.gridSizeY = gridSizeY;
-        this.grid = [];
+    constructor(gridClass) {
+        this.gridClass = gridClass;
+        this.grid = this.gridClass.grid;
         this.stepsTaken = [];
 
         this.cellSize = 2;
-        this.numOfCells = Math.ceil(this.gridSizeX / this.cellSize) * Math.ceil(this.gridSizeY / this.cellSize);
+        this.numOfCells = Math.ceil(this.gridClass.gridSizeX / this.cellSize) * Math.ceil(this.gridClass.gridSizeY / this.cellSize);
     }
 
     addToStepsTaken = (node, type) => {
@@ -28,8 +27,8 @@ export class RecursiveBacktracking {
     getNeighborCells = (node) => {
         let neighbors = [];
         let cellSize = this.cellSize;
-        let width = this.gridSizeX;
-        let height = this.gridSizeY;
+        let width = this.gridClass.gridSizeX;
+        let height = this.gridClass.gridSizeY;
 
         let neighborPositions = [
             [cellSize, 0], // East
@@ -111,9 +110,12 @@ export class RecursiveBacktracking {
     }
 
     init = () => {
-        for (let x = 0; x < this.gridSizeX; x++) {
+        let width = this.gridClass.gridSizeX;
+        let height = this.gridClass.gridSizeY;
+
+        for (let x = 0; x < width; x++) {
             this.grid[x] = [];
-            for (let y = 0; y < this.gridSizeY; y++) {
+            for (let y = 0; y < height; y++) {
                 this.grid[x][y] = new RecBacktrNode(x, y);
             }
         }
@@ -143,10 +145,9 @@ export class RecursiveBacktracking {
 
 // Kruskal's Algorithm
 export class Kruskal {
-    constructor(gridSizeX, gridSizeY) {
-        this.gridSizeX = gridSizeX;
-        this.gridSizeY = gridSizeY;
-        this.grid = [];
+    constructor(gridClass) {
+        this.gridClass = gridClass;
+        this.grid = this.gridClass.grid;
         this.stepsTaken = [];
 
         this.cellSize = 2;
@@ -207,9 +208,12 @@ export class Kruskal {
     init = () => {
         let cellsArr = [];
 
-        for (let x = 0; x < this.gridSizeX; x++) {
+        let width = this.gridClass.gridSizeX;
+        let height = this.gridClass.gridSizeY;
+
+        for (let x = 0; x < width; x++) {
             this.grid[x] = [];
-            for (let y = 0; y < this.gridSizeY; y++) {
+            for (let y = 0; y < height; y++) {
                 let node = new KruskalNode(x, y);
                 this.grid[x][y] = node;
                 if (x % 2 === 0 && y % 2 === 0) cellsArr.push(node);
@@ -245,10 +249,9 @@ export class Kruskal {
 }
 
 export class Eller {
-    constructor(gridSizeX, gridSizeY) {
-        this.gridSizeX = gridSizeX;
-        this.gridSizeY = gridSizeY;
-        this.grid = [];
+    constructor(gridClass) {
+        this.gridClass = gridClass;
+        this.grid = this.gridClass.grid;
         this.stepsTaken = [];
 
         this.cellSize = 2;
@@ -281,8 +284,8 @@ export class Eller {
     getStepsTaken = () => this.stepsTaken;
 
     generateMaze = () => {
-        let sizeX = this.gridSizeX;
-        let sizeY = this.gridSizeY;
+        let sizeX = this.gridClass.gridSizeX;
+        let sizeY = this.gridClass.gridSizeY;
         let cellSize = this.cellSize;
 
         let lastRow = false;
@@ -328,9 +331,12 @@ export class Eller {
     }
 
     init = () => {
-        for (let x = 0; x < this.gridSizeX; x++) {
+        let width = this.gridClass.gridSizeX;
+        let height = this.gridClass.gridSizeY;
+
+        for (let x = 0; x < width; x++) {
             this.grid[x] = [];
-            for (let y = 0; y < this.gridSizeY; y++) {
+            for (let y = 0; y < height; y++) {
                 this.grid[x][y] = new EllerNode(x, y);
             }
         }

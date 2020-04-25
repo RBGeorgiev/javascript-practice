@@ -1,14 +1,11 @@
-import { Node } from './nodes.js';
-
 export class MazeBuilderVisualization {
-    constructor(mazeBuilder, ctx) {
-        this.gridSizeX = mazeBuilder.gridSizeX;
-        this.gridSizeY = mazeBuilder.gridSizeY;
-        this.mazeBuilder = mazeBuilder;
-        this.grid = [];
+    constructor(gridClass, mazeBuilder) {
+        this.gridClass = gridClass;
+        this.grid = this.gridClass.grid;
+        this.ctx = this.gridClass.ctx;
 
-        this.ctx = ctx;
-        this.nodeSize = canvas.width / this.gridSizeX;
+        this.mazeBuilder = mazeBuilder;
+        this.nodeSize = canvas.width / this.gridClass.gridSizeX;
         this.animFrameId = null;
     }
 
@@ -38,29 +35,9 @@ export class MazeBuilderVisualization {
         );
     }
 
-    buildMaze = () => {
-        this.initViz();
-        this.mazeBuilder.run();
-    }
-
-    changeAlgorithm = (algorithm) => {
-        this.stopAnimFrame();
-        this.mazeBuilder.setAlgorithm(algorithm);
-        this.drawAllNodes();
-    }
-
-    drawAllNodes = () => {
-        for (let x = 0; x < this.gridSizeX; x++) {
-            for (let y = 0; y < this.gridSizeY; y++) {
-                let node = this.getNode(x, y);
-                let color = (node.isMazePath) ? "white" : "black";
-                this.drawNode(node, color);
-            }
-        }
-    }
-
-    drawNode = (node, color = "#FFFFFF") => {
+    visualizeStep = (step) => {
         let ctx = this.ctx;
+        let node = step.node;
         let size = this.nodeSize;
         let posX = node.x * size;
         let posY = node.y * size;
@@ -70,33 +47,13 @@ export class MazeBuilderVisualization {
         ctx.lineWidth = 1;
         ctx.strokeStyle = "darkgray";
         ctx.rect(posX, posY, size, size);
-        ctx.fillStyle = color;
+        ctx.fillStyle = step.type; // white or black
 
         ctx.fill();
         ctx.stroke();
     }
 
-    getNode = (x, y) => this.grid[x][y];
-
-    init = () => {
-        for (let x = 0; x < this.gridSizeX; x++) {
-            this.grid[x] = [];
-            for (let y = 0; y < this.gridSizeY; y++) {
-                this.grid[x][y] = new Node(x, y);
-            }
-        }
-    }
-
-    initViz = () => {
-        this.init();
-        this.drawAllNodes();
-    }
-
-    replaceGrid = (newGrid) => this.grid = newGrid;
-
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
     setAnimFrameId = (id) => this.animFrameId = id;
-
-    visualizeStep = (step) => this.drawNode(step.node, step.type);
 }
