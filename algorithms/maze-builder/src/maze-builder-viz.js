@@ -35,28 +35,7 @@ export class MazeBuilderVisualization {
         );
     }
 
-    visualizeStep = (step) => {
-        let node = step.node;
-        let color = step.type;
-        this.gridClass.drawNode(node, color)
-    }
-    // visualizeStep = (step) => {
-    //     let ctx = this.ctx;
-    //     let node = step.node;
-    //     let size = this.nodeSize;
-    //     let posX = node.x * size;
-    //     let posY = node.y * size;
-
-    //     ctx.beginPath();
-
-    //     ctx.lineWidth = 1;
-    //     ctx.strokeStyle = "darkgray";
-    //     ctx.rect(posX, posY, size, size);
-    //     ctx.fillStyle = step.type; // white or black
-
-    //     ctx.fill();
-    //     ctx.stroke();
-    // }
+    visualizeStep = (step) => this.gridClass.drawNode(step.node, step.type);
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 

@@ -1,4 +1,4 @@
-import Grid from './grid.js';
+import Grid from './hex-grid.js';
 import { Node } from './nodes.js';
 import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
