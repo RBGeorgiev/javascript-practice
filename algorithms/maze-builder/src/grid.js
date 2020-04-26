@@ -18,7 +18,7 @@ export default class HexGrid {
         }
     }
 
-    drawNode = (node) => {
+    drawNode = (node, color) => {
         let ctx = this.ctx;
         let x = node.hexVertices[0][0];
         let y = node.hexVertices[0][1];
@@ -34,7 +34,10 @@ export default class HexGrid {
 
         ctx.closePath();
 
-        ctx.fillStyle = this.getNodeColor(node);
+        // ctx.fillStyle = (node.x % 4 === 0 && node.y % 2 === 0 || (node.x - 2) % 4 === 0 && node.y % 2 === 1) ? "white" : "black";
+        // ctx.fillStyle = color ? color : (node.x % 4 === 0 && node.y % 2 === 0 || (node.x - 2) % 4 === 0 && node.y % 2 === 1) ? "white" : "black";
+        // ctx.fillStyle = this.getNodeColor(node);
+        ctx.fillStyle = color;
         ctx.lineWidth = 1;
         ctx.strokeStyle = "darkgray";
 
@@ -62,42 +65,36 @@ export default class HexGrid {
         return vertices;
     }
 
+    getNeighborCells = (node) => {
+        let directions = [
+            // for even columns
+            [-2, -1], [0, -2], [+2, -1],
+            [+2, +1], [0, +2], [-2, +1]
+        ];
 
-    // getNeighbors = (node) => {
-    //     let directions = [
-    //         // for odd columns
-    //         [
-    //             [+1, 0], [+1, -1], [0, -1],
-    //             [-1, -1], [-1, 0], [0, +1]
-    //         ],
-    //         // for even columns
-    //         [
-    //             [+1, +1], [+1, 0], [0, -1],
-    //             [-1, 0], [-1, +1], [0, +1]
-    //         ],
-    //     ]
+        let neighbors = [];
 
-    //     let neighbors = [];
+        for (let i = 0; i < 6; i++) {
+            let dir = directions[i];
 
-    //     for (let i = 0; i < 6; i++) {
-    //         var parity = +(node.x % 2 === 0);
-    //         var dir = directions[parity][i];
+            let adjX = node.x + dir[0];
+            let adjY = node.y + dir[1];
 
-    //         let adjX = node.x + dir[0];
-    //         let adjY = node.y + dir[1];
+            if (
+                adjX >= 0 && adjX < this.grid.length &&
+                adjY >= 0 && adjY < this.grid[adjX].length
+            ) {
+                let neighbor = this.getNode(adjX, adjY);
+                if (!neighbor.cellVisited) neighbors.push(neighbor);
 
-    //         if (
-    //             adjX >= 0 && adjX < this.grid.length &&
-    //             adjY >= 0 && adjY < this.grid[adjX].length
-    //         ) {
-    //             neighbors.push(
-    //                 this.getNode(adjX, adjY)
-    //             );
-    //         }
-    //     }
+                // neighbors.push(
+                //     this.getNode(adjX, adjY)
+                // );
+            }
+        }
 
-    //     return neighbors;
-    // }
+        return neighbors;
+    }
 
     getNode = (x, y) => this.grid[x][y];
 
@@ -141,6 +138,65 @@ export default class HexGrid {
     reset = (nodeClass) => {
         this.initGrid(nodeClass);
         this.drawAllNodes();
+
+        // let test = this.getNode(6, 9);
+        // let neighbors = this.getNeighborCells(test);
+        // let otherNeighbors = this.getNeighbors(test);
+        // this.drawNode(test, 'red')
+        // for (let i = 0; i < neighbors.length; i++) {
+        //     this.drawNode(neighbors[i], 'green');
+        //     this.drawNode(otherNeighbors[i], 'lightblue');
+        // }
+    }
+
+    // getNeighbors = (node) => {
+    //     let directions = [
+    //         // for even columns
+    //         [-1, 0], [0, -1], [+1, 0],
+    //         [+1, +1], [0, +1], [-1, +1]
+    //     ]
+
+    //     let neighbors = [];
+
+    //     for (let i = 0; i < 6; i++) {
+    //         // let parity = +(node.x % 2 === 0);
+    //         // let dir = directions[parity][i];
+    //         let dir = directions[i];
+
+    //         let adjX = node.x + dir[0];
+    //         let adjY = node.y + dir[1];
+
+    //         if (
+    //             adjX >= 0 && adjX < this.grid.length &&
+    //             adjY >= 0 && adjY < this.grid[adjX].length
+    //         ) {
+    //             neighbors.push(
+    //                 this.getNode(adjX, adjY)
+    //             );
+    //         }
+    //     }
+
+    //     return neighbors;
+    // }
+
+    getMidNode = (nodeA, nodeB) => {
+        let dirTable = {
+            "x-2y-1": [-1, 0],
+            "x0y-2": [0, -1],
+            "x2y-1": [+1, 0],
+            "x2y1": [+1, +1],
+            "x0y2": [0, +1],
+            "x-2y1": [-1, +1]
+        }
+
+        let dx = nodeB.x - nodeA.x;
+        let dy = nodeB.y - nodeA.y;
+        let key = `x${dx}y${dy}`;
+
+        let midX = nodeA.x + dirTable[key][0];
+        let midY = nodeA.y + dirTable[key][1];
+
+        return this.getNode(midX, midY);
     }
 }
 

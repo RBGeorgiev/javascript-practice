@@ -13,8 +13,14 @@ export class RecursiveBacktracking {
         this.stepsTaken = [];
 
         this.cellSize = 2;
-        this.numOfCells = Math.ceil(this.gridClass.gridSizeX / this.cellSize) * Math.ceil(this.gridClass.gridSizeY / this.cellSize);
+        // this.numOfCells = this.getNumOfSquareCells(this.gridClass.gridSizeX, this.gridClass.gridSizeY);
+        this.numOfCells = this.getNumOfHexCells(this.gridClass.gridSizeX, this.grid[0].length);
+
     }
+
+    getNumOfSquareCells = (sizeX, sizeY) => Math.ceil(sizeX / this.cellSize) * Math.ceil(sizeY / this.cellSize);
+
+    getNumOfHexCells = (sizeX, sizeY) => Math.round(sizeX / 4) * Math.ceil(sizeY / 2) + Math.round((sizeX - 2) / 4) * Math.floor(sizeY / 2);
 
     addToStepsTaken = (node, type) => {
         let step = {
@@ -24,38 +30,38 @@ export class RecursiveBacktracking {
         this.stepsTaken.push(step);
     }
 
-    getNeighborCells = (node) => {
-        let neighbors = [];
-        let cellSize = this.cellSize;
-        let width = this.gridClass.gridSizeX;
-        let height = this.gridClass.gridSizeY;
+    // getNeighborCells = (node) => {
+    //     let neighbors = [];
+    //     let cellSize = this.cellSize;
+    //     let width = this.gridClass.gridSizeX;
+    //     let height = this.gridClass.gridSizeY;
 
-        let neighborPositions = [
-            [cellSize, 0], // East
-            [-cellSize, 0], // West
-            [0, cellSize], // South
-            [0, -cellSize] // North
-        ]
+    //     let neighborPositions = [
+    //         [cellSize, 0], // East
+    //         [-cellSize, 0], // West
+    //         [0, cellSize], // South
+    //         [0, -cellSize] // North
+    //     ]
 
-        for (let i = 0; i < neighborPositions.length; i++) {
-            let offsetX = neighborPositions[i][0];
-            let offsetY = neighborPositions[i][1];
+    //     for (let i = 0; i < neighborPositions.length; i++) {
+    //         let offsetX = neighborPositions[i][0];
+    //         let offsetY = neighborPositions[i][1];
 
-            let adjX = node.x + offsetX;
-            let adjY = node.y + offsetY;
+    //         let adjX = node.x + offsetX;
+    //         let adjY = node.y + offsetY;
 
-            if (
-                adjX >= 0 && adjX < width &&
-                adjY >= 0 && adjY < height
-            ) {
-                let neighbor = this.getNode(adjX, adjY);
-                if (!neighbor.cellVisited) neighbors.push(neighbor);
-            }
+    //         if (
+    //             adjX >= 0 && adjX < width &&
+    //             adjY >= 0 && adjY < height
+    //         ) {
+    //             let neighbor = this.getNode(adjX, adjY);
+    //             if (!neighbor.cellVisited) neighbors.push(neighbor);
+    //         }
 
-        }
+    //     }
 
-        return neighbors;
-    }
+    //     return neighbors;
+    // }
 
     getNode = (x, y) => this.grid[x][y];
 
@@ -84,7 +90,7 @@ export class RecursiveBacktracking {
                 cellsChecked++;
             }
 
-            let neighbors = this.getNeighborCells(cur);
+            let neighbors = this.gridClass.getNeighborCells(cur);
             cur.setNumOfNeighborCells(neighbors.length);
 
             if (!neighbors.length) {
@@ -109,17 +115,18 @@ export class RecursiveBacktracking {
         return this.grid;
     }
 
-    init = () => {
-        let width = this.gridClass.gridSizeX;
-        let height = this.gridClass.gridSizeY;
+    init = () => this.gridClass.initGrid(RecBacktrNode);
+    // init = () => {
+    //     let width = this.gridClass.gridSizeX;
+    //     let height = this.gridClass.gridSizeY;
 
-        for (let x = 0; x < width; x++) {
-            this.grid[x] = [];
-            for (let y = 0; y < height; y++) {
-                this.grid[x][y] = new RecBacktrNode(x, y);
-            }
-        }
-    }
+    //     for (let x = 0; x < width; x++) {
+    //         this.grid[x] = [];
+    //         for (let y = 0; y < height; y++) {
+    //             this.grid[x][y] = new RecBacktrNode(x, y);
+    //         }
+    //     }
+    // }
 
     resetStepsTaken = () => this.stepsTaken = [];
 
@@ -129,11 +136,21 @@ export class RecursiveBacktracking {
         return this.generateMaze();
     }
 
-    setMazePathNode = (cur, next) => {
-        let dirX = (next.x - cur.x) / this.cellSize;
-        let dirY = (next.y - cur.y) / this.cellSize;
+    // setMazePathNode = (cur, next) => {
+    //     // let dirX = (next.x - cur.x) / this.cellSize;
+    //     // let dirY = (next.y - cur.y) / this.cellSize;
 
-        let midNode = this.getNode(cur.x + dirX, cur.y + dirY);
+    //     // let midNode = this.getNode(cur.x + dirX, cur.y + dirY);
+
+    //     cur.setIsMazePath(true);
+    //     midNode.setIsMazePath(true);
+
+    //     this.addToStepsTaken(cur, MAZE_VIZ_TYPE.PATH);
+    //     this.addToStepsTaken(midNode, MAZE_VIZ_TYPE.PATH);
+    // }
+
+    setMazePathNode = (cur, next) => {
+        let midNode = this.gridClass.getMidNode(cur, next);
 
         cur.setIsMazePath(true);
         midNode.setIsMazePath(true);
