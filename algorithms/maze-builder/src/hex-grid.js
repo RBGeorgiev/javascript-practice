@@ -83,7 +83,7 @@ export default class HexGrid {
         return this.getNode(midX, midY);
     }
 
-    getNeighborCells = (node) => {
+    getNeighborCells = (node, callback) => {
         let directions = [
             // for even columns
             [-2, -1], [0, -2], [+2, -1],
@@ -103,7 +103,44 @@ export default class HexGrid {
                 adjY >= 0 && adjY < this.grid[adjX].length
             ) {
                 let neighbor = this.getNode(adjX, adjY);
-                if (!neighbor.cellVisited) neighbors.push(neighbor);
+                if (callback(neighbor)) continue;;
+                neighbors.push(neighbor);
+            }
+        }
+
+        return neighbors;
+    }
+
+    getNeighbors = (node, callback) => {
+        let directions = [
+            // for odd columns
+            [
+                [+1, 0], [+1, -1], [0, -1],
+                [-1, -1], [-1, 0], [0, +1]
+            ],
+            // for even columns
+            [
+                [+1, +1], [+1, 0], [0, -1],
+                [-1, 0], [-1, +1], [0, +1]
+            ],
+        ]
+
+        let neighbors = [];
+
+        for (let i = 0; i < 6; i++) {
+            var parity = +(node.x % 2 === 0);
+            var dir = directions[parity][i];
+
+            let adjX = node.x + dir[0];
+            let adjY = node.y + dir[1];
+
+            if (
+                adjX >= 0 && adjX < this.grid.length &&
+                adjY >= 0 && adjY < this.grid[adjX].length
+            ) {
+                let neighbor = this.getNode(adjX, adjY);
+                if (!neighbor.isCell) continue;
+                neighbors.push(this.getNode(adjX, adjY));
             }
         }
 

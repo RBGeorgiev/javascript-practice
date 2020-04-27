@@ -56,7 +56,7 @@ export class RecursiveBacktracking {
                 cellsChecked++;
             }
 
-            let neighbors = this.gridClass.getNeighborCells(cur);
+            let neighbors = this.gridClass.getNeighborCells(cur, (neighbor) => neighbor.cellVisited);
             cur.setNumOfNeighborCells(neighbors.length);
 
             if (!neighbors.length) {
@@ -120,36 +120,70 @@ export class Kruskal {
         this.stepsTaken.push(step);
     }
 
+    // for hex grid
     getEdges = (cellsArr) => {
         let edges = [];
         let len = cellsArr.length;
         for (let i = 0; i < len; i++) {
             let cur = cellsArr[i];
-            if (cur.x - 1 > 0) edges.push([cur.x - 1, cur.y, 'W']);
-            if (cur.y - 1 > 0) edges.push([cur.x, cur.y - 1, 'N']);
+            edges.push([cur.x, cur.y - 1, 'N']);
+            edges.push([cur.x - 1, cur.y, 'NW']);
+            edges.push([cur.x - 1, cur.y + 1, 'SW']);
+            // if (cur.y - 1 > 0) { edges.push([cur.x, cur.y - 1, 'N']); this.gridClass.drawNode(this.getNode(cur.x, cur.y - 1), "green") }
+            // if (cur.x - 1 > 0) { edges.push([cur.x - 1, cur.y, 'NW']); this.gridClass.drawNode(this.getNode(cur.x - 1, cur.y), "green") }
+            // if (cur.x - 1 > 0 && cur.y + 1 < this.grid[cur.x - 1].length) { edges.push([cur.x - 1, cur.y + 1, 'SW']); this.gridClass.drawNode(this.getNode(cur.x - 1, cur.y + 1), "green") }
+
+            // if (cur.y - 1 > 0) edges.push([cur.x, cur.y - 1, 'N']);
+            // if (cur.x - 1 > 0) edges.push([cur.x - 1, cur.y, 'NW']);
+            // if (cur.x - 1 > 0 && cur.y + 1 > this.grid[cur.x - 1].length) edges.push([cur.x - 1, cur.y + 1, 'SW']);
         }
         return edges;
     }
+
+    // // for square grid
+    // getEdges = (cellsArr) => {
+    //     let edges = [];
+    //     let len = cellsArr.length;
+    //     for (let i = 0; i < len; i++) {
+    //         let cur = cellsArr[i];
+    //         if (cur.y - 1 > 0) edges.push([cur.x, cur.y - 1, 'N']);
+    //         if (cur.x - 1 > 0) edges.push([cur.x - 1, cur.y, 'W']);
+    //     }
+    //     return edges;
+    // }
 
     getNode = (x, y) => this.grid[x][y];
 
     getStepsTaken = () => this.stepsTaken;
 
+    // for hex grid
     generateMaze = (edges) => {
         let len = edges.length;
-        let DX = { "N": 0, "W": -1 };
-        let DY = { "N": -1, "W": 0 };
+
 
         for (let i = 0; i < len; i++) {
             let [x, y, d] = edges[i];
 
+            if (x <= 0 || y <= 0 || y + 1 >= this.grid[x].length) { console.log('asd'); continue; }
             let edgeNode = this.getNode(x, y);
+            let neighbors = this.gridClass.getNeighbors(edgeNode);
+            console.log(neighbors)
 
-            let nodeA = this.getNode(x + DX[d], y + DY[d]);
-            let nodeB = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
+            let nodeA = neighbors[0];
+            if (!nodeA) continue;
+            let nodeB = neighbors[1];
+            if (!nodeB) continue;
+
+            // let nodeA = this.getNode(x + dir[d][0], y + dir[d][1]);
+            // if (!nodeA) continue;
+            // let nodeB = this.getNode(x + dir[mirroredDir[d]][0], y + dir[mirroredDir[d]][1]);
+            // if (!nodeB) continue;
 
             if (nodeA.getRoot() !== nodeB.getRoot()) {
                 nodeA.connect(nodeB);
+                this.gridClass.drawNode(nodeA, "lightpink")
+                this.gridClass.drawNode(edgeNode, "lightpink")
+                this.gridClass.drawNode(nodeB, "lightpink")
 
                 nodeA.setIsMazePath(true);
                 edgeNode.setIsMazePath(true);
@@ -164,29 +198,87 @@ export class Kruskal {
         return this.grid;
     }
 
-    init = () => {
+    // // for square grid
+    // generateMaze = (edges) => {
+    //     let len = edges.length;
+    //     let DX = { "N": 0, "W": -1 };
+    //     let DY = { "N": -1, "W": 0 };
+
+    //     for (let i = 0; i < len; i++) {
+    //         let [x, y, d] = edges[i];
+
+    //         let edgeNode = this.getNode(x, y);
+
+    //         let nodeA = this.getNode(x + DX[d], y + DY[d]);
+    //         let nodeB = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
+
+    //         if (nodeA.getRoot() !== nodeB.getRoot()) {
+    //             nodeA.connect(nodeB);
+
+    //             nodeA.setIsMazePath(true);
+    //             edgeNode.setIsMazePath(true);
+    //             nodeB.setIsMazePath(true);
+
+    //             this.addToStepsTaken(nodeA, MAZE_VIZ_TYPE.PATH);
+    //             this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
+    //             this.addToStepsTaken(nodeB, MAZE_VIZ_TYPE.PATH);
+    //         }
+    //     }
+
+    //     return this.grid;
+    // }
+
+    init = () => this.gridClass.initGrid(KruskalNode);
+
+    // for hex grid
+    getCellsArr = () => {
         let cellsArr = [];
 
-        let width = this.gridClass.gridSizeX;
-        let height = this.gridClass.gridSizeY;
+        let width = this.grid.length;
 
-        for (let x = 0; x < width; x++) {
-            this.grid[x] = [];
+        for (let x = 0; x < width; x += 2) {
+            let height = this.grid[x].length;
             for (let y = 0; y < height; y++) {
-                let node = new KruskalNode(x, y);
-                this.grid[x][y] = node;
-                if (x % 2 === 0 && y % 2 === 0) cellsArr.push(node);
+                let node = this.getNode(x, y);
+                if (x % 4 === 0 && y % 2 === 0 || (x - 2) % 4 === 0 && y % 2 === 1) {
+                    // if (x % 4 === 0 && y % 2 === 0) {
+                    node.isCell = true;
+                    cellsArr.push(node);
+                    this.gridClass.drawNode(node, "red");
+                    // this.gridClass.drawNode(node, "green");
+                }
+                // if ((x - 2) % 4 === 0 && y % 2 === 1) this.gridClass.drawNode(node, "blue");
             }
         }
 
         return cellsArr;
     }
 
+    // // for square grid
+    // init = () => {
+    //     let cellsArr = [];
+
+    //     let width = this.gridClass.gridSizeX;
+    //     let height = this.gridClass.gridSizeY;
+
+    //     for (let x = 0; x < width; x++) {
+    //         this.grid[x] = [];
+    //         for (let y = 0; y < height; y++) {
+    //             let node = new KruskalNode(x, y);
+    //             this.grid[x][y] = node;
+    //             if (x % 2 === 0 && y % 2 === 0) cellsArr.push(node);
+    //         }
+    //     }
+
+    //     return cellsArr;
+    // }
+
     resetStepsTaken = () => this.stepsTaken = [];
 
     run = () => {
         this.resetStepsTaken();
-        let cellsArr = this.init();
+        this.init();
+        let cellsArr = this.getCellsArr();
         let edges = this.getEdges(cellsArr);
         let shuffledEdges = this.shuffleArray(edges);
         return this.generateMaze(shuffledEdges);
