@@ -22,12 +22,12 @@ import { MAZE_ALGORITHMS } from '../../maze-builder/src/constants.js';
 
 export default class Main {
     constructor(gridWidth = 51) {
-        this.grid = new Grid(gridWidth);
-        this.grid.initGrid(Node);
+        this.gridClass = new Grid(gridWidth);
+        this.gridClass.initGrid(Node);
 
-        this.currentAlgorithm = new AStar(this.grid);
-        this.pathfindingViz = new PathfindingVisualization(this.grid);
-        this.mazeBuilder = new MazeBuilder(this.grid.gridSizeX, this.grid.gridSizeY, MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+        this.currentAlgorithm = new AStar(this.gridClass);
+        this.pathfindingViz = new PathfindingVisualization(this.gridClass);
+        this.mazeBuilder = new MazeBuilder(this.gridClass, MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
 
         this.init();
         this.initEventListeners();
@@ -35,10 +35,10 @@ export default class Main {
     }
 
     init = () => {
-        this.currentAlgorithm.setStartNode(this.grid.getNode(10, 8));
-        this.currentAlgorithm.setEndNode(this.grid.getNode(23, 8));
+        this.currentAlgorithm.setStartNode(this.gridClass.getNode(10, 8));
+        this.currentAlgorithm.setEndNode(this.gridClass.getNode(23, 8));
 
-        this.grid.drawAllNodes();
+        this.gridClass.drawAllNodes();
     }
 
     changeAlgorithm = (algorithm) => {
@@ -47,12 +47,12 @@ export default class Main {
         let start = this.currentAlgorithm.startNode;
         let end = this.currentAlgorithm.endNode;
 
-        this.currentAlgorithm = new algorithm(this.grid);
+        this.currentAlgorithm = new algorithm(this.gridClass);
 
-        this.currentAlgorithm.setStartNode(this.grid.getNode(start.x, start.y));
-        this.currentAlgorithm.setEndNode(this.grid.getNode(end.x, end.y));
+        this.currentAlgorithm.setStartNode(this.gridClass.getNode(start.x, start.y));
+        this.currentAlgorithm.setEndNode(this.gridClass.getNode(end.x, end.y));
 
-        this.grid.drawAllNodes();
+        this.gridClass.drawAllNodes();
     }
 
     displayTimeInHTML = (timeTaken, pathFoundBool) => {
@@ -76,11 +76,11 @@ export default class Main {
     }
 
     addUnwalkable = (e) => {
-        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
+        let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY) {
             node.setType(GRID_NODE_TYPES.UNWALKABLE);
-            this.grid.drawNode(node);
+            this.gridClass.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
                 this.runCurrentAlgorithm();
@@ -89,11 +89,11 @@ export default class Main {
     }
 
     addEmpty = (e) => {
-        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
+        let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.UNWALKABLE || node.type === GRID_NODE_TYPES.SWAMP) {
             node.setType(GRID_NODE_TYPES.EMPTY);
-            this.grid.drawNode(node);
+            this.gridClass.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
                 this.runCurrentAlgorithm();
@@ -102,11 +102,11 @@ export default class Main {
     }
 
     addSwamp = (e) => {
-        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
+        let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY) {
             node.setType(GRID_NODE_TYPES.SWAMP);
-            this.grid.drawNode(node);
+            this.gridClass.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
                 this.runCurrentAlgorithm();
@@ -115,15 +115,15 @@ export default class Main {
     }
 
     dragStart = (e) => {
-        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
+        let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         let oldStart = this.currentAlgorithm.startNode;
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY && oldStart !== node) {
             oldStart.setType(GRID_NODE_TYPES.EMPTY);
-            this.grid.drawNode(oldStart);
+            this.gridClass.drawNode(oldStart);
 
             this.currentAlgorithm.setStartNode(node);
-            this.grid.drawNode(node);
+            this.gridClass.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
                 oldStart.resetPathfindingValues();
@@ -133,15 +133,15 @@ export default class Main {
     }
 
     dragEnd = (e) => {
-        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
+        let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         let oldEnd = this.currentAlgorithm.endNode;
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY && oldEnd !== node) {
             oldEnd.setType(GRID_NODE_TYPES.EMPTY);
-            this.grid.drawNode(oldEnd);
+            this.gridClass.drawNode(oldEnd);
 
             this.currentAlgorithm.setEndNode(node);
-            this.grid.drawNode(node);
+            this.gridClass.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
                 oldEnd.resetPathfindingValues();
@@ -151,7 +151,7 @@ export default class Main {
     }
 
     handleMouseDown = (e) => {
-        let node = this.grid.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
+        let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         let listener;
 
         switch (node.type) {
@@ -243,23 +243,23 @@ export default class Main {
             let start = this.currentAlgorithm.startNode;
             let end = this.currentAlgorithm.endNode;
 
-            this.grid.initGrid(this.currentAlgorithm.algorithmNode);
+            this.gridClass.initGrid(this.currentAlgorithm.algorithmNode);
 
-            this.currentAlgorithm.setStartNode(this.grid.getNode(start.x, start.y));
-            this.currentAlgorithm.setEndNode(this.grid.getNode(end.x, end.y));
+            this.currentAlgorithm.setStartNode(this.gridClass.getNode(start.x, start.y));
+            this.currentAlgorithm.setEndNode(this.gridClass.getNode(end.x, end.y));
             this.currentAlgorithm.setComplete(false);
 
-            this.grid.drawAllNodes();
+            this.gridClass.drawAllNodes();
         }
 
         createMazeBtn.onclick = () => {
             createMazeBtn.blur();
             let maze = this.mazeBuilder.run();
-            this.grid.transferMazeToGrid(maze, this.currentAlgorithm.algorithmNode);
+            this.gridClass.transferMazeToGrid(maze, this.currentAlgorithm.algorithmNode);
             this.currentAlgorithm.placeStartAndEndInMaze();
             this.currentAlgorithm.setComplete(false);
 
-            this.grid.drawAllNodes();
+            this.gridClass.drawAllNodes();
         }
     }
 }

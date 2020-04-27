@@ -11,7 +11,7 @@ export default class HexGrid {
     constructor(sizeX, sizeY) {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
-        this.nodeSize = (canvas.width / this.gridSizeX);
+        this.nodeSize = canvas.width / this.gridSizeX;
         this.grid = [];
     }
 
@@ -93,7 +93,6 @@ export default class HexGrid {
         return vertices;
     }
 
-
     getNeighbors = (node) => {
         let directions = [
             // for odd columns
@@ -111,8 +110,8 @@ export default class HexGrid {
         let neighbors = [];
 
         for (let i = 0; i < 6; i++) {
-            var parity = +(node.x % 2 === 0);
-            var dir = directions[parity][i];
+            let parity = +(node.x % 2 === 0);
+            let dir = directions[parity][i];
 
             let adjX = node.x + dir[0];
             let adjY = node.y + dir[1];
