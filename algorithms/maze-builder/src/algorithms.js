@@ -126,16 +126,9 @@ export class Kruskal {
         let len = cellsArr.length;
         for (let i = 0; i < len; i++) {
             let cur = cellsArr[i];
-            edges.push([cur.x, cur.y - 1, 'N']);
-            edges.push([cur.x - 1, cur.y, 'NW']);
-            edges.push([cur.x - 1, cur.y + 1, 'SW']);
-            // if (cur.y - 1 > 0) { edges.push([cur.x, cur.y - 1, 'N']); this.gridClass.drawNode(this.getNode(cur.x, cur.y - 1), "green") }
-            // if (cur.x - 1 > 0) { edges.push([cur.x - 1, cur.y, 'NW']); this.gridClass.drawNode(this.getNode(cur.x - 1, cur.y), "green") }
-            // if (cur.x - 1 > 0 && cur.y + 1 < this.grid[cur.x - 1].length) { edges.push([cur.x - 1, cur.y + 1, 'SW']); this.gridClass.drawNode(this.getNode(cur.x - 1, cur.y + 1), "green") }
-
-            // if (cur.y - 1 > 0) edges.push([cur.x, cur.y - 1, 'N']);
-            // if (cur.x - 1 > 0) edges.push([cur.x - 1, cur.y, 'NW']);
-            // if (cur.x - 1 > 0 && cur.y + 1 > this.grid[cur.x - 1].length) edges.push([cur.x - 1, cur.y + 1, 'SW']);
+            edges.push([cur.x, cur.y - 1]);
+            edges.push([cur.x - 1, cur.y]);
+            edges.push([cur.x - 1, cur.y + 1]);
         }
         return edges;
     }
@@ -164,26 +157,15 @@ export class Kruskal {
         for (let i = 0; i < len; i++) {
             let [x, y, d] = edges[i];
 
-            if (x <= 0 || y <= 0 || y + 1 >= this.grid[x].length) { console.log('asd'); continue; }
+            if (x <= 0 || y <= 0 || y + 1 >= this.grid[x].length) continue;
             let edgeNode = this.getNode(x, y);
-            let neighbors = this.gridClass.getNeighbors(edgeNode);
-            console.log(neighbors)
 
-            let nodeA = neighbors[0];
-            if (!nodeA) continue;
-            let nodeB = neighbors[1];
-            if (!nodeB) continue;
-
-            // let nodeA = this.getNode(x + dir[d][0], y + dir[d][1]);
-            // if (!nodeA) continue;
-            // let nodeB = this.getNode(x + dir[mirroredDir[d]][0], y + dir[mirroredDir[d]][1]);
-            // if (!nodeB) continue;
+            let adjNodes = this.gridClass.getNeighbors(edgeNode, (neighbor) => !neighbor.isKruskalCell);
+            let nodeA = adjNodes[0];
+            let nodeB = adjNodes[1];
 
             if (nodeA.getRoot() !== nodeB.getRoot()) {
                 nodeA.connect(nodeB);
-                this.gridClass.drawNode(nodeA, "lightpink")
-                this.gridClass.drawNode(edgeNode, "lightpink")
-                this.gridClass.drawNode(nodeB, "lightpink")
 
                 nodeA.setIsMazePath(true);
                 edgeNode.setIsMazePath(true);
@@ -241,13 +223,9 @@ export class Kruskal {
             for (let y = 0; y < height; y++) {
                 let node = this.getNode(x, y);
                 if (x % 4 === 0 && y % 2 === 0 || (x - 2) % 4 === 0 && y % 2 === 1) {
-                    // if (x % 4 === 0 && y % 2 === 0) {
-                    node.isCell = true;
+                    node.setIsKruskalCell(true);
                     cellsArr.push(node);
-                    this.gridClass.drawNode(node, "red");
-                    // this.gridClass.drawNode(node, "green");
                 }
-                // if ((x - 2) % 4 === 0 && y % 2 === 1) this.gridClass.drawNode(node, "blue");
             }
         }
 

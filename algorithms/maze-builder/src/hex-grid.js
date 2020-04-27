@@ -34,7 +34,6 @@ export default class HexGrid {
 
         ctx.closePath();
 
-        // ctx.fillStyle = color ? color : (node.x % 4 === 0 && node.y % 2 === 0 || (node.x - 2) % 4 === 0 && node.y % 2 === 1) ? "white" : "black";
         ctx.fillStyle = color;
         ctx.lineWidth = 1;
         ctx.strokeStyle = "darkgray";
@@ -103,7 +102,8 @@ export default class HexGrid {
                 adjY >= 0 && adjY < this.grid[adjX].length
             ) {
                 let neighbor = this.getNode(adjX, adjY);
-                if (callback(neighbor)) continue;;
+                // callback to exclude nodes
+                if (callback(neighbor)) continue;
                 neighbors.push(neighbor);
             }
         }
@@ -139,7 +139,8 @@ export default class HexGrid {
                 adjY >= 0 && adjY < this.grid[adjX].length
             ) {
                 let neighbor = this.getNode(adjX, adjY);
-                if (!neighbor.isCell) continue;
+                // callback to exclude nodes
+                if (callback(neighbor)) continue;
                 neighbors.push(this.getNode(adjX, adjY));
             }
         }

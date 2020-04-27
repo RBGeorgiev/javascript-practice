@@ -35,14 +35,17 @@ export class KruskalNode extends Node {
     constructor(x, y) {
         super(x, y);
         this.parent = null;
+        this.isKruskalCell = false;
     }
-
-    getRoot = () => this.parent ? this.parent.getRoot() : this;
 
     connect = (node) => {
         let root = node.getRoot();
         root.parent = this;
     }
+
+    getRoot = () => this.parent ? this.parent.getRoot() : this;
+
+    setIsKruskalCell = (bool) => this.isKruskalCell = bool;
 }
 
 export class EllerNode extends Node {
@@ -51,10 +54,10 @@ export class EllerNode extends Node {
         this.parent = null;
     }
 
-    getRoot = () => this.parent ? this.parent.getRoot() : this;
-
     connect = (node) => {
         let root = node.getRoot();
         root.parent = this;
     }
+
+    getRoot = () => this.parent ? this.parent.getRoot() : this;
 }
