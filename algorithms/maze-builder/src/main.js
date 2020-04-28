@@ -1,4 +1,5 @@
-import Grid from './hex-grid.js';
+import Grid from './grid.js';
+// import Grid from './hex-grid.js';
 import { Node } from './nodes.js';
 import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
@@ -17,7 +18,6 @@ export default class Main {
     initEventListeners = () => {
         createMazeBtn.onclick = () => {
             this.mazeBuilderViz.stopAnimFrame();
-            this.gridClass.reset(Node);
 
             let timeStart = window.performance.now();
             this.mazeBuilder.run();
