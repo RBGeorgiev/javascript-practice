@@ -313,8 +313,8 @@ export class Eller {
     getStepsTaken = () => this.stepsTaken;
 
     generateMaze = () => {
-        let sizeX = this.gridClass.gridSizeX;
-        let sizeY = this.gridClass.gridSizeY;
+        let sizeX = this.grid.length;
+        let sizeY = this.grid[0].length;
         let cellSize = this.cellSize;
 
         let lastRow = false;
@@ -359,17 +359,66 @@ export class Eller {
         return this.grid;
     }
 
-    init = () => {
-        let width = this.gridClass.gridSizeX;
-        let height = this.gridClass.gridSizeY;
+    // generateMaze = () => {
+    //     let sizeX = this.gridClass.gridSizeX;
+    //     let sizeY = this.gridClass.gridSizeY;
+    //     let cellSize = this.cellSize;
 
-        for (let x = 0; x < width; x++) {
-            this.grid[x] = [];
-            for (let y = 0; y < height; y++) {
-                this.grid[x][y] = new EllerNode(x, y);
-            }
-        }
-    }
+    //     let lastRow = false;
+
+    //     for (let y = 0; y < sizeY; y += cellSize) {
+    //         let nextRowTest = this.getNode(0, y + cellSize);
+    //         if (nextRowTest === undefined) lastRow = true;
+
+    //         for (let x = 0; x < sizeX; x += cellSize) {
+    //             let nodeA = this.getNode(x, y);
+    //             let nodeB = (x + cellSize >= sizeX) ? undefined : this.getNode(x + cellSize, y);
+
+    //             if (lastRow) {
+    //                 if (nodeB && nodeA.getRoot() !== nodeB.getRoot()) {
+    //                     nodeB.connect(nodeA);
+    //                     this.addStep(nodeA, nodeB);
+    //                 }
+    //                 continue;
+    //             }
+
+    //             let nodeC = this.getNode(x, y + cellSize);
+
+    //             if (nodeB && nodeA.getRoot() !== nodeB.getRoot()) {
+    //                 if (this.randBool()) {
+    //                     nodeB.connect(nodeA);
+    //                     this.addStep(nodeA, nodeB);
+    //                 }
+    //             }
+
+    //             if (nodeA.getRoot() === nodeA) {
+    //                 nodeC.connect(nodeA);
+    //                 this.addStep(nodeA, nodeC);
+    //             } else {
+    //                 if (this.randBool()) {
+    //                     nodeC.connect(nodeA);
+    //                     this.addStep(nodeA, nodeC);
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return this.grid;
+    // }
+
+    init = () => this.gridClass.initGrid(EllerNode);
+
+    // init = () => {
+    //     let width = this.gridClass.gridSizeX;
+    //     let height = this.gridClass.gridSizeY;
+
+    //     for (let x = 0; x < width; x++) {
+    //         this.grid[x] = [];
+    //         for (let y = 0; y < height; y++) {
+    //             this.grid[x][y] = new EllerNode(x, y);
+    //         }
+    //     }
+    // }
 
     randBool = () => !!(Math.random() > 0.5);
 
