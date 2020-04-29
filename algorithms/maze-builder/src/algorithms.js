@@ -121,7 +121,7 @@ export class Kruskal {
     }
 
     // for hex grid
-    getEdges = (cellsArr) => {
+    getHexEdges = (cellsArr) => {
         let edges = [];
         let len = cellsArr.length;
         for (let i = 0; i < len; i++) {
@@ -133,29 +133,28 @@ export class Kruskal {
         return edges;
     }
 
-    // // for square grid
-    // getEdges = (cellsArr) => {
-    //     let edges = [];
-    //     let len = cellsArr.length;
-    //     for (let i = 0; i < len; i++) {
-    //         let cur = cellsArr[i];
-    //         if (cur.y - 1 > 0) edges.push([cur.x, cur.y - 1, 'N']);
-    //         if (cur.x - 1 > 0) edges.push([cur.x - 1, cur.y, 'W']);
-    //     }
-    //     return edges;
-    // }
+    // for square grid
+    getSquareEdges = (cellsArr) => {
+        let edges = [];
+        let len = cellsArr.length;
+        for (let i = 0; i < len; i++) {
+            let cur = cellsArr[i];
+            if (cur.y - 1 > 0) edges.push([cur.x, cur.y - 1, 'N']);
+            if (cur.x - 1 > 0) edges.push([cur.x - 1, cur.y, 'W']);
+        }
+        return edges;
+    }
 
     getNode = (x, y) => this.grid[x][y];
 
     getStepsTaken = () => this.stepsTaken;
 
     // for hex grid
-    generateMaze = (edges) => {
+    generateHexMaze = (edges) => {
         let len = edges.length;
 
-
         for (let i = 0; i < len; i++) {
-            let [x, y, d] = edges[i];
+            let [x, y] = edges[i];
 
             if (x <= 0 || y <= 0 || y + 1 >= this.grid[x].length) continue;
             let edgeNode = this.getNode(x, y);
@@ -180,40 +179,38 @@ export class Kruskal {
         return this.grid;
     }
 
-    // // for square grid
-    // generateMaze = (edges) => {
-    //     let len = edges.length;
-    //     let DX = { "N": 0, "W": -1 };
-    //     let DY = { "N": -1, "W": 0 };
+    // for square grid
+    generateSquareMaze = (edges) => {
+        let len = edges.length;
+        let DX = { "N": 0, "W": -1 };
+        let DY = { "N": -1, "W": 0 };
 
-    //     for (let i = 0; i < len; i++) {
-    //         let [x, y, d] = edges[i];
+        for (let i = 0; i < len; i++) {
+            let [x, y, d] = edges[i];
 
-    //         let edgeNode = this.getNode(x, y);
+            let edgeNode = this.getNode(x, y);
 
-    //         let nodeA = this.getNode(x + DX[d], y + DY[d]);
-    //         let nodeB = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
+            let nodeA = this.getNode(x + DX[d], y + DY[d]);
+            let nodeB = this.getNode(x + DX[d] * -1, y + DY[d] * -1);
 
-    //         if (nodeA.getRoot() !== nodeB.getRoot()) {
-    //             nodeA.connect(nodeB);
+            if (nodeA.getRoot() !== nodeB.getRoot()) {
+                nodeA.connect(nodeB);
 
-    //             nodeA.setIsMazePath(true);
-    //             edgeNode.setIsMazePath(true);
-    //             nodeB.setIsMazePath(true);
+                nodeA.setIsMazePath(true);
+                edgeNode.setIsMazePath(true);
+                nodeB.setIsMazePath(true);
 
-    //             this.addToStepsTaken(nodeA, MAZE_VIZ_TYPE.PATH);
-    //             this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
-    //             this.addToStepsTaken(nodeB, MAZE_VIZ_TYPE.PATH);
-    //         }
-    //     }
+                this.addToStepsTaken(nodeA, MAZE_VIZ_TYPE.PATH);
+                this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
+                this.addToStepsTaken(nodeB, MAZE_VIZ_TYPE.PATH);
+            }
+        }
 
-    //     return this.grid;
-    // }
-
-    init = () => this.gridClass.initGrid(KruskalNode);
+        return this.grid;
+    }
 
     // for hex grid
-    getCellsArr = () => {
+    getHexCellsArr = () => {
         let cellsArr = [];
 
         let width = this.grid.length;
@@ -221,8 +218,8 @@ export class Kruskal {
         for (let x = 0; x < width; x += 2) {
             let height = this.grid[x].length;
             for (let y = 0; y < height; y++) {
-                let node = this.getNode(x, y);
                 if (x % 4 === 0 && y % 2 === 0 || (x - 2) % 4 === 0 && y % 2 === 1) {
+                    let node = this.getNode(x, y);
                     node.setIsKruskalCell(true);
                     cellsArr.push(node);
                 }
@@ -232,34 +229,36 @@ export class Kruskal {
         return cellsArr;
     }
 
-    // // for square grid
-    // init = () => {
-    //     let cellsArr = [];
+    // for square grid
+    getSquareCellsArr = () => {
+        let cellsArr = [];
 
-    //     let width = this.gridClass.gridSizeX;
-    //     let height = this.gridClass.gridSizeY;
+        let width = this.grid.length;
 
-    //     for (let x = 0; x < width; x++) {
-    //         this.grid[x] = [];
-    //         for (let y = 0; y < height; y++) {
-    //             let node = new KruskalNode(x, y);
-    //             this.grid[x][y] = node;
-    //             if (x % 2 === 0 && y % 2 === 0) cellsArr.push(node);
-    //         }
-    //     }
+        for (let x = 0; x < width; x += 2) {
+            let height = this.grid[x].length;
+            for (let y = 0; y < height; y++) {
+                if (x % 2 === 0 && y % 2 === 0) {
+                    let node = this.getNode(x, y);
+                    // node.setIsKruskalCell(true);
+                    cellsArr.push(node);
+                }
+            }
+        }
 
-    //     return cellsArr;
-    // }
+        return cellsArr;
+    }
 
     resetStepsTaken = () => this.stepsTaken = [];
 
     run = () => {
         this.resetStepsTaken();
-        this.init();
-        let cellsArr = this.getCellsArr();
-        let edges = this.getEdges(cellsArr);
+        this.grid = this.gridClass.initGrid(KruskalNode);
+        let isHexGrid = !!this.grid[0][0].isHex;
+        let cellsArr = (isHexGrid) ? this.getHexCellsArr() : this.getSquareCellsArr();
+        let edges = (isHexGrid) ? this.getHexEdges(cellsArr) : this.getSquareEdges(cellsArr);
         let shuffledEdges = this.shuffleArray(edges);
-        return this.generateMaze(shuffledEdges);
+        return (isHexGrid) ? this.generateHexMaze(shuffledEdges) : this.generateSquareMaze(shuffledEdges);
     }
 
     shuffleArray(arr) {
