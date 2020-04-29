@@ -359,15 +359,13 @@ export class Eller {
         return this.grid;
     }
 
-    init = () => this.gridClass.initGrid(EllerNode);
-
     randBool = () => !!(Math.random() > 0.5);
 
     resetStepsTaken = () => this.stepsTaken = [];
 
     run = () => {
         this.resetStepsTaken();
-        this.init();
+        this.grid = this.gridClass.initGrid(EllerNode);
         return this.generateMaze();
     }
 }

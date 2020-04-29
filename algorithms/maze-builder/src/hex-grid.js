@@ -150,7 +150,7 @@ export default class HexGrid {
 
     getNode = (x, y) => this.grid[x][y];
 
-    initGrid = (pathfindingNode) => {
+    initGrid = (nodeClass) => {
         let adjustedSize = this.nodeSize / 1.5;
 
         for (let x = 0; x < this.gridSizeX; x++) {
@@ -175,7 +175,7 @@ export default class HexGrid {
 
                 if (vertices) {
                     if (!this.grid[x]) this.grid[x] = [];
-                    let node = new pathfindingNode(x, y);
+                    let node = new nodeClass(x, y);
                     node.setHexCenter(center);
                     node.setHexVertices(vertices);
                     node.setIsHex(true);
@@ -183,6 +183,8 @@ export default class HexGrid {
                 }
             }
         }
+
+        return this.grid;
     }
 
     reset = (nodeClass) => {

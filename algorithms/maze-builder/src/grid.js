@@ -89,6 +89,8 @@ export default class Grid {
                 this.grid[x][y] = new nodeClass(x, y);
             }
         }
+
+        return this.grid;
     }
 
     reset = (nodeClass) => {
