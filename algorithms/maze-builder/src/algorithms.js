@@ -11,10 +11,7 @@ export class RecursiveBacktracking {
         this.gridClass = gridClass;
         this.grid = this.gridClass.grid;
         this.stepsTaken = [];
-
-        // this.numOfCells = this.getNumOfSquareCells(this.gridClass.gridSizeX, this.gridClass.gridSizeY);
-        this.numOfCells = this.getNumOfHexCells(this.gridClass.gridSizeX, this.grid[0].length);
-
+        this.numOfCells;
     }
 
     addToStepsTaken = (node, type) => {
@@ -27,9 +24,9 @@ export class RecursiveBacktracking {
 
     getNode = (x, y) => this.grid[x][y];
 
-    getNumOfHexCells = (sizeX, sizeY) => Math.round(sizeX / 4) * Math.ceil(sizeY / 2) + Math.round((sizeX - 2) / 4) * Math.floor(sizeY / 2);
+    getNumOfHexCells = (sizeX = this.gridClass.gridSizeX, sizeY = this.grid[0].length) => Math.round(sizeX / 4) * Math.ceil(sizeY / 2) + Math.round((sizeX - 2) / 4) * Math.floor(sizeY / 2);
 
-    getNumOfSquareCells = (sizeX, sizeY) => Math.ceil(sizeX / 2) * Math.ceil(sizeY / 2);
+    getNumOfSquareCells = (sizeX = this.gridClass.gridSizeX, sizeY = this.grid[0].length) => Math.ceil(sizeX / 2) * Math.ceil(sizeY / 2);
 
     getStepsTaken = () => this.stepsTaken;
 
@@ -81,13 +78,12 @@ export class RecursiveBacktracking {
         return this.grid;
     }
 
-    init = () => this.gridClass.initGrid(RecBacktrNode);
-
     resetStepsTaken = () => this.stepsTaken = [];
 
     run = () => {
         this.resetStepsTaken();
-        this.init();
+        this.grid = this.gridClass.initGrid(RecBacktrNode);
+        this.numOfCells = (this.grid[0][0].isHex) ? this.getNumOfHexCells() : this.getNumOfSquareCells();
         return this.generateMaze();
     }
 
@@ -276,6 +272,7 @@ export class Kruskal {
     }
 }
 
+// Eller's Algorithm
 export class Eller {
     constructor(gridClass) {
         this.gridClass = gridClass;

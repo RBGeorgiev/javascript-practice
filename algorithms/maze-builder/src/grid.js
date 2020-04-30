@@ -34,45 +34,44 @@ export default class Grid {
         ctx.stroke();
     }
 
-    // getMidNodeSquare = (A, B) => {
-    //     let dirX = (B.x - A.x) / 2;
-    //     let dirY = (B.y - A.y) / 2;
+    getMidNode = (A, B) => {
+        let dirX = (B.x - A.x) / 2;
+        let dirY = (B.y - A.y) / 2;
 
-    //     return this.getNode(A.x + dirX, A.y + dirY);
-    // }
+        return this.getNode(A.x + dirX, A.y + dirY);
+    }
 
-    // getNeighborCellsSquare = (node) => {
-    //     let neighbors = [];
-    //     let cellSize = this.cellSize;
-    //     let width = this.gridClass.gridSizeX;
-    //     let height = this.gridClass.gridSizeY;
+    getNeighborCells = (node) => {
+        let neighbors = [];
+        let width = this.gridSizeX;
+        let height = this.gridSizeY;
 
-    //     let neighborPositions = [
-    //         [cellSize, 0], // East
-    //         [-cellSize, 0], // West
-    //         [0, cellSize], // South
-    //         [0, -cellSize] // North
-    //     ]
+        let neighborPositions = [
+            [2, 0], // East
+            [-2, 0], // West
+            [0, 2], // South
+            [0, -2] // North
+        ]
 
-    //     for (let i = 0; i < neighborPositions.length; i++) {
-    //         let offsetX = neighborPositions[i][0];
-    //         let offsetY = neighborPositions[i][1];
+        for (let i = 0; i < neighborPositions.length; i++) {
+            let offsetX = neighborPositions[i][0];
+            let offsetY = neighborPositions[i][1];
 
-    //         let adjX = node.x + offsetX;
-    //         let adjY = node.y + offsetY;
+            let adjX = node.x + offsetX;
+            let adjY = node.y + offsetY;
 
-    //         if (
-    //             adjX >= 0 && adjX < width &&
-    //             adjY >= 0 && adjY < height
-    //         ) {
-    //             let neighbor = this.getNode(adjX, adjY);
-    //             if (!neighbor.cellVisited) neighbors.push(neighbor);
-    //         }
+            if (
+                adjX >= 0 && adjX < width &&
+                adjY >= 0 && adjY < height
+            ) {
+                let neighbor = this.getNode(adjX, adjY);
+                if (!neighbor.cellVisited) neighbors.push(neighbor);
+            }
 
-    //     }
+        }
 
-    //     return neighbors;
-    // }
+        return neighbors;
+    }
 
     getNode = (x, y) => this.grid[x][y];
 
