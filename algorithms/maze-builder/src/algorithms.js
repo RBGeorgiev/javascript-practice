@@ -104,8 +104,6 @@ export class Kruskal {
         this.gridClass = gridClass;
         this.grid = this.gridClass.grid;
         this.stepsTaken = [];
-
-        this.cellSize = 2;
     }
 
     addToStepsTaken = (node, type) => {
@@ -278,13 +276,11 @@ export class Eller {
         this.gridClass = gridClass;
         this.grid = this.gridClass.grid;
         this.stepsTaken = [];
-
-        this.cellSize = 2;
     }
 
     addStep = (node1, node2) => {
-        let dx = (node2.x - node1.x) / this.cellSize;
-        let dy = (node2.y - node1.y) / this.cellSize;
+        let dx = (node2.x - node1.x) / 2;
+        let dy = (node2.y - node1.y) / 2;
         let edgeNode = this.getNode(node1.x + dx, node1.y + dy);
 
         node1.setIsMazePath(true);
@@ -311,7 +307,7 @@ export class Eller {
     generateMaze = () => {
         let sizeX = this.grid.length;
         let sizeY = this.grid[0].length;
-        let cellSize = this.cellSize;
+        let cellSize = 2;
 
         let lastRow = false;
 

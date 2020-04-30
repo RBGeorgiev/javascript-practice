@@ -16,12 +16,11 @@ export default class Grid {
         }
     }
 
-    drawNode = (node) => {
+    drawNode = (node, color = '#000000') => {
         let ctx = this.ctx;
         let size = this.nodeSize;
         let xPos = size * node.x;
         let yPos = size * node.y;
-        let color = this.getNodeColor(node);
 
         ctx.beginPath();
 
