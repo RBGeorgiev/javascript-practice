@@ -1,13 +1,14 @@
-// import Grid from './grid.js';
-import Grid from './hex-grid.js';
+import Grid from './grid.js';
+import HexGrid from './hex-grid.js';
 import { Node } from './nodes.js';
 import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
-import { MAZE_ALGORITHMS, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
+import { MAZE_ALGORITHMS, canvas, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
 
 export default class Main {
     constructor(gridWidth = 51) {
-        this.gridClass = new Grid(ctx, gridWidth);
+        this.gridWidth = gridWidth;
+        this.gridClass = new Grid(ctx, this.gridWidth);
         this.gridClass.reset(Node);
 
         this.mazeBuilder = new MazeBuilder(this.gridClass, MAZE_ALGORITHMS[algorithmSelect.value]);
@@ -36,6 +37,23 @@ export default class Main {
             algorithmSelect.blur();
             this.mazeBuilderViz.stopAnimFrame();
             this.mazeBuilder.setAlgorithm(MAZE_ALGORITHMS[algorithmSelect.value]);
+            this.gridClass.drawAllNodes();
+        }
+
+        gridSelect.onchange = () => {
+            gridSelect.blur();
+            this.mazeBuilderViz.stopAnimFrame();
+            console.log(gridSelect.value)
+            let grids = {
+                'squareGrid': Grid,
+                'hexGrid': HexGrid
+            }
+            this.gridClass = new grids[gridSelect.value](ctx, this.gridWidth);
+            this.gridClass.reset(Node);
+            this.mazeBuilder = new MazeBuilder(this.gridClass, MAZE_ALGORITHMS[algorithmSelect.value]);
+            this.mazeBuilderViz = new MazeBuilderVisualization(this.gridClass, this.mazeBuilder, ctx);
+            console.log(this.gridClass)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             this.gridClass.drawAllNodes();
         }
     }
