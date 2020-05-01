@@ -1,4 +1,4 @@
-export default class Grid {
+export default class SquareGrid {
     constructor(ctx, sizeX, sizeY) {
         this.gridSizeX = sizeX;
         this.gridSizeY = sizeY || Math.floor(this.gridSizeX / 2);
