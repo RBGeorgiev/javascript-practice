@@ -39,6 +39,8 @@ export default class HexGrid {
         };
     }
 
+    clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     drawAllNodes = () => {
         let width = this.grid.length;
         for (let x = 0; x < width; x++) {

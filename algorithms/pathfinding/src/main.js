@@ -1,7 +1,5 @@
-// import Grid from './grid.js';
-import Grid from '../hex-grid.js';
 import { Node } from './nodes.js';
-import { GRID_NODE_TYPES, PATHFINDING_ALGORITHMS } from './enums.js';
+import { GRID_NODE_TYPES, PATHFINDING_ALGORITHMS, PATHFINDING_GRIDS } from './enums.js';
 import { AStar } from './pf.js';
 import PathfindingVisualization from './pf-viz.js';
 import {
@@ -23,12 +21,11 @@ import { MAZE_ALGORITHMS, MAZE_GRIDS } from '../../maze-builder/src/constants.js
 export default class Main {
     constructor(gridWidth = 51) {
         this.gridWidth = gridWidth;
-        this.gridClass = new Grid(gridWidth);
-        this.gridClass.initGrid(Node);
 
-        this.currentAlgorithm = new AStar(this.gridClass);
-        this.pathfindingViz = new PathfindingVisualization(this.gridClass);
-        this.mazeBuilder = new MazeBuilder(new MAZE_GRIDS['hexGrid'](null, this.gridWidth), MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+        this.gridClass;
+        this.currentAlgorithm;
+        this.pathfindingViz;
+        this.mazeBuilder;
 
         this.init();
         this.initEventListeners();
@@ -36,9 +33,17 @@ export default class Main {
     }
 
     init = () => {
+        this.gridClass = new PATHFINDING_GRIDS[gridSelect.value](this.gridWidth);
+        this.gridClass.initGrid(Node);
+
+        this.currentAlgorithm = new AStar(this.gridClass);
+        this.pathfindingViz = new PathfindingVisualization(this.gridClass);
+        this.mazeBuilder = new MazeBuilder(new MAZE_GRIDS[gridSelect.value](null, this.gridWidth), MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+
         this.currentAlgorithm.setStartNode(this.gridClass.getNode(10, 8));
         this.currentAlgorithm.setEndNode(this.gridClass.getNode(23, 8));
 
+        this.gridClass.clearCanvas();
         this.gridClass.drawAllNodes();
     }
 
@@ -224,6 +229,11 @@ export default class Main {
         mazeAlgorithmSelect.onchange = () => {
             mazeAlgorithmSelect.blur();
             this.mazeBuilder.setAlgorithm(MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+        }
+
+        gridSelect.onchange = () => {
+            gridSelect.blur();
+            this.init();
         }
 
         animSpeedInput.oninput = (e) => {

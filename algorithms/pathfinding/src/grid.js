@@ -35,6 +35,8 @@ export default class Grid {
         ctx.stroke();
     }
 
+    clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     getNeighbors = (node) => {
         let neighbors = [];
 

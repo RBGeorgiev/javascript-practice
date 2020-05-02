@@ -1,4 +1,6 @@
 import { AStar, Dijkstra } from './pf.js';
+import SquareGrid from './grid.js';
+import HexGrid from '../hex-grid.js';
 
 export const GRID_NODE_TYPES = {
     EMPTY: "EMPTY",
@@ -37,3 +39,9 @@ export const PATHFINDING_ALGORITHMS = {
     'Dijkstra': Dijkstra
 }
 Object.freeze(PATHFINDING_ALGORITHMS);
+
+export const PATHFINDING_GRIDS = {
+    'squareGrid': SquareGrid,
+    'hexGrid': HexGrid
+}
+Object.freeze(PATHFINDING_GRIDS);
