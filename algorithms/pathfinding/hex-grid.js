@@ -208,12 +208,23 @@ export default class HexGrid {
         }
     }
 
-    // transferMazeToGrid = (maze, pathfindingNode) => {
-    //     for (let x = 0; x < this.gridSizeX; x++) {
-    //         for (let y = 0; y < this.gridSizeY; y++) {
-    //             let type = (maze[x][y].isMazePath) ? GRID_NODE_TYPES.EMPTY : GRID_NODE_TYPES.UNWALKABLE;
-    //             this.grid[x][y] = new pathfindingNode(x, y, type);
-    //         }
-    //     }
-    // }
+    transferMazeToGrid = (maze, pathfindingNode) => {
+        let width = maze.length;
+        for (let x = 0; x < width; x++) {
+            let height = maze[x].length;
+            for (let y = 0; y < height; y++) {
+                let mazeNode = maze[x][y];
+                let type = (mazeNode.isMazePath) ? GRID_NODE_TYPES.EMPTY : GRID_NODE_TYPES.UNWALKABLE;
+                let center = mazeNode.hexCenter;
+                let vertices = mazeNode.hexVertices;
+
+                let pfNode = new pathfindingNode(x, y, type);
+                pfNode.setHexCenter(center);
+                pfNode.setHexVertices(vertices);
+                pfNode.setIsHex(true);
+
+                this.grid[x][y] = pfNode;
+            }
+        }
+    }
 }

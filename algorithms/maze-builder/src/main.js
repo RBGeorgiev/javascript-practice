@@ -1,14 +1,7 @@
-import SquareGrid from './square-grid.js';
-import HexGrid from './hex-grid.js';
 import { Node } from './nodes.js';
 import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
-import { MAZE_ALGORITHMS, canvas, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
-
-const GRIDS = {
-    'squareGrid': SquareGrid,
-    'hexGrid': HexGrid
-}
+import { MAZE_ALGORITHMS, MAZE_GRIDS, canvas, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
 
 export default class Main {
     constructor(gridWidth = 51) {
@@ -23,7 +16,7 @@ export default class Main {
     }
 
     init = () => {
-        let selectedGrid = GRIDS[gridSelect.value];
+        let selectedGrid = MAZE_GRIDS[gridSelect.value];
         let selectedAlgorithm = MAZE_ALGORITHMS[algorithmSelect.value];
 
         this.gridClass = new selectedGrid(ctx, this.gridWidth);

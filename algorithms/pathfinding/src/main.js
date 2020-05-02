@@ -18,16 +18,17 @@ import {
     timerNumberSpan
 } from './constants.js';
 import MazeBuilder from '../../maze-builder/src/maze-builder.js';
-import { MAZE_ALGORITHMS } from '../../maze-builder/src/constants.js';
+import { MAZE_ALGORITHMS, MAZE_GRIDS } from '../../maze-builder/src/constants.js';
 
 export default class Main {
     constructor(gridWidth = 51) {
+        this.gridWidth = gridWidth;
         this.gridClass = new Grid(gridWidth);
         this.gridClass.initGrid(Node);
 
         this.currentAlgorithm = new AStar(this.gridClass);
         this.pathfindingViz = new PathfindingVisualization(this.gridClass);
-        this.mazeBuilder = new MazeBuilder(this.gridClass, MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+        this.mazeBuilder = new MazeBuilder(new MAZE_GRIDS['hexGrid'](null, this.gridWidth), MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
 
         this.init();
         this.initEventListeners();

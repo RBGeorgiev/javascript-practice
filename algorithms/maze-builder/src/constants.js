@@ -1,4 +1,6 @@
 import { RecursiveBacktracking, Kruskal, Eller } from './algorithms.js';
+import SquareGrid from './square-grid.js';
+import HexGrid from './hex-grid.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -14,3 +16,9 @@ export const MAZE_ALGORITHMS = {
     'Eller': Eller
 }
 Object.freeze(MAZE_ALGORITHMS);
+
+export const MAZE_GRIDS = {
+    'squareGrid': SquareGrid,
+    'hexGrid': HexGrid
+}
+Object.freeze(MAZE_GRIDS);
