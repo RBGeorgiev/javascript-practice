@@ -48,8 +48,6 @@ export default class Main {
     }
 
     changeAlgorithm = (algorithm) => {
-        this.pathfindingViz.stopAnimFrame();
-
         let start = this.currentAlgorithm.startNode;
         let end = this.currentAlgorithm.endNode;
 
@@ -221,6 +219,7 @@ export default class Main {
 
         pathfindingAlgorithmSelect.onchange = () => {
             pathfindingAlgorithmSelect.blur();
+            this.pathfindingViz.stopAnimFrame();
             timerTextSpan.innerText = "";
             timerNumberSpan.innerText = "";
             this.changeAlgorithm(PATHFINDING_ALGORITHMS[pathfindingAlgorithmSelect.value]);
@@ -233,6 +232,7 @@ export default class Main {
 
         gridSelect.onchange = () => {
             gridSelect.blur();
+            this.pathfindingViz.stopAnimFrame();
             this.init();
         }
 
@@ -245,12 +245,14 @@ export default class Main {
 
         clearPathBtn.onclick = () => {
             clearPathBtn.blur();
+            this.pathfindingViz.stopAnimFrame();
             this.currentAlgorithm.reset();
             this.currentAlgorithm.setComplete(false);
         }
 
         clearWallsBtn.onclick = () => {
             clearWallsBtn.blur();
+            this.pathfindingViz.stopAnimFrame();
             let start = this.currentAlgorithm.startNode;
             let end = this.currentAlgorithm.endNode;
 
@@ -265,6 +267,7 @@ export default class Main {
 
         createMazeBtn.onclick = () => {
             createMazeBtn.blur();
+            this.pathfindingViz.stopAnimFrame();
             let maze = this.mazeBuilder.run();
             this.gridClass.transferMazeToGrid(maze, this.currentAlgorithm.algorithmNode);
             this.currentAlgorithm.placeStartAndEndInMaze();
