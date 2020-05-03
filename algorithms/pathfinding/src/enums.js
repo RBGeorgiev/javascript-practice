@@ -1,6 +1,6 @@
 import { AStar, Dijkstra } from './pf.js';
 import SquareGrid from './grid.js';
-import HexGrid from '../hex-grid.js';
+import HexGrid from './hex-grid.js';
 
 export const GRID_NODE_TYPES = {
     EMPTY: "EMPTY",

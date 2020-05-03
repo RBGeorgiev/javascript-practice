@@ -1,8 +1,9 @@
+import { canvas } from './constants.js';
+
 export class MazeBuilderVisualization {
     constructor(gridClass, mazeBuilder) {
         this.gridClass = gridClass;
         this.grid = this.gridClass.grid;
-        this.ctx = this.gridClass.ctx;
 
         this.mazeBuilder = mazeBuilder;
         this.nodeSize = canvas.width / this.gridClass.gridSizeX;

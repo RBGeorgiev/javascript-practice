@@ -1,12 +1,7 @@
-import { GRID_NODE_TYPES, GRID_NODE_COLORS } from './src/enums.js';
-import { canvas, ctx } from './src/constants.js';
+import { GRID_NODE_TYPES, GRID_NODE_COLORS } from './enums.js';
+import { canvas, ctx } from './constants.js';
 
-// pointyHexCorner = (x, y, size, i) => {
-//     let angle_deg = 60 * i - 30;
-//     let angle_rad = Math.PI / 180 * angle_deg;
-//     return [x + size * Math.cos(angle_rad), y + size * Math.sin(angle_rad)];
-// }
-
+// flat top even column downward offset layout i.e. "even-q" vertical layout
 export default class HexGrid {
     constructor(sizeX, sizeY) {
         this.gridSizeX = sizeX;

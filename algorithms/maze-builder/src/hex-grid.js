@@ -1,3 +1,4 @@
+// flat top even column downward offset layout i.e. "even-q" vertical layout
 export default class HexGrid {
     constructor(ctx, sizeX, sizeY) {
         this.gridSizeX = sizeX;

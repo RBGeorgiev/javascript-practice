@@ -23,7 +23,7 @@ export default class Main {
         // remove old maze and display black grid
         this.gridClass.reset(Node);
         this.mazeBuilder = new MazeBuilder(this.gridClass, selectedAlgorithm);
-        this.mazeBuilderViz = new MazeBuilderVisualization(this.gridClass, this.mazeBuilder, ctx);
+        this.mazeBuilderViz = new MazeBuilderVisualization(this.gridClass, this.mazeBuilder);
     }
 
     initEventListeners = () => {
