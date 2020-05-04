@@ -1,6 +1,5 @@
 import { Node } from './nodes.js';
 import { GRID_NODE_TYPES, PATHFINDING_ALGORITHMS, PATHFINDING_GRIDS } from './enums.js';
-import { AStar } from './pf.js';
 import PathfindingVisualization from './pf-viz.js';
 import {
     canvas,
@@ -33,12 +32,17 @@ export default class Main {
     }
 
     init = () => {
-        this.gridClass = new PATHFINDING_GRIDS[gridSelect.value](this.gridWidth);
-        this.gridClass.initGrid(Node);
+        let pfGrid = PATHFINDING_GRIDS[gridSelect.value];
+        let pfAlgorithm = PATHFINDING_ALGORITHMS[pathfindingAlgorithmSelect.value];
+        let mazeGrid = MAZE_GRIDS[gridSelect.value];
+        let mazeAlgorithm = MAZE_ALGORITHMS[mazeAlgorithmSelect.value];
 
-        this.currentAlgorithm = new AStar(this.gridClass);
+        this.gridClass = new pfGrid(this.gridWidth);
+        this.gridClass.initGrid(Node);
+        this.currentAlgorithm = new pfAlgorithm(this.gridClass);
         this.pathfindingViz = new PathfindingVisualization(this.gridClass);
-        this.mazeBuilder = new MazeBuilder(new MAZE_GRIDS[gridSelect.value](null, this.gridWidth), MAZE_ALGORITHMS[mazeAlgorithmSelect.value]);
+
+        this.mazeBuilder = new MazeBuilder(new mazeGrid(null, this.gridWidth), mazeAlgorithm);
 
         this.currentAlgorithm.setStartNode(this.gridClass.getNode(10, 8));
         this.currentAlgorithm.setEndNode(this.gridClass.getNode(23, 8));
