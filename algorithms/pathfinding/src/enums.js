@@ -1,4 +1,5 @@
-import { AStar, Dijkstra } from './pf.js';
+import AStar from './algorithms/aStar.js';
+import Dijkstra from './algorithms/dijkstra.js';
 import SquareGrid from './grid.js';
 import HexGrid from './hex-grid.js';
 
