@@ -1,4 +1,6 @@
-import { RecursiveBacktracking, Kruskal, Eller } from './algorithms.js';
+import RecursiveBacktracking from './algorithms/recursive-backtracking.js';
+import Kruskal from './algorithms/kruskal.js';
+import Eller from './algorithms/eller.js';
 import SquareGrid from './square-grid.js';
 import HexGrid from './hex-grid.js';
 
@@ -9,6 +11,11 @@ export const ctx = canvas.getContext("2d");
 export const createMazeBtn = el("createMazeBtn");
 export const algorithmSelect = el('algorithmSelect');
 export const timerNumberSpan = el('timerNumberSpan');
+
+export const MAZE_VIZ_TYPE = {
+    PATH: "#FFFFFF",
+    TRACEBACK: "#FF0000"
+}
 
 export const MAZE_ALGORITHMS = {
     'RecursiveBacktracking': RecursiveBacktracking,
