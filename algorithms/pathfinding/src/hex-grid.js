@@ -151,6 +151,17 @@ export default class HexGrid {
     getNodeFromCubeCoord = (obj) => {
         let col = obj.x;
         let row = obj.z + (obj.x + (obj.x & 1)) / 2;
+        if (
+            col < 0
+            ||
+            col >= this.grid.length
+            ||
+            row < 0
+            ||
+            row >= this.grid[col].length
+        ) {
+            return null;
+        }
         return this.getNode(col, row);
     }
 
