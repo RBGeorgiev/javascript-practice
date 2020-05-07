@@ -1,6 +1,7 @@
 import RecursiveBacktracking from './algorithms/recursive-backtracking.js';
 import Kruskal from './algorithms/kruskal.js';
 import Eller from './algorithms/eller.js';
+import Prim from './algorithms/prim.js';
 import SquareGrid from './square-grid.js';
 import HexGrid from './hex-grid.js';
 
@@ -20,7 +21,8 @@ export const MAZE_VIZ_TYPE = {
 export const MAZE_ALGORITHMS = {
     'RecursiveBacktracking': RecursiveBacktracking,
     'Kruskal': Kruskal,
-    'Eller': Eller
+    'Eller': Eller,
+    'Prim': Prim
 }
 Object.freeze(MAZE_ALGORITHMS);
 

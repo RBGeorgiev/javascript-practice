@@ -1,5 +1,5 @@
-// import { PrimNode } from '../nodes.js';
-// import { MAZE_VIZ_TYPE } from '../constants.js';
+import { PrimNode } from '../nodes.js';
+import { MAZE_VIZ_TYPE } from '../constants.js';
 
 export default class Prim {
     constructor(gridClass) {
@@ -8,19 +8,17 @@ export default class Prim {
         this.stepsTaken = [];
     }
 
-    // addStep = (node1, node2) => {
-    //     let dx = (node2.x - node1.x) / 2;
-    //     let dy = (node2.y - node1.y) / 2;
-    //     let edgeNode = this.getNode(node1.x + dx, node1.y + dy);
+    addStep = (node1, node2) => {
+        let dx = (node2.x - node1.x) / 2;
+        let dy = (node2.y - node1.y) / 2;
+        let midNode = this.getNode(node1.x + dx, node1.y + dy);
 
-    //     node1.setIsMazePath(true);
-    //     edgeNode.setIsMazePath(true);
-    //     node2.setIsMazePath(true);
+        node1.setIsMazePath(true);
+        midNode.setIsMazePath(true);
 
-    //     this.addToStepsTaken(node1, MAZE_VIZ_TYPE.PATH);
-    //     this.addToStepsTaken(edgeNode, MAZE_VIZ_TYPE.PATH);
-    //     this.addToStepsTaken(node2, MAZE_VIZ_TYPE.PATH);
-    // }
+        this.addToStepsTaken(node1, MAZE_VIZ_TYPE.PATH);
+        this.addToStepsTaken(midNode, MAZE_VIZ_TYPE.PATH);
+    }
 
     addToStepsTaken = (node, type) => {
         let step = {
@@ -34,20 +32,47 @@ export default class Prim {
 
     getStepsTaken = () => this.stepsTaken;
 
-    // generateMaze = () => {
-    //     let sizeX = this.grid.length;
-    //     let sizeY = this.grid[0].length;
-    //     let cellSize = 2;
+    generateMaze = () => {
+        let start = this.getNode(0, 0);
+        start.setCellVisited(true);
+        start.setIsMazePath(true);
+        this.addToStepsTaken(start, MAZE_VIZ_TYPE.PATH);
 
-    //     return this.grid;
-    // }
+        let neighbors = this.gridClass.getNeighborCells(start);
+        neighbors.forEach(n => {
+            n.setInFrontier(true);
+            n.setParent(start);
+        });
+        let frontier = [...neighbors];
 
+        while (frontier.length) {
+            let rand = this.random(frontier.length);
+            let cur = frontier.splice(rand, 1)[0];
+            cur.setCellVisited(true);
+            this.addStep(cur, cur.parent);
+
+            let neighbors = this.gridClass.getNeighborCells(cur, (neighbor) => !neighbor.cellVisited && !neighbor.InFrontier);
+            neighbors.forEach(n => {
+                n.setInFrontier(true);
+                n.setParent(cur);
+            });
+            frontier.push(...neighbors);
+        }
+
+        return this.grid;
+    }
+
+    random(max, min = 0) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    }
 
     resetStepsTaken = () => this.stepsTaken = [];
 
-    // run = () => {
-    //     this.resetStepsTaken();
-    //     this.grid = this.gridClass.initGrid(PrimNode);
-    //     return this.generateMaze();
-    // }
+    run = () => {
+        this.resetStepsTaken();
+        this.grid = this.gridClass.initGrid(PrimNode);
+        return this.generateMaze();
+    }
 }

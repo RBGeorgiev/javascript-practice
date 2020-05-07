@@ -61,3 +61,19 @@ export class EllerNode extends Node {
 
     getRoot = () => this.parent ? this.parent.getRoot() : this;
 }
+
+export class PrimNode extends Node {
+    constructor(x, y) {
+        super(x, y);
+        this.cellVisited = false;
+        this.inFrontier = false;
+        this.parent = false;
+
+    }
+
+    setCellVisited = (bool) => this.cellVisited = bool;
+
+    setInFrontier = (bool) => this.inFrontier = bool;
+
+    setParent = (node) => this.parent = node;
+}
