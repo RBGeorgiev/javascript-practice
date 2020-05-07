@@ -47,7 +47,9 @@ export default class Prim {
 
         while (frontier.length) {
             let rand = this.random(frontier.length);
-            let cur = frontier.splice(rand, 1)[0];
+            let cur = frontier[rand];
+            frontier.splice(rand, 1);
+            if (cur.cellVisited) continue;
             cur.setCellVisited(true);
             this.addStep(cur, cur.parent);
 
