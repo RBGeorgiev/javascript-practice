@@ -40,7 +40,7 @@ export default class SquareGrid {
         return this.getNode(A.x + dirX, A.y + dirY);
     }
 
-    getNeighborCells = (node) => {
+    getNeighborCells = (node, callback) => {
         let neighbors = [];
         let width = this.gridSizeX;
         let height = this.gridSizeY;
@@ -64,7 +64,9 @@ export default class SquareGrid {
                 adjY >= 0 && adjY < height
             ) {
                 let neighbor = this.getNode(adjX, adjY);
-                if (!neighbor.cellVisited) neighbors.push(neighbor);
+                // callback to exclude nodes
+                if (callback(neighbor)) continue;
+                neighbors.push(neighbor);
             }
 
         }

@@ -34,26 +34,17 @@ export default class Prim {
 
     generateMaze = () => {
         let start = this.getNode(0, 0);
-        start.setCellVisited(true);
-        start.setIsMazePath(true);
-        this.addToStepsTaken(start, MAZE_VIZ_TYPE.PATH);
-
-        let neighbors = this.gridClass.getNeighborCells(start);
-        neighbors.forEach(n => {
-            n.setInFrontier(true);
-            n.setParent(start);
-        });
-        let frontier = [...neighbors];
+        start.setParent(start);
+        let frontier = [start];
+        let rand, cur, neighbors;
 
         while (frontier.length) {
-            let rand = this.random(frontier.length);
-            let cur = frontier[rand];
-            frontier.splice(rand, 1);
-            if (cur.cellVisited) continue;
+            rand = this.random(frontier.length);
+            cur = frontier.splice(rand, 1)[0];
             cur.setCellVisited(true);
             this.addStep(cur, cur.parent);
 
-            let neighbors = this.gridClass.getNeighborCells(cur, (neighbor) => !neighbor.cellVisited && !neighbor.InFrontier);
+            neighbors = this.gridClass.getNeighborCells(cur, (neighbor) => neighbor.cellVisited || neighbor.inFrontier);
             neighbors.forEach(n => {
                 n.setInFrontier(true);
                 n.setParent(cur);
