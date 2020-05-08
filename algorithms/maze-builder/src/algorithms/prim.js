@@ -9,15 +9,14 @@ export default class Prim {
     }
 
     addStep = (node1, node2) => {
-        let dx = (node2.x - node1.x) / 2;
-        let dy = (node2.y - node1.y) / 2;
-        let midNode = this.getNode(node1.x + dx, node1.y + dy);
-
         node1.setIsMazePath(true);
-        midNode.setIsMazePath(true);
-
         this.addToStepsTaken(node1, MAZE_VIZ_TYPE.PATH);
-        this.addToStepsTaken(midNode, MAZE_VIZ_TYPE.PATH);
+
+        if (node2) {
+            let midNode = this.gridClass.getMidNode(node1, node2);
+            midNode.setIsMazePath(true);
+            this.addToStepsTaken(midNode, MAZE_VIZ_TYPE.PATH);
+        }
     }
 
     addToStepsTaken = (node, type) => {
@@ -34,7 +33,6 @@ export default class Prim {
 
     generateMaze = () => {
         let start = this.getNode(0, 0);
-        start.setParent(start);
         let frontier = [start];
         let rand, cur, neighbors;
 
