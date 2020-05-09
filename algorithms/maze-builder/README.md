@@ -1,3 +1,3 @@
 # Maze builder in javascript
 
-Maze builder visualization written in JS. The algorithms included so far are [Recursive Backtracking](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker) and [Kruskal's algorithm](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Kruskal's_algorithm)
+This is a visualization of popular maze building algorithms. The algorithms create perfect mazes, which means there is only one path through the maze and any 2 random points in the maze have a path connecting them. I created the maze builder as a small add-on to use with my pathfinding visualization project, but ended up expanding on it a lot more than I had originally planned.
