@@ -11,12 +11,13 @@ export default class SquareGrid {
         for (let x = 0; x < this.grid.length; x++) {
             for (let y = 0; y < this.grid[x].length; y++) {
                 let node = this.getNode(x, y);
-                this.drawNode(node);
+                let color = this.getNodeColor(node);
+                this.drawNode(node, color);
             }
         }
     }
 
-    drawNode = (node, color = '#000000') => {
+    drawNode = (node, color) => {
         let ctx = this.ctx;
         let size = this.nodeSize;
         let xPos = size * node.x;

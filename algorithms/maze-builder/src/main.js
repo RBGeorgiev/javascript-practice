@@ -1,7 +1,7 @@
 import { Node } from './nodes.js';
 import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
-import { MAZE_ALGORITHMS, MAZE_GRIDS, canvas, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
+import { MAZE_ALGORITHMS, MAZE_ALGORITHM_NODES, MAZE_GRIDS, canvas, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
 
 export default class Main {
     constructor(gridWidth = 51) {
@@ -18,10 +18,11 @@ export default class Main {
     init = () => {
         let selectedGrid = MAZE_GRIDS[gridSelect.value];
         let selectedAlgorithm = MAZE_ALGORITHMS[algorithmSelect.value];
+        let algorithmNode = MAZE_ALGORITHM_NODES[algorithmSelect.value];
 
         this.gridClass = new selectedGrid(ctx, this.gridWidth);
         // remove old maze and display black grid
-        this.gridClass.reset(Node);
+        this.gridClass.reset(algorithmNode);
         this.mazeBuilder = new MazeBuilder(this.gridClass, selectedAlgorithm);
         this.mazeBuilderViz = new MazeBuilderVisualization(this.gridClass, this.mazeBuilder);
     }
@@ -45,8 +46,12 @@ export default class Main {
 
         algorithmSelect.onchange = () => {
             algorithmSelect.blur();
+            let selectedAlgorithm = MAZE_ALGORITHMS[algorithmSelect.value];
+            let algorithmNode = MAZE_ALGORITHM_NODES[algorithmSelect.value];
+
             this.mazeBuilderViz.stopAnimFrame();
-            this.mazeBuilder.setAlgorithm(MAZE_ALGORITHMS[algorithmSelect.value]);
+            this.mazeBuilder.setAlgorithm(selectedAlgorithm);
+            this.gridClass.reset(algorithmNode);
             this.gridClass.drawAllNodes();
         }
 

@@ -68,7 +68,6 @@ export class PrimNode extends Node {
         this.cellVisited = false;
         this.inFrontier = false;
         this.parent = false;
-
     }
 
     setCellVisited = (bool) => this.cellVisited = bool;
@@ -76,4 +75,11 @@ export class PrimNode extends Node {
     setInFrontier = (bool) => this.inFrontier = bool;
 
     setParent = (node) => this.parent = node;
+}
+
+export class RecDivNode extends Node {
+    constructor(x, y) {
+        super(x, y);
+        this.isMazePath = true;
+    }
 }

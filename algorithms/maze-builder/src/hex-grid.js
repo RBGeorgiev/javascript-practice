@@ -14,12 +14,13 @@ export default class HexGrid {
             let height = this.grid[x].length;
             for (let y = 0; y < height; y++) {
                 let node = this.getNode(x, y);
-                this.drawNode(node);
+                let color = this.getNodeColor(node);
+                this.drawNode(node, color);
             }
         }
     }
 
-    drawNode = (node, color = '#000000') => {
+    drawNode = (node, color) => {
         let ctx = this.ctx;
         let x = node.hexVertices[0][0];
         let y = node.hexVertices[0][1];
