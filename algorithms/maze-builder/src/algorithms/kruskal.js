@@ -1,4 +1,3 @@
-import { KruskalNode } from '../nodes.js';
 import { MAZE_VIZ_TYPE } from '../constants.js';
 
 export default class Kruskal {
@@ -149,7 +148,6 @@ export default class Kruskal {
 
     run = () => {
         this.resetStepsTaken();
-        this.grid = this.gridClass.initGrid(KruskalNode);
         let isHexGrid = !!this.grid[0][0].isHex;
         let cellsArr = (isHexGrid) ? this.getHexCellsArr() : this.getSquareCellsArr();
         let edges = (isHexGrid) ? this.getHexEdges(cellsArr) : this.getSquareEdges(cellsArr);

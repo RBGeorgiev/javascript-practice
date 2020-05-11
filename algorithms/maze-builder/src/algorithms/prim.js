@@ -1,4 +1,3 @@
-import { PrimNode } from '../nodes.js';
 import { MAZE_VIZ_TYPE } from '../constants.js';
 
 export default class Prim {
@@ -63,7 +62,6 @@ export default class Prim {
 
     run = () => {
         this.resetStepsTaken();
-        this.grid = this.gridClass.initGrid(PrimNode);
         return this.generateMaze();
     }
 }

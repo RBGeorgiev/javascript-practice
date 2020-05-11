@@ -80,7 +80,6 @@ export default class SquareGrid {
     getNodeColor = (node) => (node.isMazePath) ? "white" : "black";
 
     initGrid = (nodeClass) => {
-        this.grid = [];
         let width = this.gridSizeX;
         let height = this.gridSizeY;
 

@@ -152,6 +152,8 @@ export default class HexGrid {
 
     getNode = (x, y) => this.grid[x][y];
 
+    getNodeColor = (node) => (node.isMazePath) ? "white" : "black";
+
     initGrid = (nodeClass) => {
         let adjustedSize = this.nodeSize / 1.5;
 

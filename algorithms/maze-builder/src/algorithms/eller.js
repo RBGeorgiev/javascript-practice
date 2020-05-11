@@ -1,4 +1,3 @@
-import { EllerNode } from '../nodes.js';
 import { MAZE_VIZ_TYPE } from '../constants.js';
 
 export default class Eller {
@@ -87,7 +86,6 @@ export default class Eller {
 
     run = () => {
         this.resetStepsTaken();
-        this.grid = this.gridClass.initGrid(EllerNode);
         return this.generateMaze();
     }
 }

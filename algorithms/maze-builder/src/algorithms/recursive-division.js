@@ -1,4 +1,3 @@
-import { RecDivNode } from '../nodes.js';
 import { MAZE_VIZ_TYPE } from '../constants.js';
 
 export default class RecursiveDivision {
@@ -24,15 +23,14 @@ export default class RecursiveDivision {
 
     getStepsTaken = () => this.stepsTaken;
 
-    // generateMaze = () => {
-    //     return this.grid;
-    // }
+    generateMaze = () => {
+        return this.grid;
+    }
 
     resetStepsTaken = () => this.stepsTaken = [];
 
     run = () => {
         this.resetStepsTaken();
-        this.grid = this.gridClass.initGrid(RecDivNode);
         return this.generateMaze();
     }
 }

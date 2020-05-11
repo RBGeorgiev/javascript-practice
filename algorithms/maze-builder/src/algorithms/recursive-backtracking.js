@@ -1,4 +1,3 @@
-import { RecBacktrNode } from '../nodes.js';
 import { MAZE_VIZ_TYPE } from '../constants.js';
 
 export default class RecursiveBacktracking {
@@ -77,7 +76,6 @@ export default class RecursiveBacktracking {
 
     run = () => {
         this.resetStepsTaken();
-        this.grid = this.gridClass.initGrid(RecBacktrNode);
         this.numOfCells = (this.grid[0][0].isHex) ? this.getNumOfHexCells() : this.getNumOfSquareCells();
         return this.generateMaze();
     }
