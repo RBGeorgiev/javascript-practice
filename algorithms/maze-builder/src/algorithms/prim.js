@@ -36,7 +36,7 @@ export default class Prim {
         let rand, cur, neighbors;
 
         while (frontier.length) {
-            rand = this.random(frontier.length);
+            rand = this.random(0, frontier.length);
             cur = frontier.splice(rand, 1)[0];
             cur.setCellVisited(true);
             this.addStep(cur, cur.parent);
@@ -52,7 +52,7 @@ export default class Prim {
         return this.grid;
     }
 
-    random(max, min = 0) {
+    random = (min, max) => {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
