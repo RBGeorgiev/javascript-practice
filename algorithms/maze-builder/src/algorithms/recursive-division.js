@@ -7,9 +7,11 @@ export default class RecursiveDivision {
         this.stepsTaken = [];
     }
 
-    // addStep = (node1, node2) => {
-
-    // }
+    addStep = (node, isPath) => {
+        let type = isPath ? MAZE_VIZ_TYPE.PATH : MAZE_VIZ_TYPE.WALL;
+        node.setIsMazePath(isPath);
+        this.addToStepsTaken(node, type);
+    }
 
     addToStepsTaken = (node, type) => {
         let step = {
@@ -21,15 +23,15 @@ export default class RecursiveDivision {
 
     drawHorizontalWall = (y, startX, endX) => {
         for (let i = startX; i < endX; i++) {
-            let cur = this.getNode(i, y);
-            this.gridClass.drawNode(cur, 'black');
+            let node = this.getNode(i, y);
+            this.addStep(node, false);
         }
     }
 
     drawVerticalWall = (x, startY, endY) => {
         for (let i = startY; i < endY; i++) {
-            let cur = this.getNode(x, i);
-            this.gridClass.drawNode(cur, 'black');
+            let node = this.getNode(x, i);
+            this.addStep(node, false);
         }
     }
 
@@ -64,7 +66,7 @@ export default class RecursiveDivision {
                 let randPathX = this.getRandNodeCoord(startX, endX, false);
                 node = this.getNode(randPathX, randY);
             }
-            this.gridClass.drawNode(node, 'white');
+            this.addStep(node, true);
 
             if (dir === 'v') {
                 generateWall(randX + 1, endX, startY, endY); //right

@@ -16,6 +16,7 @@ export const algorithmSelect = el('algorithmSelect');
 export const timerNumberSpan = el('timerNumberSpan');
 
 export const MAZE_VIZ_TYPE = {
+    WALL: "#000000",
     PATH: "#FFFFFF",
     TRACEBACK: "#FF0000"
 }
