@@ -24,6 +24,7 @@ export default class RecursiveDivision {
     drawHorizontalWall = (y, startX, endX) => {
         for (let i = startX; i < endX; i++) {
             let node = this.getNode(i, y);
+            if (node === undefined) continue;
             this.addStep(node, false);
         }
     }
@@ -31,6 +32,7 @@ export default class RecursiveDivision {
     drawVerticalWall = (x, startY, endY) => {
         for (let i = startY; i < endY; i++) {
             let node = this.getNode(x, i);
+            if (node === undefined) continue;
             this.addStep(node, false);
         }
     }
@@ -48,6 +50,8 @@ export default class RecursiveDivision {
     getStepsTaken = () => this.stepsTaken;
 
     generateMaze = () => {
+        if (this.getNode(0, 0).isHex) this.drawHorizontalWall(this.grid[0].length, 0, this.grid.length);
+
         const generateWall = (startX, endX, startY, endY) => {
             let width = endX - startX;
             let height = endY - startY;
