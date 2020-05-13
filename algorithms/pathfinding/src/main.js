@@ -15,7 +15,7 @@ import {
     timerNumberSpan
 } from './constants.js';
 import MazeBuilder from '../../maze-builder/src/maze-builder.js';
-import { MAZE_ALGORITHMS, MAZE_GRIDS } from '../../maze-builder/src/constants.js';
+import { MAZE_ALGORITHMS, MAZE_GRIDS, MAZE_ALGORITHM_NODES } from '../../maze-builder/src/constants.js';
 
 export default class Main {
     constructor(gridWidth = 51) {
@@ -272,6 +272,7 @@ export default class Main {
         createMazeBtn.onclick = () => {
             createMazeBtn.blur();
             this.pathfindingViz.stopAnimFrame();
+            this.mazeBuilder.gridClass.initGrid(MAZE_ALGORITHM_NODES[mazeAlgorithmSelect.value]);
             let maze = this.mazeBuilder.run();
             this.gridClass.transferMazeToGrid(maze, this.currentAlgorithm.algorithmNode);
             this.currentAlgorithm.placeStartAndEndInMaze();
