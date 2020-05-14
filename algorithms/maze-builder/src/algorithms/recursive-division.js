@@ -50,8 +50,6 @@ export default class RecursiveDivision {
     getStepsTaken = () => this.stepsTaken;
 
     generateMaze = () => {
-        if (this.getNode(0, 0).isHex) this.drawHorizontalWall(this.grid[0].length, 0, this.grid.length);
-
         const generateWall = (startX, endX, startY, endY) => {
             let width = endX - startX;
             let height = endY - startY;
@@ -63,11 +61,11 @@ export default class RecursiveDivision {
             let dir = (width > height) ? 'v' : 'h';
             if (dir === 'v') {
                 this.drawVerticalWall(randX, startY, endY);
-                let randPathY = this.getRandNodeCoord(startY, endY, false);
+                let randPathY = this.getRandNodeCoord(startY, endY + 1, false);
                 node = this.getNode(randX, randPathY);
             } else {
                 this.drawHorizontalWall(randY, startX, endX);
-                let randPathX = this.getRandNodeCoord(startX, endX, false);
+                let randPathX = this.getRandNodeCoord(startX, endX + 1, false);
                 node = this.getNode(randPathX, randY);
             }
             this.addStep(node, true);
@@ -80,6 +78,9 @@ export default class RecursiveDivision {
                 generateWall(startX, endX, randY + 1, endY); //down
             }
         }
+
+        if (this.getNode(0, 0).isHex)
+            this.drawHorizontalWall(this.grid[0].length, 0, this.grid.length);
 
         generateWall(0, this.grid.length, 0, this.grid[0].length);
 
