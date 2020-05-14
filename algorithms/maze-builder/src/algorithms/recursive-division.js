@@ -13,6 +13,8 @@ export default class RecursiveDivision {
         this.addToStepsTaken(node, type);
     }
 
+    addToArrayStepsTaken = (arr) => this.stepsTaken.push(arr);
+
     addToStepsTaken = (node, type) => {
         let step = {
             node: node,
@@ -22,19 +24,33 @@ export default class RecursiveDivision {
     }
 
     drawHorizontalWall = (y, startX, endX) => {
+        let stepsArr = [];
         for (let i = startX; i < endX; i++) {
             let node = this.getNode(i, y);
             if (node === undefined) continue;
-            this.addStep(node, false);
+            node.setIsMazePath(false);
+            let step = {
+                node: node,
+                type: MAZE_VIZ_TYPE.WALL
+            };
+            stepsArr.push(step);
         }
+        this.addToArrayStepsTaken(stepsArr);
     }
 
     drawVerticalWall = (x, startY, endY) => {
+        let stepsArr = [];
         for (let i = startY; i < endY; i++) {
             let node = this.getNode(x, i);
             if (node === undefined) continue;
-            this.addStep(node, false);
+            node.setIsMazePath(false);
+            let step = {
+                node: node,
+                type: MAZE_VIZ_TYPE.WALL
+            };
+            stepsArr.push(step);
         }
+        this.addToArrayStepsTaken(stepsArr);
     }
 
     getNode = (x, y) => this.grid[x][y];

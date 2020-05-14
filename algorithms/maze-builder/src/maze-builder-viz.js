@@ -36,7 +36,7 @@ export class MazeBuilderVisualization {
         );
     }
 
-    visualizeStep = (step) => this.gridClass.drawNode(step.node, step.type);
+    visualizeStep = (step) => (Array.isArray(step)) ? step.forEach(s => this.gridClass.drawNode(s.node, s.type)) : this.gridClass.drawNode(step.node, step.type);
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
