@@ -6,7 +6,7 @@ import {
     animSpeedInput,
     animSpeedSpan,
     clearPathBtn,
-    clearWallsBtn,
+    clearObstaclesBtn,
     pathfindingAlgorithmSelect,
     runAlgorithmBtn,
     createMazeBtn,
@@ -254,8 +254,8 @@ export default class Main {
             this.currentAlgorithm.setComplete(false);
         }
 
-        clearWallsBtn.onclick = () => {
-            clearWallsBtn.blur();
+        clearObstaclesBtn.onclick = () => {
+            clearObstaclesBtn.blur();
             this.pathfindingViz.stopAnimFrame();
             let start = this.currentAlgorithm.startNode;
             let end = this.currentAlgorithm.endNode;
