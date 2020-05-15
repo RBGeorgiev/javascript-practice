@@ -269,6 +269,23 @@ export default class Main {
             this.gridClass.drawAllNodes();
         }
 
+        clearWallsBtn.onclick = () => {
+            clearWallsBtn.blur();
+            this.pathfindingViz.stopAnimFrame();
+            let start = this.currentAlgorithm.startNode;
+            let end = this.currentAlgorithm.endNode;
+
+            let callback = (node) => node.type === GRID_NODE_TYPES.UNWALKABLE;
+
+            this.gridClass.transferGridState(this.currentAlgorithm.algorithmNode, callback);
+
+            this.currentAlgorithm.setStartNode(this.gridClass.getNode(start.x, start.y));
+            this.currentAlgorithm.setEndNode(this.gridClass.getNode(end.x, end.y));
+            this.currentAlgorithm.setComplete(false);
+
+            this.gridClass.drawAllNodes();
+        }
+
         createMazeBtn.onclick = () => {
             createMazeBtn.blur();
             this.pathfindingViz.stopAnimFrame();

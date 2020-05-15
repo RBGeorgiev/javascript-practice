@@ -6,6 +6,7 @@ export const animSpeedInput = el('animSpeedInput');
 export const animSpeedSpan = el('animSpeedSpan');
 export const clearPathBtn = el('clearPathBtn');
 export const clearObstaclesBtn = el('clearObstaclesBtn');
+export const clearWallsBtn = el('clearWallsBtn');
 export const pathfindingAlgorithmSelect = el('pathfindingAlgorithmSelect');
 export const runAlgorithmBtn = el('runAlgorithmBtn');
 export const createMazeBtn = el('createMazeBtn');

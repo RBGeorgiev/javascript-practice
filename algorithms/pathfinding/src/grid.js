@@ -87,12 +87,17 @@ export default class Grid {
         }
     }
 
-    transferGridState = (pathfindingNode) => {
+    transferGridState = (pathfindingNode, callback = null) => {
         for (let x = 0; x < this.gridSizeX; x++) {
             for (let y = 0; y < this.gridSizeY; y++) {
                 let oldNode = this.getNode(x, y);
-                let type = oldNode.type;
-                this.grid[x][y] = new pathfindingNode(x, y, type);
+                let newNode = new pathfindingNode(x, y);
+                this.grid[x][y] = newNode;
+
+                // callback to exclude node types (if callback)
+                if (callback !== null && callback(oldNode)) continue;
+
+                newNode.setType(oldNode.type);
             }
         }
     }

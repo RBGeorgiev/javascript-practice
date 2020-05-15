@@ -200,18 +200,21 @@ export default class HexGrid {
         }
     }
 
-    transferGridState = (pathfindingNode) => {
+    transferGridState = (pathfindingNode, callback = null) => {
         let sizeX = this.grid.length;
         for (let x = 0; x < sizeX; x++) {
             let sizeY = this.grid[x].length;
             for (let y = 0; y < sizeY; y++) {
                 let oldNode = this.getNode(x, y);
-                let type = oldNode.type;
-                let newNode = new pathfindingNode(x, y, type);
+                let newNode = new pathfindingNode(x, y);
                 newNode.setHexCenter(oldNode.hexCenter);
                 newNode.setHexVertices(oldNode.hexVertices);
                 newNode.setIsHex(true);
                 this.grid[x][y] = newNode;
+
+                // callback to exclude node types
+                if (callback !== null && callback(oldNode)) continue;
+                newNode.setType(oldNode.type);
             }
         }
     }
