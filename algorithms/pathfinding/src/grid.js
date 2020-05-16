@@ -92,12 +92,14 @@ export default class Grid {
             for (let y = 0; y < this.gridSizeY; y++) {
                 let oldNode = this.getNode(x, y);
                 let newNode = new pathfindingNode(x, y);
-                this.grid[x][y] = newNode;
 
-                // callback to exclude node types (if callback)
-                if (callback !== null && callback(oldNode)) continue;
-
-                newNode.setType(oldNode.type);
+                // callback to exclude node types
+                if (callback !== null && callback(oldNode)) {
+                    this.grid[x][y] = newNode;
+                } else {
+                    newNode.setType(oldNode.type);
+                    this.grid[x][y] = newNode;
+                };
             }
         }
     }

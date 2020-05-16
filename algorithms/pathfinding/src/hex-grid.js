@@ -210,11 +210,14 @@ export default class HexGrid {
                 newNode.setHexCenter(oldNode.hexCenter);
                 newNode.setHexVertices(oldNode.hexVertices);
                 newNode.setIsHex(true);
-                this.grid[x][y] = newNode;
 
                 // callback to exclude node types
-                if (callback !== null && callback(oldNode)) continue;
-                newNode.setType(oldNode.type);
+                if (callback !== null && callback(oldNode)) {
+                    this.grid[x][y] = newNode;
+                } else {
+                    newNode.setType(oldNode.type);
+                    this.grid[x][y] = newNode;
+                };
             }
         }
     }
