@@ -6,7 +6,7 @@ import HexGrid from './hex-grid.js';
 export const GRID_NODE_TYPES = {
     EMPTY: "EMPTY",
     UNWALKABLE: 'UNWALKABLE',
-    SWAMP: "SWAMP",
+    MUD: "MUD",
     START: "START",
     END: "END"
 }
@@ -15,7 +15,7 @@ Object.freeze(GRID_NODE_TYPES);
 export const GRID_NODE_COLORS = {
     EMPTY: "#FFFFFF",
     UNWALKABLE: "#000000",
-    SWAMP: "#778899",
+    MUD: "#778899",
     START: "#00FF00",
     END: "#FF0000"
 }

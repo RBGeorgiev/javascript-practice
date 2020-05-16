@@ -99,7 +99,7 @@ export default class Main {
     addEmpty = (e) => {
         let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
-        if (node.type === GRID_NODE_TYPES.UNWALKABLE || node.type === GRID_NODE_TYPES.SWAMP) {
+        if (node.type === GRID_NODE_TYPES.UNWALKABLE || node.type === GRID_NODE_TYPES.MUD) {
             node.setType(GRID_NODE_TYPES.EMPTY);
             this.gridClass.drawNode(node);
 
@@ -109,11 +109,11 @@ export default class Main {
         }
     }
 
-    addSwamp = (e) => {
+    addMud = (e) => {
         let node = this.gridClass.getNodeFromCanvasCoordinates(e.offsetX, e.offsetY);
         if (node === null) return;
         if (node.type === GRID_NODE_TYPES.EMPTY) {
-            node.setType(GRID_NODE_TYPES.SWAMP);
+            node.setType(GRID_NODE_TYPES.MUD);
             this.gridClass.drawNode(node);
 
             if (this.currentAlgorithm.complete === true) {
@@ -169,9 +169,9 @@ export default class Main {
                     this.addUnwalkable(e);
                     canvas.addEventListener('mousemove', this.addUnwalkable);
                 } else if (e.buttons === 2) {
-                    listener = this.addSwamp;
-                    this.addSwamp(e);
-                    canvas.addEventListener('mousemove', this.addSwamp);
+                    listener = this.addMud;
+                    this.addMud(e);
+                    canvas.addEventListener('mousemove', this.addMud);
                 }
                 break;
 
@@ -276,6 +276,23 @@ export default class Main {
             let end = this.currentAlgorithm.endNode;
 
             let callback = (node) => node.type === GRID_NODE_TYPES.UNWALKABLE;
+
+            this.gridClass.transferGridState(this.currentAlgorithm.algorithmNode, callback);
+
+            this.currentAlgorithm.setStartNode(this.gridClass.getNode(start.x, start.y));
+            this.currentAlgorithm.setEndNode(this.gridClass.getNode(end.x, end.y));
+            this.currentAlgorithm.setComplete(false);
+
+            this.gridClass.drawAllNodes();
+        }
+
+        clearMudBtn.onclick = () => {
+            clearMudBtn.blur();
+            this.pathfindingViz.stopAnimFrame();
+            let start = this.currentAlgorithm.startNode;
+            let end = this.currentAlgorithm.endNode;
+
+            let callback = (node) => node.type === GRID_NODE_TYPES.MUD;
 
             this.gridClass.transferGridState(this.currentAlgorithm.algorithmNode, callback);
 

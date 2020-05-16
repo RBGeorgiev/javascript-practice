@@ -29,7 +29,7 @@ export class Node {
 
     setType = (type) => {
         this.type = type;
-        this.moveCost = (type === GRID_NODE_TYPES.SWAMP) ? 5 : 0;
+        this.moveCost = (type === GRID_NODE_TYPES.MUD) ? 5 : 0;
         this.unwalkable = !!(type === GRID_NODE_TYPES.UNWALKABLE);
         this.isEnd = !!(type === GRID_NODE_TYPES.END);
         this.isStart = !!(type === GRID_NODE_TYPES.START);
