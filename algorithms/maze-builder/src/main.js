@@ -1,6 +1,6 @@
 import MazeBuilder from './maze-builder.js';
 import { MazeBuilderVisualization } from './maze-builder-viz.js';
-import { MAZE_ALGORITHMS, MAZE_ALGORITHM_NODES, MAZE_GRIDS, canvas, ctx, createMazeBtn, algorithmSelect, timerNumberSpan } from './constants.js';
+import { MAZE_ALGORITHMS, MAZE_ALGORITHM_NODES, MAZE_GRIDS, canvas, ctx, createMazeBtn, algorithmSelect, timerSpan } from './constants.js';
 
 export default class Main {
     constructor(gridWidth = 51) {
@@ -65,7 +65,7 @@ export default class Main {
     displayTime = (timeTaken) => {
         let time = Math.round((timeTaken + Number.EPSILON) * 100) / 100;
         let displayStr = `${algorithmSelect.value}: ${time}ms`;
-        timerNumberSpan.innerText = displayStr;
+        timerSpan.innerText = displayStr;
         console.log(displayStr, `(${timeTaken})`);
     }
 }

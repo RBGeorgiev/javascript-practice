@@ -9,6 +9,6 @@ body {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-#timerNumberSpan {
+#timerSpan {
     grid-column: 2;
 }
