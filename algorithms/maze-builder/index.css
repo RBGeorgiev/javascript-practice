@@ -1,3 +1,14 @@
 body {
     text-align: center;
 }
+
+#options {
+    width: 1600px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#timerNumberSpan {
+    grid-column: 2;
+}
