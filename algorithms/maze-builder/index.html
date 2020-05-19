@@ -9,26 +9,25 @@
 <body>
     <div>
         <div id="options">
-            <label>Grid:
-                <select id="gridSelect">
-                    <option value="squareGrid" selected>Square Grid</option>
-                    <option value="hexGrid">Hex Grid</option>
-                </select>
-            </label>
+            <label for="gridSelect">Grid:</label>
+            <select id="gridSelect">
+                <option value="squareGrid" selected>Square Grid</option>
+                <option value="hexGrid">Hex Grid</option>
+            </select>
 
-            <label>Algorithm:
-                <select id="algorithmSelect">
-                    <option value="Eller" selected>Eller</option>
-                    <option value="Kruskal">Kruskal</option>
-                    <option value="Prim">Prim</option>
-                    <option value="RecursiveBacktracking">Recursive Backtracking</option>
-                    <option value="RecursiveDivision">Recursive Division</option>
-                </select>
-            </label>
+            <span id="timerSpan">Timer</span>
+
+            <label for="algorithmSelect">Algorithm:</label>
+            <select id="algorithmSelect">
+                <option value="Eller" selected>Eller</option>
+                <option value="Kruskal">Kruskal</option>
+                <option value="Prim">Prim</option>
+                <option value="RecursiveBacktracking">Recursive Backtracking</option>
+                <option value="RecursiveDivision">Recursive Division</option>
+            </select>
 
             <button id="createMazeBtn">Create Maze</button>
 
-            <span id="timerSpan">Timer</span>
         </div>
 
         <canvas id="canvas" width="1600" height="800"></canvas>

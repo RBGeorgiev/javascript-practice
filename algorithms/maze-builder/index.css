@@ -6,9 +6,5 @@ body {
     width: 1600px;
     margin: auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-#timerSpan {
-    grid-column: 2;
+    grid-template-columns: 150px 150px 150px;
 }
