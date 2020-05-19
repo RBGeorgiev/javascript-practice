@@ -8,6 +8,8 @@ body {
 }
 
 #options {
+    width: 1600px;
+    margin: auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 275px 200px 200px;
 }
