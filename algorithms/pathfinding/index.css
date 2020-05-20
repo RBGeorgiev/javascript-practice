@@ -7,9 +7,12 @@ body {
     user-select: none;
 }
 
+#optionsContainer {
+    display: flex;
+    justify-content: center;
+}
+
 #options {
-    width: 1600px;
-    margin: auto;
     display: grid;
     grid-template-columns: 275px 200px 200px;
 }
