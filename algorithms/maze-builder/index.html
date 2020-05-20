@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div>
+    <div id="optionsContainer">
         <div id="options">
             <label for="gridSelect">Grid:</label>
             <select id="gridSelect">
@@ -27,22 +27,21 @@
             </select>
 
             <button id="createMazeBtn">Create Maze</button>
-
         </div>
+    </div>
 
-        <canvas id="canvas" width="1600" height="800"></canvas>
+    <canvas id="canvas" width="1600" height="800"></canvas>
 
-        <div>
-            <p>
-                This is a visualization of popular maze building algorithms. Select the algorithm you'd like to see and
-                the
-                type of grid (either square or hexagonal) and click the Create Maze button.
-            </p>
-            <p>
-                All mazes created are perfect mazes
-                (i.e. any 2 points inside the maze always have a (single) path connecting them).
-            </p>
-        </div>
+    <div>
+        <p>
+            This is a visualization of popular maze building algorithms. Select the algorithm you'd like to see and
+            the
+            type of grid (either square or hexagonal) and click the Create Maze button.
+        </p>
+        <p>
+            All mazes created are perfect mazes
+            (i.e. any 2 points inside the maze always have a (single) path connecting them).
+        </p>
     </div>
 
     <script type="module" src="index.js" async defer></script>
