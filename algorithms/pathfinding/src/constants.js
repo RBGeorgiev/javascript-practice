@@ -2,6 +2,7 @@ const el = (id) => document.getElementById(id);
 
 export const canvas = el("canvas");
 export const ctx = canvas.getContext("2d");
+export const gridSelect = el('gridSelect');
 export const animSpeedInput = el('animSpeedInput');
 export const animSpeedSpan = el('animSpeedSpan');
 export const gridSizeInput = el('gridSizeInput');

@@ -12,7 +12,12 @@ import {
     createMazeBtn,
     mazeAlgorithmSelect,
     timerTextSpan,
-    timerNumberSpan
+    timerNumberSpan,
+    gridSizeInput,
+    gridSizeSpan,
+    gridSelect,
+    clearWallsBtn,
+    clearMudBtn
 } from './constants.js';
 import MazeBuilder from '../../maze-builder/src/maze-builder.js';
 import { MAZE_ALGORITHMS, MAZE_GRIDS, MAZE_ALGORITHM_NODES } from '../../maze-builder/src/constants.js';
