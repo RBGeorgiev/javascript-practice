@@ -26,23 +26,23 @@ export default class Main {
         this.pathfindingViz;
         this.mazeBuilder;
 
-        this.init();
+        this.init(this.gridWidth);
         this.initEventListeners();
         this.initOptions();
     }
 
-    init = () => {
+    init = (gridWidth) => {
         let pfGrid = PATHFINDING_GRIDS[gridSelect.value];
         let pfAlgorithm = PATHFINDING_ALGORITHMS[pathfindingAlgorithmSelect.value];
         let mazeGrid = MAZE_GRIDS[gridSelect.value];
         let mazeAlgorithm = MAZE_ALGORITHMS[mazeAlgorithmSelect.value];
 
-        this.gridClass = new pfGrid(this.gridWidth);
+        this.gridClass = new pfGrid(gridWidth);
         this.gridClass.initGrid(Node);
         this.currentAlgorithm = new pfAlgorithm(this.gridClass);
         this.pathfindingViz = new PathfindingVisualization(this.gridClass);
 
-        this.mazeBuilder = new MazeBuilder(new mazeGrid(null, this.gridWidth), mazeAlgorithm);
+        this.mazeBuilder = new MazeBuilder(new mazeGrid(null, gridWidth), mazeAlgorithm);
 
         this.currentAlgorithm.setStartNode(this.gridClass.getNode(10, 8));
         this.currentAlgorithm.setEndNode(this.gridClass.getNode(23, 8));
@@ -245,6 +245,13 @@ export default class Main {
             let val = +e.target.value;
             this.pathfindingViz.setAnimSpeed(val);
             animSpeedSpan.innerHTML = val;
+        }
+
+        gridSizeInput.oninput = (e) => {
+            gridSizeInput.blur();
+            let val = +e.target.value;
+            this.init(val);
+            gridSizeSpan.innerHTML = val;
         }
 
         clearPathBtn.onclick = () => {

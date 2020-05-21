@@ -14,7 +14,11 @@
                 <option value="squareGrid" selected>Square Grid</option>
                 <option value="hexGrid">Hex Grid</option>
             </select>
-            <div></div>
+
+            <label>
+                Grid Size: <span id=gridSizeSpan>3</span>
+                <input type="range" id="gridSizeInput" min="30" max="150" value="51">
+            </label>
 
             <label for="mazeAlgorithmSelect">Maze Algorithm:</label>
             <select id="mazeAlgorithmSelect">
