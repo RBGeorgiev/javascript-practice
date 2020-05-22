@@ -242,7 +242,7 @@ export default class Main {
         gridSelect.onchange = () => {
             gridSelect.blur();
             this.pathfindingViz.stopAnimFrame();
-            this.init();
+            this.init(gridSizeInput.value);
         }
 
         animSpeedInput.oninput = (e) => {
