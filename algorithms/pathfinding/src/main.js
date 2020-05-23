@@ -245,18 +245,19 @@ export default class Main {
             this.init(gridSizeInput.value);
         }
 
+        gridSizeInput.onchange = (e) => {
+            gridSizeInput.blur();
+            this.pathfindingViz.stopAnimFrame();
+            let val = +e.target.value;
+            this.init(val);
+            gridSizeSpan.innerHTML = val;
+        }
+
         animSpeedInput.oninput = (e) => {
             animSpeedInput.blur();
             let val = +e.target.value;
             this.pathfindingViz.setAnimSpeed(val);
             animSpeedSpan.innerHTML = val;
-        }
-
-        gridSizeInput.oninput = (e) => {
-            gridSizeInput.blur();
-            let val = +e.target.value;
-            this.init(val);
-            gridSizeSpan.innerHTML = val;
         }
 
         clearPathBtn.onclick = () => {
