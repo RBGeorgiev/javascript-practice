@@ -24,25 +24,23 @@ import { MAZE_ALGORITHMS, MAZE_GRIDS, MAZE_ALGORITHM_NODES } from '../../maze-bu
 
 export default class Main {
     constructor(gridWidth = 51) {
-        this.gridWidth = gridWidth;
-
         this.gridClass;
         this.currentAlgorithm;
         this.pathfindingViz;
         this.mazeBuilder;
 
-        this.init(this.gridWidth);
+        this.init(gridWidth);
         this.initEventListeners();
         this.initOptions();
     }
 
     init = (gridWidth) => {
-        let pfGrid = PATHFINDING_GRIDS[gridSelect.value];
+        let pfGridType = PATHFINDING_GRIDS[gridSelect.value];
         let pfAlgorithm = PATHFINDING_ALGORITHMS[pathfindingAlgorithmSelect.value];
         let mazeGrid = MAZE_GRIDS[gridSelect.value];
         let mazeAlgorithm = MAZE_ALGORITHMS[mazeAlgorithmSelect.value];
 
-        this.gridClass = new pfGrid(gridWidth);
+        this.gridClass = new pfGridType(gridWidth);
         this.gridClass.initGrid(Node);
         this.currentAlgorithm = new pfAlgorithm(this.gridClass);
         this.pathfindingViz = new PathfindingVisualization(this.gridClass);
@@ -245,12 +243,25 @@ export default class Main {
             this.init(gridSizeInput.value);
         }
 
+        gridSizeInput.oninput = (e) => {
+            gridSizeInput.blur();
+            this.pathfindingViz.stopAnimFrame();
+            let gridWidth = +e.target.value;
+
+            let gridType = PATHFINDING_GRIDS[gridSelect.value];
+            let gridClass = new gridType(gridWidth);
+            gridClass.initGrid(Node);
+            gridClass.drawAllNodes();
+
+            gridSizeSpan.innerHTML = gridWidth;
+        }
+
         gridSizeInput.onchange = (e) => {
             gridSizeInput.blur();
             this.pathfindingViz.stopAnimFrame();
-            let val = +e.target.value;
-            this.init(val);
-            gridSizeSpan.innerHTML = val;
+            let gridWidth = +e.target.value;
+            this.init(gridWidth);
+            gridSizeSpan.innerHTML = gridWidth;
         }
 
         animSpeedInput.oninput = (e) => {
