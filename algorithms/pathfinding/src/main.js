@@ -47,8 +47,7 @@ export default class Main {
 
         this.mazeBuilder = new MazeBuilder(new mazeGrid(null, gridWidth), mazeAlgorithm);
 
-        this.currentAlgorithm.setStartNode(this.gridClass.getNode(10, 8));
-        this.currentAlgorithm.setEndNode(this.gridClass.getNode(23, 8));
+        this.setDefaultStartEndNodes();
 
         this.gridClass.clearCanvas();
         this.gridClass.drawAllNodes();
@@ -84,6 +83,19 @@ export default class Main {
 
         let stepsTaken = this.currentAlgorithm.getStepsTaken();
         this.pathfindingViz.visualizationController(stepsTaken, this.currentAlgorithm.complete);
+    }
+
+    setDefaultStartEndNodes = () => {
+        let gridX = this.gridClass.gridSizeX;
+        let gridY = this.gridClass.gridSizeY;
+
+        let sX = Math.ceil(gridX / 3) - 1;
+        let sY = Math.floor(gridY / 2);
+        let eX = (Math.ceil(gridX / 3) * 2) - 1;
+        let eY = Math.floor(gridY / 2);
+
+        this.currentAlgorithm.setStartNode(this.gridClass.getNode(sX, sY));
+        this.currentAlgorithm.setEndNode(this.gridClass.getNode(eX, eY));
     }
 
     addUnwalkable = (e) => {
