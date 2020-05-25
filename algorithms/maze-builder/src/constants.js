@@ -14,6 +14,9 @@ export const ctx = canvas.getContext("2d");
 export const createMazeBtn = el("createMazeBtn");
 export const algorithmSelect = el('algorithmSelect');
 export const timerSpan = el('timerSpan');
+export const gridSelect = el('gridSelect');
+export const gridSizeSpan = el('gridSizeSpan');
+export const gridSizeInput = el('gridSizeInput');
 
 export const MAZE_VIZ_TYPE = {
     WALL: "#000000",

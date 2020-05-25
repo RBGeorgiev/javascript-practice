@@ -15,7 +15,11 @@
                 <option value="hexGrid">Hex Grid</option>
             </select>
 
-            <span id="timerSpan">Timer</span>
+            <div>
+                Size: <span id=gridSizeSpan>51</span>
+                <input type="range" id="gridSizeInput" min="10" max="200" value="51">
+                </label>
+            </div>
 
             <label for="algorithmSelect">Algorithm:</label>
             <select id="algorithmSelect">
@@ -27,6 +31,8 @@
             </select>
 
             <button id="createMazeBtn">Create Maze</button>
+
+            <span id="timerSpan">Timer</span>
         </div>
     </div>
 
