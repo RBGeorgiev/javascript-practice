@@ -262,6 +262,7 @@ export default class Main {
 
             let gridType = PATHFINDING_GRIDS[gridSelect.value];
             let gridClass = new gridType(gridWidth);
+            gridClass.clearCanvas();
             gridClass.initGrid(Node);
             gridClass.drawAllNodes();
 
