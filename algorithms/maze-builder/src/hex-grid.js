@@ -8,6 +8,8 @@ export default class HexGrid {
         this.ctx = ctx;
     }
 
+    clearCanvas = () => this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     drawAllNodes = () => {
         let width = this.grid.length;
         for (let x = 0; x < width; x++) {

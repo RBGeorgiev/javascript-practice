@@ -7,6 +7,8 @@ export default class SquareGrid {
         this.ctx = ctx;
     }
 
+    clearCanvas = () => this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     drawAllNodes = () => {
         for (let x = 0; x < this.grid.length; x++) {
             for (let y = 0; y < this.grid[x].length; y++) {

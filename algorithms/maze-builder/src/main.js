@@ -61,8 +61,9 @@ export default class Main {
 
         gridSizeInput.oninput = (e) => {
             gridSizeInput.blur();
-            // this.mazeBuilderViz.stopAnimFrame();
+            this.mazeBuilderViz.stopAnimFrame();
             let gridWidth = e.target.value;
+            this.gridClass.clearCanvas();
             this.init(gridWidth);
             gridSizeSpan.innerText = gridWidth;
         }
