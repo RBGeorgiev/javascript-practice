@@ -56,7 +56,7 @@ export default class Main {
             gridSelect.blur();
             this.mazeBuilderViz.stopAnimFrame();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            this.init();
+            this.init(gridSizeInput.value);
         }
 
         gridSizeInput.oninput = (e) => {
