@@ -58,28 +58,31 @@
                 <span id="timerNumberSpan"></span>
             </div>
         </div>
+
+        <div id="infoContainer">
+            <p>
+                Chose the pathfidning algorithm you'd like to use and click the Run algorithm button. Left clicking on
+                an
+                empty tile creates a wall, which blocks pathing, while right clicking adds 'mud', which is more
+                diffucult to
+                pass through. You can also drag the Start(green) and End(red) nodes anywhere there is a free space
+                on the grid. Dragging them around after running the algorithm will immediately find and show the
+                quickest path.
+            </p>
+            <p>
+                Animation speed can be easily adjusted from the slider.
+                You can also choose to create a maze and watch the algorithm solve it. Just select the maze creation
+                algorithm
+                you like and click the Create Maze button. All mazes created are perfect mazes (meaning they always have
+                a
+                (single)
+                solution no matter where you start or end).
+                There is also the option of choosing a different type of grid (either square or hexagonal).
+            </p>
+        </div>
     </div>
 
     <canvas id="canvas" width="1600" height="800" oncontextmenu="return false"></canvas>
-
-    <div>
-        <p>
-            Chose the pathfidning algorithm you'd like to use and click the Run algorithm button. Left clicking on an
-            empty tile creates a wall, which blocks pathing, while right clicking adds 'mud', which is more diffucult to
-            pass through. You can also drag the Start(green) and End(red) nodes anywhere there is a free space
-            on the grid. Dragging them around after running the algorithm will immediately find and show the
-            quickest path.
-        </p>
-        <p>
-            Animation speed can be easily adjusted from the slider.
-            You can also choose to create a maze and watch the algorithm solve it. Just select the maze creation
-            algorithm
-            you like and click the Create Maze button. All mazes created are perfect mazes (meaning they always have a
-            (single)
-            solution no matter where you start or end).
-            There is also the option of choosing a different type of grid (either square or hexagonal).
-        </p>
-    </div>
 
     <script type="module" src="index.js" async defer></script>
 </body>
