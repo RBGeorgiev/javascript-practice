@@ -4,7 +4,7 @@ body {
 
 #optionsContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 3fr;
     width: 1600px;
     margin: auto;
 }
@@ -12,6 +12,7 @@ body {
 #options {
     display: grid;
     grid-template-columns: 150px 150px 250px;
+    margin: auto
 }
 
 #timerSpan {
