@@ -1,4 +1,4 @@
-function shuffle(arr) {
+const shuffle = (arr) => {
     let k = arr.length, r, t;
 
     while (k > 0) {
@@ -10,3 +10,5 @@ function shuffle(arr) {
 
     return arr;
 }
+
+export default shuffle;

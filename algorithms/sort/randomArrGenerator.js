@@ -2,7 +2,7 @@ const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min
 const randomFloat = (min, max) => +(Math.random() * (max - min) + min).toFixed(2);
 const turnNegative = (num) => num *= Math.round(Math.random()) * 2 - 1;
 
-function randomArrGenerator(length, min = 0, max = 100, float = false, neg = false) {
+export function randomArrGenerator(length, min = 0, max = 100, float = false, neg = false) {
     let arr = [];
     for (let i = 0; i < length; i++) {
         if (float) {
@@ -22,5 +22,3 @@ function randomArrGenerator(length, min = 0, max = 100, float = false, neg = fal
     }
     return arr;
 }
-
-let test = randomArrGenerator(100, 0, 2000, true, true);
