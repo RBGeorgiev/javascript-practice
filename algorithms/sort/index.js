@@ -9,7 +9,7 @@ for (let i = 0; i < 50; i++) {
     arr.push(i);
 }
 
-const drawArray = (arr) => {
+const drawArray = (arr, maxLineLength = 250, lineStart = 100) => {
     let len = arr.length;
     let w = canvas.width;
     let h = canvas.height;
@@ -22,7 +22,7 @@ const drawArray = (arr) => {
         );
         ctx.lineTo(
             (w / len) / 2 + w / len * i,
-            h - 100 - arr[i] * 4
+            h - lineStart - arr[i] * maxLineLength / len
         );
         ctx.stroke();
     }
