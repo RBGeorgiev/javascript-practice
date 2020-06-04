@@ -3,10 +3,15 @@ import shuffle from './shuffle.js';
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 
-let arr = [];
 
-for (let i = 0; i < 50; i++) {
-    arr.push(i);
+const initArray = (length) => {
+    let arr = [];
+
+    for (let i = 0; i < length; i++) {
+        arr.push(i);
+    }
+
+    return arr;
 }
 
 const drawArray = (arr, maxLineLength = 250, lineStart = 100) => {
@@ -27,6 +32,6 @@ const drawArray = (arr, maxLineLength = 250, lineStart = 100) => {
         ctx.stroke();
     }
 }
-
+let arr = initArray(50);
 arr = shuffle(arr);
 drawArray(arr);
