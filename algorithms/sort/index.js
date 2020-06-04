@@ -1,20 +1,40 @@
-import shuffle from './shuffle.js';
-
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 
-
-const initArray = (length) => {
-    let arr = [];
-
-    for (let i = 0; i < length; i++) {
-        arr.push(i);
+class Controller {
+    constructor(length) {
+        this.arr = this.init(length)
     }
 
-    return arr;
+    init = (length) => this.shuffleArray(
+        this.initArray(length)
+    );
+
+    initArray = (length) => {
+        let arr = [];
+
+        for (let i = 0; i < length; i++) {
+            arr.push(i);
+        }
+
+        return arr;
+    }
+
+    shuffleArray = (arr) => {
+        let k = arr.length, r, t;
+
+        while (k > 0) {
+            r = Math.floor(Math.random() * k--);
+            t = arr[k];
+            arr[k] = arr[r];
+            arr[r] = t;
+        }
+
+        return arr;
+    }
 }
 
-const drawArray = (arr, maxLineLength = 250, lineStart = 100) => {
+const displayArray = (arr, maxLineLength = 250, lineStart = 100) => {
     let len = arr.length;
     let w = canvas.width;
     let h = canvas.height;
@@ -32,6 +52,7 @@ const drawArray = (arr, maxLineLength = 250, lineStart = 100) => {
         ctx.stroke();
     }
 }
-let arr = initArray(50);
-arr = shuffle(arr);
-drawArray(arr);
+
+let controller = new Controller(50)
+let arr = controller.arr;
+displayArray(arr);
