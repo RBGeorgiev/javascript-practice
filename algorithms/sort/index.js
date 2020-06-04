@@ -34,25 +34,31 @@ class Controller {
     }
 }
 
-const displayArray = (arr, maxLineLength = 250, lineStart = 100) => {
-    let len = arr.length;
-    let w = canvas.width;
-    let h = canvas.height;
+class VizController {
+    constructor(arr) {
+        this.arr = arr;
+    }
 
-    for (let i = 0; i < len; i++) {
-        ctx.beginPath();
-        ctx.moveTo(
-            (w / len) / 2 + w / len * i,
-            h
-        );
-        ctx.lineTo(
-            (w / len) / 2 + w / len * i,
-            h - lineStart - arr[i] * maxLineLength / len
-        );
-        ctx.stroke();
+    displayArray = (arr = this.arr, maxLineLength = 250, lineStart = 100) => {
+        let len = arr.length;
+        let w = canvas.width;
+        let h = canvas.height;
+
+        for (let i = 0; i < len; i++) {
+            ctx.beginPath();
+            ctx.moveTo(
+                (w / len) / 2 + w / len * i,
+                h
+            );
+            ctx.lineTo(
+                (w / len) / 2 + w / len * i,
+                h - lineStart - arr[i] * maxLineLength / len
+            );
+            ctx.stroke();
+        }
     }
 }
 
-let controller = new Controller(50)
-let arr = controller.arr;
-displayArray(arr);
+const controller = new Controller(50)
+const viz = new VizController(controller.arr);
+viz.displayArray();
