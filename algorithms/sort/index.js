@@ -1,14 +1,24 @@
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
+let shuffleBtn = document.getElementById("shuffleBtn");
 
 class Controller {
     constructor(length) {
-        this.arr = this.init(length)
+        this.arr = this.init(length);
+        this.initEventListeners();
     }
 
     init = (length) => this.shuffleArray(
         this.initArray(length)
-    );
+    )
+
+    initEventListeners = () => {
+        shuffleBtn.onclick = () => {
+            this.shuffleArray(this.arr);
+            viz.clearCanvas();
+            viz.displayArray();
+        }
+    }
 
     initArray = (length) => {
         let arr = [];
@@ -35,9 +45,12 @@ class Controller {
 }
 
 class VizController {
-    constructor(arr) {
-        this.arr = arr;
+    constructor(controller) {
+        this.controller = controller;
+        this.arr = controller.arr;
     }
+
+    clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     displayArray = (arr = this.arr, maxLineLength = 250, lineStart = 100) => {
         let len = arr.length;
@@ -59,6 +72,6 @@ class VizController {
     }
 }
 
-const controller = new Controller(50)
-const viz = new VizController(controller.arr);
+const controller = new Controller(50);
+const viz = new VizController(controller);
 viz.displayArray();
