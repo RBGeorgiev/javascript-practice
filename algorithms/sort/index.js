@@ -15,8 +15,8 @@ class Controller {
     initEventListeners = () => {
         shuffleBtn.onclick = () => {
             this.shuffleArray(this.arr);
-            viz.clearCanvas();
-            viz.displayArray();
+            this.clearCanvas();
+            this.displayArray();
         }
     }
 
@@ -42,13 +42,8 @@ class Controller {
 
         return arr;
     }
-}
 
-class VizController {
-    constructor(controller) {
-        this.controller = controller;
-        this.arr = controller.arr;
-    }
+    // display methods
 
     clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -70,8 +65,8 @@ class VizController {
             ctx.stroke();
         }
     }
+
 }
 
 const controller = new Controller(50);
-const viz = new VizController(controller);
-viz.displayArray();
+controller.displayArray();
