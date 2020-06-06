@@ -3,6 +3,7 @@ import bubbleSort from './algorithms/bubble-sort.js';
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 let shuffleBtn = document.getElementById("shuffleBtn");
+let sortBtn = document.getElementById("sortBtn");
 
 class Controller {
     constructor(length) {
@@ -17,6 +18,12 @@ class Controller {
     initEventListeners = () => {
         shuffleBtn.onclick = () => {
             this.shuffleArray(this.arr);
+            this.clearCanvas();
+            this.displayArray();
+        }
+
+        sortBtn.onclick = () => {
+            this.sortArray(this.arr);
             this.clearCanvas();
             this.displayArray();
         }
