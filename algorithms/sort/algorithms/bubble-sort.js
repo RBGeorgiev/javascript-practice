@@ -1,7 +1,5 @@
-let test = [-164, -119, -193, -132.94, 49.69, -147.15, 146, -47, 152, 102, -14, 70.82, -94, -40, 145, 135.52, -176, -40, -27, -1];
-
-function bubbleSort(arr) {
-    let swapped;
+const bubbleSort = (arr) => {
+    let swapped, temp;
 
     do {
         swapped = false;
@@ -18,4 +16,4 @@ function bubbleSort(arr) {
     return arr;
 }
 
-bubbleSort(test);
+export default bubbleSort;

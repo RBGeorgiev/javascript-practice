@@ -1,3 +1,5 @@
+import bubbleSort from './algorithms/bubble-sort.js';
+
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 let shuffleBtn = document.getElementById("shuffleBtn");
@@ -42,6 +44,8 @@ class Controller {
 
         return arr;
     }
+
+    sortArray = (arr = this.arr) => bubbleSort(arr);
 
     // display methods
 
