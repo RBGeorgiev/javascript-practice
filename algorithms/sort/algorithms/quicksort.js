@@ -1,5 +1,3 @@
-let test = [2, 1, 3, 5, 12.5, 15, 6, 54, 1, 567, -3, 32.2, 375, 53, 32.21, 9, -71, 57, 35, 73, 12, 123, 32, 2, 34];
-
 // function takes in array to be sorted, as well as the first and last index of the part of the array that will be partitioned
 function partition(arr, first, last) {
     let pivot = arr[last], // last element is always used as a pivot
@@ -20,7 +18,7 @@ function partition(arr, first, last) {
     return c;
 }
 
-function quicksort(arr, first, last) {
+function quicksort(arr, first = 0, last = arr.length - 1) {
     let pi;
 
     // if the partition is small enough so that the first and last index are the same number, then stop the recursion
@@ -34,4 +32,4 @@ function quicksort(arr, first, last) {
     return arr;
 }
 
-quicksort(test, 0, test.length - 1);
+export default quicksort;

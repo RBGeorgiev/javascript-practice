@@ -1,4 +1,7 @@
 import bubbleSort from './algorithms/bubble-sort.js';
+import mergeSort from './algorithms/merge-sort.js';
+import insertionSort from './algorithms/insertion-sort.js';
+import quicksort from './algorithms/quicksort.js';
 
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
@@ -23,7 +26,7 @@ class Controller {
         }
 
         sortBtn.onclick = () => {
-            this.sortArray(this.arr);
+            this.arr = this.sortArray(this.arr);
             this.clearCanvas();
             this.displayArray();
         }
@@ -52,7 +55,7 @@ class Controller {
         return arr;
     }
 
-    sortArray = (arr = this.arr) => bubbleSort(arr);
+    sortArray = (arr = this.arr) => mergeSort(arr);
 
     // display methods
 

@@ -1,8 +1,7 @@
-let test = [2, 1, 3, 5, 12, 15, 6, 54, 1];
-
-// instertion sort works better for small arrays n < 10
+// insertion sort works faster for small arrays n < 10
 function insertionSort(arr) {
-    let cur = prev = 0;
+    let cur = 0;
+    let prev = 0;
     // loop through array
     for (let i = 0; i < arr.length; i++) {
         cur = arr[i];
@@ -19,4 +18,4 @@ function insertionSort(arr) {
     return arr;
 }
 
-insertionSort(test);
+export default insertionSort;
