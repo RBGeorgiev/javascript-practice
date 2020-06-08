@@ -7,6 +7,14 @@ let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 let shuffleBtn = document.getElementById("shuffleBtn");
 let sortBtn = document.getElementById("sortBtn");
+let sortSelect = document.getElementById("sortSelect");
+
+const SORT_TYPES = {
+    "bubbleSort": bubbleSort,
+    "mergeSort": mergeSort,
+    "insertionSort": insertionSort,
+    "quicksort": quicksort
+}
 
 class Controller {
     constructor(length) {
@@ -55,7 +63,10 @@ class Controller {
         return arr;
     }
 
-    sortArray = (arr = this.arr) => mergeSort(arr);
+    sortArray = (arr) => {
+        let sort = SORT_TYPES[sortSelect.value];
+        return sort(arr);
+    }
 
     // display methods
 
