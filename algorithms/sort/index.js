@@ -1,7 +1,7 @@
-import bubbleSort from './algorithms/bubble-sort.js';
-import mergeSort from './algorithms/merge-sort.js';
-import insertionSort from './algorithms/insertion-sort.js';
-import quicksort from './algorithms/quicksort.js';
+import BubbleSort from './algorithms/bubble-sort.js';
+import MergeSort from './algorithms/merge-sort.js';
+import InsertionSort from './algorithms/insertion-sort.js';
+import Quicksort from './algorithms/quicksort.js';
 
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
@@ -10,10 +10,10 @@ let sortBtn = document.getElementById("sortBtn");
 let sortSelect = document.getElementById("sortSelect");
 
 const SORT_TYPES = {
-    "bubbleSort": bubbleSort,
-    "mergeSort": mergeSort,
-    "insertionSort": insertionSort,
-    "quicksort": quicksort
+    "bubbleSort": BubbleSort,
+    "mergeSort": MergeSort,
+    "insertionSort": InsertionSort,
+    "quicksort": Quicksort
 }
 
 class Controller {
@@ -64,8 +64,8 @@ class Controller {
     }
 
     sortArray = (arr) => {
-        let sort = SORT_TYPES[sortSelect.value];
-        return sort(arr);
+        let sort = new SORT_TYPES[sortSelect.value];
+        return sort.run(arr);
     }
 
     // display methods
