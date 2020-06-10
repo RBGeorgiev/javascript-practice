@@ -1,4 +1,8 @@
 export default class BubbleSort {
+    constructor() {
+        this.stepsTaken = [];
+    }
+
     bubbleSort = (arr) => {
         let swapped, temp;
 
@@ -10,12 +14,15 @@ export default class BubbleSort {
                     arr[i] = arr[i + 1];
                     arr[i + 1] = temp;
                     swapped = true;
+                    this.stepsTaken.push([...arr]);
                 }
             }
         } while (swapped);
 
         return arr;
     }
+
+    getStepsTaken = () => this.stepsTaken;
 
     run = arr => this.bubbleSort(arr);
 }

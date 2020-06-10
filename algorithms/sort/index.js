@@ -35,9 +35,11 @@ class Controller {
         }
 
         sortBtn.onclick = () => {
-            this.arr = this.sortArray(this.arr);
+            let sort = new SORT_TYPES[sortSelect.value];
+            this.arr = sort.run(this.arr);
+            let stepsTaken = sort.getStepsTaken();
             this.clearCanvas();
-            this.displayArray();
+            this.animateSteps(stepsTaken);
         }
     }
 
@@ -62,11 +64,6 @@ class Controller {
         }
 
         return arr;
-    }
-
-    sortArray = (arr) => {
-        let sort = new SORT_TYPES[sortSelect.value];
-        return sort.run(arr);
     }
 
     // display methods
@@ -118,7 +115,10 @@ class Controller {
         );
     }
 
-    visualizeStep = (step) => this.displayArray(step);
+    visualizeStep = (step) => {
+        this.clearCanvas();
+        this.displayArray(step);
+    }
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
 
