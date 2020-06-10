@@ -18,6 +18,7 @@ const SORT_TYPES = {
 
 class Controller {
     constructor(length) {
+        this.animFrameId;
         this.arr = this.init(length);
         this.initEventListeners();
     }
@@ -91,6 +92,37 @@ class Controller {
         }
     }
 
+    animateSteps = (stepsTaken) => {
+        let start = 0;
+        let deltaTime = 0;
+        let i = 0;
+        let len = stepsTaken.length;
+
+        const step = (timestamp) => {
+            deltaTime = timestamp - start;
+            start = timestamp;
+
+            if (i > len - 1) return;
+
+            this.visualizeStep(stepsTaken[i]);
+
+            i++;
+
+            this.setAnimFrameId(
+                window.requestAnimationFrame(step)
+            );
+        }
+
+        this.setAnimFrameId(
+            window.requestAnimationFrame(step)
+        );
+    }
+
+    visualizeStep = (step) => this.displayArray(step);
+
+    stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
+
+    setAnimFrameId = (id) => this.animFrameId = id;
 }
 
 const controller = new Controller(50);
