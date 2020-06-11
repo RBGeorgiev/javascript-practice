@@ -30,6 +30,7 @@ class Controller {
 
     initEventListeners = () => {
         shuffleBtn.onclick = () => {
+            this.stopAnimFrame();
             this.shuffleArray(this.arr);
             this.clearCanvas();
             this.displayArray();
@@ -37,6 +38,7 @@ class Controller {
         }
 
         sortBtn.onclick = () => {
+            this.stopAnimFrame();
             if (this.sorted) {
                 this.shuffleArray(this.arr);
             }
