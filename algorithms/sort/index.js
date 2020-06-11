@@ -21,6 +21,7 @@ class Controller {
         this.animFrameId;
         this.arr = this.init(length);
         this.initEventListeners();
+        this.sorted = false;
     }
 
     init = (length) => this.shuffleArray(
@@ -32,14 +33,19 @@ class Controller {
             this.shuffleArray(this.arr);
             this.clearCanvas();
             this.displayArray();
+            this.sorted = false;
         }
 
         sortBtn.onclick = () => {
+            if (this.sorted) {
+                this.shuffleArray(this.arr);
+            }
             let sort = new SORT_TYPES[sortSelect.value];
             this.arr = sort.run(this.arr);
             let stepsTaken = sort.getStepsTaken();
             this.clearCanvas();
             this.animateSteps(stepsTaken);
+            this.sorted = true;
         }
     }
 
