@@ -3,6 +3,8 @@ export default class BubbleSort {
         this.stepsTaken = [];
     }
 
+    addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
+
     bubbleSort = (arr) => {
         let swapped, temp;
 
@@ -14,7 +16,7 @@ export default class BubbleSort {
                     arr[i] = arr[i + 1];
                     arr[i + 1] = temp;
                     swapped = true;
-                    this.stepsTaken.push([...arr]);
+                    this.addToStepsTaken(arr);
                 }
             }
         } while (swapped);
