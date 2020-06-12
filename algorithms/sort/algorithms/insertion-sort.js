@@ -2,6 +2,12 @@
 // insertion sort works faster for small arrays n < 10
 
 export default class InsertionSort {
+    constructor() {
+        this.stepsTaken = [];
+    }
+
+    addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
+
     insertionSort(arr) {
         let cur = 0;
         let prev = 0;
@@ -15,11 +21,15 @@ export default class InsertionSort {
                 if (cur < prev) {
                     arr[j] = cur;
                     arr[j + 1] = prev;
+                    this.addToStepsTaken(arr);
                 }
             }
         }
         return arr;
     }
+
+
+    getStepsTaken = () => this.stepsTaken;
 
     run = arr => this.insertionSort(arr);
 }
