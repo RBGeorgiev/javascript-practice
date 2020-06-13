@@ -1,4 +1,10 @@
 export default class Quicksort {
+    constructor() {
+        this.stepsTaken = [];
+    }
+
+    addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
+
     // function takes in array to be sorted, as well as the first and last index of the part of the array that will be partitioned
     partition(arr, first, last) {
         let pivot = arr[last], // last element is always used as a pivot
@@ -30,8 +36,11 @@ export default class Quicksort {
             this.quicksort(arr, first, pi - 1); // before pi
             this.quicksort(arr, pi + 1, last); // after pi
         }
+
         return arr;
     }
+
+    getStepsTaken = () => this.stepsTaken;
 
     run = arr => this.quicksort(arr);
 }
