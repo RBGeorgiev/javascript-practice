@@ -1,4 +1,10 @@
 export default class MergeSort {
+    constructor() {
+        this.stepsTaken = [];
+    }
+
+    addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
+
     mergeSort(arr) {
         // if array length is 1 or 0
         if (arr.length < 2) return arr;
@@ -17,8 +23,11 @@ export default class MergeSort {
         while (left.length && right.length) {
             (left[0] < right[0]) ? ans.push(left.shift()) : ans.push(right.shift());
         }
+
         return ans.concat(left, right);
     }
+
+    getStepsTaken = () => this.stepsTaken;
 
     run = arr => this.mergeSort(arr);
 }
