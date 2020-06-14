@@ -1,11 +1,12 @@
 export default class MergeSort {
     constructor() {
         this.stepsTaken = [];
+        this.arr = [];
     }
 
     addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
 
-    mergeSort(arr) {
+    mergeSort(arr, prevMid, prevStart = 0) {
         // if array length is 1 or 0
         if (arr.length < 2) return arr;
 
@@ -14,7 +15,14 @@ export default class MergeSort {
         let leftArr = arr.slice(0, middleIdx);
         let rightArr = arr.slice(middleIdx);
 
-        return this.merge(this.mergeSort(leftArr), this.mergeSort(rightArr));
+        let mergedLeft = this.mergeSort(leftArr, middleIdx);
+        this.arr.splice(prevStart + 0, mergedLeft.length, ...mergedLeft);
+        this.addToStepsTaken(this.arr);
+        let mergedRight = this.mergeSort(rightArr, middleIdx, middleIdx);
+        this.arr.splice(middleIdx, mergedRight.length, ...mergedRight);
+        this.addToStepsTaken(this.arr);
+
+        return this.merge(mergedLeft, mergedRight);
     }
 
     merge(left, right) {
@@ -29,5 +37,8 @@ export default class MergeSort {
 
     getStepsTaken = () => this.stepsTaken;
 
-    run = arr => this.mergeSort(arr);
+    run = arr => {
+        this.arr = arr;
+        this.mergeSort(arr);
+    }
 }
