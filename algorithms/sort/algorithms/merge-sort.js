@@ -6,7 +6,7 @@ export default class MergeSort {
 
     addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
 
-    mergeSort(arr, prevMid, prevStart = 0) {
+    mergeSort(arr, prevStart = 0) {
         // if array length is 1 or 0
         if (arr.length < 2) return arr;
 
@@ -15,24 +15,27 @@ export default class MergeSort {
         let leftArr = arr.slice(0, middleIdx);
         let rightArr = arr.slice(middleIdx);
 
-        let mergedLeft = this.mergeSort(leftArr, middleIdx);
-        this.arr.splice(prevStart + 0, mergedLeft.length, ...mergedLeft);
-        this.addToStepsTaken(this.arr);
-        let mergedRight = this.mergeSort(rightArr, middleIdx, middleIdx);
-        this.arr.splice(middleIdx, mergedRight.length, ...mergedRight);
-        this.addToStepsTaken(this.arr);
+        let mergedLeft = this.mergeSort(leftArr, prevStart);
+        let mergedRight = this.mergeSort(rightArr, middleIdx);
 
-        return this.merge(mergedLeft, mergedRight);
+        return this.merge(mergedLeft, mergedRight, prevStart, middleIdx);
     }
 
-    merge(left, right) {
+    merge(left, right, prevStart) {
         let ans = [];
 
         while (left.length && right.length) {
             (left[0] < right[0]) ? ans.push(left.shift()) : ans.push(right.shift());
+            this.arr.splice(prevStart, ans.length, ...ans);
+            this.addToStepsTaken(this.arr);
         }
 
-        return ans.concat(left, right);
+        ans = ans.concat(left, right);
+
+        this.arr.splice(prevStart, ans.length, ...ans);
+        this.addToStepsTaken(this.arr);
+
+        return ans;
     }
 
     getStepsTaken = () => this.stepsTaken;
@@ -42,3 +45,10 @@ export default class MergeSort {
         this.mergeSort(arr);
     }
 }
+
+
+// this.arr.splice(prevMidIdx, mergedLeft.length, ...mergedLeft);
+// this.addToStepsTaken(this.arr);
+
+// this.arr.splice(curMidIdx, mergedRight.length, ...mergedRight);
+// this.addToStepsTaken(this.arr);
