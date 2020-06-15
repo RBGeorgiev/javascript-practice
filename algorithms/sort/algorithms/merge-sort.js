@@ -41,6 +41,6 @@ export default class MergeSort {
 
     run = arr => {
         this.arr = arr;
-        this.mergeSort(arr);
+        return this.mergeSort(arr);
     }
 }
