@@ -28,7 +28,6 @@ export default class InsertionSort {
         return arr;
     }
 
-
     getStepsTaken = () => this.stepsTaken;
 
     run = arr => this.insertionSort(arr);

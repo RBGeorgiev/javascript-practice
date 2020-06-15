@@ -4,7 +4,10 @@ export default class MergeSort {
         this.arr = [];
     }
 
-    addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
+    addToStepsTaken = (idx, delCount, arrPartition) => {
+        this.arr.splice(idx, delCount, ...arrPartition);
+        this.stepsTaken.push([...this.arr]);
+    }
 
     mergeSort(arr, prevStartIdx = 0) {
         // if array length is 1 or 0
@@ -26,13 +29,13 @@ export default class MergeSort {
 
         while (left.length && right.length) {
             (left[0] < right[0]) ? ans.push(left.shift()) : ans.push(right.shift());
-            this.arr.splice(prevStartIdx, ans.length, ...ans);
-            this.addToStepsTaken(this.arr);
+
+            this.addToStepsTaken(prevStartIdx, ans.length, ans);
         }
 
         ans = ans.concat(left, right);
-        this.arr.splice(prevStartIdx, ans.length, ...ans);
-        this.addToStepsTaken(this.arr);
+
+        this.addToStepsTaken(prevStartIdx, ans.length, ans);
 
         return ans;
     }
