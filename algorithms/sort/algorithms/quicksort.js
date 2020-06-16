@@ -1,6 +1,7 @@
 export default class Quicksort {
     constructor() {
         this.stepsTaken = [];
+        this.arr = [];
     }
 
     addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
@@ -19,6 +20,8 @@ export default class Quicksort {
                 temp = arr[c];
                 arr[c] = arr[i];
                 arr[i] = temp;
+
+                this.addToStepsTaken(arr);
             }
         }
         // after the loop, the pivot is in it's final position in the array and c is the index, or location, of the pivot
@@ -42,5 +45,8 @@ export default class Quicksort {
 
     getStepsTaken = () => this.stepsTaken;
 
-    run = arr => this.quicksort(arr);
+    run = arr => {
+        this.arr = arr;
+        this.quicksort(arr);
+    }
 }
