@@ -1,7 +1,6 @@
 export default class Quicksort {
     constructor() {
         this.stepsTaken = [];
-        this.arr = [];
     }
 
     addToStepsTaken = (arr) => this.stepsTaken.push([...arr]);
@@ -45,8 +44,5 @@ export default class Quicksort {
 
     getStepsTaken = () => this.stepsTaken;
 
-    run = arr => {
-        this.arr = arr;
-        this.quicksort(arr);
-    }
+    run = arr => this.quicksort(arr);
 }
