@@ -84,6 +84,7 @@ class Controller {
         let h = canvas.height;
 
         for (let i = 0; i < len; i++) {
+            ctx.strokeStyle = this.getColor(len - 1, i);
             ctx.beginPath();
             ctx.moveTo(
                 (w / len) / 2 + w / len * i,
@@ -121,6 +122,14 @@ class Controller {
         this.setAnimFrameId(
             window.requestAnimationFrame(step)
         );
+    }
+
+    getColor = (maxLength, curLine) => {
+        let percent = 360 / maxLength,
+            a = percent / 100,
+            b = 360 * a,
+            c = b * curLine;
+        return `hsl(${c}, 100%, 50%)`;
     }
 
     visualizeStep = (step) => {
