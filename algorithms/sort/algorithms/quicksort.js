@@ -19,9 +19,8 @@ export default class Quicksort {
                 temp = arr[c];
                 arr[c] = arr[i];
                 arr[i] = temp;
-
-                this.addToStepsTaken(arr);
             }
+            this.addToStepsTaken(arr);
         }
         // after the loop, the pivot is in it's final position in the array and c is the index, or location, of the pivot
         return c;
