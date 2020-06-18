@@ -126,10 +126,8 @@ class Controller {
 
     getColor = (maxLength, curLine) => {
         let percent = 360 / maxLength,
-            a = percent / 100,
-            b = 360 * a,
-            c = b * curLine;
-        return `hsl(${c}, 100%, 50%)`;
+            hue = percent * curLine;
+        return `hsl(${hue}, 100%, 50%)`;
     }
 
     visualizeStep = (step) => {
