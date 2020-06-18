@@ -84,7 +84,7 @@ class Controller {
         let h = canvas.height;
 
         for (let i = 0; i < len; i++) {
-            ctx.strokeStyle = this.getColor(len - 1, i);
+            ctx.strokeStyle = this.getColor(len - 1, arr[i]);
             ctx.beginPath();
             ctx.moveTo(
                 (w / len) / 2 + w / len * i,
