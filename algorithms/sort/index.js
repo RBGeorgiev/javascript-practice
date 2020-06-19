@@ -85,6 +85,7 @@ class Controller {
 
         for (let i = 0; i < len; i++) {
             ctx.strokeStyle = this.getColor(len - 1, arr[i]);
+            ctx.lineWidth = 10;
             ctx.beginPath();
             ctx.moveTo(
                 (w / len) / 2 + w / len * i,
