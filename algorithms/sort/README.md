@@ -1,3 +1,3 @@
 # Sorting algorithms
 
-A visualization of a couple of sorting algorithms
+A visualization of Bubble Sort, Insertion Sort, Merge Sort, and Quicksort
