@@ -5,6 +5,8 @@ import Quicksort from './algorithms/quicksort.js';
 
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
+let arrayLengthInput = document.getElementById("arrayLengthInput");
+let arrayLengthSpan = document.getElementById("arrayLengthSpan");
 let shuffleBtn = document.getElementById("shuffleBtn");
 let sortBtn = document.getElementById("sortBtn");
 let sortSelect = document.getElementById("sortSelect");
@@ -48,6 +50,16 @@ class Controller {
             this.clearCanvas();
             this.animateSteps(stepsTaken);
             this.sorted = true;
+        }
+
+        arrayLengthInput.oninput = (e) => {
+            arrayLengthInput.blur();
+            this.stopAnimFrame();
+            let length = e.target.value;
+            this.clearCanvas();
+            this.arr = this.init(length);
+            this.displayArray();
+            arrayLengthSpan.innerText = length;
         }
     }
 
