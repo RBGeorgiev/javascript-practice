@@ -120,13 +120,14 @@ class Controller {
         ctx.lineWidth = lineWidth;
 
         for (let i = 0; i < len; i++) {
-            let posX = (w / len) / 2 + w / len * i
-            let cx = posX - lineWidth / 2
-            let cy = h - lineHeight / 2
+            let posX = (w / len) / 2 + w / len * i;
+            let cx = posX - lineWidth / 2;
+            let cy = h - lineHeight / 2;
 
+            ctx.strokeStyle = this.getColor(len - 1, arr[i]);
             ctx.beginPath();
             ctx.moveTo(
-                (w / len) / 2 + w / len * i,
+                posX,
                 h
             );
 
@@ -135,7 +136,7 @@ class Controller {
             ctx.translate(-cx, -cy);
 
             ctx.lineTo(
-                (w / len) / 2 + w / len * i,
+                posX,
                 lineHeight
             );
             ctx.stroke();
