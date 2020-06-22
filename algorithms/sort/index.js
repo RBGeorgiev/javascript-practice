@@ -90,24 +90,56 @@ class Controller {
 
     clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    displayArray = (arr = this.arr, maxLineLength = 250, lineStart = 100) => {
+    // displayArray = (arr = this.arr, maxLineLength = 250, lineStart = 100) => {
+    //     let len = arr.length;
+    //     let w = canvas.width;
+    //     let h = canvas.height;
+    //     ctx.lineWidth = (w / len < 10) ? w / len : 10;
+
+    //     for (let i = 0; i < len; i++) {
+    //         ctx.strokeStyle = this.getColor(len - 1, arr[i]);
+    //         ctx.beginPath();
+    //         ctx.moveTo(
+    //             (w / len) / 2 + w / len * i,
+    //             h
+    //         );
+    //         ctx.lineTo(
+    //             (w / len) / 2 + w / len * i,
+    //             h - lineStart - arr[i] * maxLineLength / len
+    //         );
+    //         ctx.stroke();
+    //     }
+    // }
+
+    displayArray = (arr = this.arr) => {
         let len = arr.length;
         let w = canvas.width;
         let h = canvas.height;
-        ctx.lineWidth = (w / len < 10) ? w / len : 10;
+        let lineHeight = 150
+        let lineWidth = (w / len < 10) ? w / len : 10;
+        ctx.lineWidth = lineWidth;
 
         for (let i = 0; i < len; i++) {
-            ctx.strokeStyle = this.getColor(len - 1, arr[i]);
+            let posX = (w / len) / 2 + w / len * i
+            let cx = posX - lineWidth / 2
+            let cy = h - lineHeight / 2
+
             ctx.beginPath();
             ctx.moveTo(
                 (w / len) / 2 + w / len * i,
                 h
             );
+
+            ctx.translate(cx, cy);
+            ctx.rotate((Math.PI / 180) * (-45 + (90 * arr[i] / len)));
+            ctx.translate(-cx, -cy);
+
             ctx.lineTo(
                 (w / len) / 2 + w / len * i,
-                h - lineStart - arr[i] * maxLineLength / len
+                lineHeight
             );
             ctx.stroke();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
     }
 
