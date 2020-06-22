@@ -112,17 +112,18 @@ class Controller {
     // }
 
     displayArray = (arr = this.arr) => {
+        let padding = 50;
         let len = arr.length;
-        let w = canvas.width;
+        let w = canvas.width - padding * 2;
         let h = canvas.height;
-        let lineHeight = 150
+        let lineStart = 150;
         let lineWidth = (w / len < 10) ? w / len : 10;
         ctx.lineWidth = lineWidth;
 
         for (let i = 0; i < len; i++) {
-            let posX = (w / len) / 2 + w / len * i;
+            let posX = padding + ((w / len) / 2 + w / len * i);
             let cx = posX - lineWidth / 2;
-            let cy = h - lineHeight / 2;
+            let cy = h - lineStart / 2;
 
             ctx.strokeStyle = this.getColor(len - 1, arr[i]);
             ctx.beginPath();
@@ -137,7 +138,7 @@ class Controller {
 
             ctx.lineTo(
                 posX,
-                lineHeight
+                lineStart
             );
             ctx.stroke();
             ctx.setTransform(1, 0, 0, 1, 0, 0);
