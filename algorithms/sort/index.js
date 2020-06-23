@@ -35,7 +35,7 @@ class Controller {
             this.stopAnimFrame();
             this.shuffleArray(this.arr);
             this.clearCanvas();
-            this.displayArray();
+            this.displayArrayByRotation();
             this.sorted = false;
         }
 
@@ -58,7 +58,7 @@ class Controller {
             let length = e.target.value;
             this.clearCanvas();
             this.arr = this.init(length);
-            this.displayArray();
+            this.displayArrayByRotation();
             arrayLengthSpan.innerText = length;
         }
     }
@@ -90,28 +90,28 @@ class Controller {
 
     clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // displayArray = (arr = this.arr, maxLineLength = 250, lineStart = 100) => {
-    //     let len = arr.length;
-    //     let w = canvas.width;
-    //     let h = canvas.height;
-    //     ctx.lineWidth = (w / len < 10) ? w / len : 10;
+    displayArrayByLength = (arr = this.arr, maxLineLength = 250, lineStart = 100) => {
+        let len = arr.length;
+        let w = canvas.width;
+        let h = canvas.height;
+        ctx.lineWidth = (w / len < 10) ? w / len : 10;
 
-    //     for (let i = 0; i < len; i++) {
-    //         ctx.strokeStyle = this.getColor(len - 1, arr[i]);
-    //         ctx.beginPath();
-    //         ctx.moveTo(
-    //             (w / len) / 2 + w / len * i,
-    //             h
-    //         );
-    //         ctx.lineTo(
-    //             (w / len) / 2 + w / len * i,
-    //             h - lineStart - arr[i] * maxLineLength / len
-    //         );
-    //         ctx.stroke();
-    //     }
-    // }
+        for (let i = 0; i < len; i++) {
+            ctx.strokeStyle = this.getColor(len - 1, arr[i]);
+            ctx.beginPath();
+            ctx.moveTo(
+                (w / len) / 2 + w / len * i,
+                h
+            );
+            ctx.lineTo(
+                (w / len) / 2 + w / len * i,
+                h - lineStart - arr[i] * maxLineLength / len
+            );
+            ctx.stroke();
+        }
+    }
 
-    displayArray = (arr = this.arr) => {
+    displayArrayByRotation = (arr = this.arr) => {
         let padding = 50;
         let len = arr.length;
         let w = canvas.width - padding * 2;
@@ -179,7 +179,7 @@ class Controller {
 
     visualizeStep = (step) => {
         this.clearCanvas();
-        this.displayArray(step);
+        this.displayArrayByRotation(step);
     }
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
@@ -188,4 +188,4 @@ class Controller {
 }
 
 const controller = new Controller(50);
-controller.displayArray();
+controller.displayArrayByRotation();
