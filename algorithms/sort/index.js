@@ -10,6 +10,7 @@ let arrayLengthSpan = document.getElementById("arrayLengthSpan");
 let shuffleBtn = document.getElementById("shuffleBtn");
 let sortBtn = document.getElementById("sortBtn");
 let sortSelect = document.getElementById("sortSelect");
+let displayStyleSelect = document.getElementById("displayStyleSelect");
 
 const SORT_TYPES = {
     "bubbleSort": BubbleSort,
@@ -111,7 +112,7 @@ class Controller {
         }
     }
 
-    displayArrayByRotation = (arr = this.arr) => {
+    displayArrayByTilt = (arr = this.arr) => {
         let padding = 50;
         let len = arr.length;
         let w = canvas.width - padding * 2;
