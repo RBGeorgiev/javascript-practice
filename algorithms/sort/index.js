@@ -36,7 +36,7 @@ class Controller {
             this.stopAnimFrame();
             this.shuffleArray(this.arr);
             this.clearCanvas();
-            this.displayArrayByRotation();
+            this.displayArray();
             this.sorted = false;
         }
 
@@ -59,7 +59,7 @@ class Controller {
             let length = e.target.value;
             this.clearCanvas();
             this.arr = this.init(length);
-            this.displayArrayByRotation();
+            this.displayArray();
             arrayLengthSpan.innerText = length;
         }
     }
@@ -90,6 +90,21 @@ class Controller {
     // display methods
 
     clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    displayArray = (arr = this.arr) => {
+        let displayType = displayStyleSelect.value;
+
+        switch (displayType) {
+            case "displayArrayByLength":
+                this.displayArrayByLength();
+                break;
+            case "displayArrayByTilt":
+                this.displayArrayByTilt();
+                break;
+            default:
+                this.displayArrayByLength();
+        }
+    }
 
     displayArrayByLength = (arr = this.arr, maxLineLength = 250, lineStart = 100) => {
         let len = arr.length;
@@ -180,7 +195,7 @@ class Controller {
 
     visualizeStep = (step) => {
         this.clearCanvas();
-        this.displayArrayByRotation(step);
+        this.displayArray(step);
     }
 
     stopAnimFrame = () => window.cancelAnimationFrame(this.animFrameId);
@@ -189,4 +204,4 @@ class Controller {
 }
 
 const controller = new Controller(50);
-controller.displayArrayByRotation();
+controller.displayArray();
