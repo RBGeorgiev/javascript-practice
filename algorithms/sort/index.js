@@ -96,13 +96,13 @@ class Controller {
 
         switch (displayType) {
             case "displayArrayByLength":
-                this.displayArrayByLength();
+                this.displayArrayByLength(arr);
                 break;
             case "displayArrayByTilt":
-                this.displayArrayByTilt();
+                this.displayArrayByTilt(arr);
                 break;
             default:
-                this.displayArrayByLength();
+                this.displayArrayByLength(arr);
         }
     }
 
