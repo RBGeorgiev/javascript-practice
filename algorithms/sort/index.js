@@ -62,6 +62,15 @@ class Controller {
             this.displayArray();
             arrayLengthSpan.innerText = length;
         }
+
+        displayStyleSelect.onchange = () => {
+            arrayLengthInput.blur();
+            this.stopAnimFrame();
+            let length = arrayLengthInput.value;
+            this.clearCanvas();
+            this.arr = this.init(length);
+            this.displayArray();
+        }
     }
 
     initArray = (length) => {
