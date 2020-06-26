@@ -65,10 +65,7 @@ class Controller {
 
         displayStyleSelect.onchange = () => {
             arrayLengthInput.blur();
-            this.stopAnimFrame();
-            let length = arrayLengthInput.value;
             this.clearCanvas();
-            this.arr = this.init(length);
             this.displayArray();
         }
     }
