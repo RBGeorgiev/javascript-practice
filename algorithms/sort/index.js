@@ -64,7 +64,7 @@ class Controller {
         }
 
         sortSelect.onchange = () => {
-            arrayLengthInput.blur();
+            sortSelect.blur();
             this.stopAnimFrame();
             let length = arrayLengthInput.value;
             this.clearCanvas();
@@ -73,7 +73,7 @@ class Controller {
         }
 
         displayStyleSelect.onchange = () => {
-            arrayLengthInput.blur();
+            displayStyleSelect.blur();
             this.clearCanvas();
             this.displayArray();
         }
