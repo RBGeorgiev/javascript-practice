@@ -153,7 +153,7 @@ class Controller {
 
         for (let i = 0; i < len; i++) {
             let posX = padding + ((w / len) / 2 + w / len * i);
-            let posY = h - 100;
+            let posY = h / 2 + lineHeight / 2;
             let cx = posX - lineWidth / 2;
             let cy = h - lineHeight / 2;
 
