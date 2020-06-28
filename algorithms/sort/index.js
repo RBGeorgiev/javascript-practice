@@ -146,13 +146,14 @@ class Controller {
         let padding = 50;
         let len = arr.length;
         let w = canvas.width - padding * 2;
-        let h = canvas.height - 100;
+        let h = canvas.height;
         let lineHeight = 150;
         let lineWidth = (w / len < 10) ? w / len : 10;
         ctx.lineWidth = lineWidth;
 
         for (let i = 0; i < len; i++) {
             let posX = padding + ((w / len) / 2 + w / len * i);
+            let posY = h - 100;
             let cx = posX - lineWidth / 2;
             let cy = h - lineHeight / 2;
 
@@ -160,7 +161,7 @@ class Controller {
             ctx.beginPath();
             ctx.moveTo(
                 posX,
-                h
+                posY
             );
 
             ctx.translate(cx, cy);
@@ -169,7 +170,7 @@ class Controller {
 
             ctx.lineTo(
                 posX,
-                h - lineHeight
+                posY - lineHeight
             );
             ctx.stroke();
             ctx.setTransform(1, 0, 0, 1, 0, 0);
