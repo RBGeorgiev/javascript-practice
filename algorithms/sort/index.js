@@ -205,7 +205,7 @@ class Controller {
     }
 
     getColor = (maxLength, curLine) => {
-        let percent = 360 / maxLength,
+        let percent = 280 / maxLength,
             hue = percent * curLine;
         return `hsl(${hue}, 100%, 50%)`;
     }
