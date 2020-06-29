@@ -70,6 +70,7 @@ class Controller {
             this.clearCanvas();
             this.arr = this.init(length);
             this.displayArray();
+            this.sorted = false;
         }
 
         displayStyleSelect.onchange = () => {
