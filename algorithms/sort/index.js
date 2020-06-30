@@ -144,12 +144,13 @@ class Controller {
     }
 
     displayArrayByTilt = (arr = this.arr) => {
-        let padding = 50;
+        let lineHeight = 150;
+        let lineWidth;
+        let padding = lineHeight;
         let len = arr.length;
         let w = canvas.width - padding * 2;
         let h = canvas.height;
-        let lineHeight = 150;
-        let lineWidth = (w / len < 10) ? w / len : 10;
+        lineWidth = (w / len < 10) ? w / len : 10;
         ctx.lineWidth = lineWidth;
 
         for (let i = 0; i < len; i++) {
