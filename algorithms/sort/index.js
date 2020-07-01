@@ -127,17 +127,22 @@ class Controller {
         let len = arr.length;
         let w = canvas.width;
         let h = canvas.height;
-        ctx.lineWidth = (w / len < this.maxLineWidth) ? w / len : this.maxLineWidth;
+        let lineWidth = (w / len < this.maxLineWidth) ? w / len : this.maxLineWidth; // decide line width
+        ctx.lineWidth = lineWidth;
+        w -= lineWidth * 2; // remove drawable width to account for padding on both sides
+        let padding = lineWidth;
 
         for (let i = 0; i < len; i++) {
+            let posX = padding + ((w / len) / 2 + w / len * i);
+
             ctx.strokeStyle = this.getColor(len - 1, arr[i]);
             ctx.beginPath();
             ctx.moveTo(
-                (w / len) / 2 + w / len * i,
+                posX,
                 h
             );
             ctx.lineTo(
-                (w / len) / 2 + w / len * i,
+                posX,
                 h - lineStart - arr[i] * maxLineLength / len
             );
             ctx.stroke();
