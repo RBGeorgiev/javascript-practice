@@ -25,6 +25,7 @@ class Controller {
         this.arr = this.init(length);
         this.initEventListeners();
         this.sorted = false;
+        this.maxLineWidth = 20;
     }
 
     init = (length) => this.shuffleArray(
@@ -126,7 +127,7 @@ class Controller {
         let len = arr.length;
         let w = canvas.width;
         let h = canvas.height;
-        ctx.lineWidth = (w / len < 10) ? w / len : 10;
+        ctx.lineWidth = (w / len < this.maxLineWidth) ? w / len : this.maxLineWidth;
 
         for (let i = 0; i < len; i++) {
             ctx.strokeStyle = this.getColor(len - 1, arr[i]);
@@ -150,7 +151,7 @@ class Controller {
         let len = arr.length;
         let w = canvas.width - padding * 2;
         let h = canvas.height;
-        lineWidth = (w / len < 10) ? w / len : 10;
+        lineWidth = (w / len < this.maxLineWidth) ? w / len : this.maxLineWidth;
         ctx.lineWidth = lineWidth;
 
         for (let i = 0; i < len; i++) {
