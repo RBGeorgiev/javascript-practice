@@ -1,23 +1,14 @@
-import BubbleSort from './algorithms/bubble-sort.js';
-import MergeSort from './algorithms/merge-sort.js';
-import InsertionSort from './algorithms/insertion-sort.js';
-import Quicksort from './algorithms/quicksort.js';
-
-let canvas = document.getElementById('canvas');
-let ctx = canvas.getContext('2d');
-let arrayLengthInput = document.getElementById("arrayLengthInput");
-let arrayLengthSpan = document.getElementById("arrayLengthSpan");
-let shuffleBtn = document.getElementById("shuffleBtn");
-let sortBtn = document.getElementById("sortBtn");
-let sortSelect = document.getElementById("sortSelect");
-let displayStyleSelect = document.getElementById("displayStyleSelect");
-
-const SORT_TYPES = {
-    "bubbleSort": BubbleSort,
-    "mergeSort": MergeSort,
-    "insertionSort": InsertionSort,
-    "quicksort": Quicksort
-}
+import {
+    canvas,
+    ctx,
+    arrayLengthInput,
+    arrayLengthSpan,
+    shuffleBtn,
+    sortBtn,
+    sortSelect,
+    displayStyleSelect,
+    SORT_TYPES
+} from './constants.js';
 
 class Controller {
     constructor(length) {
