@@ -1,13 +1,20 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const generateRandomPoints = (startX, startY, endX, endY) => {
+const generateRandomPoints = (amount, startX = 0, startY = 0, endX = canvas.width, endY = canvas.height) => {
+    let allPoints = [];
     ctx.fillStyle = '#000000';
-    for (let i = 0; i < 1000; i++) {
+
+    for (let i = 0; i < amount; i++) {
         let x = Math.random() * (endX - startX) + startX;
         let y = Math.random() * (endY - startY) + startY;
-        ctx.fillRect(x, y, 3, 3);
+        allPoints.push({ x, y });
     }
+
+    return allPoints;
 }
 
-generateRandomPoints(0, 0, canvas.width, canvas.height)
+const displayPoints = allPoints => allPoints.forEach(p => ctx.fillRect(p.x, p.y, 3, 3));
+
+let allPoints = generateRandomPoints(1000);
+displayPoints(allPoints);
