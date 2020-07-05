@@ -1,4 +1,4 @@
-import Delaunator from './delaunator.js';
+import { Delaunay } from "./d3-delaunay/index.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -20,3 +20,5 @@ const displayPoints = allPoints => allPoints.forEach(p => ctx.fillRect(p[0], p[1
 
 let allPoints = generateRandomPoints(1000);
 displayPoints(allPoints);
+
+console.log(Delaunay)
