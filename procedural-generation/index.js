@@ -20,5 +20,7 @@ const displayPoints = allPoints => allPoints.forEach(p => ctx.fillRect(p[0], p[1
 
 let allPoints = generateRandomPoints(1000);
 displayPoints(allPoints);
-
-console.log(Delaunay)
+const delaunay = Delaunay.from(allPoints);
+const voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
+voronoi.render(ctx)
+ctx.stroke()
