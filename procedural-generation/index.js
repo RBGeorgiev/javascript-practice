@@ -22,5 +22,19 @@ let allPoints = generateRandomPoints(1000);
 displayPoints(allPoints);
 const delaunay = Delaunay.from(allPoints);
 const voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
-voronoi.render(ctx)
-ctx.stroke()
+voronoi.render(ctx);
+ctx.stroke();
+
+const getAllCellPolygons = () => {
+    let len = allPoints.length;
+    let arr = [];
+
+    for (let i = 0; i < len; i++) {
+        arr.push(voronoi.cellPolygon(i));
+    }
+
+    return arr;
+}
+
+let cellPolygons = getAllCellPolygons();
+console.log(cellPolygons);
