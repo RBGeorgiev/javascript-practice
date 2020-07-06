@@ -19,13 +19,13 @@ const generateRandomPoints = (amount, startX = 0, startY = 0, endX = canvas.widt
 const displayPoints = allPoints => allPoints.forEach(p => ctx.fillRect(p[0], p[1], 3, 3));
 
 let allPoints = generateRandomPoints(1000);
-displayPoints(allPoints);
+// displayPoints(allPoints);
 const delaunay = Delaunay.from(allPoints);
 const voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
 voronoi.render(ctx);
 ctx.stroke();
 
-const getAllCellPolygons = () => {
+const getAllVoronoiPolygonPoints = () => {
     let len = allPoints.length;
     let arr = [];
 
@@ -36,5 +36,24 @@ const getAllCellPolygons = () => {
     return arr;
 }
 
-let cellPolygons = getAllCellPolygons();
-console.log(cellPolygons);
+let allVoronoiPolygonPoints = getAllVoronoiPolygonPoints();
+
+const getCentroid = (i) => {
+    let totalX = 0;
+    let totalY = 0;
+
+    for (let j = 0; j < allVoronoiPolygonPoints[i].length; j++) {
+        let x = allVoronoiPolygonPoints[i][j][0];
+        let y = allVoronoiPolygonPoints[i][j][1];
+
+        totalX += x;
+        totalY += y;
+    }
+
+    return [totalX / allVoronoiPolygonPoints[0].length, totalY / allVoronoiPolygonPoints[0].length];
+}
+
+let approxCentroid = getCentroid(0);
+
+ctx.fillStyle = '#FF0000';
+ctx.fillRect(approxCentroid[0], approxCentroid[1], 4, 4);
