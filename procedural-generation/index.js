@@ -53,7 +53,8 @@ const getCentroid = (i) => {
     return [totalX / allVoronoiPolygonPoints[0].length, totalY / allVoronoiPolygonPoints[0].length];
 }
 
-let approxCentroid = getCentroid(0);
-
-ctx.fillStyle = '#FF0000';
-ctx.fillRect(approxCentroid[0], approxCentroid[1], 4, 4);
+for (let i = 0; i < allPoints.length; i++) {
+    let approxCentroid = getCentroid(i);
+    ctx.fillStyle = '#FF0000';
+    ctx.fillRect(approxCentroid[0], approxCentroid[1], 3, 3);
+}
