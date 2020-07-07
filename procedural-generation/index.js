@@ -20,8 +20,8 @@ const displayPoints = allPoints => allPoints.forEach(p => ctx.fillRect(p[0], p[1
 
 let allPoints = generateRandomPoints(1000);
 // displayPoints(allPoints);
-const delaunay = Delaunay.from(allPoints);
-const voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
+let delaunay = Delaunay.from(allPoints);
+let voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
 voronoi.render(ctx);
 ctx.stroke();
 
@@ -42,19 +42,38 @@ const getCentroid = (i) => {
     let totalX = 0;
     let totalY = 0;
 
-    for (let j = 0; j < allVoronoiPolygonPoints[i].length; j++) {
-        let x = allVoronoiPolygonPoints[i][j][0];
-        let y = allVoronoiPolygonPoints[i][j][1];
+    if (allVoronoiPolygonPoints[i]) {
+        for (let j = 0; j < allVoronoiPolygonPoints[i].length; j++) {
+            let x = allVoronoiPolygonPoints[i][j][0];
+            let y = allVoronoiPolygonPoints[i][j][1];
 
-        totalX += x;
-        totalY += y;
+            totalX += x;
+            totalY += y;
+        }
     }
 
-    return [totalX / allVoronoiPolygonPoints[0].length, totalY / allVoronoiPolygonPoints[0].length];
+    return [totalX / allVoronoiPolygonPoints[i].length, totalY / allVoronoiPolygonPoints[i].length];
 }
 
-for (let i = 0; i < allPoints.length; i++) {
-    let approxCentroid = getCentroid(i);
-    ctx.fillStyle = '#FF0000';
-    ctx.fillRect(approxCentroid[0], approxCentroid[1], 3, 3);
-}
+document.addEventListener("click", () => {
+    ctx.beginPath();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.closePath();
+
+    let len = allPoints.length;
+    let coords = [];
+    for (let i = 0; i < len; i++) {
+        let approxCentroid = getCentroid(i);
+        coords.push(approxCentroid);
+        // ctx.fillStyle = '#FF0000';
+        // ctx.fillRect(approxCentroid[0], approxCentroid[1], 4, 4);
+    }
+
+    allPoints = coords;
+    delaunay = Delaunay.from(coords);
+    voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
+
+    voronoi.render(ctx);
+    ctx.stroke();
+    allVoronoiPolygonPoints = getAllVoronoiPolygonPoints();
+})
