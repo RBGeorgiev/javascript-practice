@@ -38,21 +38,20 @@ const getAllVoronoiPolygonPoints = () => {
 
 let allVoronoiPolygonPoints = getAllVoronoiPolygonPoints();
 
-const getCentroid = (i) => {
+const getCentroid = (polygonPoints) => {
     let totalX = 0;
     let totalY = 0;
+    let len = polygonPoints.length;
 
-    if (allVoronoiPolygonPoints[i]) {
-        for (let j = 0; j < allVoronoiPolygonPoints[i].length; j++) {
-            let x = allVoronoiPolygonPoints[i][j][0];
-            let y = allVoronoiPolygonPoints[i][j][1];
+    for (let i = 0; i < len; i++) {
+        let x = polygonPoints[i][0];
+        let y = polygonPoints[i][1];
 
-            totalX += x;
-            totalY += y;
-        }
+        totalX += x;
+        totalY += y;
     }
 
-    return [totalX / allVoronoiPolygonPoints[i].length, totalY / allVoronoiPolygonPoints[i].length];
+    return [totalX / len, totalY / len];
 }
 
 const lloydRelaxation = () => {
@@ -60,8 +59,10 @@ const lloydRelaxation = () => {
     let coords = [];
 
     for (let i = 0; i < len; i++) {
-        let approxCentroid = getCentroid(i);
-        coords.push(approxCentroid);
+        let polygonPoints = allVoronoiPolygonPoints[i];
+        if (!polygonPoints) continue;
+        let centroid = getCentroid(polygonPoints);
+        coords.push(centroid);
     }
 
     allPoints = coords;
