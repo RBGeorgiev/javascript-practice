@@ -55,22 +55,29 @@ const getCentroid = (i) => {
     return [totalX / allVoronoiPolygonPoints[i].length, totalY / allVoronoiPolygonPoints[i].length];
 }
 
-document.addEventListener("click", () => {
-    ctx.beginPath();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.closePath();
-
+const lloydRelaxation = () => {
     let len = allPoints.length;
     let coords = [];
+
     for (let i = 0; i < len; i++) {
         let approxCentroid = getCentroid(i);
         coords.push(approxCentroid);
-        // ctx.fillStyle = '#FF0000';
-        // ctx.fillRect(approxCentroid[0], approxCentroid[1], 4, 4);
     }
 
     allPoints = coords;
-    delaunay = Delaunay.from(coords);
+}
+
+const clearCanvas = () => {
+    ctx.beginPath();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.closePath();
+}
+
+document.addEventListener("click", () => {
+    clearCanvas();
+    lloydRelaxation();
+
+    delaunay = Delaunay.from(allPoints);
     voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
 
     voronoi.render(ctx);
