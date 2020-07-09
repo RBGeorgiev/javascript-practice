@@ -16,7 +16,7 @@ const generateRandomPoints = (amount, startX = 0, startY = 0, endX = canvas.widt
     return allPoints;
 }
 
-const displayPoints = allPoints => allPoints.forEach(p => ctx.fillRect(p[0], p[1], 3, 3));
+const displayPoints = points => points.forEach(p => ctx.fillRect(p[0], p[1], 3, 3));
 
 const getAllVoronoiPolygonPoints = () => {
     let len = allPoints.length;
@@ -65,8 +65,8 @@ const clearCanvas = () => {
     ctx.closePath();
 }
 
-const createVoronoi = () => {
-    delaunay = Delaunay.from(allPoints);
+const createVoronoi = (points) => {
+    delaunay = Delaunay.from(points);
     voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
     allVoronoiPolygonPoints = getAllVoronoiPolygonPoints();
 
@@ -75,12 +75,13 @@ const createVoronoi = () => {
 }
 
 let allPoints = generateRandomPoints(1000);
-// displayPoints(allPoints);
 let delaunay, voronoi, allVoronoiPolygonPoints;
-createVoronoi();
+createVoronoi(allPoints);
+displayPoints(allPoints);
 
 document.addEventListener("click", () => {
     clearCanvas();
     lloydRelaxation();
-    createVoronoi();
+    createVoronoi(allPoints);
+    displayPoints(allPoints);
 })
