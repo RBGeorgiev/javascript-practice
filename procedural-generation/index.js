@@ -16,7 +16,7 @@ const generateRandomPoints = (amount, startX = 0, startY = 0, endX = canvas.widt
     return allPoints;
 }
 
-const displayPoints = points => points.forEach(p => ctx.fillRect(p[0], p[1], 3, 3));
+const drawPoints = points => points.forEach(p => ctx.fillRect(p[0], p[1], 3, 3));
 
 const getAllVoronoiPolygonPoints = () => {
     let len = allPoints.length;
@@ -45,8 +45,8 @@ const getCentroid = (polygonPoints) => {
     return [totalX / len, totalY / len];
 }
 
-const lloydRelaxation = () => {
-    let len = allPoints.length;
+const lloydRelaxation = (points) => {
+    let len = points.length;
     let coords = [];
 
     for (let i = 0; i < len; i++) {
@@ -56,7 +56,7 @@ const lloydRelaxation = () => {
         coords.push(centroid);
     }
 
-    allPoints = coords;
+    return coords;
 }
 
 const clearCanvas = () => {
@@ -69,7 +69,9 @@ const createVoronoi = (points) => {
     delaunay = Delaunay.from(points);
     voronoi = delaunay.voronoi([0, 0, canvas.width, canvas.height]);
     allVoronoiPolygonPoints = getAllVoronoiPolygonPoints();
+}
 
+const drawVoronoi = () => {
     voronoi.render(ctx);
     ctx.stroke();
 }
@@ -77,11 +79,13 @@ const createVoronoi = (points) => {
 let allPoints = generateRandomPoints(1000);
 let delaunay, voronoi, allVoronoiPolygonPoints;
 createVoronoi(allPoints);
-displayPoints(allPoints);
+drawVoronoi();
+drawPoints(allPoints);
 
 document.addEventListener("click", () => {
     clearCanvas();
-    lloydRelaxation();
+    allPoints = lloydRelaxation(allPoints);
     createVoronoi(allPoints);
-    displayPoints(allPoints);
+    drawVoronoi(ctx);
+    drawPoints(allPoints);
 })
