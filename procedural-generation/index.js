@@ -76,16 +76,21 @@ const drawVoronoi = () => {
     ctx.stroke();
 }
 
-let allPoints = generateRandomPoints(1000);
-let delaunay, voronoi, allVoronoiPolygonPoints;
-createVoronoi(allPoints);
-drawVoronoi();
-drawPoints(allPoints);
-
-document.addEventListener("click", () => {
-    clearCanvas();
-    allPoints = lloydRelaxation(allPoints);
+const init = () => {
     createVoronoi(allPoints);
+    drawVoronoi();
+    drawPoints(allPoints);
+
+    for (let i = 0; i < 10; i++) {
+        allPoints = lloydRelaxation(allPoints);
+        createVoronoi(allPoints);
+    }
+
+    clearCanvas();
     drawVoronoi(ctx);
     drawPoints(allPoints);
-})
+}
+
+let allPoints = generateRandomPoints(1000);
+let delaunay, voronoi, allVoronoiPolygonPoints;
+init();
