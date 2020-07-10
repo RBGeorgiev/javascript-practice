@@ -78,19 +78,20 @@ const drawVoronoi = () => {
 
 const init = () => {
     createVoronoi(allPoints);
-    drawVoronoi();
-    drawPoints(allPoints);
+    relaxVoronoi(5);
+}
 
-    for (let i = 0; i < 10; i++) {
+const relaxVoronoi = (times) => {
+    for (let i = 0; i < times; i++) {
         allPoints = lloydRelaxation(allPoints);
         createVoronoi(allPoints);
     }
-
-    clearCanvas();
-    drawVoronoi(ctx);
-    drawPoints(allPoints);
 }
 
 let allPoints = generateRandomPoints(1000);
 let delaunay, voronoi, allVoronoiPolygonPoints;
 init();
+
+clearCanvas();
+drawVoronoi(ctx);
+drawPoints(allPoints);
