@@ -83,6 +83,13 @@ const drawVoronoi = () => {
     ctx.stroke();
 }
 
+const drawAll = () => {
+    clearCanvas();
+    drawVoronoi();
+    drawDelaunay()
+    drawPoints(allPoints);
+}
+
 const init = () => {
     createVoronoi(allPoints);
     relaxVoronoi(5);
@@ -98,8 +105,4 @@ const relaxVoronoi = (times) => {
 let allPoints = generateRandomPoints(1000);
 let delaunay, voronoi, allVoronoiPolygonPoints;
 init();
-
-clearCanvas();
-drawVoronoi();
-drawDelaunay()
-drawPoints(allPoints);
+drawAll();

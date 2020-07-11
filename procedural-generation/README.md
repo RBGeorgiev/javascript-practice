@@ -1,1 +1,1 @@
-Procedural generation is JS
+Procedural map generation is JS

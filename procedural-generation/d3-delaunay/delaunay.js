@@ -1,4 +1,4 @@
-import Delaunator from "../delaunator.js";
+import Delaunator from "./delaunator.js";
 import Path from "./path.js";
 import Polygon from "./polygon.js";
 import Voronoi from "./voronoi.js";
