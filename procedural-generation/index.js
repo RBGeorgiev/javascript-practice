@@ -71,7 +71,14 @@ const createVoronoi = (points) => {
     allVoronoiPolygonPoints = getAllVoronoiPolygonPoints();
 }
 
+const drawDelaunay = () => {
+    ctx.strokeStyle = "red";
+    delaunay.render(ctx);
+    ctx.stroke();
+}
+
 const drawVoronoi = () => {
+    ctx.strokeStyle = "blue";
     voronoi.render(ctx);
     ctx.stroke();
 }
@@ -93,5 +100,6 @@ let delaunay, voronoi, allVoronoiPolygonPoints;
 init();
 
 clearCanvas();
-drawVoronoi(ctx);
+drawVoronoi();
+drawDelaunay()
 drawPoints(allPoints);
