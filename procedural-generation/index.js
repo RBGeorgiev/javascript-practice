@@ -46,6 +46,7 @@ class MapGenerator {
     drawVoronoi = () => {
         ctx.strokeStyle = "blue";
         this.voronoi.render(ctx);
+        this.voronoi.renderBounds(ctx)
         ctx.stroke();
     }
 
