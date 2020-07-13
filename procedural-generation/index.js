@@ -1,7 +1,5 @@
 import { Delaunay } from "./d3-delaunay/index.js";
-
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+import { canvas, ctx } from './constants.js';
 
 class MapGenerator {
     constructor(numOfPoints) {
@@ -69,6 +67,7 @@ class MapGenerator {
             this.createVoronoi(this.allPoints);
         }
     }
+
     generateRandomPoints = (amount, startX = 0, startY = 0, endX = canvas.width, endY = canvas.height) => {
         let points = [];
         ctx.fillStyle = '#000000';
