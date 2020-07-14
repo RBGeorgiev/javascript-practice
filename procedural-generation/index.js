@@ -8,7 +8,7 @@ class MapGenerator {
         this.voronoi;
         this.allVoronoiPolygonPoints;
         this.init(this.allPoints);
-        this.drawAll(this.allPoints);
+        // this.drawAll(this.allPoints);
     }
 
     lloydRelaxation = (points) => {
@@ -113,3 +113,25 @@ class MapGenerator {
 }
 
 let mapGen = new MapGenerator(1000);
+
+
+let x = 200
+let y = 200
+let a = mapGen.delaunay.find(x, y)
+let b = mapGen.voronoi.neighbors(a)
+ctx.beginPath();
+mapGen.voronoi.renderCell(a, ctx)
+ctx.fillStyle = "#000000"
+ctx.fill()
+ctx.fillStyle = "#FF0000"
+
+ctx.fillRect(x, y, 3, 3)
+ctx.beginPath();
+for (let c of b) {
+    console.log(a, c)
+    mapGen.voronoi.renderCell(c, ctx)
+}
+ctx.strokeStyle = "#0000FF"
+ctx.fillStyle = "#00FF00"
+ctx.fill()
+ctx.stroke()
