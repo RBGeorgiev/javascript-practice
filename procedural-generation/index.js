@@ -8,7 +8,7 @@ class MapGenerator {
         this.voronoi;
         this.allVoronoiPolygonPoints;
         this.init(this.allPoints);
-        // this.drawAll(this.allPoints);
+        this.drawAll(this.allPoints);
     }
 
     lloydRelaxation = (points) => {
@@ -114,24 +114,26 @@ class MapGenerator {
 
 let mapGen = new MapGenerator(1000);
 
+canvas.addEventListener("click", (e) => {
+    let x = e.offsetX;
+    let y = e.offsetY;
+    let cell = mapGen.delaunay.find(x, y);
+    let neighbors = mapGen.voronoi.neighbors(cell);
 
-let x = 200
-let y = 200
-let a = mapGen.delaunay.find(x, y)
-let b = mapGen.voronoi.neighbors(a)
-ctx.beginPath();
-mapGen.voronoi.renderCell(a, ctx)
-ctx.fillStyle = "#000000"
-ctx.fill()
-ctx.fillStyle = "#FF0000"
+    ctx.beginPath();
+    for (let n of neighbors) mapGen.voronoi.renderCell(n, ctx);
+    ctx.strokeStyle = "blue";
+    ctx.fillStyle = "lightgreen";
+    ctx.fill();
+    ctx.stroke();
 
-ctx.fillRect(x, y, 3, 3)
-ctx.beginPath();
-for (let c of b) {
-    console.log(a, c)
-    mapGen.voronoi.renderCell(c, ctx)
-}
-ctx.strokeStyle = "#0000FF"
-ctx.fillStyle = "#00FF00"
-ctx.fill()
-ctx.stroke()
+    ctx.beginPath();
+    mapGen.voronoi.renderCell(cell, ctx);
+    ctx.fillStyle = "black";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.fillRect(x, y, 2, 2);
+
+})
