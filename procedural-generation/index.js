@@ -1,13 +1,27 @@
 import { Delaunay } from "./d3-delaunay/index.js";
 import { canvas, ctx } from './constants.js';
 
+class Tile {
+    constructor(i, mapGen) {
+        this.i = i;
+        this.centroid = [
+            mapGen.allPoints[i][0], // x
+            mapGen.allPoints[i][1]  // y
+        ];
+        this.polygon = mapGen.voronoi.cellPolygon(i);
+        this.neighbors = mapGen.voronoi.neighbors(i);
+    }
+}
+
 class MapGenerator {
     constructor(numOfPoints) {
         this.allPoints = this.generateRandomPoints(numOfPoints);
         this.delaunay;
         this.voronoi;
+        this.tiles = [];
         this.allVoronoiPolygonPoints;
-        this.init(this.allPoints);
+        this.initVoronoi(this.allPoints);
+        this.initTiles(this.allPoints);
         this.drawAll(this.allPoints);
     }
 
@@ -57,9 +71,17 @@ class MapGenerator {
         this.drawPoints(points);
     }
 
-    init = (points) => {
+    initVoronoi = (points) => {
         this.createVoronoi(points);
         this.relaxVoronoi(5);
+    }
+
+    initTiles = (points) => {
+        this.tiles = [];
+        for (let i = 0; i < points.length; i++) {
+            let tile = new Tile(i, this);
+            this.tiles.push(tile);
+        }
     }
 
     relaxVoronoi = (times) => {
