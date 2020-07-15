@@ -36,8 +36,8 @@ class MapGenerator {
         this.allVoronoiPolygonPoints;
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
-        this.drawAll(this.allPoints);
         this.setTilesHeight();
+        this.drawAll(this.allPoints);
     }
 
     getTile = (i) => this.tiles[i];
@@ -105,9 +105,35 @@ class MapGenerator {
 
     drawAll = (points) => {
         this.clearCanvas();
-        this.drawVoronoi();
-        this.drawDelaunay()
-        this.drawPoints(points);
+
+        let len = this.tiles.length;
+        for (let i = 0; i < len; i++) {
+            let tile = this.getTile(i);
+            let h = tile.height;
+            let fillColor;
+
+            ctx.beginPath();
+            if (h > 80) {
+                fillColor = "red";
+            } else if (h > 60) {
+                fillColor = "orange";
+            } else if (h > 40) {
+                fillColor = "yellow";
+            } else if (h > 20) {
+                fillColor = "lightgreen";
+            } else {
+                fillColor = "lightblue";
+            }
+
+            this.voronoi.renderCell(i, ctx);
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = fillColor;
+            ctx.fill();
+            ctx.stroke();
+        }
+        // this.drawVoronoi();
+        // this.drawDelaunay()
+        // this.drawPoints(points);
     }
 
     initVoronoi = (points) => {
