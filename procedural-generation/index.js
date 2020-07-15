@@ -9,8 +9,22 @@ class Tile {
             mapGen.allPoints[i][1]  // y
         ];
         this.polygon = mapGen.voronoi.cellPolygon(i);
-        this.neighbors = mapGen.voronoi.neighbors(i);
+        this.neighbors = this.getNeighborsArray(i, mapGen);
+        this.height = null;
     }
+
+    getNeighborsArray = (i, mapGen) => {
+        let n = mapGen.voronoi.neighbors(i);
+        let allNeighbors = [];
+
+        for (let neighbor of n) {
+            allNeighbors.push(neighbor);
+        }
+
+        return allNeighbors;
+    }
+
+    setHeight = (height) => this.height = height;
 }
 
 class MapGenerator {
@@ -23,6 +37,31 @@ class MapGenerator {
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
         this.drawAll(this.allPoints);
+        this.setTilesHeight();
+    }
+
+    getTile = (i) => this.tiles[i];
+
+    setTilesHeight = () => {
+        let randTile = this.getTile(500);
+        randTile.setHeight(100);
+        let queue = [
+            randTile
+        ];
+        let decrement = 0.7;
+
+        while (queue.length) {
+            let cur = queue.shift();
+            let curHeight = cur.height;
+            let neighbors = cur.neighbors;
+            for (let i = 0; i < neighbors.length; i++) {
+                let n = this.getTile(neighbors[i]);
+                if (n.height === null) {
+                    n.height = curHeight * decrement;
+                    queue.push(n);
+                }
+            }
+        }
     }
 
     lloydRelaxation = (points) => {
