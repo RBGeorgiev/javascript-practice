@@ -57,7 +57,7 @@ class MapGenerator {
             for (let i = 0; i < neighbors.length; i++) {
                 let n = this.getTile(neighbors[i]);
                 if (n.height === null) {
-                    n.height = curHeight * decrement;
+                    n.height = Math.round(curHeight * decrement);
                     queue.push(n);
                 }
             }
