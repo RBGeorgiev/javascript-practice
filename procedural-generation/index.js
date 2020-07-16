@@ -42,15 +42,21 @@ class MapGenerator {
 
     getTile = (i) => this.tiles[i];
 
+    random = (min = 0, max = 1) => Math.random() * (max - min) + min;
+
     setTilesHeight = () => {
         let randTile = this.getTile(500);
         randTile.setHeight(100);
         let queue = [
             randTile
         ];
-        let decrement = 0.7;
+        let decrement;
 
         while (queue.length) {
+            // if MAX number of this.random > 100 there is a chance for height increase; 
+            // the lower the MIN number is, the higher the chance for a sharp drop in height 
+            decrement = this.random(50, 100) / 100;
+
             let cur = queue.shift();
             let curHeight = cur.height;
             let neighbors = cur.neighbors;
@@ -113,7 +119,9 @@ class MapGenerator {
             let fillColor;
 
             ctx.beginPath();
-            if (h > 80) {
+            if (h > 100) {
+                fillColor = "black";
+            } else if (h > 80) {
                 fillColor = "red";
             } else if (h > 60) {
                 fillColor = "orange";
