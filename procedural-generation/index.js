@@ -96,22 +96,7 @@ class MapGenerator {
         this.allVoronoiPolygonPoints = this.getAllVoronoiPolygonPoints(points);
     }
 
-    drawDelaunay = () => {
-        ctx.strokeStyle = "red";
-        this.delaunay.render(ctx);
-        ctx.stroke();
-    }
-
-    drawVoronoi = () => {
-        ctx.strokeStyle = "blue";
-        this.voronoi.render(ctx);
-        this.voronoi.renderBounds(ctx)
-        ctx.stroke();
-    }
-
-    drawAll = (points) => {
-        this.clearCanvas();
-
+    drawHeightmap = () => {
         let len = this.tiles.length;
         for (let i = 0; i < len; i++) {
             let tile = this.getTile(i);
@@ -134,12 +119,28 @@ class MapGenerator {
             }
 
             this.voronoi.renderCell(i, ctx);
-            ctx.strokeStyle = "black";
             ctx.fillStyle = fillColor;
             ctx.fill();
-            ctx.stroke();
         }
-        // this.drawVoronoi();
+    }
+
+    drawDelaunay = () => {
+        ctx.strokeStyle = "red";
+        this.delaunay.render(ctx);
+        ctx.stroke();
+    }
+
+    drawVoronoi = () => {
+        ctx.strokeStyle = "#0000FF";
+        this.voronoi.render(ctx);
+        this.voronoi.renderBounds(ctx)
+        ctx.stroke();
+    }
+
+    drawAll = (points) => {
+        this.clearCanvas();
+        this.drawHeightmap();
+        this.drawVoronoi();
         // this.drawDelaunay()
         // this.drawPoints(points);
     }
