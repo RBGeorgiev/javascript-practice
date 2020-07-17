@@ -137,12 +137,20 @@ class MapGenerator {
         ctx.stroke();
     }
 
-    drawAll = (points) => {
+    drawPoints = () => {
+        let points = this.allPoints;
+        ctx.beginPath();
+        ctx.fillStyle = '#000000';
+        points.forEach(p => ctx.rect(p[0], p[1], 3, 3));
+        ctx.fill();
+    }
+
+    drawAll = () => {
         this.clearCanvas();
         this.drawHeightmap();
         this.drawVoronoi();
         // this.drawDelaunay()
-        // this.drawPoints(points);
+        // this.drawPoints();
     }
 
     initVoronoi = (points) => {
@@ -177,8 +185,6 @@ class MapGenerator {
 
         return points;
     }
-
-    drawPoints = points => points.forEach(p => ctx.fillRect(p[0], p[1], 3, 3));
 
     getAllVoronoiPolygonPoints = (points) => {
         let len = points.length;
