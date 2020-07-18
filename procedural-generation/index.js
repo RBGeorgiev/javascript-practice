@@ -44,11 +44,34 @@ class MapGenerator {
 
     random = (min = 0, max = 1) => Math.random() * (max - min) + min;
 
+    getRandomTiles = (max, min = 1, rand = true) => {
+        let len = (rand) ? Math.round(this.random(min, max)) : max;
+        let numOfTiles = this.tiles.length;
+        if (len > numOfTiles) len = numOfTiles;
+        let randTiles = [];
+        let visited = {};
+
+        for (let i = 0; i < len; i++) {
+            let idx = Math.round(this.random(0, numOfTiles - 1));
+
+            if (!visited[idx]) {
+                visited[idx] = 1
+            } else {
+                i--;
+                continue;
+            }
+
+            randTiles.push(this.getTile(idx));
+        }
+
+        return randTiles;
+    }
+
     setTilesHeight = () => {
-        let randTile = this.getTile(500);
-        randTile.setHeight(100);
+        let randTiles = this.getRandomTiles(10, 5);
+        randTiles.forEach(tile => tile.setHeight(100));
         let queue = [
-            randTile
+            ...randTiles
         ];
         let decrement;
 
