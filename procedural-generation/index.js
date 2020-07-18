@@ -129,13 +129,23 @@ class MapGenerator {
             ctx.beginPath();
             if (h > 100) {
                 fillColor = "black";
+            } else if (h > 90) {
+                fillColor = "maroon";
             } else if (h > 80) {
-                fillColor = "red";
+                fillColor = "brown";
+            } else if (h > 70) {
+                fillColor = "crimson";
             } else if (h > 60) {
+                fillColor = "darkorange";
+            } else if (h > 50) {
                 fillColor = "orange";
             } else if (h > 40) {
+                fillColor = "darkyellow";
+            } else if (h > 30) {
                 fillColor = "yellow";
             } else if (h > 20) {
+                fillColor = "green";
+            } else if (h > 10) {
                 fillColor = "lightgreen";
             } else {
                 fillColor = "lightblue";
