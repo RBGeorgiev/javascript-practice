@@ -68,8 +68,11 @@ class MapGenerator {
     }
 
     setTilesHeight = () => {
-        let randTiles = this.getRandomTiles(10, 5);
-        randTiles.forEach(tile => tile.setHeight(100));
+        let randTiles = this.getRandomTiles(15, 5);
+        randTiles.forEach(tile => {
+            let dir = (Math.random() > 0.4) ? 1 : -1;
+            tile.setHeight(dir * 100)
+        });
         let queue = [
             ...randTiles
         ];
@@ -270,5 +273,4 @@ canvas.addEventListener("click", (e) => {
     ctx.beginPath();
     ctx.fillStyle = "red";
     ctx.fillRect(x, y, 2, 2);
-
 })
