@@ -131,7 +131,7 @@ class MapGenerator {
 
             ctx.beginPath();
             if (h > 100) {
-                fillColor = "black";
+                fillColor = "#230303";
             } else if (h > 90) {
                 fillColor = "maroon";
             } else if (h > 80) {
@@ -149,9 +149,31 @@ class MapGenerator {
             } else if (h > 20) {
                 fillColor = "green";
             } else if (h > 10) {
-                fillColor = "lightgreen";
+                fillColor = "#0FD54D";
+            } else if (h > 0) {
+                fillColor = "#11ED56";
+            } else if (h > -10) {
+                fillColor = "#5883F2";
+            } else if (h > -20) {
+                fillColor = "#4072F0";
+            } else if (h > -30) {
+                fillColor = "#2860EE";
+            } else if (h > -40) {
+                fillColor = "#0F47D5";
+            } else if (h > -50) {
+                fillColor = "#0D3FBD";
+            } else if (h > -60) {
+                fillColor = "#0B37A5";
+            } else if (h > -70) {
+                fillColor = "#0A2F8E";
+            } else if (h > -80) {
+                fillColor = "#082776";
+            } else if (h > -90) {
+                fillColor = "#061F5E";
+            } else if (h > -100) {
+                fillColor = "#050830";
             } else {
-                fillColor = "lightblue";
+                fillColor = "black"
             }
 
             this.voronoi.renderCell(i, ctx);
