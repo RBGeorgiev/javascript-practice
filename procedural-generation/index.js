@@ -2,19 +2,19 @@ import { Delaunay } from "./d3-delaunay/index.js";
 import { canvas, ctx } from './constants.js';
 
 class Tile {
-    constructor(i, mapGen) {
-        this.i = i;
+    constructor(idx, mapGen) {
+        this.idx = idx;
         this.centroid = [
-            mapGen.allPoints[i][0], // x
-            mapGen.allPoints[i][1]  // y
+            mapGen.allPoints[idx][0], // x
+            mapGen.allPoints[idx][1]  // y
         ];
-        this.polygon = mapGen.voronoi.cellPolygon(i);
-        this.neighbors = this.getNeighborsArray(i, mapGen);
+        this.polygon = mapGen.voronoi.cellPolygon(idx);
+        this.neighbors = this.getNeighborsArray(idx, mapGen);
         this.height = null;
     }
 
-    getNeighborsArray = (i, mapGen) => {
-        let n = mapGen.voronoi.neighbors(i);
+    getNeighborsArray = (idx, mapGen) => {
+        let n = mapGen.voronoi.neighbors(idx);
         let allNeighbors = [];
 
         for (let neighbor of n) {
@@ -33,6 +33,8 @@ class MapGenerator {
         this.delaunay;
         this.voronoi;
         this.tiles = [];
+        this.landTiles = {};
+        this.waterTiles = {}
         this.allVoronoiPolygonPoints;
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
@@ -85,6 +87,7 @@ class MapGenerator {
 
             let cur = queue.shift();
             let curHeight = cur.height;
+            (curHeight > 0) ? this.landTiles[cur.idx] = cur : this.waterTiles[cur.idx] = cur;
             let neighbors = cur.neighbors;
             for (let i = 0; i < neighbors.length; i++) {
                 let n = this.getTile(neighbors[i]);
@@ -131,7 +134,7 @@ class MapGenerator {
 
             ctx.beginPath();
             if (h > 100) {
-                fillColor = "#230303";
+                fillColor = "#FFFFFF";
             } else if (h > 90) {
                 fillColor = "maroon";
             } else if (h > 80) {
@@ -278,21 +281,6 @@ canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
     let cell = mapGen.delaunay.find(x, y);
-    let neighbors = mapGen.voronoi.neighbors(cell);
-
-    ctx.beginPath();
-    for (let n of neighbors) mapGen.voronoi.renderCell(n, ctx);
-    ctx.strokeStyle = "blue";
-    ctx.fillStyle = "lightgreen";
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.beginPath();
-    mapGen.voronoi.renderCell(cell, ctx);
-    ctx.fillStyle = "black";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.fillStyle = "red";
-    ctx.fillRect(x, y, 2, 2);
+    console.log(mapGen.tiles[cell].height);
+    // let neighbors = mapGen.voronoi.neighbors(cell);
 })
