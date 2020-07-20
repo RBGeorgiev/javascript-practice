@@ -143,15 +143,15 @@ class MapGenerator {
             } else if (h > 50) {
                 fillColor = "orange";
             } else if (h > 40) {
-                fillColor = "darkyellow";
-            } else if (h > 30) {
                 fillColor = "yellow";
+            } else if (h > 30) {
+                fillColor = "#FFFF55";
             } else if (h > 20) {
-                fillColor = "green";
+                fillColor = "#A6FF00";
             } else if (h > 10) {
-                fillColor = "#0FD54D";
+                fillColor = "#00FF33";
             } else if (h > 0) {
-                fillColor = "#11ED56";
+                fillColor = "#33FF69";
             } else if (h > -10) {
                 fillColor = "#5883F2";
             } else if (h > -20) {
