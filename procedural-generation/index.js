@@ -209,8 +209,8 @@ class MapGenerator {
     drawAll = () => {
         this.clearCanvas();
         this.drawHeightmap();
-        this.drawVoronoi();
-        // this.drawDelaunay()
+        // this.drawVoronoi();
+        // this.drawDelaunay();
         // this.drawPoints();
     }
 
@@ -281,6 +281,42 @@ canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
     let cell = mapGen.delaunay.find(x, y);
-    console.log(mapGen.tiles[cell].height);
+    console.log(mapGen.tiles[cell], mapGen.waterTiles.hasOwnProperty(cell));
     // let neighbors = mapGen.voronoi.neighbors(cell);
+
+
+
+    for (let idx in mapGen.landTiles) {
+        let a = mapGen.tiles[idx];
+        let neighbor = a.neighbors;
+        let test = [];
+        for (let i = 0; i < neighbor.length; i++) {
+            let cur = neighbor[i];
+            if (mapGen.waterTiles[cur]) {
+                let c = mapGen.tiles[cur];
+                for (let i = 0; i < a.polygon.length; i++) {
+                    let x1 = a.polygon[i][0];
+                    let y1 = a.polygon[i][1];
+
+                    for (let j = 0; j < c.polygon.length; j++) {
+                        let x2 = c.polygon[j][0];
+                        let y2 = c.polygon[j][1];
+
+                        if (x1 === x2 && y1 === y2) {
+                            test.push([x1, y1]);
+                        }
+                    }
+                }
+            }
+        }
+        ctx.beginPath();
+        for (let i = 0; i < test.length; i++) {
+            ctx.lineTo(test[i][0], test[i][1])
+        }
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3
+        ctx.stroke();
+    }
+
+
 })
