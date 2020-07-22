@@ -285,34 +285,39 @@ canvas.addEventListener("click", (e) => {
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
 
+    const getEdgeBetweenTiles = (A, B) => {
+        let edge = [];
+
+        // count starts from 1 because the first and last polygon vertices are the same
+        for (let i = 1; i < A.polygon.length; i++) {
+            let x1 = A.polygon[i][0];
+            let y1 = A.polygon[i][1];
+            // count starts from 1 because the first and last polygon vertices are the same
+            for (let j = 1; j < B.polygon.length; j++) {
+                let x2 = B.polygon[j][0];
+                let y2 = B.polygon[j][1];
+
+                if (x1 === x2 && y1 === y2) {
+                    edge.push([x1, y1]);
+                }
+            }
+        }
+
+        return edge;
+    }
 
 
     let coastline = [];
     for (let idx in mapGen.landTiles) {
-        let landTile = mapGen.tiles[idx];
         let tileCoast = [];
+        let landTile = mapGen.tiles[idx];
         let neighbors = landTile.neighbors;
 
         for (let k = 0; k < neighbors.length; k++) {
             if (mapGen.waterTiles[neighbors[k]]) {
                 let waterTile = mapGen.tiles[neighbors[k]];
-                let edgeBetween = [];
-                // count starts from 1 because the first and last polygon vertices are the same
-                for (let i = 1; i < waterTile.polygon.length; i++) {
-                    let x1 = waterTile.polygon[i][0];
-                    let y1 = waterTile.polygon[i][1];
-                    // count starts from 1 because the first and last polygon vertices are the same
-                    for (let j = 1; j < landTile.polygon.length; j++) {
-                        let x2 = landTile.polygon[j][0];
-                        let y2 = landTile.polygon[j][1];
-
-                        if (x1 === x2 && y1 === y2) {
-                            edgeBetween.push([x1, y1]);
-                        }
-                    }
-                }
-
-                if (edgeBetween.length) tileCoast.push(edgeBetween);
+                let edge = getEdgeBetweenTiles(landTile, waterTile);
+                if (edge.length) tileCoast.push(edge);
             }
         }
 
@@ -331,7 +336,7 @@ canvas.addEventListener("click", (e) => {
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
         }
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = '#000000';
         ctx.lineWidth = 3;
         ctx.stroke();
     }
