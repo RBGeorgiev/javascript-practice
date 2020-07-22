@@ -286,74 +286,53 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    let test = [];
+
+    let coastline = [];
     for (let idx in mapGen.landTiles) {
-        let a = mapGen.tiles[idx];
-        // let a = mapGen.tiles[cell];
-        let test1 = [];
-        let neighbor = a.neighbors;
-        for (let i = 0; i < neighbor.length; i++) {
-            let cur = neighbor[i];
-            if (mapGen.waterTiles[cur]) {
-                let c = mapGen.tiles[cur];
-                let edge = []
-                for (let i = 0; i < c.polygon.length; i++) {
-                    let x1 = c.polygon[i][0];
-                    let y1 = c.polygon[i][1];
-                    for (let j = 0; j < a.polygon.length; j++) {
-                        let x2 = a.polygon[j][0];
-                        let y2 = a.polygon[j][1];
+        let landTile = mapGen.tiles[idx];
+        let tileCoast = [];
+        let neighbors = landTile.neighbors;
+
+        for (let k = 0; k < neighbors.length; k++) {
+            if (mapGen.waterTiles[neighbors[k]]) {
+                let waterTile = mapGen.tiles[neighbors[k]];
+                let edgeBetween = [];
+                // count starts from 1 because the first and last polygon vertices are the same
+                for (let i = 1; i < waterTile.polygon.length; i++) {
+                    let x1 = waterTile.polygon[i][0];
+                    let y1 = waterTile.polygon[i][1];
+                    // count starts from 1 because the first and last polygon vertices are the same
+                    for (let j = 1; j < landTile.polygon.length; j++) {
+                        let x2 = landTile.polygon[j][0];
+                        let y2 = landTile.polygon[j][1];
 
                         if (x1 === x2 && y1 === y2) {
-                            edge.push([x1, y1]);
+                            edgeBetween.push([x1, y1]);
                         }
                     }
                 }
-                let dupX = {}
-                let dupY = {}
-                edge = edge.filter(el => {
-                    if (dupX[el[0]] && dupY[el[1]]) {
-                        return false
-                    } else {
-                        dupX[el[0]] = 1;
-                        dupY[el[1]] = 1;
-                        return true
-                    }
-                })
-                if (edge.length) test1.push(edge)
+
+                if (edgeBetween.length) tileCoast.push(edgeBetween);
             }
         }
-        // let dupX = {}
-        // let dupY = {}
-        // test1 = test1.filter(el => {
-        //     if (dupX[el[0]] && dupY[el[1]]) {
-        //         return false
-        //     } else {
-        //         dupX[el[0]] = 1;
-        //         dupY[el[1]] = 1;
-        //         return true
-        //     }
-        // })
-        if (test1.length) test.push(test1);
+
+        if (tileCoast.length) coastline.push(tileCoast);
     }
-    console.log(test)
-    for (let i = 0; i < test.length; i++) {
+
+    for (let i = 0; i < coastline.length; i++) {
+        let tileCoast = coastline[i];
         ctx.beginPath();
-        for (let j = 0; j < test[i].length; j++) {
-            let x1 = test[i][j][0][0]
-            let y1 = test[i][j][0][1]
-            let x2 = test[i][j][1][0]
-            let y2 = test[i][j][1][1]
-            console.log(test[i][j][0])
+        for (let j = 0; j < tileCoast.length; j++) {
+            let edge = tileCoast[j];
+            let x1 = edge[0][0];
+            let y1 = edge[0][1];
+            let x2 = edge[1][0];
+            let y2 = edge[1][1];
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
-            // ctx.rect(test[i][j][k][0], test[i][j][k][1], 3, 3)
-
         }
         ctx.strokeStyle = 'black';
-        ctx.lineWidth = 3
+        ctx.lineWidth = 3;
         ctx.stroke();
     }
-
-
 })
