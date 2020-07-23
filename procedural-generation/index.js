@@ -32,13 +32,15 @@ class MapGenerator {
         this.allPoints = this.generateRandomPoints(numOfPoints);
         this.delaunay;
         this.voronoi;
+        this.allVoronoiPolygonPoints;
         this.tiles = [];
         this.landTiles = {};
         this.waterTiles = {}
-        this.allVoronoiPolygonPoints;
+        this.coastline = [];
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
         this.setTilesHeight();
+        this.determineCoastline();
         this.drawAll(this.allPoints);
     }
 
@@ -125,6 +127,49 @@ class MapGenerator {
         this.allVoronoiPolygonPoints = this.getAllVoronoiPolygonPoints(points);
     }
 
+    getEdgeBetweenTiles = (A, B) => {
+        let edge = [];
+
+        // count starts from 1 because the first and last polygon vertices are the same
+        for (let i = 1; i < A.polygon.length; i++) {
+            let x1 = A.polygon[i][0];
+            let y1 = A.polygon[i][1];
+            // count starts from 1 because the first and last polygon vertices are the same
+            for (let j = 1; j < B.polygon.length; j++) {
+                let x2 = B.polygon[j][0];
+                let y2 = B.polygon[j][1];
+
+                if (x1 === x2 && y1 === y2) {
+                    edge.push([x1, y1]);
+                }
+            }
+        }
+
+        return edge;
+    }
+
+    determineCoastline = () => {
+        let coastline = [];
+
+        for (let idx in this.landTiles) {
+            let tileCoast = [];
+            let landTile = this.tiles[idx];
+            let neighbors = landTile.neighbors;
+
+            for (let k = 0; k < neighbors.length; k++) {
+                if (this.waterTiles[neighbors[k]]) {
+                    let waterTile = this.tiles[neighbors[k]];
+                    let edge = this.getEdgeBetweenTiles(landTile, waterTile);
+                    if (edge.length) tileCoast.push(edge);
+                }
+            }
+
+            if (tileCoast.length) coastline.push(tileCoast);
+        }
+
+        this.coastline = coastline;
+    }
+
     drawHeightmap = () => {
         let len = this.tiles.length;
         for (let i = 0; i < len; i++) {
@@ -185,6 +230,27 @@ class MapGenerator {
         }
     }
 
+    drawCoastline = () => {
+        let coastline = this.coastline;
+
+        for (let i = 0; i < coastline.length; i++) {
+            let tileCoast = coastline[i];
+            ctx.beginPath();
+            for (let j = 0; j < tileCoast.length; j++) {
+                let edge = tileCoast[j];
+                let x1 = edge[0][0];
+                let y1 = edge[0][1];
+                let x2 = edge[1][0];
+                let y2 = edge[1][1];
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+            }
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+    }
+
     drawDelaunay = () => {
         ctx.strokeStyle = "red";
         this.delaunay.render(ctx);
@@ -209,6 +275,7 @@ class MapGenerator {
     drawAll = () => {
         this.clearCanvas();
         this.drawHeightmap();
+        this.drawCoastline();
         // this.drawVoronoi();
         // this.drawDelaunay();
         // this.drawPoints();
@@ -283,70 +350,4 @@ canvas.addEventListener("click", (e) => {
     let cell = mapGen.delaunay.find(x, y);
     console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
-    const getEdgeBetweenTiles = (A, B) => {
-        let edge = [];
-
-        // count starts from 1 because the first and last polygon vertices are the same
-        for (let i = 1; i < A.polygon.length; i++) {
-            let x1 = A.polygon[i][0];
-            let y1 = A.polygon[i][1];
-            // count starts from 1 because the first and last polygon vertices are the same
-            for (let j = 1; j < B.polygon.length; j++) {
-                let x2 = B.polygon[j][0];
-                let y2 = B.polygon[j][1];
-
-                if (x1 === x2 && y1 === y2) {
-                    edge.push([x1, y1]);
-                }
-            }
-        }
-
-        return edge;
-    }
-
-    const getCoastline = () => {
-        let coastline = [];
-
-        for (let idx in mapGen.landTiles) {
-            let tileCoast = [];
-            let landTile = mapGen.tiles[idx];
-            let neighbors = landTile.neighbors;
-
-            for (let k = 0; k < neighbors.length; k++) {
-                if (mapGen.waterTiles[neighbors[k]]) {
-                    let waterTile = mapGen.tiles[neighbors[k]];
-                    let edge = getEdgeBetweenTiles(landTile, waterTile);
-                    if (edge.length) tileCoast.push(edge);
-                }
-            }
-
-            if (tileCoast.length) coastline.push(tileCoast);
-        }
-
-        return coastline;
-    }
-
-    const drawCoast = (coastline) => {
-        for (let i = 0; i < coastline.length; i++) {
-            let tileCoast = coastline[i];
-            ctx.beginPath();
-            for (let j = 0; j < tileCoast.length; j++) {
-                let edge = tileCoast[j];
-                let x1 = edge[0][0];
-                let y1 = edge[0][1];
-                let x2 = edge[1][0];
-                let y2 = edge[1][1];
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-            }
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-        }
-    }
-
-    let coastline = getCoastline();
-    drawCoast(coastline);
 })
