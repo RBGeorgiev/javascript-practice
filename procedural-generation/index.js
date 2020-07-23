@@ -194,7 +194,7 @@ class MapGenerator {
     drawVoronoi = () => {
         ctx.strokeStyle = "#0000FF";
         this.voronoi.render(ctx);
-        this.voronoi.renderBounds(ctx)
+        this.voronoi.renderBounds(ctx); //border around canvas
         ctx.stroke();
     }
 
@@ -281,7 +281,7 @@ canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
     let cell = mapGen.delaunay.find(x, y);
-    console.log(mapGen.tiles[cell], mapGen.waterTiles.hasOwnProperty(cell));
+    console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
 
@@ -306,38 +306,47 @@ canvas.addEventListener("click", (e) => {
         return edge;
     }
 
+    const getCoastline = () => {
+        let coastline = [];
 
-    let coastline = [];
-    for (let idx in mapGen.landTiles) {
-        let tileCoast = [];
-        let landTile = mapGen.tiles[idx];
-        let neighbors = landTile.neighbors;
+        for (let idx in mapGen.landTiles) {
+            let tileCoast = [];
+            let landTile = mapGen.tiles[idx];
+            let neighbors = landTile.neighbors;
 
-        for (let k = 0; k < neighbors.length; k++) {
-            if (mapGen.waterTiles[neighbors[k]]) {
-                let waterTile = mapGen.tiles[neighbors[k]];
-                let edge = getEdgeBetweenTiles(landTile, waterTile);
-                if (edge.length) tileCoast.push(edge);
+            for (let k = 0; k < neighbors.length; k++) {
+                if (mapGen.waterTiles[neighbors[k]]) {
+                    let waterTile = mapGen.tiles[neighbors[k]];
+                    let edge = getEdgeBetweenTiles(landTile, waterTile);
+                    if (edge.length) tileCoast.push(edge);
+                }
             }
+
+            if (tileCoast.length) coastline.push(tileCoast);
         }
 
-        if (tileCoast.length) coastline.push(tileCoast);
+        return coastline;
     }
 
-    for (let i = 0; i < coastline.length; i++) {
-        let tileCoast = coastline[i];
-        ctx.beginPath();
-        for (let j = 0; j < tileCoast.length; j++) {
-            let edge = tileCoast[j];
-            let x1 = edge[0][0];
-            let y1 = edge[0][1];
-            let x2 = edge[1][0];
-            let y2 = edge[1][1];
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
+    const drawCoast = (coastline) => {
+        for (let i = 0; i < coastline.length; i++) {
+            let tileCoast = coastline[i];
+            ctx.beginPath();
+            for (let j = 0; j < tileCoast.length; j++) {
+                let edge = tileCoast[j];
+                let x1 = edge[0][0];
+                let y1 = edge[0][1];
+                let x2 = edge[1][0];
+                let y2 = edge[1][1];
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+            }
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3;
+            ctx.stroke();
         }
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 3;
-        ctx.stroke();
     }
+
+    let coastline = getCoastline();
+    drawCoast(coastline);
 })
