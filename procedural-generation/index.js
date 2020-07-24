@@ -175,58 +175,60 @@ class MapGenerator {
         for (let i = 0; i < len; i++) {
             let tile = this.getTile(i);
             let h = tile.height;
-            let fillColor;
+            let color;
 
             ctx.beginPath();
             if (h > 100) {
-                fillColor = "#FFFFFF";
+                color = "#FFFFFF";
             } else if (h > 90) {
-                fillColor = "maroon";
+                color = "maroon";
             } else if (h > 80) {
-                fillColor = "brown";
+                color = "brown";
             } else if (h > 70) {
-                fillColor = "crimson";
+                color = "crimson";
             } else if (h > 60) {
-                fillColor = "darkorange";
+                color = "darkorange";
             } else if (h > 50) {
-                fillColor = "orange";
+                color = "orange";
             } else if (h > 40) {
-                fillColor = "yellow";
+                color = "yellow";
             } else if (h > 30) {
-                fillColor = "#FFFF55";
+                color = "#FFFF55";
             } else if (h > 20) {
-                fillColor = "#A6FF00";
+                color = "#A6FF00";
             } else if (h > 10) {
-                fillColor = "#00FF33";
+                color = "#00FF33";
             } else if (h > 0) {
-                fillColor = "#33FF69";
+                color = "#33FF69";
             } else if (h > -10) {
-                fillColor = "#5883F2";
+                color = "#5883F2";
             } else if (h > -20) {
-                fillColor = "#4072F0";
+                color = "#4072F0";
             } else if (h > -30) {
-                fillColor = "#2860EE";
+                color = "#2860EE";
             } else if (h > -40) {
-                fillColor = "#0F47D5";
+                color = "#0F47D5";
             } else if (h > -50) {
-                fillColor = "#0D3FBD";
+                color = "#0D3FBD";
             } else if (h > -60) {
-                fillColor = "#0B37A5";
+                color = "#0B37A5";
             } else if (h > -70) {
-                fillColor = "#0A2F8E";
+                color = "#0A2F8E";
             } else if (h > -80) {
-                fillColor = "#082776";
+                color = "#082776";
             } else if (h > -90) {
-                fillColor = "#061F5E";
+                color = "#061F5E";
             } else if (h > -100) {
-                fillColor = "#050830";
+                color = "#050830";
             } else {
-                fillColor = "black"
+                color = "black"
             }
 
             this.voronoi.renderCell(i, ctx);
-            ctx.fillStyle = fillColor;
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
             ctx.fill();
+            ctx.stroke();
         }
     }
 
