@@ -27,17 +27,6 @@ class Tile {
     setHeight = (height) => this.height = height;
 }
 
-class Vector {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    magnitude = () => Math.sqrt(this.x * this.x + this.y * this.y);
-
-    normalize = () => { x: this.x / this.magnitude, y: this.y / this.magnitude }
-}
-
 class MapGenerator {
     constructor(numOfPoints) {
         this.allPoints = this.generateRandomPoints(numOfPoints);
@@ -164,7 +153,7 @@ class MapGenerator {
 
         for (let idx in this.landTiles) {
             let tileCoast = [];
-            let landTile = this.tiles[idx];
+            let landTile = this.landTiles[idx];
             let neighbors = landTile.neighbors;
 
             for (let k = 0; k < neighbors.length; k++) {
@@ -291,7 +280,7 @@ class MapGenerator {
         this.drawCoastline();
         // this.drawVoronoi();
         // this.drawDelaunay();
-        // this.drawPoints();
+        this.drawPoints();
     }
 
     initVoronoi = (points) => {
@@ -361,6 +350,35 @@ canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
     let cell = mapGen.delaunay.find(x, y);
-    console.log(mapGen.tiles[cell]);
+    // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
+
+
+    let windAngle = Math.round(mapGen.random(0, 360));
+
+    const rotateAroundCenter = (cx, cy, x, y, angle) => {
+        let radians = (Math.PI / 180) * angle,
+            cos = Math.cos(radians),
+            sin = Math.sin(radians),
+            nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+            ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+        return [nx, ny];
+    }
+
+    // prevailing wind direction
+    ctx.beginPath();
+    for (let idx in mapGen.waterTiles) {
+        let tile = mapGen.waterTiles[idx];
+        let x1 = tile.centroid[0];
+        let y1 = tile.centroid[1];
+        let rot = rotateAroundCenter(x1, y1, x1, y1 - 50, windAngle);
+        let x2 = rot[0];
+        let y2 = rot[1];
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+    }
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
 })
