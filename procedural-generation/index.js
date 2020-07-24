@@ -27,6 +27,17 @@ class Tile {
     setHeight = (height) => this.height = height;
 }
 
+class Vector {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    magnitude = () => Math.sqrt(this.x * this.x + this.y * this.y);
+
+    normalize = () => { x: this.x / this.magnitude, y: this.y / this.magnitude }
+}
+
 class MapGenerator {
     constructor(numOfPoints) {
         this.allPoints = this.generateRandomPoints(numOfPoints);
