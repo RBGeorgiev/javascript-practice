@@ -380,5 +380,49 @@ canvas.addEventListener("click", (e) => {
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 1;
     ctx.stroke();
+})
 
+canvas.addEventListener("mousemove", (e) => {
+    const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
+        let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+        let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+        // if uA and uB are between 0-1, lines are colliding
+        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+            // find where the lines meet
+            let intersectionX = x1 + (uA * (x2 - x1));
+            let intersectionY = y1 + (uA * (y2 - y1));
+
+            return { x: intersectionX, y: intersectionY };
+        }
+        return false;
+    }
+
+    // let line1 = [0, 0, canvas.width, canvas.height];
+    let line1 = [0, 0, e.offsetX, e.offsetY];
+    mapGen.drawAll();
+
+
+    for (let idx in mapGen.landTiles) {
+        let tile = mapGen.landTiles[idx];
+        let vertices = tile.polygon;
+        // first and last vertex are the same
+        for (let i = 0; i < vertices.length - 1; i++) {
+            let line2 = [vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]];
+            let collision = lineCollision(...line1, ...line2);
+            if (collision) {
+                ctx.beginPath()
+                mapGen.voronoi.renderCell(+idx, ctx);
+                ctx.fillStyle = 'pink';
+                ctx.fill();
+            }
+        }
+    }
+
+    ctx.beginPath()
+    ctx.moveTo(line1[0], line1[1]);
+    ctx.lineTo(line1[2], line1[3]);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1;
+    ctx.stroke();
 })
