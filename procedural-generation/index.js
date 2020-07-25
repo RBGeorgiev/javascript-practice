@@ -158,7 +158,7 @@ class MapGenerator {
 
             for (let k = 0; k < neighbors.length; k++) {
                 if (this.waterTiles[neighbors[k]]) {
-                    let waterTile = this.tiles[neighbors[k]];
+                    let waterTile = this.getTile(neighbors[k]);
                     let edge = this.getEdgeBetweenTiles(landTile, waterTile);
                     if (edge.length) tileCoast.push(edge);
                 }
@@ -398,31 +398,32 @@ canvas.addEventListener("mousemove", (e) => {
         return false;
     }
 
-    // let line1 = [0, 0, canvas.width, canvas.height];
-    let line1 = [0, 0, e.offsetX, e.offsetY];
-    mapGen.drawAll();
-
-
-    for (let idx in mapGen.landTiles) {
-        let tile = mapGen.landTiles[idx];
-        let vertices = tile.polygon;
-        // first and last vertex are the same
-        for (let i = 0; i < vertices.length - 1; i++) {
-            let line2 = [vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]];
-            let collision = lineCollision(...line1, ...line2);
-            if (collision) {
-                ctx.beginPath()
-                mapGen.voronoi.renderCell(+idx, ctx);
-                ctx.fillStyle = 'pink';
-                ctx.fill();
+    const findTilesIntersectingLine = (tileType, line1) => {
+        for (let idx in tileType) {
+            let tile = tileType[idx];
+            let vertices = tile.polygon;
+            // first and last vertex are the same
+            for (let i = 0; i < vertices.length - 1; i++) {
+                let line2 = [vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]];
+                let collision = lineCollision(...line1, ...line2);
+                if (collision) {
+                    ctx.beginPath();
+                    mapGen.voronoi.renderCell(+idx, ctx);
+                    ctx.fillStyle = 'pink';
+                    ctx.fill();
+                }
             }
         }
+
+        ctx.beginPath()
+        ctx.moveTo(line1[0], line1[1]);
+        ctx.lineTo(line1[2], line1[3]);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1;
+        ctx.stroke();
     }
 
-    ctx.beginPath()
-    ctx.moveTo(line1[0], line1[1]);
-    ctx.lineTo(line1[2], line1[3]);
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    let line1 = [0, 0, e.offsetX, e.offsetY];
+    mapGen.drawAll();
+    findTilesIntersectingLine(mapGen.landTiles, line1);
 })
