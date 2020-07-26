@@ -349,6 +349,7 @@ let mapGen = new MapGenerator(1000);
 canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
+    let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     let cell = mapGen.delaunay.find(x, y);
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
@@ -371,7 +372,7 @@ canvas.addEventListener("click", (e) => {
         let tile = mapGen.waterTiles[idx];
         let x1 = tile.centroid[0];
         let y1 = tile.centroid[1];
-        let rot = rotateAroundCenter(x1, y1, x1, y1 - 50, windAngle);
+        let rot = rotateAroundCenter(x1, y1, x1, y1 - wildLineLength, windAngle);
         let x2 = rot[0];
         let y2 = rot[1];
         ctx.moveTo(x1, y1);
@@ -415,10 +416,10 @@ canvas.addEventListener("mousemove", (e) => {
             }
         }
 
-        ctx.beginPath()
+        ctx.beginPath();
         ctx.moveTo(line1[0], line1[1]);
         ctx.lineTo(line1[2], line1[3]);
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = '#FFFFFF';
         ctx.lineWidth = 1;
         ctx.stroke();
     }
