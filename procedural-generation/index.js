@@ -350,7 +350,8 @@ canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
     let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    let cell = mapGen.delaunay.find(x, y);
+    let windLines = [];
+    // let cell = mapGen.delaunay.find(x, y);
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
@@ -375,15 +376,17 @@ canvas.addEventListener("click", (e) => {
         let rot = rotateAroundCenter(x1, y1, x1, y1 - wildLineLength, windAngle);
         let x2 = rot[0];
         let y2 = rot[1];
+        let line = [x1, y1, x2, y2];
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
+        windLines.push(line);
     }
-    ctx.strokeStyle = '#fff';
+    ctx.strokeStyle = '#FFFFFF';
     ctx.lineWidth = 1;
     ctx.stroke();
-})
+    // })
 
-canvas.addEventListener("mousemove", (e) => {
+    // canvas.addEventListener("mousemove", (e) => {
     const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
         let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
         let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
@@ -424,7 +427,9 @@ canvas.addEventListener("mousemove", (e) => {
         ctx.stroke();
     }
 
-    let line1 = [0, 0, e.offsetX, e.offsetY];
     mapGen.drawAll();
-    findTilesIntersectingLine(mapGen.landTiles, line1);
+    for (let i = 0; i < windLines.length; i++) {
+        let line1 = windLines[i];
+        findTilesIntersectingLine(mapGen.landTiles, line1);
+    }
 })
