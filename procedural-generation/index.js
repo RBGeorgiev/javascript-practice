@@ -370,10 +370,11 @@ canvas.addEventListener("click", (e) => {
     // prevailing wind direction
     ctx.beginPath();
     for (let idx in mapGen.waterTiles) {
+        let windOffset = Math.round(mapGen.random(-10, 10));
         let tile = mapGen.waterTiles[idx];
         let x1 = tile.centroid[0];
         let y1 = tile.centroid[1];
-        let rot = rotateAroundCenter(x1, y1, x1, y1 - wildLineLength, windAngle);
+        let rot = rotateAroundCenter(x1, y1, x1, y1 - wildLineLength, windAngle + windOffset);
         let x2 = rot[0];
         let y2 = rot[1];
         let line = [x1, y1, x2, y2];
