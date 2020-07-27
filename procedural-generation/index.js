@@ -347,14 +347,14 @@ class MapGenerator {
 let mapGen = new MapGenerator(1000);
 
 canvas.addEventListener("click", (e) => {
-    let x = e.offsetX;
-    let y = e.offsetY;
-    let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    let windLines = [];
+    // let x = e.offsetX;
+    // let y = e.offsetY;
     // let cell = mapGen.delaunay.find(x, y);
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
+    let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+    let windLines = [];
 
     let windAngle = Math.round(mapGen.random(0, 360));
 
@@ -432,5 +432,40 @@ canvas.addEventListener("click", (e) => {
     for (let i = 0; i < windLines.length; i++) {
         let line1 = windLines[i];
         findTilesIntersectingLine(mapGen.landTiles, line1);
+    }
+
+
+    let allPartitions = [];
+    let partitionSize = 100;
+    for (let x = 0; x < canvas.width; x += partitionSize) {
+        for (let y = 0; y < canvas.height; y += partitionSize) {
+            let top = [x, y, x + partitionSize, y];
+            let bottom = [x, y + partitionSize, x + partitionSize, y + partitionSize];
+            let left = [x, y, x, y + partitionSize];
+            let right = [x + partitionSize, y, x + partitionSize, y + partitionSize];
+            let bounds = [top, bottom, left, right];
+            let partition = {
+                bounds,
+                'tiles': []
+            }
+            allPartitions.push(partition);
+        }
+    }
+
+    for (let i = 0; i < allPartitions.length; i++) {
+        let bounds = allPartitions[i].bounds;
+        for (let j = 0; j < bounds.length; j++) {
+            let x1 = bounds[j][0];
+            let y1 = bounds[j][1];
+            let x2 = bounds[j][2];
+            let y2 = bounds[j][3];
+
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
     }
 })
