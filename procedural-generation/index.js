@@ -353,119 +353,131 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-    let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    let windLines = [];
+    const calculateWind = () => {
+        let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+        let windLines = [];
 
-    let windAngle = Math.round(mapGen.random(0, 360));
+        let windAngle = Math.round(mapGen.random(0, 360));
 
-    const rotateAroundCenter = (cx, cy, x, y, angle) => {
-        let radians = (Math.PI / 180) * angle,
-            cos = Math.cos(radians),
-            sin = Math.sin(radians),
-            nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
-            ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
-        return [nx, ny];
-    }
-
-    // prevailing wind direction
-    ctx.beginPath();
-    for (let idx in mapGen.waterTiles) {
-        let windOffset = Math.round(mapGen.random(-10, 10));
-        let tile = mapGen.waterTiles[idx];
-        let x1 = tile.centroid[0];
-        let y1 = tile.centroid[1];
-        let rot = rotateAroundCenter(x1, y1, x1, y1 - wildLineLength, windAngle + windOffset);
-        let x2 = rot[0];
-        let y2 = rot[1];
-        let line = [x1, y1, x2, y2];
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        windLines.push(line);
-    }
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    // })
-
-    // canvas.addEventListener("mousemove", (e) => {
-    const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
-        let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-        let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-
-        // if uA and uB are between 0-1, lines are colliding
-        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-            // find where the lines meet
-            let intersectionX = x1 + (uA * (x2 - x1));
-            let intersectionY = y1 + (uA * (y2 - y1));
-
-            return { x: intersectionX, y: intersectionY };
-        }
-        return false;
-    }
-
-    const findTilesIntersectingLine = (tileType, line1) => {
-        for (let idx in tileType) {
-            let tile = tileType[idx];
-            let vertices = tile.polygon;
-            // first and last vertex are the same
-            for (let i = 0; i < vertices.length - 1; i++) {
-                let line2 = [vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]];
-                let collision = lineCollision(...line1, ...line2);
-                if (collision) {
-                    ctx.beginPath();
-                    mapGen.voronoi.renderCell(+idx, ctx);
-                    ctx.fillStyle = 'pink';
-                    ctx.fill();
-                }
-            }
+        const rotateAroundCenter = (cx, cy, x, y, angle) => {
+            let radians = (Math.PI / 180) * angle,
+                cos = Math.cos(radians),
+                sin = Math.sin(radians),
+                nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+                ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+            return [nx, ny];
         }
 
+        // prevailing wind direction
         ctx.beginPath();
-        ctx.moveTo(line1[0], line1[1]);
-        ctx.lineTo(line1[2], line1[3]);
+        for (let idx in mapGen.waterTiles) {
+            let windOffset = Math.round(mapGen.random(-10, 10));
+            let tile = mapGen.waterTiles[idx];
+            let x1 = tile.centroid[0];
+            let y1 = tile.centroid[1];
+            let rot = rotateAroundCenter(x1, y1, x1, y1 - wildLineLength, windAngle + windOffset);
+            let x2 = rot[0];
+            let y2 = rot[1];
+            let line = [x1, y1, x2, y2];
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            windLines.push(line);
+        }
         ctx.strokeStyle = '#FFFFFF';
         ctx.lineWidth = 1;
         ctx.stroke();
-    }
+        // })
 
-    mapGen.drawAll();
-    for (let i = 0; i < windLines.length; i++) {
-        let line1 = windLines[i];
-        findTilesIntersectingLine(mapGen.landTiles, line1);
-    }
+        // canvas.addEventListener("mousemove", (e) => {
+        const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
+            let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+            let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 
+            // if uA and uB are between 0-1, lines are colliding
+            if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+                // find where the lines meet
+                let intersectionX = x1 + (uA * (x2 - x1));
+                let intersectionY = y1 + (uA * (y2 - y1));
 
-    let allPartitions = [];
-    let partitionSize = 100;
-    for (let x = 0; x < canvas.width; x += partitionSize) {
-        for (let y = 0; y < canvas.height; y += partitionSize) {
-            let top = [x, y, x + partitionSize, y];
-            let bottom = [x, y + partitionSize, x + partitionSize, y + partitionSize];
-            let left = [x, y, x, y + partitionSize];
-            let right = [x + partitionSize, y, x + partitionSize, y + partitionSize];
-            let bounds = [top, bottom, left, right];
-            let partition = {
-                bounds,
-                'tiles': []
+                return { x: intersectionX, y: intersectionY };
             }
-            allPartitions.push(partition);
+            return false;
         }
-    }
 
-    for (let i = 0; i < allPartitions.length; i++) {
-        let bounds = allPartitions[i].bounds;
-        for (let j = 0; j < bounds.length; j++) {
-            let x1 = bounds[j][0];
-            let y1 = bounds[j][1];
-            let x2 = bounds[j][2];
-            let y2 = bounds[j][3];
+        const findTilesIntersectingLine = (tileType, line1) => {
+            for (let idx in tileType) {
+                let tile = tileType[idx];
+                let vertices = tile.polygon;
+                // first and last vertex are the same
+                for (let i = 0; i < vertices.length - 1; i++) {
+                    let line2 = [vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]];
+                    let collision = lineCollision(...line1, ...line2);
+                    if (collision) {
+                        ctx.beginPath();
+                        mapGen.voronoi.renderCell(+idx, ctx);
+                        ctx.fillStyle = 'pink';
+                        ctx.fill();
+                    }
+                }
+            }
 
             ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
+            ctx.moveTo(line1[0], line1[1]);
+            ctx.lineTo(line1[2], line1[3]);
             ctx.strokeStyle = '#FFFFFF';
             ctx.lineWidth = 1;
             ctx.stroke();
         }
+
+        mapGen.drawAll();
+        for (let i = 0; i < windLines.length; i++) {
+            let line1 = windLines[i];
+            findTilesIntersectingLine(mapGen.landTiles, line1);
+        }
     }
+
+    // ________________________________________________________________________________________________________
+
+    const createPartitions = () => {
+        let allPartitions = [];
+        let partitionSize = 100;
+        for (let x = 0; x < canvas.width; x += partitionSize) {
+            for (let y = 0; y < canvas.height; y += partitionSize) {
+                let top = [x, y, x + partitionSize, y];
+                let bottom = [x, y + partitionSize, x + partitionSize, y + partitionSize];
+                let left = [x, y, x, y + partitionSize];
+                let right = [x + partitionSize, y, x + partitionSize, y + partitionSize];
+                let bounds = [top, bottom, left, right];
+                let partition = {
+                    bounds,
+                    'tiles': []
+                }
+                allPartitions.push(partition);
+            }
+        }
+        return allPartitions;
+    }
+
+    const drawPartitionBounds = (allPartitions) => {
+        for (let i = 0; i < allPartitions.length; i++) {
+            let bounds = allPartitions[i].bounds;
+            for (let j = 0; j < bounds.length; j++) {
+                let x1 = bounds[j][0];
+                let y1 = bounds[j][1];
+                let x2 = bounds[j][2];
+                let y2 = bounds[j][3];
+
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+    }
+
+    // calculateWind();
+    let partitions = createPartitions();
+    drawPartitionBounds(partitions);
 })
