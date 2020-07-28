@@ -353,6 +353,21 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
+    const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
+        let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+        let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+        // if uA and uB are between 0-1, lines are colliding
+        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+            // find where the lines meet
+            let intersectionX = x1 + (uA * (x2 - x1));
+            let intersectionY = y1 + (uA * (y2 - y1));
+
+            return { x: intersectionX, y: intersectionY };
+        }
+        return false;
+    }
+
     const calculateWind = () => {
         let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
         let windLines = [];
@@ -389,21 +404,6 @@ canvas.addEventListener("click", (e) => {
         // })
 
         // canvas.addEventListener("mousemove", (e) => {
-        const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
-            let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-            let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-
-            // if uA and uB are between 0-1, lines are colliding
-            if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-                // find where the lines meet
-                let intersectionX = x1 + (uA * (x2 - x1));
-                let intersectionY = y1 + (uA * (y2 - y1));
-
-                return { x: intersectionX, y: intersectionY };
-            }
-            return false;
-        }
-
         const findTilesIntersectingLine = (tileType, line1) => {
             for (let idx in tileType) {
                 let tile = tileType[idx];
@@ -479,5 +479,39 @@ canvas.addEventListener("click", (e) => {
 
     // calculateWind();
     let partitions = createPartitions();
-    drawPartitionBounds(partitions);
+    let intersectedPartitions = [];
+
+    let line1 = [500, 0, 800, 800];
+    for (let i = 0; i < partitions.length; i++) {
+        let cur = partitions[i];
+        let bounds = cur.bounds;
+        for (let j = 0; j < bounds.length; j++) {
+            let line2 = bounds[j];
+            let collision = lineCollision(...line1, ...line2);
+            if (collision) {
+                intersectedPartitions.push(cur);
+                break;
+            }
+        }
+    }
+
+    intersectedPartitions.forEach(p => {
+        let bounds = p.bounds;
+        ctx.beginPath();
+        ctx.moveTo(bounds[0][0], bounds[0][1]);
+        for (let j = 0; j < bounds.length; j++) {
+            let x1 = bounds[j][0];
+            let y1 = bounds[j][1];
+            let x2 = bounds[j][2];
+            let y2 = bounds[j][3];
+
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+        }
+        ctx.fillStyle = '#FF000055';
+        ctx.fill();
+    })
+    console.log(intersectedPartitions);
+
+    // drawPartitionBounds(partitions);
 })
