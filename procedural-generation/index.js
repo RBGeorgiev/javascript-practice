@@ -477,41 +477,48 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    // calculateWind();
-    let partitions = createPartitions();
-    let intersectedPartitions = [];
-
-    let line1 = [500, 0, 800, 800];
-    for (let i = 0; i < partitions.length; i++) {
-        let cur = partitions[i];
-        let bounds = cur.bounds;
-        for (let j = 0; j < bounds.length; j++) {
-            let line2 = bounds[j];
-            let collision = lineCollision(...line1, ...line2);
-            if (collision) {
-                intersectedPartitions.push(cur);
-                break;
+    const findPartitionsIntersectingLine = (partitions, line1) => {
+        let intersectedPartitions = [];
+        for (let i = 0; i < partitions.length; i++) {
+            let cur = partitions[i];
+            let bounds = cur.bounds;
+            for (let j = 0; j < bounds.length; j++) {
+                let line2 = bounds[j];
+                let collision = lineCollision(...line1, ...line2);
+                if (collision) {
+                    intersectedPartitions.push(cur);
+                    break;
+                }
             }
+        }
+        return intersectedPartitions;
+    }
+
+    const drawIntersectedPartitions = (intersectedPartitions) => {
+        for (let i = 0; i < intersectedPartitions.length; i++) {
+            let bounds = intersectedPartitions[i].bounds;
+            ctx.beginPath();
+            ctx.moveTo(bounds[0][0], bounds[0][1]);
+            for (let j = 0; j < bounds.length; j++) {
+                let x1 = bounds[j][0];
+                let y1 = bounds[j][1];
+                let x2 = bounds[j][2];
+                let y2 = bounds[j][3];
+
+                ctx.lineTo(x1, y1);
+                ctx.lineTo(x2, y2);
+            }
+            ctx.fillStyle = '#FF000055';
+            ctx.fill();
         }
     }
 
-    intersectedPartitions.forEach(p => {
-        let bounds = p.bounds;
-        ctx.beginPath();
-        ctx.moveTo(bounds[0][0], bounds[0][1]);
-        for (let j = 0; j < bounds.length; j++) {
-            let x1 = bounds[j][0];
-            let y1 = bounds[j][1];
-            let x2 = bounds[j][2];
-            let y2 = bounds[j][3];
-
-            ctx.lineTo(x1, y1);
-            ctx.lineTo(x2, y2);
-        }
-        ctx.fillStyle = '#FF000055';
-        ctx.fill();
-    })
-    console.log(intersectedPartitions);
-
-    // drawPartitionBounds(partitions);
+    // console.time("calculateWind");
+    // calculateWind();
+    // console.timeEnd("calculateWind");
+    let line1 = [500, 300, 800, 800];
+    let partitions = createPartitions();
+    let intersectedPartitions = findPartitionsIntersectingLine(partitions, line1);
+    drawIntersectedPartitions(intersectedPartitions);
+    drawPartitionBounds(partitions);
 })
