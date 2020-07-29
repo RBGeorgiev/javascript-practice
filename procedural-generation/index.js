@@ -89,7 +89,7 @@ class MapGenerator {
 
             let cur = queue.shift();
             let curHeight = cur.height;
-            (curHeight > 0) ? this.landTiles[cur.idx] = cur : this.waterTiles[cur.idx] = cur;
+            (curHeight >= 0) ? this.landTiles[cur.idx] = cur : this.waterTiles[cur.idx] = cur;
             let neighbors = cur.neighbors;
             for (let i = 0; i < neighbors.length; i++) {
                 let n = this.getTile(neighbors[i]);
@@ -452,7 +452,10 @@ canvas.addEventListener("click", (e) => {
                 let bounds = [top, bottom, left, right];
                 let partition = {
                     bounds,
-                    'tiles': []
+                    'tiles': {
+                        'landTiles': [],
+                        'waterTiles': []
+                    }
                 }
                 allPartitions.push(partition);
             }
@@ -516,17 +519,35 @@ canvas.addEventListener("click", (e) => {
     }
 
     // console.time("calculateWind");
-    calculateWind();
+    // calculateWind();
     // console.timeEnd("calculateWind");
 
-    // let line1 = [500, 300, 800, 800];
     let partitions = createPartitions();
-    // let intersectedPartitions = findPartitionsIntersectingLine(partitions, line1);
-    // drawIntersectedPartitions(intersectedPartitions);
-    for (let i = 0; i < windLines.length; i++) {
-        let line1 = windLines[i];
-        let intersectedPartitions = findPartitionsIntersectingLine(partitions, line1);
-        drawIntersectedPartitions(intersectedPartitions);
-    }
+    // for (let i = 0; i < windLines.length; i++) {
+    //     let line1 = windLines[i];
+    //     let intersectedPartitions = findPartitionsIntersectingLine(partitions, line1);
+    //     drawIntersectedPartitions(intersectedPartitions);
+    // }
     drawPartitionBounds(partitions);
+
+
+    const isPointInPartition = (point, partition) => {
+        let x = point[0];
+        let y = point[1];
+        let topLine = partition.bounds[0];
+        let leftLine = partition.bounds[2];
+        return x > topLine[0] && x < topLine[2] && y > leftLine[1] && y < leftLine[3];
+    }
+
+    for (let i = 0; i < mapGen.allPoints.length; i++) {
+        let point = mapGen.allPoints[i];
+        for (let j = 0; j < partitions.length; j++) {
+            let inPartition = isPointInPartition(point, partitions[j])
+            if (inPartition) {
+                let type = (mapGen.landTiles[i]) ? 'landTiles' : 'waterTiles';
+                partitions[j].tiles[type].push(i);
+            }
+        }
+    }
+    console.log(partitions);
 })
