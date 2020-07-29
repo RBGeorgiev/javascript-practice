@@ -353,6 +353,8 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
+    let windLines = [];
+
     const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
         let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
         let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
@@ -370,7 +372,7 @@ canvas.addEventListener("click", (e) => {
 
     const calculateWind = () => {
         let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-        let windLines = [];
+        // let windLines = [];
 
         let windAngle = Math.round(mapGen.random(0, 360));
 
@@ -429,11 +431,11 @@ canvas.addEventListener("click", (e) => {
             ctx.stroke();
         }
 
-        mapGen.drawAll();
-        for (let i = 0; i < windLines.length; i++) {
-            let line1 = windLines[i];
-            findTilesIntersectingLine(mapGen.landTiles, line1);
-        }
+        // mapGen.drawAll();
+        // for (let i = 0; i < windLines.length; i++) {
+        //     let line1 = windLines[i];
+        //     findTilesIntersectingLine(mapGen.landTiles, line1);
+        // }
     }
 
     // ________________________________________________________________________________________________________
@@ -514,11 +516,17 @@ canvas.addEventListener("click", (e) => {
     }
 
     // console.time("calculateWind");
-    // calculateWind();
+    calculateWind();
     // console.timeEnd("calculateWind");
-    let line1 = [500, 300, 800, 800];
+
+    // let line1 = [500, 300, 800, 800];
     let partitions = createPartitions();
-    let intersectedPartitions = findPartitionsIntersectingLine(partitions, line1);
-    drawIntersectedPartitions(intersectedPartitions);
+    // let intersectedPartitions = findPartitionsIntersectingLine(partitions, line1);
+    // drawIntersectedPartitions(intersectedPartitions);
+    for (let i = 0; i < windLines.length; i++) {
+        let line1 = windLines[i];
+        let intersectedPartitions = findPartitionsIntersectingLine(partitions, line1);
+        drawIntersectedPartitions(intersectedPartitions);
+    }
     drawPartitionBounds(partitions);
 })
