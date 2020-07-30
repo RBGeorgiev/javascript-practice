@@ -542,39 +542,32 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    // console.time("calculateWind");
-    calculateWind();
-    // console.timeEnd("calculateWind");
-
-    let partitions = createPartitions();
-    addTilesToPartitions();
-    for (let i = 0; i < 1; i++) {
-        // for (let i = 0; i < windLines.length; i++) {
-        let line = windLines[i];
-
-
-        ctx.moveTo(line[0], line[1]);
-        ctx.lineTo(line[2], line[3]);
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-
-        let intersectedPartitions = findPartitionsIntersectingLine(partitions, line.line);
-        line.intersectedPartitions = intersectedPartitions;
-
-
-        drawIntersectedPartitions(intersectedPartitions);
-    }
-    drawPartitionBounds(partitions);
-
-    for (let i = 0; i < windLines.length; i++) {
-        let line = windLines[i];
-        for (let j = 0; j < line.intersectedPartitions.length; j++) {
-            console.log(line.intersectedPartitions)
-            findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
+    const connectPartitionsToLines = (partitions) => {
+        for (let i = 0; i < windLines.length; i++) {
+            let line = windLines[i];
+            let intersectedPartitions = findPartitionsIntersectingLine(partitions, line.line);
+            line.intersectedPartitions = intersectedPartitions;
         }
     }
 
-    console.log(partitions);
+    const findTilesIntersectingLineThroughPartitions = (windLines) => {
+        for (let i = 0; i < windLines.length; i++) {
+            let line = windLines[i];
+            for (let j = 0; j < line.intersectedPartitions.length; j++) {
+                findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
+            }
+        }
+    }
+
+
+    console.time("calculateWind");
+    calculateWind();
+
+    let partitions = createPartitions();
+    addTilesToPartitions(partitions);
+    connectPartitionsToLines(partitions);
+    findTilesIntersectingLineThroughPartitions(windLines);
+    // drawPartitionBounds(partitions);
+    console.timeEnd("calculateWind");
+
 })
