@@ -170,6 +170,13 @@ class MapGenerator {
         this.coastline = coastline;
     }
 
+    fillTile = (idx, color = '#FFC0CB') => {
+        ctx.beginPath();
+        this.voronoi.renderCell(idx, ctx);
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+
     drawHeightmap = () => {
         let len = this.tiles.length;
         for (let i = 0; i < len; i++) {
@@ -224,10 +231,8 @@ class MapGenerator {
                 color = "black"
             }
 
-            this.voronoi.renderCell(i, ctx);
-            ctx.fillStyle = color;
+            this.fillTile(i, color);
             ctx.strokeStyle = color;
-            ctx.fill();
             ctx.stroke();
         }
     }
@@ -381,21 +386,10 @@ canvas.addEventListener("click", (e) => {
                 let collision = lineCollision(...line1, ...line2);
                 if (collision) {
                     tiles.add(+idx);
-                    ctx.beginPath();
-                    mapGen.voronoi.renderCell(+idx, ctx);
-                    ctx.fillStyle = 'pink';
-                    ctx.fill();
                 }
             }
         }
         return [...tiles];
-
-        // ctx.beginPath();
-        // ctx.moveTo(line1[0], line1[1]);
-        // ctx.lineTo(line1[2], line1[3]);
-        // ctx.strokeStyle = '#FFFFFF';
-        // ctx.lineWidth = 1;
-        // ctx.stroke();
     }
 
     const calculateWind = () => {
@@ -424,18 +418,13 @@ canvas.addEventListener("click", (e) => {
             let x2 = rot[0];
             let y2 = rot[1];
             let line = [x1, y1, x2, y2];
-            // ctx.moveTo(x1, y1);
-            // ctx.lineTo(x2, y2);
+
             windLines.push({
                 line,
                 "intersectedPartitions": [],
                 "intersectedTiles": []
             });
         }
-        // ctx.strokeStyle = '#FFFFFF';
-        // ctx.lineWidth = 1;
-        // ctx.stroke();
-        // })
 
 
         // mapGen.drawAll();
@@ -527,22 +516,24 @@ canvas.addEventListener("click", (e) => {
         return intersectedPartitions;
     }
 
-    const drawIntersectedPartitions = (intersectedPartitions) => {
-        for (let i = 0; i < intersectedPartitions.length; i++) {
-            let bounds = intersectedPartitions[i].bounds;
-            ctx.beginPath();
-            ctx.moveTo(bounds[0][0], bounds[0][1]);
-            for (let j = 0; j < bounds.length; j++) {
-                let x1 = bounds[j][0];
-                let y1 = bounds[j][1];
-                let x2 = bounds[j][2];
-                let y2 = bounds[j][3];
-
-                ctx.lineTo(x1, y1);
-                ctx.lineTo(x2, y2);
+    const drawIntersectedTiles = (windLines) => {
+        for (let line of windLines) {
+            let tiles = line.intersectedTiles
+            for (let idx of tiles) {
+                mapGen.fillTile(idx);
             }
-            ctx.fillStyle = '#FF000055';
-            ctx.fill();
+        }
+    }
+
+    const drawWindLines = (windLines) => {
+        for (let wind of windLines) {
+            let line = wind.line
+            ctx.beginPath();
+            ctx.moveTo(line[0], line[1]);
+            ctx.lineTo(line[2], line[3]);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1;
+            ctx.stroke();
         }
     }
 
@@ -572,7 +563,8 @@ canvas.addEventListener("click", (e) => {
     addTilesToPartitions(partitions);
     connectPartitionsToLines(partitions);
     findTilesIntersectingLineThroughPartitions(windLines);
+    drawIntersectedTiles(windLines);
+    drawWindLines(windLines);
     // drawPartitionBounds(partitions);
     console.timeEnd("calculateWind");
-
 })
