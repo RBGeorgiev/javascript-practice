@@ -198,7 +198,7 @@ class MapGenerator {
                 color = "#A6FF00";
             } else if (h > 10) {
                 color = "#00FF33";
-            } else if (h > 0) {
+            } else if (h >= 0) {
                 color = "#33FF69";
             } else if (h > -10) {
                 color = "#5883F2";
@@ -371,14 +371,16 @@ canvas.addEventListener("click", (e) => {
     }
 
     const findTilesIntersectingLine = (tileType, line1) => {
+        let tiles = new Set;
         for (let idx in tileType) {
             let tile = tileType[idx];
             let vertices = tile.polygon;
             // first and last vertex are the same
-            for (let i = 0; i < vertices.length - 1; i++) {
-                let line2 = [vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]];
+            for (let i = 1; i < vertices.length; i++) {
+                let line2 = [vertices[i - 1][0], vertices[i - 1][1], vertices[i][0], vertices[i][1]];
                 let collision = lineCollision(...line1, ...line2);
                 if (collision) {
+                    tiles.add(+idx);
                     ctx.beginPath();
                     mapGen.voronoi.renderCell(+idx, ctx);
                     ctx.fillStyle = 'pink';
@@ -386,6 +388,7 @@ canvas.addEventListener("click", (e) => {
                 }
             }
         }
+        return [...tiles];
 
         // ctx.beginPath();
         // ctx.moveTo(line1[0], line1[1]);
@@ -425,7 +428,8 @@ canvas.addEventListener("click", (e) => {
             // ctx.lineTo(x2, y2);
             windLines.push({
                 line,
-                "intersectedPartitions": []
+                "intersectedPartitions": [],
+                "intersectedTiles": []
             });
         }
         // ctx.strokeStyle = '#FFFFFF';
@@ -554,7 +558,8 @@ canvas.addEventListener("click", (e) => {
         for (let i = 0; i < windLines.length; i++) {
             let line = windLines[i];
             for (let j = 0; j < line.intersectedPartitions.length; j++) {
-                findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
+                let tiles = findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
+                line.intersectedTiles.push(...tiles);
             }
         }
     }
