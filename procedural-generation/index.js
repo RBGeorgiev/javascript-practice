@@ -358,8 +358,6 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-    let windLines = [];
-
     const lineCollision = (x1, y1, x2, y2, x3, y3, x4, y4) => {
         let uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
         let uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
@@ -392,10 +390,9 @@ canvas.addEventListener("click", (e) => {
         return [...tiles];
     }
 
-    const calculateWind = () => {
-        let wildLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-        // let windLines = [];
-
+    const createWindLines = () => {
+        let windLines = [];
+        let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
         let windAngle = Math.round(mapGen.random(0, 360));
 
         const rotateAroundCenter = (cx, cy, x, y, angle) => {
@@ -408,13 +405,12 @@ canvas.addEventListener("click", (e) => {
         }
 
         // prevailing wind direction
-        ctx.beginPath();
         for (let idx in mapGen.waterTiles) {
-            let windOffset = Math.round(mapGen.random(-10, 10));
+            let windOffset = Math.round(mapGen.random(-5, 5));
             let tile = mapGen.waterTiles[idx];
             let x1 = tile.centroid[0];
             let y1 = tile.centroid[1];
-            let rot = rotateAroundCenter(x1, y1, x1, y1 - wildLineLength, windAngle + windOffset);
+            let rot = rotateAroundCenter(x1, y1, x1, y1 - windLineLength, windAngle + windOffset);
             let x2 = rot[0];
             let y2 = rot[1];
             let line = [x1, y1, x2, y2];
@@ -426,15 +422,8 @@ canvas.addEventListener("click", (e) => {
             });
         }
 
-
-        // mapGen.drawAll();
-        // for (let i = 0; i < windLines.length; i++) {
-        //     let line1 = windLines[i].line;
-        //     findTilesIntersectingLine(mapGen.landTiles, line1);
-        // }
+        return windLines;
     }
-
-    // ________________________________________________________________________________________________________
 
     const createPartitions = () => {
         let allPartitions = [];
@@ -480,6 +469,53 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const findPartitionsIntersectingLine = (partitions, line1) => {
+        let intersectedPartitions = [];
+        for (let i = 0; i < partitions.length; i++) {
+            let cur = partitions[i];
+            let bounds = cur.bounds;
+            for (let j = 0; j < bounds.length; j++) {
+                let line2 = bounds[j];
+                let collision = lineCollision(...line1, ...line2);
+                if (collision) {
+                    intersectedPartitions.push(cur);
+                    break;
+                }
+            }
+        }
+        return intersectedPartitions;
+    }
+
+    const connectPartitionsToLines = (partitions, windLines) => {
+        for (let i = 0; i < windLines.length; i++) {
+            let line = windLines[i];
+            let intersectedPartitions = findPartitionsIntersectingLine(partitions, line.line);
+            line.intersectedPartitions = intersectedPartitions;
+        }
+    }
+
+    const findTilesIntersectingLineThroughPartitions = (windLines) => {
+        for (let i = 0; i < windLines.length; i++) {
+            let line = windLines[i];
+            for (let j = 0; j < line.intersectedPartitions.length; j++) {
+                let tiles = findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
+                line.intersectedTiles.push(...tiles);
+            }
+        }
+    }
+
+    const drawWindLines = (windLines) => {
+        for (let wind of windLines) {
+            let line = wind.line;
+            ctx.beginPath();
+            ctx.moveTo(line[0], line[1]);
+            ctx.lineTo(line[2], line[3]);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+    }
+
     const drawPartitionBounds = (allPartitions) => {
         for (let i = 0; i < allPartitions.length; i++) {
             let bounds = allPartitions[i].bounds;
@@ -499,24 +535,7 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const findPartitionsIntersectingLine = (partitions, line1) => {
-        let intersectedPartitions = [];
-        for (let i = 0; i < partitions.length; i++) {
-            let cur = partitions[i];
-            let bounds = cur.bounds;
-            for (let j = 0; j < bounds.length; j++) {
-                let line2 = bounds[j];
-                let collision = lineCollision(...line1, ...line2);
-                if (collision) {
-                    intersectedPartitions.push(cur);
-                    break;
-                }
-            }
-        }
-        return intersectedPartitions;
-    }
-
-    const drawIntersectedTiles = (windLines) => {
+    const drawWindIntersectedTiles = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles
             for (let idx of tiles) {
@@ -525,45 +544,17 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const drawWindLines = (windLines) => {
-        for (let wind of windLines) {
-            let line = wind.line
-            ctx.beginPath();
-            ctx.moveTo(line[0], line[1]);
-            ctx.lineTo(line[2], line[3]);
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-    }
-
-    const connectPartitionsToLines = (partitions) => {
-        for (let i = 0; i < windLines.length; i++) {
-            let line = windLines[i];
-            let intersectedPartitions = findPartitionsIntersectingLine(partitions, line.line);
-            line.intersectedPartitions = intersectedPartitions;
-        }
-    }
-
-    const findTilesIntersectingLineThroughPartitions = (windLines) => {
-        for (let i = 0; i < windLines.length; i++) {
-            let line = windLines[i];
-            for (let j = 0; j < line.intersectedPartitions.length; j++) {
-                let tiles = findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
-                line.intersectedTiles.push(...tiles);
-            }
-        }
-    }
-
 
     console.time("calculateWind");
-    calculateWind();
-
     let partitions = createPartitions();
+    let windLines = createWindLines();
+
     addTilesToPartitions(partitions);
-    connectPartitionsToLines(partitions);
+    connectPartitionsToLines(partitions, windLines);
     findTilesIntersectingLineThroughPartitions(windLines);
-    drawIntersectedTiles(windLines);
+
+    mapGen.drawAll();
+    drawWindIntersectedTiles(windLines);
     drawWindLines(windLines);
     // drawPartitionBounds(partitions);
     console.timeEnd("calculateWind");
