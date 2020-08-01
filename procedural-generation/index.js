@@ -537,7 +537,7 @@ canvas.addEventListener("click", (e) => {
 
     const drawWindIntersectedTiles = (windLines) => {
         for (let line of windLines) {
-            let tiles = line.intersectedTiles
+            let tiles = line.intersectedTiles;
             for (let idx of tiles) {
                 mapGen.fillTile(idx);
             }
@@ -554,8 +554,47 @@ canvas.addEventListener("click", (e) => {
     findTilesIntersectingLineThroughPartitions(windLines);
 
     mapGen.drawAll();
-    drawWindIntersectedTiles(windLines);
-    drawWindLines(windLines);
+    // drawWindIntersectedTiles(windLines);
+    // drawWindLines(windLines);
     // drawPartitionBounds(partitions);
     console.timeEnd("calculateWind");
+
+
+
+
+
+    // for (let line of windLines) {
+    let line = windLines[0];
+    let tiles = line.intersectedTiles;
+    for (let idx of tiles) {
+        let tile = mapGen.getTile(idx);
+        let x1 = line.line[0];
+        let y1 = line.line[1];
+        let x2 = tile.centroid[0];
+        let y2 = tile.centroid[1];
+
+        let a = x1 - x2;
+        let b = y1 - y2;
+
+        let dist = Math.sqrt(a * a + b * b);
+        console.log(dist)
+        tile.dist = dist
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(line.line[0], line.line[1]);
+    ctx.lineTo(line.line[2], line.line[3]);
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    for (let idx of tiles) {
+        mapGen.fillTile(idx);
+        let tile = mapGen.getTile(idx);
+        let x = tile.centroid[0];
+        let y = tile.centroid[1];
+        ctx.fillStyle = "black";
+        ctx.fillText(tile.dist, x, y);
+    }
+    // }
 })
