@@ -392,7 +392,6 @@ canvas.addEventListener("click", (e) => {
 
     const createWindLines = () => {
         let windLines = [];
-        let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
         let windAngle = Math.round(mapGen.random(0, 360));
 
         const rotateAroundCenter = (cx, cy, x, y, angle) => {
@@ -545,6 +544,7 @@ canvas.addEventListener("click", (e) => {
     }
 
 
+    let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     console.time("calculateWind");
     let partitions = createPartitions();
     let windLines = createWindLines();
@@ -579,6 +579,12 @@ canvas.addEventListener("click", (e) => {
         let dist = Math.sqrt(a * a + b * b);
         console.log(dist)
         tile.dist = dist
+
+        let maxPrecipitation = 100;
+        let linePercentVal = windLineLength / 100;
+        let percentDistFromLineStart = dist / linePercentVal / 100;
+        let precipitation = maxPrecipitation - (maxPrecipitation * percentDistFromLineStart);
+        tile.precipitation = precipitation;
     }
 
     ctx.beginPath();
@@ -594,7 +600,7 @@ canvas.addEventListener("click", (e) => {
         let x = tile.centroid[0];
         let y = tile.centroid[1];
         ctx.fillStyle = "black";
-        ctx.fillText(tile.dist, x, y);
+        ctx.fillText(tile.precipitation, x, y);
     }
     // }
 })
