@@ -11,6 +11,7 @@ class Tile {
         this.polygon = mapGen.voronoi.cellPolygon(idx);
         this.neighbors = this.getNeighborsArray(idx, mapGen);
         this.height = null;
+        this.precipitation = 0;
     }
 
     getNeighborsArray = (idx, mapGen) => {
@@ -72,9 +73,9 @@ class MapGenerator {
     }
 
     setTilesHeight = () => {
-        let randTiles = this.getRandomTiles(15, 5);
+        let randTiles = this.getRandomTiles(15, 5); // important value
         randTiles.forEach(tile => {
-            let dir = (Math.random() > 0.4) ? 1 : -1;
+            let dir = (Math.random() > 0.4) ? 1 : -1; // important value
             tile.setHeight(dir * 100)
         });
         let queue = [
@@ -85,7 +86,7 @@ class MapGenerator {
         while (queue.length) {
             // if MAX number of this.random > 100 there is a chance for height increase; 
             // the lower the MIN number is, the higher the chance for a sharp drop in height 
-            decrement = this.random(50, 100) / 100;
+            decrement = this.random(50, 100) / 100; // important value
 
             let cur = queue.shift();
             let curHeight = cur.height;
@@ -566,6 +567,11 @@ canvas.addEventListener("click", (e) => {
     // for (let line of windLines) {
     let line = windLines[0];
     let tiles = line.intersectedTiles;
+    let defaultPrecipitationPerTile = 100; // important value
+    let maxDefaultPrePrecipitationTiles = 20; // important value
+    let totalWaterAvailable = defaultPrecipitationPerTile * maxDefaultPrePrecipitationTiles;
+
+    // get tile distance
     for (let idx of tiles) {
         let tile = mapGen.getTile(idx);
         let x1 = line.line[0];
@@ -577,14 +583,29 @@ canvas.addEventListener("click", (e) => {
         let b = y1 - y2;
 
         let dist = Math.sqrt(a * a + b * b);
-        console.log(dist)
-        tile.dist = dist
+        tile.dist = dist;
+    }
 
-        let maxPrecipitation = 100;
+    // sort tiles by distance
+    tiles = tiles.sort((i, j) => {
+        let a = mapGen.getTile(i).dist;
+        let b = mapGen.getTile(j).dist;
+        return a - b;
+    });
+
+    // get tile precipitation
+    for (let idx of tiles) {
+        if (totalWaterAvailable <= 0) break;
+        let tile = mapGen.getTile(idx);
         let linePercentVal = windLineLength / 100;
-        let percentDistFromLineStart = dist / linePercentVal / 100;
-        let precipitation = maxPrecipitation - (maxPrecipitation * percentDistFromLineStart);
-        tile.precipitation = precipitation;
+        let percentDistFromLineStart = tile.dist / linePercentVal / 100;
+        let distPrecipitation = defaultPrecipitationPerTile - (defaultPrecipitationPerTile * percentDistFromLineStart);
+
+        let precipitation = distPrecipitation;
+        if (totalWaterAvailable - precipitation < 0) precipitation = totalWaterAvailable;
+        totalWaterAvailable -= precipitation;
+
+        tile.precipitation += precipitation;
     }
 
     ctx.beginPath();
