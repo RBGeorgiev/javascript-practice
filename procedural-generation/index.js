@@ -567,9 +567,10 @@ canvas.addEventListener("click", (e) => {
     // for (let line of windLines) {
     let line = windLines[0];
     let tiles = line.intersectedTiles;
-    let defaultPrecipitationPerTile = 100; // important value
-    let maxDefaultPrePrecipitationTiles = 20; // important value
-    let totalWaterAvailable = defaultPrecipitationPerTile * maxDefaultPrePrecipitationTiles;
+    let defaultTilePrecipitation = 100; // important value
+    let maxDefaultPrecipitationTiles = 20; // important value
+    let heightPrecipitationMultiplier = 2; // important value
+    let totalWaterAvailable = defaultTilePrecipitation * maxDefaultPrecipitationTiles;
 
     // get tile distance
     for (let idx of tiles) {
@@ -599,9 +600,10 @@ canvas.addEventListener("click", (e) => {
         let tile = mapGen.getTile(idx);
         let linePercentVal = windLineLength / 100;
         let percentDistFromLineStart = tile.dist / linePercentVal / 100;
-        let distPrecipitation = defaultPrecipitationPerTile - (defaultPrecipitationPerTile * percentDistFromLineStart);
+        let distPrecipitation = defaultTilePrecipitation - (defaultTilePrecipitation * percentDistFromLineStart);
+        let heightPrecipitation = tile.height * heightPrecipitationMultiplier;
 
-        let precipitation = distPrecipitation;
+        let precipitation = distPrecipitation + heightPrecipitation;
         if (totalWaterAvailable - precipitation < 0) precipitation = totalWaterAvailable;
         totalWaterAvailable -= precipitation;
 
