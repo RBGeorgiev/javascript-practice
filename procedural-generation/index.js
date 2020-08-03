@@ -561,6 +561,7 @@ canvas.addEventListener("click", (e) => {
     console.timeEnd("calculateWind");
 
 
+    const resetPrecipitation = () => mapGen.tiles.forEach(t => t.precipitation = 0);
 
 
 
@@ -571,7 +572,7 @@ canvas.addEventListener("click", (e) => {
     let maxDefaultPrecipitationTiles = 20; // important value
     let heightPrecipitationMultiplier = 2; // important value
     let totalWaterAvailable = defaultTilePrecipitation * maxDefaultPrecipitationTiles;
-
+    let tileDistances = [];
     // get tile distance
     for (let idx of tiles) {
         let tile = mapGen.getTile(idx);
@@ -584,22 +585,19 @@ canvas.addEventListener("click", (e) => {
         let b = y1 - y2;
 
         let dist = Math.sqrt(a * a + b * b);
-        tile.dist = dist;
+        tileDistances.push([idx, dist]);
     }
 
-    // sort tiles by distance
-    tiles = tiles.sort((i, j) => {
-        let a = mapGen.getTile(i).dist;
-        let b = mapGen.getTile(j).dist;
-        return a - b;
-    });
+    // sort tiles by ascending distance
+    tileDistances = tileDistances.sort((a, b) => a[1] - b[1]);
 
     // get tile precipitation
-    for (let idx of tiles) {
+    for (let cur of tileDistances) {
         if (totalWaterAvailable <= 0) break;
-        let tile = mapGen.getTile(idx);
+        let tile = mapGen.getTile(cur[0]);
+        let dist = cur[1];
         let linePercentVal = windLineLength / 100;
-        let percentDistFromLineStart = tile.dist / linePercentVal / 100;
+        let percentDistFromLineStart = dist / linePercentVal / 100;
         let distPrecipitation = defaultTilePrecipitation - (defaultTilePrecipitation * percentDistFromLineStart);
         let heightPrecipitation = tile.height * heightPrecipitationMultiplier;
 
