@@ -510,7 +510,7 @@ canvas.addEventListener("click", (e) => {
             ctx.beginPath();
             ctx.moveTo(line[0], line[1]);
             ctx.lineTo(line[2], line[3]);
-            ctx.strokeStyle = '#FFFFFF';
+            ctx.strokeStyle = '#FFFFFF55';
             ctx.lineWidth = 1;
             ctx.stroke();
         }
@@ -546,75 +546,78 @@ canvas.addEventListener("click", (e) => {
 
     const resetPrecipitation = () => mapGen.tiles.forEach(t => t.precipitation = 0);
 
+    const calculatePrecipitation = (windLines) => {
+        for (let line of windLines) {
+            let tiles = line.intersectedTiles;
+            let defaultTilePrecipitation = 100; // important value
+            let maxDefaultPrecipitationTiles = 20; // important value
+            let heightPrecipitationMultiplier = 2; // important value
+            let totalWaterAvailable = defaultTilePrecipitation * maxDefaultPrecipitationTiles;
+            let tileDistances = [];
+            // get tile distance
+            for (let idx of tiles) {
+                let tile = mapGen.getTile(idx);
+                let x1 = line.line[0];
+                let y1 = line.line[1];
+                let x2 = tile.centroid[0];
+                let y2 = tile.centroid[1];
+
+                let a = x1 - x2;
+                let b = y1 - y2;
+
+                let dist = Math.sqrt(a * a + b * b);
+                tileDistances.push([idx, dist]);
+            }
+
+            // sort tiles by ascending distance
+            tileDistances = tileDistances.sort((a, b) => a[1] - b[1]);
+
+            // get tile precipitation
+            for (let cur of tileDistances) {
+                if (totalWaterAvailable <= 0) break;
+                let tile = mapGen.getTile(cur[0]);
+                let dist = cur[1];
+                let linePercentVal = windLineLength / 100;
+                let percentDistFromLineStart = dist / linePercentVal / 100;
+                let distPrecipitation = defaultTilePrecipitation - (defaultTilePrecipitation * percentDistFromLineStart);
+                let heightPrecipitation = tile.height * heightPrecipitationMultiplier;
+
+                let precipitation = distPrecipitation + heightPrecipitation;
+                if (totalWaterAvailable - precipitation < 0) precipitation = totalWaterAvailable;
+                totalWaterAvailable -= precipitation;
+
+                tile.precipitation += Math.round(precipitation);
+            }
+        }
+    }
+
+    const displayPrecipitationValue = () => {
+        for (let idx in mapGen.landTiles) {
+            let tile = mapGen.getTile(idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.precipitation, x, y);
+        }
+    }
+
+
+    console.time("calculateWind");
     resetPrecipitation()
     let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    console.time("calculateWind");
     let partitions = createPartitions();
     let windLines = createWindLines();
 
     addTilesToPartitions(partitions);
     connectPartitionsToLines(partitions, windLines);
     findTilesIntersectingLineThroughPartitions(windLines);
+    calculatePrecipitation(windLines);
 
     mapGen.drawAll();
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
+    displayPrecipitationValue();
     // drawPartitionBounds(partitions);
     console.timeEnd("calculateWind");
 
-
-
-
-
-    for (let line of windLines) {
-        let tiles = line.intersectedTiles;
-        let defaultTilePrecipitation = 100; // important value
-        let maxDefaultPrecipitationTiles = 20; // important value
-        let heightPrecipitationMultiplier = 2; // important value
-        let totalWaterAvailable = defaultTilePrecipitation * maxDefaultPrecipitationTiles;
-        let tileDistances = [];
-        // get tile distance
-        for (let idx of tiles) {
-            let tile = mapGen.getTile(idx);
-            let x1 = line.line[0];
-            let y1 = line.line[1];
-            let x2 = tile.centroid[0];
-            let y2 = tile.centroid[1];
-
-            let a = x1 - x2;
-            let b = y1 - y2;
-
-            let dist = Math.sqrt(a * a + b * b);
-            tileDistances.push([idx, dist]);
-        }
-
-        // sort tiles by ascending distance
-        tileDistances = tileDistances.sort((a, b) => a[1] - b[1]);
-
-        // get tile precipitation
-        for (let cur of tileDistances) {
-            if (totalWaterAvailable <= 0) break;
-            let tile = mapGen.getTile(cur[0]);
-            let dist = cur[1];
-            let linePercentVal = windLineLength / 100;
-            let percentDistFromLineStart = dist / linePercentVal / 100;
-            let distPrecipitation = defaultTilePrecipitation - (defaultTilePrecipitation * percentDistFromLineStart);
-            let heightPrecipitation = tile.height * heightPrecipitationMultiplier;
-
-            let precipitation = distPrecipitation + heightPrecipitation;
-            if (totalWaterAvailable - precipitation < 0) precipitation = totalWaterAvailable;
-            totalWaterAvailable -= precipitation;
-
-            tile.precipitation += Math.round(precipitation);
-        }
-
-    }
-
-    for (let idx in mapGen.landTiles) {
-        let tile = mapGen.getTile(idx);
-        let x = tile.centroid[0];
-        let y = tile.centroid[1];
-        ctx.fillStyle = "black";
-        ctx.fillText(tile.precipitation, x, y);
-    }
 })
