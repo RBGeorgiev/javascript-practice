@@ -591,8 +591,8 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const displayPrecipitationValue = () => {
-        for (let idx in mapGen.landTiles) {
+    const displayPrecipitationValue = (tiles) => {
+        for (let idx in tiles) {
             let tile = mapGen.getTile(idx);
             let x = tile.centroid[0];
             let y = tile.centroid[1];
@@ -619,7 +619,7 @@ canvas.addEventListener("click", (e) => {
     mapGen.drawAll();
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
-    displayPrecipitationValue();
+    // displayPrecipitationValue(mapGen.landTiles);
     // drawPartitionBounds(partitions);
     console.timeEnd("calculateWind");
 
@@ -627,11 +627,35 @@ canvas.addEventListener("click", (e) => {
     const getTilesByHeight = (tiles) => {
         let tilesByHeight = [];
         for (let idx in tiles) {
-            let height = mapGen.getTile(idx).height;
-            tilesByHeight.push([+idx, height]);
+            let tile = mapGen.getTile(idx);
+            tilesByHeight.push(tile);
         }
-        return tilesByHeight.sort((a, b) => b[1] - a[1]);
+        return tilesByHeight.sort((a, b) => b.height - a.height);
     }
 
     let tilesByHeight = getTilesByHeight(mapGen.landTiles);
+
+    let possibleLakes = [];
+    let precipitationForRiver = 500; // important value
+    for (let i = 0; i < tilesByHeight.length; i++) {
+        let tile = tilesByHeight[i];
+        let neighbors = tile.neighbors;
+        let lowestNeighbor;
+        for (let idx of neighbors) {
+            let n = mapGen.getTile(idx);
+            if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
+        }
+        if (lowestNeighbor.height > tile.height) {
+            possibleLakes.push(lowestNeighbor);
+        } else {
+            if (tile.precipitation > precipitationForRiver) {
+                let flowAmount = tile.precipitation - precipitationForRiver;
+                lowestNeighbor.precipitation += flowAmount;
+                tile.precipitation = precipitationForRiver;
+            }
+        }
+    }
+
+    displayPrecipitationValue(mapGen.tiles);
+    console.log(possibleLakes);
 })
