@@ -601,6 +601,9 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    // ____________________________________________________________________________________________________________
+
+
 
     console.time("calculateWind");
     resetPrecipitation()
@@ -620,4 +623,15 @@ canvas.addEventListener("click", (e) => {
     // drawPartitionBounds(partitions);
     console.timeEnd("calculateWind");
 
+
+    const getTilesByHeight = (tiles) => {
+        let tilesByHeight = [];
+        for (let idx in tiles) {
+            let height = mapGen.getTile(idx).height;
+            tilesByHeight.push([+idx, height]);
+        }
+        return tilesByHeight.sort((a, b) => b[1] - a[1]);
+    }
+
+    let tilesByHeight = getTilesByHeight(mapGen.landTiles);
 })
