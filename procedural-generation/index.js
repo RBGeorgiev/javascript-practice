@@ -689,6 +689,9 @@ canvas.addEventListener("click", (e) => {
                 let top = tile.river;
                 let bot = lowestNeighbor.river;
 
+                if (bot.getRoot().idx === top.getRoot().idx) {
+                    continue;
+                }
                 top.setParent(bot);
                 bot.addChild(top);
 
