@@ -1,6 +1,21 @@
 import { Delaunay } from "./d3-delaunay/index.js";
 import { canvas, ctx } from './constants.js';
 
+class RiverNode {
+    constructor(idx, tile) {
+        this.parent = null;
+        this.children = [];
+        this.idx = idx;
+        this.tile = tile;
+    }
+
+    addChild = (child) => this.children.push(child);
+
+    setParent = (parent) => this.parent = parent;
+
+    getRoot = () => (this.parent == null) ? this : this.parent.getRoot();
+}
+
 class Tile {
     constructor(idx, mapGen) {
         this.idx = idx;
@@ -12,6 +27,7 @@ class Tile {
         this.neighbors = this.getNeighborsArray(idx, mapGen);
         this.height = null;
         this.precipitation = 0;
+        this.river = null;
     }
 
     getNeighborsArray = (idx, mapGen) => {
@@ -635,8 +651,14 @@ canvas.addEventListener("click", (e) => {
 
     let tilesByHeight = getTilesByHeight(mapGen.landTiles);
 
+    for (let tile of mapGen.tiles) {
+        tile.river = null;
+    }
+    let riverNodes = [];
+    let rivers = [];
     let possibleLakes = [];
-    let precipitationForRiver = 500; // important value
+    let precipitationForRiver = 100; // important value
+
     for (let i = 0; i < tilesByHeight.length; i++) {
         let tile = tilesByHeight[i];
         let neighbors = tile.neighbors;
@@ -652,10 +674,58 @@ canvas.addEventListener("click", (e) => {
                 let flowAmount = tile.precipitation - precipitationForRiver;
                 lowestNeighbor.precipitation += flowAmount;
                 tile.precipitation = precipitationForRiver;
+
+                if (!tile.river) {
+                    let riverIdx = riverNodes.length;
+                    tile.river = new RiverNode(riverIdx, tile);
+                    riverNodes.push(tile.river);
+                }
+                if (!lowestNeighbor.river) {
+                    let riverIdx = riverNodes.length;
+                    lowestNeighbor.river = new RiverNode(riverIdx, lowestNeighbor);
+                    riverNodes.push(lowestNeighbor.river);
+                }
+
+                let top = tile.river;
+                let bot = lowestNeighbor.river;
+
+                top.setParent(bot);
+                bot.addChild(top);
+
+
+
+
+                ctx.beginPath();
+                ctx.moveTo(tile.centroid[0], tile.centroid[1]);
+                ctx.lineTo(lowestNeighbor.centroid[0], lowestNeighbor.centroid[1]);
+                ctx.strokeStyle = '#00F';
+                ctx.stroke();
             }
         }
     }
 
     displayPrecipitationValue(mapGen.tiles);
-    console.log(possibleLakes);
+
+
+    let riversSet = new Set();
+
+    riverNodes.forEach(river => {
+        let root = river.getRoot();
+        riversSet.add(root);
+
+        let a = root.tile;
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+        ctx.rect(a.centroid[0], a.centroid[1], 10, 10);
+        ctx.fill();
+        ctx.stroke();
+    });
+
+    rivers = [...riversSet];
+
+
+
+    // console.log(rivers);
+    // console.log(possibleLakes);
 })
