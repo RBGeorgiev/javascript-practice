@@ -723,6 +723,7 @@ canvas.addEventListener("click", (e) => {
 
     const drawRivers = (rivers) => {
         let queue = [...rivers];
+        let set = new Set();
 
         while (queue.length > 0) {
             let cur = queue.shift();
@@ -730,12 +731,14 @@ canvas.addEventListener("click", (e) => {
             if (children.length === 0) continue;
 
             for (let child of children) {
+                if (set.has(child.tile.idx)) continue;
                 ctx.beginPath();
                 ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
                 ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
                 ctx.strokeStyle = '#00F';
                 ctx.stroke();
 
+                set.add(child.tile.idx);
                 queue.push(child);
             }
         }
