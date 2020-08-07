@@ -697,15 +697,6 @@ canvas.addEventListener("click", (e) => {
                 }
                 top.setParent(bot);
                 bot.addChild(top);
-
-
-
-
-                ctx.beginPath();
-                ctx.moveTo(tile.centroid[0], tile.centroid[1]);
-                ctx.lineTo(lowestNeighbor.centroid[0], lowestNeighbor.centroid[1]);
-                ctx.strokeStyle = '#00F';
-                ctx.stroke();
             }
         }
     }
@@ -730,8 +721,28 @@ canvas.addEventListener("click", (e) => {
 
     rivers = [...riversSet];
 
+    const drawRivers = (rivers) => {
+        let queue = [...rivers];
 
+        while (queue.length > 0) {
+            let cur = queue.shift();
+            let children = cur.children;
+            if (children.length === 0) continue;
 
-    // console.log(rivers);
+            for (let child of children) {
+                ctx.beginPath();
+                ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
+                ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
+                ctx.strokeStyle = '#00F';
+                ctx.stroke();
+
+                queue.push(child);
+            }
+        }
+    }
+
+    drawRivers(rivers);
+
+    console.log(rivers);
     // console.log(possibleLakes);
 })
