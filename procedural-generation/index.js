@@ -657,7 +657,9 @@ canvas.addEventListener("click", (e) => {
     let riverNodes = [];
     let rivers = [];
     let possibleLakes = [];
-    let precipitationForRiver = 100; // important value
+    let lakes = {};
+    let precipitationForRiver = 200; // important value
+    let precipitationForLake = 1000; // important value
 
     for (let i = 0; i < tilesByHeight.length; i++) {
         let tile = tilesByHeight[i];
@@ -699,7 +701,7 @@ canvas.addEventListener("click", (e) => {
 
     }
 
-    // ____
+
 
     let riversSet = new Set();
 
@@ -744,8 +746,24 @@ canvas.addEventListener("click", (e) => {
     drawRivers(rivers);
 
     rivers.forEach(river => (!mapGen.waterTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiver) ? possibleLakes.push(river.tile) : false);
-    console.log(rivers);
-    console.log(possibleLakes);
     possibleLakes.forEach(tile => mapGen.fillTile(tile.idx));
     displayPrecipitationValue(mapGen.tiles);
+
+
+    console.log(possibleLakes)
+    // define lakes
+    for (let i = 0; i < possibleLakes.length; i++) {
+        let mbLake = possibleLakes[i];
+        if (mbLake.precipitation >= precipitationForLake) {
+            lakes[mbLake.idx] = mbLake;
+            mapGen.waterTiles[mbLake.idx] = mbLake;
+            delete mapGen.landTiles[mbLake.idx];
+            possibleLakes.splice(i, 1);
+            i--;
+        }
+    }
+    console.log(possibleLakes)
+
+    // console.log(rivers);
+    // console.log(possibleLakes);
 })
