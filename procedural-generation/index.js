@@ -745,12 +745,12 @@ canvas.addEventListener("click", (e) => {
 
     drawRivers(rivers);
 
+    // add possible lakes from lowest river tile on land
     rivers.forEach(river => (!mapGen.waterTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiver) ? possibleLakes.push(river.tile) : false);
-    possibleLakes.forEach(tile => mapGen.fillTile(tile.idx));
-    displayPrecipitationValue(mapGen.tiles);
+    // possibleLakes.forEach(tile => mapGen.fillTile(tile.idx));
+    // displayPrecipitationValue(mapGen.tiles);
 
 
-    console.log(possibleLakes)
     // define lakes
     for (let i = 0; i < possibleLakes.length; i++) {
         let mbLake = possibleLakes[i];
@@ -762,8 +762,73 @@ canvas.addEventListener("click", (e) => {
             i--;
         }
     }
-    console.log(possibleLakes)
 
+
+
+
+    let totalWaterInLakesBefore = 0;
+    for (let idx in lakes) {
+        let lake = lakes[idx];
+        totalWaterInLakesBefore += lake.precipitation;
+    }
+
+
+    // expand lakes
+    let queue = [];
+    for (let idx in lakes) {
+        let lake = lakes[idx];
+        queue.push(lake);
+    }
+
+    while (queue.length > 0) {
+        let lake = queue.shift();
+        let neighbors = lake.neighbors;
+        let lakeHeightPrecipitationMultiplier = 70 // important value
+
+        let neighborsByHeight = [];
+        for (let n of neighbors) {
+            neighborsByHeight.push(mapGen.getTile(n));
+        }
+        neighborsByHeight.sort((a, b) => a.height - b.height);
+
+        let waterSpreadAverage = lake.precipitation / neighbors.length + 1;
+        let totalWaterAvailable = lake.precipitation - waterSpreadAverage - precipitationForLake;
+
+        for (let neighbor of neighborsByHeight) {
+            if (totalWaterAvailable === 0) break;
+            if (mapGen.waterTiles[neighbor.idx]) break;
+            if (lakes[neighbor.idx]) continue;
+
+            let heightDifference = neighbor.height - lake.height;
+            let waterMoved = waterSpreadAverage + heightDifference * lakeHeightPrecipitationMultiplier;
+            if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
+
+            neighbor.precipitation += Math.round(waterMoved);
+            lake.precipitation -= Math.round(waterMoved);
+            totalWaterAvailable -= Math.round(waterMoved);
+
+            if (neighbor.precipitation >= precipitationForLake) {
+                lakes[neighbor.idx] = neighbor;
+                mapGen.waterTiles[neighbor.idx] = neighbor;
+                delete mapGen.landTiles[neighbor.idx];
+
+                queue.push(neighbor);
+            }
+        }
+    }
+
+    let totalWaterInLakesAfter = 0;
+    for (let idx in lakes) {
+        let lake = lakes[idx];
+        totalWaterInLakesAfter += lake.precipitation;
+    }
+
+    for (let idx in lakes) {
+        mapGen.fillTile(+idx);
+    }
+    displayPrecipitationValue(mapGen.tiles);
+
+    console.log(`total water in lakes: before: ${totalWaterInLakesBefore}, after: ${totalWaterInLakesAfter}`);
     // console.log(rivers);
     // console.log(possibleLakes);
 })
