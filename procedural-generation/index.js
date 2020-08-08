@@ -667,42 +667,39 @@ canvas.addEventListener("click", (e) => {
             let n = mapGen.getTile(idx);
             if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
         }
-        if (lowestNeighbor.height > tile.height) {
-            possibleLakes.push(lowestNeighbor);
-        } else {
-            if (tile.precipitation > precipitationForRiver) {
-                let flowAmount = tile.precipitation - precipitationForRiver;
-                lowestNeighbor.precipitation += flowAmount;
-                tile.precipitation = precipitationForRiver;
 
-                if (!tile.river) {
-                    let riverIdx = riverNodes.length;
-                    tile.river = new RiverNode(riverIdx, tile);
-                    riverNodes.push(tile.river);
-                }
-                if (!lowestNeighbor.river) {
-                    let riverIdx = riverNodes.length;
-                    lowestNeighbor.river = new RiverNode(riverIdx, lowestNeighbor);
-                    riverNodes.push(lowestNeighbor.river);
-                }
+        if (tile.precipitation > precipitationForRiver) {
+            let flowAmount = tile.precipitation - precipitationForRiver;
+            lowestNeighbor.precipitation += flowAmount;
+            tile.precipitation = precipitationForRiver;
 
-                let top = tile.river;
-                let bot = lowestNeighbor.river;
-
-                if (bot.parent && bot.parent.idx === top.idx) {
-                    bot.parent = null;
-                }
-                if (bot.getRoot().idx === top.getRoot().idx) {
-                    continue;
-                }
-                top.setParent(bot);
-                bot.addChild(top);
+            if (!tile.river) {
+                let riverIdx = riverNodes.length;
+                tile.river = new RiverNode(riverIdx, tile);
+                riverNodes.push(tile.river);
             }
+            if (!lowestNeighbor.river) {
+                let riverIdx = riverNodes.length;
+                lowestNeighbor.river = new RiverNode(riverIdx, lowestNeighbor);
+                riverNodes.push(lowestNeighbor.river);
+            }
+
+            let top = tile.river;
+            let bot = lowestNeighbor.river;
+
+            if (bot.parent && bot.parent.idx === top.idx) {
+                bot.parent = null;
+            }
+            if (bot.getRoot().idx === top.getRoot().idx) {
+                continue;
+            }
+            top.setParent(bot);
+            bot.addChild(top);
         }
+
     }
 
-    displayPrecipitationValue(mapGen.tiles);
-
+    // ____
 
     let riversSet = new Set();
 
@@ -746,6 +743,9 @@ canvas.addEventListener("click", (e) => {
 
     drawRivers(rivers);
 
+    rivers.forEach(river => (!mapGen.waterTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiver) ? possibleLakes.push(river.tile) : false);
     console.log(rivers);
-    // console.log(possibleLakes);
+    console.log(possibleLakes);
+    possibleLakes.forEach(tile => mapGen.fillTile(tile.idx));
+    displayPrecipitationValue(mapGen.tiles);
 })
