@@ -52,7 +52,7 @@ class MapGenerator {
         this.allVoronoiPolygonPoints;
         this.tiles = [];
         this.landTiles = {};
-        this.waterTiles = {}
+        this.oceanTiles = {}
         this.coastline = [];
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
@@ -106,7 +106,7 @@ class MapGenerator {
 
             let cur = queue.shift();
             let curHeight = cur.height;
-            (curHeight >= 0) ? this.landTiles[cur.idx] = cur : this.waterTiles[cur.idx] = cur;
+            (curHeight >= 0) ? this.landTiles[cur.idx] = cur : this.oceanTiles[cur.idx] = cur;
             let neighbors = cur.neighbors;
             for (let i = 0; i < neighbors.length; i++) {
                 let n = this.getTile(neighbors[i]);
@@ -174,7 +174,7 @@ class MapGenerator {
             let neighbors = landTile.neighbors;
 
             for (let k = 0; k < neighbors.length; k++) {
-                if (this.waterTiles[neighbors[k]]) {
+                if (this.oceanTiles[neighbors[k]]) {
                     let waterTile = this.getTile(neighbors[k]);
                     let edge = this.getEdgeBetweenTiles(landTile, waterTile);
                     if (edge.length) tileCoast.push(edge);
@@ -421,9 +421,9 @@ canvas.addEventListener("click", (e) => {
         }
 
         // prevailing wind direction
-        for (let idx in mapGen.waterTiles) {
+        for (let idx in mapGen.oceanTiles) {
             let windOffset = Math.round(mapGen.random(-5, 5));
-            let tile = mapGen.waterTiles[idx];
+            let tile = mapGen.oceanTiles[idx];
             let x1 = tile.centroid[0];
             let y1 = tile.centroid[1];
             let rot = rotateAroundCenter(x1, y1, x1, y1 - windLineLength, windAngle + windOffset);
@@ -455,7 +455,7 @@ canvas.addEventListener("click", (e) => {
                     bounds,
                     'tiles': {
                         'landTiles': {},
-                        'waterTiles': {}
+                        'oceanTiles': {}
                     }
                 }
                 allPartitions.push(partition);
@@ -478,7 +478,7 @@ canvas.addEventListener("click", (e) => {
             for (let j = 0; j < partitions.length; j++) {
                 let inPartition = isPointInPartition(point, partitions[j])
                 if (inPartition) {
-                    let type = (mapGen.landTiles[i]) ? 'landTiles' : 'waterTiles';
+                    let type = (mapGen.landTiles[i]) ? 'landTiles' : 'oceanTiles';
                     partitions[j].tiles[type][i] = (mapGen.getTile(i));
                 }
             }
@@ -657,9 +657,9 @@ canvas.addEventListener("click", (e) => {
     let riverNodes = [];
     let rivers = [];
     let possibleLakes = [];
-    let lakes = {};
+    let lakeTiles = {};
     let precipitationForRiver = 200; // important value
-    let precipitationForLake = 1000; // important value
+    let precipitationForLake = 4000; // important value
 
     for (let i = 0; i < tilesByHeight.length; i++) {
         let tile = tilesByHeight[i];
@@ -698,7 +698,6 @@ canvas.addEventListener("click", (e) => {
             top.setParent(bot);
             bot.addChild(top);
         }
-
     }
 
 
@@ -746,7 +745,7 @@ canvas.addEventListener("click", (e) => {
     drawRivers(rivers);
 
     // add possible lakes from lowest river tile on land
-    rivers.forEach(river => (!mapGen.waterTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiver) ? possibleLakes.push(river.tile) : false);
+    rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiver) ? possibleLakes.push(river.tile) : false);
     // possibleLakes.forEach(tile => mapGen.fillTile(tile.idx));
     // displayPrecipitationValue(mapGen.tiles);
 
@@ -755,7 +754,7 @@ canvas.addEventListener("click", (e) => {
     for (let i = 0; i < possibleLakes.length; i++) {
         let mbLake = possibleLakes[i];
         if (mbLake.precipitation >= precipitationForLake) {
-            lakes[mbLake.idx] = mbLake;
+            lakeTiles[mbLake.idx] = mbLake;
             delete mapGen.landTiles[mbLake.idx];
             possibleLakes.splice(i, 1);
             i--;
@@ -768,8 +767,8 @@ canvas.addEventListener("click", (e) => {
 
     // expand lakes
     let queue = [];
-    for (let idx in lakes) {
-        let lake = lakes[idx];
+    for (let idx in lakeTiles) {
+        let lake = lakeTiles[idx];
         queue.push(lake);
     }
 
@@ -788,8 +787,8 @@ canvas.addEventListener("click", (e) => {
 
         for (let neighbor of neighborsByHeight) {
             if (totalWaterAvailable === 0) break;
-            // if (mapGen.oceanTiles[neighbor.idx]) break;  
-            if (lakes[neighbor.idx]) continue;
+            if (mapGen.oceanTiles[neighbor.idx]) break;
+            if (lakeTiles[neighbor.idx]) continue;
 
             let heightDifference = neighbor.height - lake.height;
 
@@ -801,7 +800,7 @@ canvas.addEventListener("click", (e) => {
             totalWaterAvailable -= waterMoved;
 
             if (neighbor.precipitation >= precipitationForLake) {
-                lakes[neighbor.idx] = neighbor;
+                lakeTiles[neighbor.idx] = neighbor;
                 delete mapGen.landTiles[neighbor.idx];
 
                 queue.push(neighbor);
@@ -809,7 +808,7 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    for (let idx in lakes) {
+    for (let idx in lakeTiles) {
         mapGen.fillTile(+idx);
     }
     displayPrecipitationValue(mapGen.tiles);
