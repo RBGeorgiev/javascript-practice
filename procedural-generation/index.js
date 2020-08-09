@@ -756,7 +756,6 @@ canvas.addEventListener("click", (e) => {
         let mbLake = possibleLakes[i];
         if (mbLake.precipitation >= precipitationForLake) {
             lakes[mbLake.idx] = mbLake;
-            mapGen.waterTiles[mbLake.idx] = mbLake;
             delete mapGen.landTiles[mbLake.idx];
             possibleLakes.splice(i, 1);
             i--;
@@ -765,12 +764,6 @@ canvas.addEventListener("click", (e) => {
 
 
 
-
-    let totalWaterInLakesBefore = 0;
-    for (let idx in lakes) {
-        let lake = lakes[idx];
-        totalWaterInLakesBefore += lake.precipitation;
-    }
 
 
     // expand lakes
@@ -790,26 +783,25 @@ canvas.addEventListener("click", (e) => {
             neighborsByHeight.push(mapGen.getTile(n));
         }
         neighborsByHeight.sort((a, b) => a.height - b.height);
-
-        let waterSpreadAverage = lake.precipitation / neighbors.length + 1;
-        let totalWaterAvailable = lake.precipitation - waterSpreadAverage - precipitationForLake;
+        let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
+        let totalWaterAvailable = lake.precipitation - precipitationForLake;
 
         for (let neighbor of neighborsByHeight) {
             if (totalWaterAvailable === 0) break;
-            if (mapGen.waterTiles[neighbor.idx]) break;
+            // if (mapGen.oceanTiles[neighbor.idx]) break;  
             if (lakes[neighbor.idx]) continue;
 
             let heightDifference = neighbor.height - lake.height;
-            let waterMoved = waterSpreadAverage + heightDifference * lakeHeightPrecipitationMultiplier;
+
+            let waterMoved = waterSpreadAverage + ((100 - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
             if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
 
-            neighbor.precipitation += Math.round(waterMoved);
-            lake.precipitation -= Math.round(waterMoved);
-            totalWaterAvailable -= Math.round(waterMoved);
+            neighbor.precipitation += waterMoved;
+            lake.precipitation -= waterMoved;
+            totalWaterAvailable -= waterMoved;
 
             if (neighbor.precipitation >= precipitationForLake) {
                 lakes[neighbor.idx] = neighbor;
-                mapGen.waterTiles[neighbor.idx] = neighbor;
                 delete mapGen.landTiles[neighbor.idx];
 
                 queue.push(neighbor);
@@ -817,18 +809,11 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    let totalWaterInLakesAfter = 0;
-    for (let idx in lakes) {
-        let lake = lakes[idx];
-        totalWaterInLakesAfter += lake.precipitation;
-    }
-
     for (let idx in lakes) {
         mapGen.fillTile(+idx);
     }
     displayPrecipitationValue(mapGen.tiles);
 
-    console.log(`total water in lakes: before: ${totalWaterInLakesBefore}, after: ${totalWaterInLakesAfter}`);
     // console.log(rivers);
     // console.log(possibleLakes);
 })
