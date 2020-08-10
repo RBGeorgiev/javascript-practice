@@ -658,13 +658,16 @@ canvas.addEventListener("click", (e) => {
     let rivers = [];
     let possibleLakes = [];
     let lakeTiles = {};
-    let precipitationForRiver = 200; // important value
+    let precipitationForRiverMin = 200; // important value
+    let precipitationForRiverMax = 500; // important value
     let precipitationForLake = 4000; // important value
 
     for (let i = 0; i < tilesByHeight.length; i++) {
         let tile = tilesByHeight[i];
         let neighbors = tile.neighbors;
         let lowestNeighbor;
+        let precipitationForRiver = Math.round(mapGen.random(precipitationForRiverMin, precipitationForRiverMax));
+
         for (let idx of neighbors) {
             let n = mapGen.getTile(idx);
             if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
@@ -745,7 +748,7 @@ canvas.addEventListener("click", (e) => {
     drawRivers(rivers);
 
     // add possible lakes from lowest river tile on land
-    rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiver) ? possibleLakes.push(river.tile) : false);
+    rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
     // possibleLakes.forEach(tile => mapGen.fillTile(tile.idx));
     // displayPrecipitationValue(mapGen.tiles);
 
