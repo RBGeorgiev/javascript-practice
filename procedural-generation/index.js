@@ -175,8 +175,8 @@ class MapGenerator {
 
             for (let k = 0; k < neighbors.length; k++) {
                 if (this.oceanTiles[neighbors[k]]) {
-                    let waterTile = this.getTile(neighbors[k]);
-                    let edge = this.getEdgeBetweenTiles(landTile, waterTile);
+                    let oceanTile = this.getTile(neighbors[k]);
+                    let edge = this.getEdgeBetweenTiles(landTile, oceanTile);
                     if (edge.length) tileCoast.push(edge);
                 }
             }
@@ -282,7 +282,7 @@ class MapGenerator {
     }
 
     drawVoronoi = () => {
-        ctx.strokeStyle = "#0000FF";
+        ctx.strokeStyle = "#000000";
         this.voronoi.render(ctx);
         this.voronoi.renderBounds(ctx); //border around canvas
         ctx.stroke();
@@ -724,7 +724,7 @@ canvas.addEventListener("click", (e) => {
 
     const drawRivers = (rivers) => {
         let queue = [...rivers];
-        let set = new Set();
+        let visitedSet = new Set();
 
         while (queue.length > 0) {
             let cur = queue.shift();
@@ -732,26 +732,21 @@ canvas.addEventListener("click", (e) => {
             if (children.length === 0) continue;
 
             for (let child of children) {
-                if (set.has(child.tile.idx)) continue;
+                if (visitedSet.has(child.tile.idx)) continue;
                 ctx.beginPath();
                 ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
                 ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
                 ctx.strokeStyle = '#00F';
                 ctx.stroke();
 
-                set.add(child.tile.idx);
+                visitedSet.add(child.tile.idx);
                 queue.push(child);
             }
         }
     }
 
-    drawRivers(rivers);
-
     // add possible lakes from lowest river tile on land
     rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
-    // possibleLakes.forEach(tile => mapGen.fillTile(tile.idx));
-    // displayPrecipitationValue(mapGen.tiles);
-
 
     // define lakes
     for (let i = 0; i < possibleLakes.length; i++) {
@@ -763,10 +758,6 @@ canvas.addEventListener("click", (e) => {
             i--;
         }
     }
-
-
-
-
 
     // expand lakes
     let queue = [];
@@ -815,6 +806,7 @@ canvas.addEventListener("click", (e) => {
         mapGen.fillTile(+idx);
     }
     displayPrecipitationValue(mapGen.tiles);
+    drawRivers(rivers);
 
     // console.log(rivers);
     // console.log(possibleLakes);
