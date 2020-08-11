@@ -300,7 +300,7 @@ class MapGenerator {
         this.clearCanvas();
         this.drawHeightmap();
         this.drawCoastline();
-        // this.drawVoronoi();
+        this.drawVoronoi();
         // this.drawDelaunay();
         this.drawPoints();
     }
@@ -802,11 +802,68 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    for (let idx in lakeTiles) {
-        mapGen.fillTile(+idx);
+    // for (let idx in lakeTiles) {
+    //     mapGen.fillTile(+idx);
+    // }
+    // displayPrecipitationValue(mapGen.tiles);
+    // drawRivers(rivers);
+
+    const drawRivers2 = (rivers) => {
+        let queue = [...rivers];
+        let visitedSet = {};
+
+
+        let asd = [];
+        while (queue.length > 0) {
+            let cur = queue.shift();
+            let children = cur.children;
+            if (children.length === 0) {
+                ctx.beginPath();
+                ctx.fillStyle = 'red';
+                ctx.strokeStyle = 'black';
+                ctx.rect(cur.tile.centroid[0], cur.tile.centroid[1], 8, 8);
+                ctx.fill();
+                ctx.stroke();
+                continue;
+            }
+
+            let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[3];
+            let points = [start];
+            for (let child of children) {
+                if (visitedSet[child.tile.idx]) continue;
+                let edge = mapGen.getEdgeBetweenTiles(cur.tile, child.tile);
+                let randPoint = (Math.random() < 0.5) ? edge[0] : edge[1];
+                console.log(edge)
+                points.push(randPoint);
+                // ctx.beginPath();
+                // ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
+                // ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
+                // ctx.strokeStyle = '#00F';
+                // ctx.stroke();
+
+                visitedSet[child.tile.idx] = randPoint;
+                queue.push(child);
+            }
+            asd.push(points);
+        }
+
+        for (let riverPoints of asd) {
+            console.log(riverPoints);
+            for (let i = 0; i < riverPoints.length - 1; i++) {
+                let cur = riverPoints[i];
+                let next = riverPoints[i + 1];
+                ctx.beginPath();
+                ctx.moveTo(cur[0], cur[1]);
+                ctx.lineTo(next[0], next[1]);
+                ctx.strokeStyle = '#00F';
+                ctx.stroke();
+            }
+
+        }
     }
-    displayPrecipitationValue(mapGen.tiles);
-    drawRivers(rivers);
+
+    drawRivers2([rivers[Object.keys(rivers)[0]]]);
+    // drawRivers2(rivers);
 
     // console.log(rivers);
     // console.log(possibleLakes);
