@@ -722,7 +722,7 @@ canvas.addEventListener("click", (e) => {
 
     rivers = [...riversSet];
 
-    const drawRivers = (rivers) => {
+    const drawRiversThroughCenters = (rivers) => {
         let queue = [...rivers];
         let visitedSet = new Set();
 
@@ -802,17 +802,12 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    // for (let idx in lakeTiles) {
-    //     mapGen.fillTile(+idx);
-    // }
-    // displayPrecipitationValue(mapGen.tiles);
-    // drawRivers(rivers);
-
+    // _________________________________________
 
 
 
     const voronoiFindPathsBetweenTwoVertices = (tile, start, end) => {
-        // remove repeated polygon point
+        // removes repeated polygon point
         let polygonPoints = tile.polygon.slice(0, -1);
         let path1 = [];
         let path2 = [];
@@ -848,19 +843,14 @@ canvas.addEventListener("click", (e) => {
         path2.unshift(start);
         path2.push(end);
 
-
-        console.log('path1: ', path1);
-        console.log('path2: ', path2);
-
-        return path1;
+        return (path1.length <= path2.length) ? [path1, path2] : [path2, path1];
     }
 
-    const drawRivers2 = (rivers) => {
+    const drawRiversOnVoronoiEdges = (rivers) => {
         let queue = [...rivers];
         let visitedSet = {};
 
-
-        let asd = [];
+        let allRiverPaths = [];
         while (queue.length > 0) {
             let cur = queue.shift();
             let children = cur.children;
@@ -874,30 +864,25 @@ canvas.addEventListener("click", (e) => {
                 continue;
             }
 
-            let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[3];
-            let points = [];
+            let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(mapGen.random(0, cur.tile.polygon.length - 1))];
+            let riverPath = [];
             for (let child of children) {
                 if (visitedSet[child.tile.idx]) continue;
                 let edge = mapGen.getEdgeBetweenTiles(cur.tile, child.tile);
                 let randConnectingPoint = (Math.random() < 0.5) ? edge[0] : edge[1];
-                let bbb = voronoiFindPathsBetweenTwoVertices(cur.tile, start, randConnectingPoint);
-                // console.log(edge)
-                points.push(bbb);
-                // ctx.beginPath();
-                // ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
-                // ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
-                // ctx.strokeStyle = '#00F';
-                // ctx.stroke();
+                let riverSubPath = voronoiFindPathsBetweenTwoVertices(cur.tile, start, randConnectingPoint);
+
+                riverPath.push(riverSubPath[0]); // 0 is short path, 1 is long path
 
                 visitedSet[child.tile.idx] = randConnectingPoint;
                 queue.push(child);
             }
-            asd.push(points);
+
+            allRiverPaths.push(riverPath);
         }
 
-        for (let riverPath of asd) {
+        for (let riverPath of allRiverPaths) {
             for (let riverSubPath of riverPath) {
-                console.log(riverSubPath);
                 for (let i = 0; i < riverSubPath.length - 1; i++) {
                     let cur = riverSubPath[i];
                     let next = riverSubPath[i + 1];
@@ -908,12 +893,15 @@ canvas.addEventListener("click", (e) => {
                     ctx.stroke();
                 }
             }
-
         }
     }
 
-    drawRivers2([rivers[Object.keys(rivers)[0]]]);
-    // drawRivers2(rivers);
+    for (let idx in lakeTiles) {
+        mapGen.fillTile(+idx, 'lightblue');
+    }
+    // displayPrecipitationValue(mapGen.tiles);
+    // drawRiversThroughCenters(rivers);
+    drawRiversOnVoronoiEdges(rivers);
 
     // console.log(rivers);
     // console.log(possibleLakes);
