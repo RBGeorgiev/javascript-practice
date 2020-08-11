@@ -808,6 +808,53 @@ canvas.addEventListener("click", (e) => {
     // displayPrecipitationValue(mapGen.tiles);
     // drawRivers(rivers);
 
+
+
+
+    const voronoiFindPathsBetweenTwoVertices = (tile, start, end) => {
+        // remove repeated polygon point
+        let polygonPoints = tile.polygon.slice(0, -1);
+        let path1 = [];
+        let path2 = [];
+        let foundFirstPath = false;
+        let startIdx;
+
+        // get start idx
+        for (let i = 0; i < polygonPoints.length; i++) {
+            let x1 = polygonPoints[i][0];
+            let y1 = polygonPoints[i][1];
+
+            if (start[0] === x1 && start[1] === y1) {
+                startIdx = i;
+                break;
+            }
+        }
+
+        // find both paths
+        for (let i = startIdx; i < polygonPoints.length + startIdx; i++) {
+            let idx = i % polygonPoints.length;
+
+            (foundFirstPath) ? path2.unshift(polygonPoints[idx]) : path1.push(polygonPoints[idx]);
+
+            if (
+                polygonPoints[idx][0] === end[0] &&
+                polygonPoints[idx][1] === end[1]
+            ) {
+                foundFirstPath = true;
+            }
+        }
+
+        // add missing points for path2
+        path2.unshift(start);
+        path2.push(end);
+
+
+        console.log('path1: ', path1);
+        console.log('path2: ', path2);
+
+        return path1;
+    }
+
     const drawRivers2 = (rivers) => {
         let queue = [...rivers];
         let visitedSet = {};
@@ -828,35 +875,38 @@ canvas.addEventListener("click", (e) => {
             }
 
             let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[3];
-            let points = [start];
+            let points = [];
             for (let child of children) {
                 if (visitedSet[child.tile.idx]) continue;
                 let edge = mapGen.getEdgeBetweenTiles(cur.tile, child.tile);
-                let randPoint = (Math.random() < 0.5) ? edge[0] : edge[1];
-                console.log(edge)
-                points.push(randPoint);
+                let randConnectingPoint = (Math.random() < 0.5) ? edge[0] : edge[1];
+                let bbb = voronoiFindPathsBetweenTwoVertices(cur.tile, start, randConnectingPoint);
+                // console.log(edge)
+                points.push(bbb);
                 // ctx.beginPath();
                 // ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
                 // ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
                 // ctx.strokeStyle = '#00F';
                 // ctx.stroke();
 
-                visitedSet[child.tile.idx] = randPoint;
+                visitedSet[child.tile.idx] = randConnectingPoint;
                 queue.push(child);
             }
             asd.push(points);
         }
 
-        for (let riverPoints of asd) {
-            console.log(riverPoints);
-            for (let i = 0; i < riverPoints.length - 1; i++) {
-                let cur = riverPoints[i];
-                let next = riverPoints[i + 1];
-                ctx.beginPath();
-                ctx.moveTo(cur[0], cur[1]);
-                ctx.lineTo(next[0], next[1]);
-                ctx.strokeStyle = '#00F';
-                ctx.stroke();
+        for (let riverPath of asd) {
+            for (let riverSubPath of riverPath) {
+                console.log(riverSubPath);
+                for (let i = 0; i < riverSubPath.length - 1; i++) {
+                    let cur = riverSubPath[i];
+                    let next = riverSubPath[i + 1];
+                    ctx.beginPath();
+                    ctx.moveTo(cur[0], cur[1]);
+                    ctx.lineTo(next[0], next[1]);
+                    ctx.strokeStyle = '#00F';
+                    ctx.stroke();
+                }
             }
 
         }
