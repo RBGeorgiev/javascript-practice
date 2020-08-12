@@ -884,7 +884,7 @@ canvas.addEventListener("click", (e) => {
         for (let riverPath of allRiverPaths) {
             for (let riverSubPath of riverPath) {
                 let points = riverSubPath.flat();
-                drawCurve(ctx, points, 0.4);
+                ctx.drawCurve(points, 0.4);
                 // for (let i = 0; i < riverSubPath.length - 1; i++) {
                 //     let cur = riverSubPath[i];
                 //     let next = riverSubPath[i + 1];
@@ -1004,4 +1004,12 @@ function drawLines(ctx, pts) {
     for (let i = 2; i < pts.length - 1; i += 2) ctx.lineTo(pts[i], pts[i + 1]);
     ctx.strokeStyle = '#00F';
     ctx.stroke();
+}
+
+
+if (CanvasRenderingContext2D != 'undefined') {
+    CanvasRenderingContext2D.prototype.drawCurve =
+        function (pts, tension, isClosed, numOfSegments, showPoints) {
+            drawCurve(this, pts, tension, isClosed, numOfSegments, showPoints)
+        }
 }
