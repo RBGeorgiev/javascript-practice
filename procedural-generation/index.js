@@ -562,6 +562,18 @@ canvas.addEventListener("click", (e) => {
 
     const resetPrecipitation = () => mapGen.tiles.forEach(t => t.precipitation = 0);
 
+    const getDistanceBetweenPoints = (p1, p2) => {
+        let x1 = p1[0];
+        let y1 = p1[1];
+        let x2 = p2[0];
+        let y2 = p2[1];
+
+        let a = x1 - x2;
+        let b = y1 - y2;
+
+        return Math.sqrt(a * a + b * b);
+    }
+
     const calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
@@ -573,15 +585,7 @@ canvas.addEventListener("click", (e) => {
             // get tile distance
             for (let idx of tiles) {
                 let tile = mapGen.getTile(idx);
-                let x1 = line.line[0];
-                let y1 = line.line[1];
-                let x2 = tile.centroid[0];
-                let y2 = tile.centroid[1];
-
-                let a = x1 - x2;
-                let b = y1 - y2;
-
-                let dist = Math.sqrt(a * a + b * b);
+                let dist = getDistanceBetweenPoints(line.line, tile.centroid);
                 tileDistances.push([idx, dist]);
             }
 
@@ -878,17 +882,31 @@ canvas.addEventListener("click", (e) => {
                 queue.push(child);
             }
 
-            allRiverPaths.push(riverPath);
+            allRiverPaths.push([cur, riverPath]);
         }
 
+        let riverWidthMax = 10; // important value
+        let riverWidthMin = 3; // important value
+        let riverWidthDistanceStrengthControl = 20; // important value
+
         let drawnSubPaths = new Set();
-        for (let riverPath of allRiverPaths) {
+        for (let riverTileAndPath of allRiverPaths) {
+            let riverTile = riverTileAndPath[0];
+            let riverPath = riverTileAndPath[1];
             for (let riverSubPath of riverPath) {
                 let points = riverSubPath.flat();
                 let str = `x${points[0]}y${points[1]}x1${points[points.length - 2]}y1${points[points.length - 1]}`;
 
                 if (!drawnSubPaths.has(str)) {
+                    let riverRoot = riverTile.getRoot();
+                    let distToRoot = getDistanceBetweenPoints(riverRoot.tile.centroid, riverTile.tile.centroid);
+
+                    let distWidth = riverWidthMax - (Math.round(distToRoot / riverWidthDistanceStrengthControl));
+                    if (distWidth < riverWidthMin) distWidth = riverWidthMin;
+
                     ctx.drawCurve(points, curveStrength);
+                    ctx.lineWidth = distWidth;
+                    ctx.lineCap = "round";
                     ctx.strokeStyle = '#00F';
                     ctx.stroke();
                 }
