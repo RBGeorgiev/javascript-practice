@@ -302,7 +302,7 @@ class MapGenerator {
         this.drawCoastline();
         // this.drawVoronoi();
         // this.drawDelaunay();
-        this.drawPoints();
+        // this.drawPoints();
     }
 
     initVoronoi = (points) => {
@@ -843,10 +843,10 @@ canvas.addEventListener("click", (e) => {
         path2.unshift(start);
         path2.push(end);
 
-        return (path1.length <= path2.length) ? [path1, path2] : [path2, path1];
+        return (path1.length <= path2.length) ? [path1, path2] : [path2, path1]; // 0 is short path, 1 is long path
     }
 
-    const drawRiversOnVoronoiEdges = (rivers) => {
+    const drawRiversOnVoronoiEdges = (rivers, curveStrength = 0.4) => {
         let queue = [...rivers];
         let visitedSet = {};
 
@@ -881,19 +881,19 @@ canvas.addEventListener("click", (e) => {
             allRiverPaths.push(riverPath);
         }
 
+        let drawnSubPaths = new Set();
         for (let riverPath of allRiverPaths) {
             for (let riverSubPath of riverPath) {
                 let points = riverSubPath.flat();
-                ctx.drawCurve(points, 0.4);
-                // for (let i = 0; i < riverSubPath.length - 1; i++) {
-                //     let cur = riverSubPath[i];
-                //     let next = riverSubPath[i + 1];
-                //     ctx.beginPath();
-                //     ctx.moveTo(cur[0], cur[1]);
-                //     ctx.lineTo(next[0], next[1]);
-                //     ctx.strokeStyle = '#00F';
-                //     ctx.stroke();
-                // }
+                let str = `x${points[0]}y${points[1]}x1${points[points.length - 2]}y1${points[points.length - 1]}`;
+
+                if (!drawnSubPaths.has(str)) {
+                    ctx.drawCurve(points, curveStrength);
+                    ctx.strokeStyle = '#00F';
+                    ctx.stroke();
+                }
+
+                drawnSubPaths.add(str);
             }
         }
     }
@@ -921,7 +921,7 @@ function drawCurve(ctx, ptsa, tension, isClosed, numOfSegments, showPoints) {
     if (showPoints) {
         ctx.stroke();
         ctx.beginPath();
-        for (var i = 0; i < ptsa.length - 1; i += 2)
+        for (let i = 0; i < ptsa.length - 1; i += 2)
             ctx.rect(ptsa[i] - 2, ptsa[i + 1] - 2, 4, 4);
     }
 }
@@ -933,7 +933,7 @@ function getCurvePoints(pts, tension, isClosed, numOfSegments) {
     isClosed = isClosed ? isClosed : false;
     numOfSegments = numOfSegments ? numOfSegments : 16;
 
-    var _pts = [], res = [],    // clone array
+    let _pts = [], res = [],    // clone array
         x, y,           // our x,y coords
         t1x, t2x, t1y, t2y, // tension vectors
         c1, c2, c3, c4,     // cardinal points
@@ -966,7 +966,7 @@ function getCurvePoints(pts, tension, isClosed, numOfSegments) {
 
     // 1. loop goes through point array
     // 2. loop goes through each segment between the 2 pts + 1e point before and after
-    for (i = 2; i < (_pts.length - 4); i += 2) {
+    for (let i = 2; i < (_pts.length - 4); i += 2) {
         for (t = 0; t <= numOfSegments; t++) {
 
             // calc tension vectors
@@ -1001,13 +1001,13 @@ function getCurvePoints(pts, tension, isClosed, numOfSegments) {
 
 function drawLines(ctx, pts) {
     ctx.moveTo(pts[0], pts[1]);
-    for (let i = 2; i < pts.length - 1; i += 2) ctx.lineTo(pts[i], pts[i + 1]);
-    ctx.strokeStyle = '#00F';
-    ctx.stroke();
+    for (let i = 2; i < pts.length - 1; i += 2) {
+        ctx.lineTo(pts[i], pts[i + 1]);
+    }
 }
 
 
-if (CanvasRenderingContext2D != 'undefined') {
+if (CanvasRenderingContext2D !== 'undefined') {
     CanvasRenderingContext2D.prototype.drawCurve =
         function (pts, tension, isClosed, numOfSegments, showPoints) {
             drawCurve(this, pts, tension, isClosed, numOfSegments, showPoints)
