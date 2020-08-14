@@ -874,9 +874,12 @@ canvas.addEventListener("click", (e) => {
                 if (visitedSet[child.tile.idx]) continue;
                 let edge = mapGen.getEdgeBetweenTiles(cur.tile, child.tile);
                 let randConnectingPoint = (Math.random() < 0.5) ? edge[0] : edge[1];
-                let riverSubPath = voronoiFindPathsBetweenTwoVertices(cur.tile, start, randConnectingPoint);
 
-                riverPath.push(riverSubPath[0]); // 0 is short path, 1 is long path
+                // don't draw river inside the ocean
+                if (!mapGen.oceanTiles.hasOwnProperty(cur.tile.idx)) {
+                    let riverSubPath = voronoiFindPathsBetweenTwoVertices(cur.tile, start, randConnectingPoint);
+                    riverPath.push(riverSubPath[0]); // 0 is short path, 1 is long path
+                }
 
                 visitedSet[child.tile.idx] = randConnectingPoint;
                 queue.push(child);
@@ -922,7 +925,7 @@ canvas.addEventListener("click", (e) => {
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = "round";
-                    ctx.strokeStyle = '#00F';
+                    ctx.strokeStyle = '#0000FF';
                     ctx.stroke();
                 }
 
