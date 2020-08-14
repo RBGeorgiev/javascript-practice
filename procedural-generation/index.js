@@ -898,14 +898,29 @@ canvas.addEventListener("click", (e) => {
                 let str = `x${points[0]}y${points[1]}x1${points[points.length - 2]}y1${points[points.length - 1]}`;
 
                 if (!drawnSubPaths.has(str)) {
+                    // get width based on distance from end/root tile
                     let riverRoot = riverTile.getRoot();
                     let distToRoot = getDistanceBetweenPoints(riverRoot.tile.centroid, riverTile.tile.centroid);
 
-                    let distWidth = riverWidthMax - (Math.round(distToRoot / riverWidthDistanceStrengthControl));
+                    let distWidth = riverWidthMax - Math.round(distToRoot / riverWidthDistanceStrengthControl);
                     if (distWidth < riverWidthMin) distWidth = riverWidthMin;
 
+                    // get width based on precipitation left in tile
+                    let thirdOfPrecipitationRange = Math.round((precipitationForRiverMax - precipitationForRiverMin) / 3);
+                    let precipitationWidth;
+
+                    if (riverTile.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange) {
+                        precipitationWidth = 1;
+                    } else if (riverTile.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
+                        precipitationWidth = 2;
+                    } else if (riverTile.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
+                        precipitationWidth = 3;
+                    } else {
+                        precipitationWidth = 4;
+                    }
+
                     ctx.drawCurve(points, curveStrength);
-                    ctx.lineWidth = distWidth;
+                    ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = "round";
                     ctx.strokeStyle = '#00F';
                     ctx.stroke();
