@@ -708,22 +708,8 @@ canvas.addEventListener("click", (e) => {
     }
 
 
-
     let riversSet = new Set();
-
-    riverNodes.forEach(river => {
-        let root = river.getRoot();
-        riversSet.add(root);
-
-        let a = root.tile;
-        ctx.beginPath();
-        ctx.fillStyle = 'white';
-        ctx.strokeStyle = 'black';
-        ctx.rect(a.centroid[0], a.centroid[1], 10, 10);
-        ctx.fill();
-        ctx.stroke();
-    });
-
+    riverNodes.forEach(river => riversSet.add(river.getRoot()));
     rivers = [...riversSet];
 
     const drawRiversThroughCenters = (rivers) => {
@@ -740,7 +726,7 @@ canvas.addEventListener("click", (e) => {
                 ctx.beginPath();
                 ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
                 ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
-                ctx.strokeStyle = '#00F';
+                ctx.strokeStyle = '#33b9f7';
                 ctx.stroke();
 
                 visitedSet.add(child.tile.idx);
@@ -855,19 +841,11 @@ canvas.addEventListener("click", (e) => {
         let visitedSet = {};
 
         let allRiverPaths = [];
+        // get paths for all rivers
         while (queue.length > 0) {
             let cur = queue.shift();
             let children = cur.children;
-            if (children.length === 0) {
-                ctx.beginPath();
-                ctx.fillStyle = 'red';
-                ctx.strokeStyle = 'black';
-                ctx.rect(cur.tile.centroid[0], cur.tile.centroid[1], 8, 8);
-                ctx.fill();
-                ctx.stroke();
-                continue;
-            }
-
+            if (children.length === 0) continue;
             let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(mapGen.random(0, cur.tile.polygon.length - 1))];
             let riverPath = [];
             for (let child of children) {
@@ -892,6 +870,7 @@ canvas.addEventListener("click", (e) => {
         let riverWidthMin = 3; // important value
         let riverWidthDistanceStrengthControl = 20; // important value
 
+        // /draw rivers paths with a curve and varying widths
         let drawnSubPaths = new Set();
         for (let riverTileAndPath of allRiverPaths) {
             let riverTile = riverTileAndPath[0];
@@ -925,7 +904,7 @@ canvas.addEventListener("click", (e) => {
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = "round";
-                    ctx.strokeStyle = '#0000FF';
+                    ctx.strokeStyle = '#33b9f7';
                     ctx.stroke();
                 }
 
@@ -934,14 +913,22 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    // for (let idx in lakeTiles) {
-    //     mapGen.fillTile(+idx, 'lightblue');
-    // }
+    const drawLakes = () => {
+        for (let idx in lakeTiles) {
+            mapGen.fillTile(+idx, '#33b9f7');
+        }
+    }
+
     // displayPrecipitationValue(mapGen.tiles);
     // drawRiversThroughCenters(rivers);
-    // drawRiversOnVoronoiEdges([rivers[Object.keys(rivers)[0]]]);
     drawRiversOnVoronoiEdges(rivers);
+    drawLakes();
 })
+// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
+// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
+// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
+// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
+// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
 
 
 
