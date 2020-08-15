@@ -630,6 +630,7 @@ canvas.addEventListener("click", (e) => {
     let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     let partitions = createPartitions();
     let windLines = createWindLines();
+    let lakeTiles = {};
 
     addTilesToPartitions(partitions);
     connectPartitionsToLines(partitions, windLines);
@@ -653,64 +654,63 @@ canvas.addEventListener("click", (e) => {
         return tilesByHeight.sort((a, b) => b.height - a.height);
     }
 
-    let tilesByHeight = getTilesByHeight(mapGen.landTiles);
+    const defineRivers = () => {
+        let tilesByHeight = getTilesByHeight(mapGen.landTiles);
 
-    for (let tile of mapGen.tiles) {
-        tile.river = null;
-    }
-    let riverNodes = [];
-    let rivers = [];
-    let possibleLakes = [];
-    let lakeTiles = {};
-    let precipitationForRiverMin = 200; // important value
-    let precipitationForRiverMax = 500; // important value
-    let precipitationForLake = 4000; // important value
+        for (let tile of mapGen.tiles) {
+            tile.river = null;
+        }
+        let riverNodes = [];
 
-    for (let i = 0; i < tilesByHeight.length; i++) {
-        let tile = tilesByHeight[i];
-        let neighbors = tile.neighbors;
-        let lowestNeighbor;
-        let precipitationForRiver = Math.round(mapGen.random(precipitationForRiverMin, precipitationForRiverMax));
 
-        for (let idx of neighbors) {
-            let n = mapGen.getTile(idx);
-            if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
+
+        for (let i = 0; i < tilesByHeight.length; i++) {
+            let tile = tilesByHeight[i];
+            let neighbors = tile.neighbors;
+            let lowestNeighbor;
+            let precipitationForRiver = Math.round(mapGen.random(precipitationForRiverMin, precipitationForRiverMax));
+
+            for (let idx of neighbors) {
+                let n = mapGen.getTile(idx);
+                if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
+            }
+
+            if (tile.precipitation > precipitationForRiver) {
+                let flowAmount = tile.precipitation - precipitationForRiver;
+                lowestNeighbor.precipitation += flowAmount;
+                tile.precipitation = precipitationForRiver;
+
+                if (!tile.river) {
+                    let riverIdx = riverNodes.length;
+                    tile.river = new RiverNode(riverIdx, tile);
+                    riverNodes.push(tile.river);
+                }
+                if (!lowestNeighbor.river) {
+                    let riverIdx = riverNodes.length;
+                    lowestNeighbor.river = new RiverNode(riverIdx, lowestNeighbor);
+                    riverNodes.push(lowestNeighbor.river);
+                }
+
+                let top = tile.river;
+                let bot = lowestNeighbor.river;
+
+                if (bot.parent && bot.parent.idx === top.idx) {
+                    bot.parent = null;
+                }
+                if (bot.getRoot().idx === top.getRoot().idx) {
+                    continue;
+                }
+                top.setParent(bot);
+                bot.addChild(top);
+            }
         }
 
-        if (tile.precipitation > precipitationForRiver) {
-            let flowAmount = tile.precipitation - precipitationForRiver;
-            lowestNeighbor.precipitation += flowAmount;
-            tile.precipitation = precipitationForRiver;
 
-            if (!tile.river) {
-                let riverIdx = riverNodes.length;
-                tile.river = new RiverNode(riverIdx, tile);
-                riverNodes.push(tile.river);
-            }
-            if (!lowestNeighbor.river) {
-                let riverIdx = riverNodes.length;
-                lowestNeighbor.river = new RiverNode(riverIdx, lowestNeighbor);
-                riverNodes.push(lowestNeighbor.river);
-            }
-
-            let top = tile.river;
-            let bot = lowestNeighbor.river;
-
-            if (bot.parent && bot.parent.idx === top.idx) {
-                bot.parent = null;
-            }
-            if (bot.getRoot().idx === top.getRoot().idx) {
-                continue;
-            }
-            top.setParent(bot);
-            bot.addChild(top);
-        }
+        let riversSet = new Set();
+        riverNodes.forEach(river => riversSet.add(river.getRoot()));
+        return [...riversSet];
     }
 
-
-    let riversSet = new Set();
-    riverNodes.forEach(river => riversSet.add(river.getRoot()));
-    rivers = [...riversSet];
 
     const drawRiversThroughCenters = (rivers) => {
         let queue = [...rivers];
@@ -735,59 +735,63 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    // add possible lakes from lowest river tile on land
-    rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
+    const defineLakes = (rivers) => {
+        let possibleLakes = [];
+        // find possible lakes from lowest river tile on land
+        rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
 
-    // define lakes
-    for (let i = 0; i < possibleLakes.length; i++) {
-        let mbLake = possibleLakes[i];
-        if (mbLake.precipitation >= precipitationForLake) {
-            lakeTiles[mbLake.idx] = mbLake;
-            delete mapGen.landTiles[mbLake.idx];
-            possibleLakes.splice(i, 1);
-            i--;
+        // define lakes
+        for (let i = 0; i < possibleLakes.length; i++) {
+            let mbLake = possibleLakes[i];
+            if (mbLake.precipitation >= precipitationForLake) {
+                lakeTiles[mbLake.idx] = mbLake;
+                delete mapGen.landTiles[mbLake.idx];
+                possibleLakes.splice(i, 1);
+                i--;
+            }
         }
     }
 
     // expand lakes
-    let queue = [];
-    for (let idx in lakeTiles) {
-        let lake = lakeTiles[idx];
-        queue.push(lake);
-    }
-
-    while (queue.length > 0) {
-        let lake = queue.shift();
-        let neighbors = lake.neighbors;
-        let lakeHeightPrecipitationMultiplier = 70 // important value
-
-        let neighborsByHeight = [];
-        for (let n of neighbors) {
-            neighborsByHeight.push(mapGen.getTile(n));
+    const expandLakes = () => {
+        let queue = [];
+        for (let idx in lakeTiles) {
+            let lake = lakeTiles[idx];
+            queue.push(lake);
         }
-        neighborsByHeight.sort((a, b) => a.height - b.height);
-        let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
-        let totalWaterAvailable = lake.precipitation - precipitationForLake;
 
-        for (let neighbor of neighborsByHeight) {
-            if (totalWaterAvailable === 0) break;
-            if (mapGen.oceanTiles[neighbor.idx]) break;
-            if (lakeTiles[neighbor.idx]) continue;
+        while (queue.length > 0) {
+            let lake = queue.shift();
+            let neighbors = lake.neighbors;
 
-            let heightDifference = neighbor.height - lake.height;
+            let neighborsByHeight = [];
+            for (let n of neighbors) {
+                neighborsByHeight.push(mapGen.getTile(n));
+            }
+            neighborsByHeight.sort((a, b) => a.height - b.height);
+            let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
+            let totalWaterAvailable = lake.precipitation - precipitationForLake;
 
-            let waterMoved = waterSpreadAverage + ((100 - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
-            if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
+            for (let neighbor of neighborsByHeight) {
+                if (totalWaterAvailable === 0) break;
+                if (mapGen.oceanTiles[neighbor.idx]) break;
+                if (lakeTiles[neighbor.idx]) continue;
 
-            neighbor.precipitation += waterMoved;
-            lake.precipitation -= waterMoved;
-            totalWaterAvailable -= waterMoved;
+                let heightDifference = neighbor.height - lake.height;
 
-            if (neighbor.precipitation >= precipitationForLake) {
-                lakeTiles[neighbor.idx] = neighbor;
-                delete mapGen.landTiles[neighbor.idx];
+                let waterMoved = waterSpreadAverage + ((100 - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
+                if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
 
-                queue.push(neighbor);
+                neighbor.precipitation += waterMoved;
+                lake.precipitation -= waterMoved;
+                totalWaterAvailable -= waterMoved;
+
+                if (neighbor.precipitation >= precipitationForLake) {
+                    lakeTiles[neighbor.idx] = neighbor;
+                    delete mapGen.landTiles[neighbor.idx];
+
+                    queue.push(neighbor);
+                }
             }
         }
     }
@@ -866,10 +870,6 @@ canvas.addEventListener("click", (e) => {
             allRiverPaths.push([cur, riverPath]);
         }
 
-        let riverWidthMax = 10; // important value
-        let riverWidthMin = 3; // important value
-        let riverWidthDistanceStrengthControl = 20; // important value
-
         // /draw rivers paths with a curve and varying widths
         let drawnSubPaths = new Set();
         for (let riverTileAndPath of allRiverPaths) {
@@ -919,22 +919,31 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+
+    let precipitationForRiverMin = 200; // important value
+    let precipitationForRiverMax = 500; // important value
+
+    let precipitationForLake = 4000; // important value
+    let lakeHeightPrecipitationMultiplier = 70 // important value
+
+    let riverWidthMax = 10; // important value
+    let riverWidthMin = 3; // important value
+    let riverWidthDistanceStrengthControl = 20; // important value
+
     // displayPrecipitationValue(mapGen.tiles);
     // drawRiversThroughCenters(rivers);
+    let rivers = defineRivers();
+    defineLakes(rivers);
+    expandLakes();
+
     drawRiversOnVoronoiEdges(rivers);
     drawLakes();
 })
-// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
-// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
-// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
-// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
-// todo: refactor, cleanup, long or short depending on how much water there is in tile, width dependent on tile precipitation, cardinal splines for rivers, no rivers in oceans
 
 
 
 
 function drawCurve(ctx, ptsa, tension, isClosed, numOfSegments, showPoints) {
-
     showPoints = showPoints ? showPoints : false;
 
     ctx.beginPath();
