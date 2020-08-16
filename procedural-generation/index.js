@@ -526,7 +526,7 @@ canvas.addEventListener("click", (e) => {
             ctx.beginPath();
             ctx.moveTo(line[0], line[1]);
             ctx.lineTo(line[2], line[3]);
-            ctx.strokeStyle = '#FFFFFF55';
+            ctx.strokeStyle = '#FFFFFF99';
             ctx.lineWidth = 1;
             ctx.stroke();
         }
@@ -622,28 +622,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     // ____________________________________________________________________________________________________________
-
-
-
-    console.time("calculateWind");
-    resetPrecipitation()
-    let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    let partitions = createPartitions();
-    let windLines = createWindLines();
-    let lakeTiles = {};
-
-    addTilesToPartitions(partitions);
-    connectPartitionsToLines(partitions, windLines);
-    findTilesIntersectingLineThroughPartitions(windLines);
-    calculatePrecipitation(windLines);
-
-    mapGen.drawAll();
-    // drawWindIntersectedTiles(windLines);
-    // drawWindLines(windLines);
-    // displayPrecipitationValue(mapGen.landTiles);
-    // drawPartitionBounds(partitions);
-    console.timeEnd("calculateWind");
-
+    // rivers and lakes
 
     const getTilesByHeight = (tiles) => {
         let tilesByHeight = [];
@@ -920,6 +899,14 @@ canvas.addEventListener("click", (e) => {
     }
 
 
+    console.time("calculate wind precipitation rivers and lakes");
+    resetPrecipitation()
+    let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+    let partitions = createPartitions();
+    let windLines = createWindLines();
+    let lakeTiles = {};
+    let rivers;
+
     let precipitationForRiverMin = 200; // important value
     let precipitationForRiverMax = 500; // important value
 
@@ -930,14 +917,25 @@ canvas.addEventListener("click", (e) => {
     let riverWidthMin = 3; // important value
     let riverWidthDistanceStrengthControl = 20; // important value
 
-    // displayPrecipitationValue(mapGen.tiles);
-    // drawRiversThroughCenters(rivers);
-    let rivers = defineRivers();
+    addTilesToPartitions(partitions);
+    connectPartitionsToLines(partitions, windLines);
+    findTilesIntersectingLineThroughPartitions(windLines);
+    calculatePrecipitation(windLines);
+
+    rivers = defineRivers();
     defineLakes(rivers);
     expandLakes();
 
+    mapGen.drawAll();
+    // drawWindIntersectedTiles(windLines);
+    // drawWindLines(windLines);
+    // drawPartitionBounds(partitions);
+    // displayPrecipitationValue(mapGen.tiles);
+
+    // drawRiversThroughCenters(rivers);
     drawRiversOnVoronoiEdges(rivers);
     drawLakes();
+    console.timeEnd("calculate wind precipitation rivers and lakes");
 })
 
 
