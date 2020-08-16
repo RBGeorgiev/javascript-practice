@@ -214,25 +214,25 @@ class MapGenerator {
             if (h > 100) {
                 color = "#FFFFFF";
             } else if (h > 90) {
-                color = "maroon";
+                color = "#ce0000";
             } else if (h > 80) {
-                color = "brown";
+                color = "#e22f14";
             } else if (h > 70) {
-                color = "crimson";
+                color = "#e56414";
             } else if (h > 60) {
-                color = "darkorange";
+                color = "#e59814";
             } else if (h > 50) {
-                color = "orange";
+                color = "#eac820";
             } else if (h > 40) {
-                color = "yellow";
+                color = "#e7f702";
             } else if (h > 30) {
-                color = "#FFFF55";
+                color = "#ccea20";
             } else if (h > 20) {
-                color = "#A6FF00";
+                color = "#9ee52b";
             } else if (h > 10) {
-                color = "#00FF33";
+                color = "#22c94e";
             } else if (h >= 0) {
-                color = "#33FF69";
+                color = "#2ce861";
             } else if (h > -10) {
                 color = "#5883F2";
             } else if (h > -20) {
