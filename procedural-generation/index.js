@@ -948,6 +948,7 @@ canvas.addEventListener("click", (e) => {
 
 
 
+    const randomUint32 = () => (Math.random() * 4294967296) >>> 0; //random seed
 
     function sfc32(a, b, c, d) {
         return function () {
@@ -962,7 +963,7 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    let seed = 2284314495;
+    let seed = randomUint32();
     let rng = sfc32(seed, seed, seed, seed);
     for (let i = 0; i < 15; i++) console.log(rng())
 })
