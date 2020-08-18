@@ -685,10 +685,10 @@ canvas.addEventListener("click", (e) => {
                 if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
             }
 
-            if (tile.precipitation > precipitationForRiver) {
-                let flowAmount = tile.precipitation - precipitationForRiver;
+            if (tile.precipitation > precipitationForRiverMin) {
+                let flowAmount = (tile.precipitation < precipitationForRiver) ? tile.precipitation - precipitationForRiverMin : tile.precipitation - precipitationForRiver;
                 lowestNeighbor.precipitation += flowAmount;
-                tile.precipitation = precipitationForRiver;
+                tile.precipitation -= flowAmount;
 
                 if (!tile.river) {
                     let riverIdx = riverNodes.length;
