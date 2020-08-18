@@ -2,6 +2,24 @@ import { Delaunay } from "./d3-delaunay/index.js";
 import { canvas, ctx } from './constants.js';
 import drawCurve from './drawCurve.js';
 
+
+const randomUint32 = () => (Math.random() * 4294967296) >>> 0; // random seed generator
+
+// Simple Fast Counter 32 bit - seeded pseudo random number generator
+const sfc32 = (a, b, c, d) => {
+    return function () {
+        a |= 0; b |= 0; c |= 0; d |= 0;
+        var t = (a + b | 0) + d | 0;
+        d = d + 1 | 0;
+        a = b ^ b >>> 9;
+        b = c + (c << 3) | 0;
+        c = c << 21 | c >>> 11;
+        c = c + t | 0;
+        return (t >>> 0) / 4294967296;
+    }
+}
+
+
 // add drawCurve to 2D context
 if (CanvasRenderingContext2D !== 'undefined') {
     CanvasRenderingContext2D.prototype.drawCurve =
@@ -54,7 +72,11 @@ class Tile {
 }
 
 class MapGenerator {
-    constructor(numOfPoints) {
+    constructor(numOfPoints, seed = null) {
+        this.seed = seed || randomUint32();
+        this.rng = sfc32(this.seed, this.seed, this.seed, this.seed); // using this.rng() generates number between 0 and 1
+        console.log(this.seed)
+
         this.allPoints = this.generateRandomPoints(numOfPoints);
         this.delaunay;
         this.voronoi;
@@ -72,17 +94,17 @@ class MapGenerator {
 
     getTile = (i) => this.tiles[i];
 
-    random = (min = 0, max = 1) => Math.random() * (max - min) + min;
+    randRange = (min = 0, max = 1) => this.rng() * (max - min) + min;
 
     getRandomTiles = (max, min = 1, rand = true) => {
-        let len = (rand) ? Math.round(this.random(min, max)) : max;
+        let len = (rand) ? Math.round(this.randRange(min, max)) : max;
         let numOfTiles = this.tiles.length;
         if (len > numOfTiles) len = numOfTiles;
         let randTiles = [];
         let visited = {};
 
         for (let i = 0; i < len; i++) {
-            let idx = Math.round(this.random(0, numOfTiles - 1));
+            let idx = Math.round(this.randRange(0, numOfTiles - 1));
 
             if (!visited[idx]) {
                 visited[idx] = 1
@@ -100,7 +122,7 @@ class MapGenerator {
     setTilesHeight = () => {
         let randTiles = this.getRandomTiles(15, 5); // important value
         randTiles.forEach(tile => {
-            let dir = (Math.random() > 0.4) ? 1 : -1; // important value
+            let dir = (this.rng() > 0.4) ? 1 : -1; // important value
             tile.setHeight(dir * 100)
         });
         let queue = [
@@ -111,7 +133,7 @@ class MapGenerator {
         while (queue.length) {
             // if MAX number of this.random > 100 there is a chance for height increase; 
             // the lower the MIN number is, the higher the chance for a sharp drop in height 
-            decrement = this.random(50, 100) / 100; // important value
+            decrement = this.randRange(50, 100) / 100; // important value
 
             let cur = queue.shift();
             let curHeight = cur.height;
@@ -339,8 +361,8 @@ class MapGenerator {
         ctx.fillStyle = '#000000';
 
         for (let i = 0; i < amount; i++) {
-            let x = Math.random() * (endX - startX) + startX;
-            let y = Math.random() * (endY - startY) + startY;
+            let x = this.rng() * (endX - startX) + startX;
+            let y = this.rng() * (endY - startY) + startY;
             points.push([x, y]);
         }
 
@@ -418,7 +440,7 @@ canvas.addEventListener("click", (e) => {
 
     const createWindLines = () => {
         let windLines = [];
-        let windAngle = Math.round(mapGen.random(0, 360));
+        let windAngle = Math.round(mapGen.randRange(0, 360));
 
         const rotateAroundCenter = (cx, cy, x, y, angle) => {
             let radians = (Math.PI / 180) * angle,
@@ -431,7 +453,7 @@ canvas.addEventListener("click", (e) => {
 
         // prevailing wind direction
         for (let idx in mapGen.oceanTiles) {
-            let windOffset = Math.round(mapGen.random(-5, 5));
+            let windOffset = Math.round(mapGen.randRange(-5, 5));
             let tile = mapGen.oceanTiles[idx];
             let x1 = tile.centroid[0];
             let y1 = tile.centroid[1];
@@ -656,7 +678,7 @@ canvas.addEventListener("click", (e) => {
             let tile = tilesByHeight[i];
             let neighbors = tile.neighbors;
             let lowestNeighbor;
-            let precipitationForRiver = Math.round(mapGen.random(precipitationForRiverMin, precipitationForRiverMax));
+            let precipitationForRiver = Math.round(mapGen.randRange(precipitationForRiverMin, precipitationForRiverMax));
 
             for (let idx of neighbors) {
                 let n = mapGen.getTile(idx);
@@ -838,12 +860,12 @@ canvas.addEventListener("click", (e) => {
             let cur = queue.shift();
             let children = cur.children;
             if (children.length === 0) continue;
-            let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(mapGen.random(0, cur.tile.polygon.length - 1))];
+            let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(mapGen.randRange(0, cur.tile.polygon.length - 1))];
             let riverPath = [];
             for (let child of children) {
                 if (visitedSet[child.tile.idx]) continue;
                 let edge = mapGen.getEdgeBetweenTiles(cur.tile, child.tile);
-                let randConnectingPoint = (Math.random() < 0.5) ? edge[0] : edge[1];
+                let randConnectingPoint = (mapGen.rng() < 0.5) ? edge[0] : edge[1];
 
                 // don't draw river inside the ocean
                 if (!mapGen.oceanTiles.hasOwnProperty(cur.tile.idx)) {
@@ -945,25 +967,4 @@ canvas.addEventListener("click", (e) => {
     drawRiversOnVoronoiEdges(rivers);
     drawLakes();
     console.timeEnd("calculate wind precipitation rivers and lakes");
-
-
-
-    const randomUint32 = () => (Math.random() * 4294967296) >>> 0; //random seed
-
-    function sfc32(a, b, c, d) {
-        return function () {
-            a |= 0; b |= 0; c |= 0; d |= 0;
-            var t = (a + b | 0) + d | 0;
-            d = d + 1 | 0;
-            a = b ^ b >>> 9;
-            b = c + (c << 3) | 0;
-            c = c << 21 | c >>> 11;
-            c = c + t | 0;
-            return (t >>> 0) / 4294967296;
-        }
-    }
-
-    let seed = randomUint32();
-    let rng = sfc32(seed, seed, seed, seed);
-    for (let i = 0; i < 15; i++) console.log(rng())
 })
