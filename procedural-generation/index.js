@@ -664,15 +664,15 @@ canvas.addEventListener("click", (e) => {
         return tilesByHeight.sort((a, b) => b.height - a.height);
     }
 
-    const defineRivers = () => {
-        let tilesByHeight = getTilesByHeight(mapGen.landTiles);
-
+    const resetRivers = () => {
         for (let tile of mapGen.tiles) {
             tile.river = null;
         }
+    }
+
+    const defineRivers = () => {
+        let tilesByHeight = getTilesByHeight(mapGen.landTiles);
         let riverNodes = [];
-
-
 
         for (let i = 0; i < tilesByHeight.length; i++) {
             let tile = tilesByHeight[i];
@@ -933,7 +933,8 @@ canvas.addEventListener("click", (e) => {
 
 
     console.time("calculate wind precipitation rivers and lakes");
-    resetPrecipitation()
+    resetPrecipitation();
+    resetRivers();
     let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     let partitions = createPartitions();
     let windLines = createWindLines();
