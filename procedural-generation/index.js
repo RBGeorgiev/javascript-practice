@@ -678,7 +678,6 @@ canvas.addEventListener("click", (e) => {
             let tile = tilesByHeight[i];
             let neighbors = tile.neighbors;
             let lowestNeighbor;
-            let precipitationForRiver = Math.round(mapGen.randRange(precipitationForRiverMin, precipitationForRiverMax));
 
             for (let idx of neighbors) {
                 let n = mapGen.getTile(idx);
@@ -686,7 +685,10 @@ canvas.addEventListener("click", (e) => {
             }
 
             if (tile.precipitation > precipitationForRiverMin) {
-                let flowAmount = (tile.precipitation < precipitationForRiver) ? tile.precipitation - precipitationForRiverMin : tile.precipitation - precipitationForRiver;
+                let precipitationForRiverUpperBound = (tile.precipitation > precipitationForRiverMax) ? precipitationForRiverMax : tile.precipitation;
+                let precipitationForRiverLeftInTile = Math.round(mapGen.randRange(precipitationForRiverMin, precipitationForRiverUpperBound));
+                let flowAmount = tile.precipitation - precipitationForRiverLeftInTile;
+
                 lowestNeighbor.precipitation += flowAmount;
                 tile.precipitation -= flowAmount;
 
