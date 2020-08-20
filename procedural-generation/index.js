@@ -96,8 +96,8 @@ class MapGenerator {
 
     randRange = (min = 0, max = 1) => this.rng() * (max - min) + min;
 
-    getRandomTiles = (max, min = 1, rand = true) => {
-        let len = (rand) ? Math.round(this.randRange(min, max)) : max;
+    getRandomTiles = (min = 5, max = 15, rand = true) => {
+        let len = (rand) ? Math.round(this.randRange(min, max)) : min;
         let numOfTiles = this.tiles.length;
         if (len > numOfTiles) len = numOfTiles;
         let randTiles = [];
@@ -120,9 +120,9 @@ class MapGenerator {
     }
 
     setTilesHeight = () => {
-        let randTiles = this.getRandomTiles(15, 5); // important value
+        let randTiles = this.getRandomTiles(numberOfRandomInitialPeaksOrTrenchesMin, numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
-            let dir = (this.rng() > 0.4) ? 1 : -1; // important value
+            let dir = (this.rng() >= chanceForLand) ? 1 : -1;
             tile.setHeight(dir * 100)
         });
         let queue = [
@@ -131,9 +131,7 @@ class MapGenerator {
         let decrement;
 
         while (queue.length) {
-            // if MAX number of this.random > 100 there is a chance for height increase; 
-            // the lower the MIN number is, the higher the chance for a sharp drop in height 
-            decrement = this.randRange(50, 100) / 100; // important value
+            decrement = this.randRange(heightDecrementMin, heightDecrementMax) / 100;
 
             let cur = queue.shift();
             let curHeight = cur.height;
@@ -397,7 +395,17 @@ class MapGenerator {
     }
 }
 
-let mapGen = new MapGenerator(1000);
+let numOfPoints = 1000; // important value
+let numberOfRandomInitialPeaksOrTrenchesMin = 5; // important value
+let numberOfRandomInitialPeaksOrTrenchesMax = 15; // important value
+let chanceForLand = 0.5; // important value
+
+// the lower the MIN number is, the higher the chance for a sharp drop in height 
+let heightDecrementMin = 50; // important value
+// if MAX number higher than 100 there is a chance for height increase
+let heightDecrementMax = 100; // important value
+
+let mapGen = new MapGenerator(numOfPoints);
 
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;
@@ -608,9 +616,6 @@ canvas.addEventListener("click", (e) => {
     const calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
-            let defaultTilePrecipitation = 100; // important value
-            let maxDefaultPrecipitationTiles = 20; // important value
-            let heightPrecipitationMultiplier = 2; // important value
             let totalWaterAvailable = defaultTilePrecipitation * maxDefaultPrecipitationTiles;
             let tileDistances = [];
             // get tile distance
@@ -940,6 +945,10 @@ canvas.addEventListener("click", (e) => {
     let windLines = createWindLines();
     let lakeTiles = {};
     let rivers;
+
+    let defaultTilePrecipitation = 100; // important value
+    let maxDefaultPrecipitationTiles = 20; // important value
+    let heightPrecipitationMultiplier = 2; // important value
 
     let precipitationForRiverMin = 200; // important value
     let precipitationForRiverMax = 500; // important value
