@@ -852,7 +852,7 @@ canvas.addEventListener("click", (e) => {
         return (path1.length <= path2.length) ? [path1, path2] : [path2, path1]; // 0 is short path, 1 is long path
     }
 
-    const drawRiversOnVoronoiEdges = (rivers, curveStrength = 0.4) => {
+    const drawRiversOnVoronoiEdges = (rivers, curveStrength = 0.4, freshWaterColor) => {
         let queue = [...rivers];
         let visitedSet = {};
 
@@ -916,7 +916,7 @@ canvas.addEventListener("click", (e) => {
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = "round";
-                    ctx.strokeStyle = '#33b9f7';
+                    ctx.strokeStyle = freshWaterColor;
                     ctx.stroke();
                 }
 
@@ -925,9 +925,9 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const drawLakes = () => {
+    const drawLakes = (freshWaterColor) => {
         for (let idx in lakeTiles) {
-            mapGen.fillTile(+idx, '#33b9f7');
+            mapGen.fillTile(+idx, freshWaterColor);
         }
     }
 
@@ -960,6 +960,7 @@ canvas.addEventListener("click", (e) => {
     defineLakes(rivers);
     expandLakes();
 
+    let freshWaterColor = "#0e97f2";
     mapGen.drawAll();
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
@@ -967,7 +968,7 @@ canvas.addEventListener("click", (e) => {
     // displayPrecipitationValue(mapGen.tiles);
 
     // drawRiversThroughCenters(rivers);
-    drawRiversOnVoronoiEdges(rivers);
-    drawLakes();
+    drawRiversOnVoronoiEdges(rivers, 0.4, freshWaterColor);
+    drawLakes(freshWaterColor);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
