@@ -34,6 +34,7 @@ class RiverNode {
         this.children = [];
         this.idx = idx;
         this.tile = tile;
+        this.dry = false;
     }
 
     addChild = (child) => this.children.push(child);
@@ -889,17 +890,17 @@ canvas.addEventListener("click", (e) => {
 
         // /draw rivers paths with a curve and varying widths
         let drawnSubPaths = new Set();
-        for (let riverTileAndPath of allRiverPaths) {
-            let riverTile = riverTileAndPath[0];
-            let riverPath = riverTileAndPath[1];
+        for (let riverNodeAndPath of allRiverPaths) {
+            let riverNode = riverNodeAndPath[0];
+            let riverPath = riverNodeAndPath[1];
             for (let riverSubPath of riverPath) {
                 let points = riverSubPath.flat();
                 let str = `x${points[0]}y${points[1]}x1${points[points.length - 2]}y1${points[points.length - 1]}`;
 
                 if (!drawnSubPaths.has(str)) {
                     // get width based on distance from end/root tile
-                    let riverRoot = riverTile.getRoot();
-                    let distToRoot = getDistanceBetweenPoints(riverRoot.tile.centroid, riverTile.tile.centroid);
+                    let riverRoot = riverNode.getRoot();
+                    let distToRoot = getDistanceBetweenPoints(riverRoot.tile.centroid, riverNode.tile.centroid);
 
                     let distWidth = riverWidthMax - Math.round(distToRoot / riverWidthDistanceStrengthControl);
                     if (distWidth < riverWidthMin) distWidth = riverWidthMin;
@@ -908,11 +909,11 @@ canvas.addEventListener("click", (e) => {
                     let thirdOfPrecipitationRange = Math.round((precipitationForRiverMax - precipitationForRiverMin) / 3);
                     let precipitationWidth;
 
-                    if (riverTile.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange) {
+                    if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange) {
                         precipitationWidth = 1;
-                    } else if (riverTile.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
+                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
                         precipitationWidth = 2;
-                    } else if (riverTile.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
+                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
                         precipitationWidth = 3;
                     } else {
                         precipitationWidth = 4;
@@ -943,6 +944,15 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const checkForDryRivers = (rivers) => {
+        for (let river of rivers) {
+            let tile = river.tile;
+            if (tile.precipitation < precipitationForRiverMin) {
+                river.dry = true;
+            }
+        }
+    }
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
@@ -958,7 +968,7 @@ canvas.addEventListener("click", (e) => {
     let heightPrecipitationMultiplier = 2; // important value
 
     let precipitationForRiverMin = 200; // important value
-    let precipitationForRiverMax = 500; // important value
+    let precipitationForRiverMax = 1000; // important value
 
     let precipitationForLake = 4000; // important value
     let lakeHeightPrecipitationMultiplier = 70 // important value
@@ -981,15 +991,19 @@ canvas.addEventListener("click", (e) => {
 
     addPrecipitationFromClimate();
 
+    checkForDryRivers(rivers);
+
+
     let freshWaterColor = "#0e97f2";
     mapGen.drawAll();
-    // drawWindIntersectedTiles(windLines);
-    // drawWindLines(windLines);
-    // drawPartitionBounds(partitions);
-    // displayPrecipitationValue(mapGen.tiles);
 
     // drawRiversThroughCenters(rivers);
     drawRiversOnVoronoiEdges(rivers, 0.4, freshWaterColor);
     drawLakes(freshWaterColor);
+
+    // drawWindIntersectedTiles(windLines);
+    // drawWindLines(windLines);
+    // drawPartitionBounds(partitions);
+    displayPrecipitationValue(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
