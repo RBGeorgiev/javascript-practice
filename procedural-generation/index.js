@@ -96,8 +96,8 @@ class MapGenerator {
 
     randRange = (min = 0, max = 1) => this.rng() * (max - min) + min;
 
-    getRandomTiles = (min = 5, max = 15, rand = true) => {
-        let len = (rand) ? Math.round(this.randRange(min, max)) : min;
+    getRandomTiles = (min = 5, max = 15) => {
+        let len = Math.round(this.randRange(min, max));
         let numOfTiles = this.tiles.length;
         if (len > numOfTiles) len = numOfTiles;
         let randTiles = [];
@@ -936,6 +936,13 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const addPrecipitationFromClimate = () => {
+        for (let idx in mapGen.landTiles) {
+            let tile = mapGen.getTile(+idx);
+            tile.precipitation += precipitationFromClimate;
+        }
+    }
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
@@ -960,6 +967,9 @@ canvas.addEventListener("click", (e) => {
     let riverWidthMin = 3; // important value
     let riverWidthDistanceStrengthControl = 20; // important value
 
+    let precipitationFromClimate = 50; // important value
+
+
     addTilesToPartitions(partitions);
     connectPartitionsToLines(partitions, windLines);
     findTilesIntersectingLineThroughPartitions(windLines);
@@ -968,6 +978,8 @@ canvas.addEventListener("click", (e) => {
     rivers = defineRivers();
     defineLakes(rivers);
     expandLakes();
+
+    addPrecipitationFromClimate();
 
     let freshWaterColor = "#0e97f2";
     mapGen.drawAll();
