@@ -945,8 +945,20 @@ canvas.addEventListener("click", (e) => {
     }
 
     const checkForDryRivers = (rivers) => {
-        for (let river of rivers) {
+        let visited = new Set();
+        let queue = [...rivers];
+
+        while (queue.length) {
+            let river = queue.shift();
             let tile = river.tile;
+
+            if (visited.has(tile.idx)) continue;
+            visited.add(tile.idx);
+
+            if (river.children) {
+                river.children.forEach(c => queue.push(c));
+            }
+
             if (tile.precipitation < precipitationForRiverMin) {
                 river.dry = true;
             }
