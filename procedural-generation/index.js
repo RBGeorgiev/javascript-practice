@@ -922,7 +922,7 @@ canvas.addEventListener("click", (e) => {
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = "round";
-                    ctx.strokeStyle = freshWaterColor;
+                    ctx.strokeStyle = (riverNode.dry) ? "black" : freshWaterColor;
                     ctx.stroke();
                 }
 
@@ -977,7 +977,7 @@ canvas.addEventListener("click", (e) => {
     let riverWidthMin = 3; // important value
     let riverWidthDistanceStrengthControl = 20; // important value
 
-    let precipitationFromClimate = 50; // important value
+    let precipitationFromClimate = -500; // important value
 
 
     addTilesToPartitions(partitions);
