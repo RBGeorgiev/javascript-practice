@@ -397,6 +397,7 @@ class MapGenerator {
     }
 }
 
+let seed = 2546076188;
 let numOfPoints = 1000; // important value
 let numberOfRandomInitialPeaksOrTrenchesMin = 5; // important value
 let numberOfRandomInitialPeaksOrTrenchesMax = 15; // important value
@@ -407,7 +408,7 @@ let heightDecrementMin = 50; // important value
 // if MAX number higher than 100 there is a chance for height increase
 let heightDecrementMax = 100; // important value
 
-let mapGen = new MapGenerator(numOfPoints);
+let mapGen = new MapGenerator(numOfPoints, seed);
 
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;
@@ -762,8 +763,7 @@ canvas.addEventListener("click", (e) => {
         // define lakes
         for (let i = 0; i < possibleLakes.length; i++) {
             let mbLake = possibleLakes[i];
-            if (mbLake.precipitation >= precipitationForLake) {
-                mbLake.lake = true;
+            if (mbLake.precipitation >= precipitationForLakeMin) {
                 lakeTiles[mbLake.idx] = mbLake;
                 delete mapGen.landTiles[mbLake.idx];
                 possibleLakes.splice(i, 1);
@@ -790,7 +790,7 @@ canvas.addEventListener("click", (e) => {
             }
             neighborsByHeight.sort((a, b) => a.height - b.height);
             let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
-            let totalWaterAvailable = lake.precipitation - precipitationForLake;
+            let totalWaterAvailable = lake.precipitation - precipitationForLakeMax;
 
             for (let neighbor of neighborsByHeight) {
                 if (totalWaterAvailable === 0) break;
@@ -806,7 +806,7 @@ canvas.addEventListener("click", (e) => {
                 lake.precipitation -= waterMoved;
                 totalWaterAvailable -= waterMoved;
 
-                if (neighbor.precipitation >= precipitationForLake) {
+                if (neighbor.precipitation >= precipitationForLakeMin) {
                     lakeTiles[neighbor.idx] = neighbor;
                     delete mapGen.landTiles[neighbor.idx];
 
@@ -989,14 +989,15 @@ canvas.addEventListener("click", (e) => {
     let precipitationForRiverMin = 200; // important value
     let precipitationForRiverMax = 1000; // important value
 
-    let precipitationForLake = 4000; // important value
+    let precipitationForLakeMin = 1000; // important value
+    let precipitationForLakeMax = 5000; // important value
     let lakeHeightPrecipitationMultiplier = 70 // important value
 
     let riverWidthMax = 10; // important value
     let riverWidthMin = 3; // important value
     let riverWidthDistanceStrengthControl = 20; // important value
 
-    let precipitationFromClimate = -500; // important value
+    let precipitationFromClimate = 0; // important value
 
 
     addTilesToPartitions(partitions);
