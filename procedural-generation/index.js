@@ -56,6 +56,7 @@ class Tile {
         this.height = null;
         this.precipitation = 0;
         this.river = null;
+        this.lake = false;
     }
 
     getNeighborsArray = (idx, mapGen) => {
@@ -762,6 +763,7 @@ canvas.addEventListener("click", (e) => {
         for (let i = 0; i < possibleLakes.length; i++) {
             let mbLake = possibleLakes[i];
             if (mbLake.precipitation >= precipitationForLake) {
+                mbLake.lake = true;
                 lakeTiles[mbLake.idx] = mbLake;
                 delete mapGen.landTiles[mbLake.idx];
                 possibleLakes.splice(i, 1);
@@ -939,6 +941,11 @@ canvas.addEventListener("click", (e) => {
 
     const addPrecipitationFromClimate = () => {
         for (let idx in mapGen.landTiles) {
+            let tile = mapGen.getTile(+idx);
+            tile.precipitation += precipitationFromClimate;
+        }
+
+        for (let idx in lakeTiles) {
             let tile = mapGen.getTile(+idx);
             tile.precipitation += precipitationFromClimate;
         }
