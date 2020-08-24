@@ -56,7 +56,6 @@ class Tile {
         this.height = null;
         this.precipitation = 0;
         this.river = null;
-        this.lake = false;
     }
 
     getNeighborsArray = (idx, mapGen) => {
@@ -972,6 +971,15 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const checkForDryLakes = () => {
+        for (let idx in lakeTiles) {
+            let tile = mapGen.getTile(+idx);
+            if (tile.precipitation < precipitationForLakeMin) {
+                tile.dryLake = true;
+            }
+        }
+    }
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
@@ -1012,6 +1020,7 @@ canvas.addEventListener("click", (e) => {
     addPrecipitationFromClimate();
 
     checkForDryRivers(rivers);
+    checkForDryLakes();
 
 
     let freshWaterColor = "#0e97f2";
