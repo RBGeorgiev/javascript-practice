@@ -793,7 +793,7 @@ canvas.addEventListener("click", (e) => {
             let totalWaterAvailable = lake.precipitation - precipitationForLakeMax;
 
             for (let neighbor of neighborsByHeight) {
-                if (totalWaterAvailable === 0) break;
+                if (totalWaterAvailable <= 0) break;
                 if (mapGen.oceanTiles[neighbor.idx]) break;
                 if (lakeTiles[neighbor.idx]) continue;
 
