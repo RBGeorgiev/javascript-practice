@@ -934,7 +934,8 @@ canvas.addEventListener("click", (e) => {
 
     const drawLakes = (freshWaterColor) => {
         for (let idx in lakeTiles) {
-            mapGen.fillTile(+idx, freshWaterColor);
+            let color = (mapGen.getTile(+idx).dryLake) ? "black" : freshWaterColor;
+            mapGen.fillTile(+idx, color);
         }
     }
 
@@ -1005,7 +1006,7 @@ canvas.addEventListener("click", (e) => {
     let riverWidthMin = 3; // important value
     let riverWidthDistanceStrengthControl = 20; // important value
 
-    let precipitationFromClimate = 0; // important value
+    let precipitationFromClimate = -3000; // important value
 
 
     addTilesToPartitions(partitions);
