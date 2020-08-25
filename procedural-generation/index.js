@@ -975,9 +975,7 @@ canvas.addEventListener("click", (e) => {
     const checkForDryLakes = () => {
         for (let idx in lakeTiles) {
             let tile = mapGen.getTile(+idx);
-            if (tile.precipitation < precipitationForLakeMin) {
-                tile.dryLake = true;
-            }
+            tile.dryLake = !!(tile.precipitation < precipitationForLakeMin);
         }
     }
 
