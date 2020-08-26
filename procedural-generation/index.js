@@ -859,7 +859,7 @@ canvas.addEventListener("click", (e) => {
         return (path1.length <= path2.length) ? [path1, path2] : [path2, path1]; // 0 is short path, 1 is long path
     }
 
-    const drawRiversOnVoronoiEdges = (rivers, curveStrength = 0.4, freshWaterColor) => {
+    const drawRiversOnVoronoiEdges = (rivers, curveStrength = 0.4, freshWaterColor = "#0e97f2") => {
         let queue = [...rivers];
         let visitedSet = {};
 
@@ -932,7 +932,7 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const drawLakes = (freshWaterColor) => {
+    const drawLakes = (freshWaterColor = "#0e97f2") => {
         for (let idx in lakeTiles) {
             let color = (mapGen.getTile(+idx).dryLake) ? "#bc9678" : freshWaterColor;
             mapGen.fillTile(+idx, color);
@@ -1022,12 +1022,11 @@ canvas.addEventListener("click", (e) => {
     checkForDryLakes();
 
 
-    let freshWaterColor = "#0e97f2";
     mapGen.drawAll();
 
     // drawRiversThroughCenters(rivers);
-    drawRiversOnVoronoiEdges(rivers, 0.4, freshWaterColor);
-    drawLakes(freshWaterColor);
+    drawRiversOnVoronoiEdges(rivers, 0.4);
+    drawLakes();
 
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
