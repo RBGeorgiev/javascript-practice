@@ -923,7 +923,7 @@ canvas.addEventListener("click", (e) => {
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = "round";
-                    ctx.strokeStyle = (riverNode.dry) ? "black" : freshWaterColor;
+                    ctx.strokeStyle = (riverNode.dry) ? "#bc9678" : freshWaterColor;
                     ctx.stroke();
                 }
 
@@ -934,7 +934,7 @@ canvas.addEventListener("click", (e) => {
 
     const drawLakes = (freshWaterColor) => {
         for (let idx in lakeTiles) {
-            let color = (mapGen.getTile(+idx).dryLake) ? "black" : freshWaterColor;
+            let color = (mapGen.getTile(+idx).dryLake) ? "#bc9678" : freshWaterColor;
             mapGen.fillTile(+idx, color);
         }
     }
