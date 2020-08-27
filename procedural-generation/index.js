@@ -724,34 +724,9 @@ canvas.addEventListener("click", (e) => {
             }
         }
 
-
         let riversSet = new Set();
         riverNodes.forEach(river => riversSet.add(river.getRoot()));
         return [...riversSet];
-    }
-
-
-    const drawRiversThroughCenters = (rivers) => {
-        let queue = [...rivers];
-        let visitedSet = new Set();
-
-        while (queue.length > 0) {
-            let cur = queue.shift();
-            let children = cur.children;
-            if (children.length === 0) continue;
-
-            for (let child of children) {
-                if (visitedSet.has(child.tile.idx)) continue;
-                ctx.beginPath();
-                ctx.moveTo(cur.tile.centroid[0], cur.tile.centroid[1]);
-                ctx.lineTo(child.tile.centroid[0], child.tile.centroid[1]);
-                ctx.strokeStyle = '#33b9f7';
-                ctx.stroke();
-
-                visitedSet.add(child.tile.idx);
-                queue.push(child);
-            }
-        }
     }
 
     const defineLakes = (rivers) => {
@@ -1024,13 +999,13 @@ canvas.addEventListener("click", (e) => {
 
     mapGen.drawAll();
 
-    // drawRiversThroughCenters(rivers);
+    drawRiversThroughCenters(rivers);
     drawRiversOnVoronoiEdges(rivers, 0.4);
     drawLakes();
 
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
     // drawPartitionBounds(partitions);
-    displayPrecipitationValue(mapGen.tiles);
+    // displayPrecipitationValue(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
