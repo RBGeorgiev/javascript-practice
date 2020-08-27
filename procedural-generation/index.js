@@ -407,6 +407,23 @@ let heightDecrementMin = 50; // important value
 // if MAX number higher than 100 there is a chance for height increase
 let heightDecrementMax = 100; // important value
 
+let defaultTilePrecipitation = 100; // important value
+let maxDefaultPrecipitationTiles = 20; // important value
+let heightPrecipitationMultiplier = 2; // important value
+
+let precipitationForRiverMin = 200; // important value
+let precipitationForRiverMax = 1000; // important value
+
+let precipitationForLakeMin = 1000; // important value
+let precipitationForLakeMax = 5000; // important value
+let lakeHeightPrecipitationMultiplier = 70 // important value
+
+let riverWidthMax = 10; // important value
+let riverWidthMin = 3; // important value
+let riverWidthDistanceStrengthControl = 20; // important value
+
+let precipitationFromClimate = -3000; // important value
+
 let mapGen = new MapGenerator(numOfPoints, seed);
 
 canvas.addEventListener("click", (e) => {
@@ -964,24 +981,6 @@ canvas.addEventListener("click", (e) => {
     let lakeTiles = {};
     let rivers;
 
-    let defaultTilePrecipitation = 100; // important value
-    let maxDefaultPrecipitationTiles = 20; // important value
-    let heightPrecipitationMultiplier = 2; // important value
-
-    let precipitationForRiverMin = 200; // important value
-    let precipitationForRiverMax = 1000; // important value
-
-    let precipitationForLakeMin = 1000; // important value
-    let precipitationForLakeMax = 5000; // important value
-    let lakeHeightPrecipitationMultiplier = 70 // important value
-
-    let riverWidthMax = 10; // important value
-    let riverWidthMin = 3; // important value
-    let riverWidthDistanceStrengthControl = 20; // important value
-
-    let precipitationFromClimate = -3000; // important value
-
-
     addTilesToPartitions(partitions);
     connectPartitionsToLines(partitions, windLines);
     findTilesIntersectingLineThroughPartitions(windLines);
@@ -999,7 +998,6 @@ canvas.addEventListener("click", (e) => {
 
     mapGen.drawAll();
 
-    drawRiversThroughCenters(rivers);
     drawRiversOnVoronoiEdges(rivers, 0.4);
     drawLakes();
 
