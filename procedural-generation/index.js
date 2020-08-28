@@ -56,6 +56,7 @@ class Tile {
         this.height = null;
         this.precipitation = 0;
         this.river = null;
+        this.temperature = 18;
     }
 
     getNeighborsArray = (idx, mapGen) => {
@@ -416,7 +417,7 @@ let precipitationForRiverMax = 1000; // important value
 
 let precipitationForLakeMin = 1000; // important value
 let precipitationForLakeMax = 5000; // important value
-let lakeHeightPrecipitationMultiplier = 70 // important value
+let lakeHeightPrecipitationMultiplier = 70; // important value
 
 let riverWidthMax = 10; // important value
 let riverWidthMin = 3; // important value
