@@ -56,7 +56,7 @@ class Tile {
         this.height = null;
         this.precipitation = 0;
         this.river = null;
-        this.temperature = 18;
+        this.temperature = 0;
     }
 
     getNeighborsArray = (idx, mapGen) => {
@@ -71,6 +71,8 @@ class Tile {
     }
 
     setHeight = (height) => this.height = height;
+
+    setTemperature = (degrees) => this.temperature = degrees;
 }
 
 class MapGenerator {
@@ -424,6 +426,8 @@ let riverWidthMin = 3; // important value
 let riverWidthDistanceStrengthControl = 20; // important value
 
 let precipitationFromClimate = -3000; // important value
+
+let seaLevelTemperature = 18; // important value
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
@@ -972,6 +976,15 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const calcualteTemperature = () => {
+        // each unit of tile height = 10 meters (i.e. 100 tile height = 1km)
+        let tempDecreasePerKm = 10;
+        for (let tile of mapGen.tiles) {
+            let temperature = seaLevelTemperature - (tile.height / tempDecreasePerKm);
+            tile.setTemperature(temperature);
+        }
+    }
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
@@ -995,6 +1008,8 @@ canvas.addEventListener("click", (e) => {
 
     checkForDryRivers(rivers);
     checkForDryLakes();
+
+    calcualteTemperature();
 
 
     mapGen.drawAll();
