@@ -980,7 +980,8 @@ canvas.addEventListener("click", (e) => {
         // each unit of tile height = 10 meters (i.e. 100 tile height = 1km)
         let tempDecreasePerKm = 10;
         for (let tile of mapGen.tiles) {
-            let temperature = seaLevelTemperature - (tile.height / tempDecreasePerKm);
+            let height = (tile.height < 0) ? 0 : tile.height;
+            let temperature = seaLevelTemperature - (height / tempDecreasePerKm);
             tile.setTemperature(temperature);
         }
     }
