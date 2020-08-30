@@ -986,6 +986,16 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const displayHeightValues = (tiles) => {
+        for (let idx in tiles) {
+            let tile = mapGen.getTile(+idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.height, x, y);
+        }
+    }
+
     const displayTemperatureValues = (tiles) => {
         for (let idx in tiles) {
             let tile = mapGen.getTile(+idx);
@@ -1032,6 +1042,7 @@ canvas.addEventListener("click", (e) => {
     // drawWindLines(windLines);
     // drawPartitionBounds(partitions);
     // displayPrecipitationValue(mapGen.tiles);
-    displayTemperatureValues(mapGen.tiles);
+    displayHeightValues(mapGen.tiles);
+    // displayTemperatureValues(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
