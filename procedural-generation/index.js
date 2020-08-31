@@ -1052,7 +1052,7 @@ canvas.addEventListener("click", (e) => {
 })
 
 
-const hexToRgb = function (hex) {
+const hexToRgb = (hex) => {
     let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? [
         parseInt(result[1], 16),
@@ -1061,11 +1061,11 @@ const hexToRgb = function (hex) {
     ] : null;
 }
 
-const rgbToHex = function (rgb) {
+const rgbToHex = (rgb) => {
     return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
 }
 
-let rgbToHsl = function (color) {
+let rgbToHsl = (color) => {
     let r = color[0] / 255;
     let g = color[1] / 255;
     let b = color[2] / 255;
@@ -1089,7 +1089,7 @@ let rgbToHsl = function (color) {
     return [h, s, l];
 }
 
-const hslToRgb = function (color) {
+const hslToRgb = (color) => {
     let l = color[2];
 
     if (color[1] == 0) {
@@ -1115,8 +1115,7 @@ const hslToRgb = function (color) {
     }
 }
 
-const lerpHSL = function (color1, color2, factor) {
-    if (arguments.length < 3) { factor = 0.5; }
+const lerpHSL = (color1, color2, factor) => {
     let hsl1 = rgbToHsl(color1);
     let hsl2 = rgbToHsl(color2);
     for (let i = 0; i < 3; i++) {
@@ -1126,10 +1125,15 @@ const lerpHSL = function (color1, color2, factor) {
 }
 
 
-let numOfColors = 5;
-let factorStep = 1 / numOfColors;
-for (let i = 0; i < numOfColors; i++) {
-    console.log(
-        rgbToHex(lerpHSL(hexToRgb('#fd3a3a'), hexToRgb('#4dff58'), factorStep * i))
-    )
+const lerpHexColorsAsHsl = (hexColor1, hexColor2, numOfColors) => {
+    let rgbColor1 = hexToRgb(hexColor1);
+    let rgbColor2 = hexToRgb(hexColor2);
+    let factorStep = 1 / numOfColors;
+    for (let i = 0; i < numOfColors; i++) {
+        console.log(
+            rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * i))
+        );
+    }
 }
+
+lerpHexColorsAsHsl('#fd3a3a', '#4dff58', 5);
