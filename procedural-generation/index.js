@@ -127,7 +127,7 @@ class MapGenerator {
         let randTiles = this.getRandomTiles(numberOfRandomInitialPeaksOrTrenchesMin, numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
             let dir = (this.rng() >= chanceForLand) ? 1 : -1;
-            tile.setHeight(dir * 100)
+            tile.setHeight(dir * initialPeakHeight)
         });
         let queue = [
             ...randTiles
@@ -146,6 +146,7 @@ class MapGenerator {
                 if (n.height === null) {
                     n.height = Math.round(curHeight * decrement);
                     queue.push(n);
+                    if (n.height > highestPeak) highestPeak = n.height;
                 }
             }
         }
@@ -428,6 +429,9 @@ let riverWidthDistanceStrengthControl = 20; // important value
 let precipitationFromClimate = -3000; // important value
 
 let seaLevelTemperature = 18; // important value
+
+let initialPeakHeight = 100;
+let highestPeak = initialPeakHeight;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
