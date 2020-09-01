@@ -1124,6 +1124,13 @@ const lerpHSL = (color1, color2, factor) => {
     return hslToRgb(hsl1);
 }
 
+lerpRGB = (color1, color2, factor) => {
+    var result = color1.slice();
+    for (var i = 0; i < 3; i++) {
+        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+    }
+    return result;
+}
 
 const lerpHexColorsAsHsl = (hexColor1, hexColor2, numOfColors) => {
     let colors = [];
@@ -1133,11 +1140,22 @@ const lerpHexColorsAsHsl = (hexColor1, hexColor2, numOfColors) => {
     return colors;
 }
 
-const getLerpedColor = (fromColor, toColor, numOfColors, currentNumber) => {
+var lerpHexColorsAsRgb = (hexColor1, hexColor2, numOfColors) => {
+    let color1 = hexToRgb(hexColor1);
+    let color2 = hexToRgb(hexColor2);
+    let factorStep = 1 / (numOfColors - 1);
+    let colors = [];
+    for (let i = 0; i < numOfColors; i++) {
+        colors.push(rgbToHex(lerpRGB(color1, color2, factorStep * i)));
+    }
+    return colors;
+}
+
+const getLerpedColor = (fromColor, toColor, numOfColors, idx) => {
     let rgbColor1 = hexToRgb(fromColor);
     let rgbColor2 = hexToRgb(toColor);
-    let factorStep = 1 / numOfColors;
-    return rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * currentNumber));
+    let factorStep = 1 / (numOfColors - 1);
+    return rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * idx));
 }
 
 let colors = lerpHexColorsAsHsl('#fd3a3a', '#4dff58', 5);
