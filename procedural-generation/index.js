@@ -1127,15 +1127,17 @@ const lerpHSL = (color1, color2, factor) => {
 
 const lerpHexColorsAsHsl = (hexColor1, hexColor2, numOfColors) => {
     let colors = [];
-    let rgbColor1 = hexToRgb(hexColor1);
-    let rgbColor2 = hexToRgb(hexColor2);
-    let factorStep = 1 / numOfColors;
     for (let i = 0; i < numOfColors; i++) {
-        colors.push(
-            rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * i))
-        );
+        colors.push(getLerpedColor(hexColor1, hexColor2, numOfColors, i));
     }
     return colors;
+}
+
+const getLerpedColor = (fromColor, toColor, numOfColors, currentNumber) => {
+    let rgbColor1 = hexToRgb(fromColor);
+    let rgbColor2 = hexToRgb(toColor);
+    let factorStep = 1 / numOfColors;
+    return rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * currentNumber));
 }
 
 let colors = lerpHexColorsAsHsl('#fd3a3a', '#4dff58', 5);
