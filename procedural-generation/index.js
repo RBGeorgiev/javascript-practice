@@ -1151,11 +1151,13 @@ let lerpHexColorsAsRgb = (hexColor1, hexColor2, numOfColors) => {
     return colors;
 }
 
-const getLerpedColor = (fromColor, toColor, numOfColors, idx) => {
+const getLerpedColor = (fromColor, toColor, numOfColors, idx, useRgb = false) => {
     let rgbColor1 = hexToRgb(fromColor);
     let rgbColor2 = hexToRgb(toColor);
     let factorStep = 1 / (numOfColors - 1);
-    return rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * idx));
+    return (useRgb) ?
+        rgbToHex(lerpRGB(rgbColor1, rgbColor2, factorStep * idx)) :
+        rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * idx));
 }
 
 let colorsHSL = lerpHexColorsAsHsl('#fd3a3a', '#4dff58', 5);
