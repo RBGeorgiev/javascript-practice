@@ -3,6 +3,123 @@ import { canvas, ctx } from './constants.js';
 import drawCurve from './drawCurve.js';
 
 
+// ___________________________________________________________________________________________________
+
+const hexToRgb = (hex) => {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ] : null;
+}
+
+const rgbToHex = (rgb) => {
+    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+}
+
+let rgbToHsl = (color) => {
+    let r = color[0] / 255;
+    let g = color[1] / 255;
+    let b = color[2] / 255;
+
+    let max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max == min) {
+        h = s = 0; // achromatic
+    } else {
+        let d = max - min;
+        s = (l > 0.5 ? d / (2 - max - min) : d / (max + min));
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return [h, s, l];
+}
+
+const hslToRgb = (color) => {
+    let l = color[2];
+
+    if (color[1] == 0) {
+        l = Math.round(l * 255);
+        return [l, l, l];
+    } else {
+        function hueToRgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        }
+
+        let s = color[1];
+        let q = (l < 0.5 ? l * (1 + s) : l + s - l * s);
+        let p = 2 * l - q;
+        let r = hueToRgb(p, q, color[0] + 1 / 3);
+        let g = hueToRgb(p, q, color[0]);
+        let b = hueToRgb(p, q, color[0] - 1 / 3);
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+}
+
+const lerpHSL = (color1, color2, factor) => {
+    let hsl1 = rgbToHsl(color1);
+    let hsl2 = rgbToHsl(color2);
+    for (let i = 0; i < 3; i++) {
+        hsl1[i] += factor * (hsl2[i] - hsl1[i]);
+    }
+    return hslToRgb(hsl1);
+}
+
+let lerpRGB = (color1, color2, factor) => {
+    var result = color1.slice();
+    for (var i = 0; i < 3; i++) {
+        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+    }
+    return result;
+}
+
+const lerpHexColorsAsHsl = (hexColor1, hexColor2, numOfColors) => {
+    let colors = [];
+    for (let i = 0; i < numOfColors; i++) {
+        colors.push(getLerpedColor(hexColor1, hexColor2, numOfColors, i));
+    }
+    return colors;
+}
+
+let lerpHexColorsAsRgb = (hexColor1, hexColor2, numOfColors) => {
+    let color1 = hexToRgb(hexColor1);
+    let color2 = hexToRgb(hexColor2);
+    let factorStep = 1 / (numOfColors - 1);
+    let colors = [];
+    for (let i = 0; i < numOfColors; i++) {
+        colors.push(rgbToHex(lerpRGB(color1, color2, factorStep * i)));
+    }
+    return colors;
+}
+
+const getLerpedColor = (fromColor, toColor, numOfColors, idx, useRgb = false) => {
+    let rgbColor1 = hexToRgb(fromColor);
+    let rgbColor2 = hexToRgb(toColor);
+    let factorStep = 1 / (numOfColors - 1);
+    return (useRgb) ?
+        rgbToHex(lerpRGB(rgbColor1, rgbColor2, factorStep * idx)) :
+        rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * idx));
+}
+
+// let colorsHSL = lerpHexColorsAsHsl('#fd3a3a', '#4dff58', 5);
+// let colorsRGB = lerpHexColorsAsRgb('#fd3a3a', '#4dff58', 5);
+// console.log(colorsHSL, colorsRGB);
+
+// ___________________________________________________________________________________________________
+
+
 const randomUint32 = () => (Math.random() * 4294967296) >>> 0; // random seed generator
 
 // Simple Fast Counter 32 bit - seeded pseudo random number generator
@@ -228,6 +345,66 @@ class MapGenerator {
         ctx.fill();
     }
 
+    // drawHeightmap = () => {
+    //     let len = this.tiles.length;
+    //     for (let i = 0; i < len; i++) {
+    //         let tile = this.getTile(i);
+    //         let h = tile.height;
+    //         let color;
+
+    //         ctx.beginPath();
+    //         if (h > 100) {
+    //             color = "#FFFFFF";
+    //         } else if (h > 90) {
+    //             color = "#ce0000";
+    //         } else if (h > 80) {
+    //             color = "#e22f14";
+    //         } else if (h > 70) {
+    //             color = "#e56414";
+    //         } else if (h > 60) {
+    //             color = "#e59814";
+    //         } else if (h > 50) {
+    //             color = "#eac820";
+    //         } else if (h > 40) {
+    //             color = "#e7f702";
+    //         } else if (h > 30) {
+    //             color = "#ccea20";
+    //         } else if (h > 20) {
+    //             color = "#9ee52b";
+    //         } else if (h > 10) {
+    //             color = "#22c94e";
+    //         } else if (h >= 0) {
+    //             color = "#2ce861";
+    //         } else if (h > -10) {
+    //             color = "#5883F2";
+    //         } else if (h > -20) {
+    //             color = "#4072F0";
+    //         } else if (h > -30) {
+    //             color = "#2860EE";
+    //         } else if (h > -40) {
+    //             color = "#0F47D5";
+    //         } else if (h > -50) {
+    //             color = "#0D3FBD";
+    //         } else if (h > -60) {
+    //             color = "#0B37A5";
+    //         } else if (h > -70) {
+    //             color = "#0A2F8E";
+    //         } else if (h > -80) {
+    //             color = "#082776";
+    //         } else if (h > -90) {
+    //             color = "#061F5E";
+    //         } else if (h > -100) {
+    //             color = "#050830";
+    //         } else {
+    //             color = "black"
+    //         }
+
+    //         this.fillTile(i, color);
+    //         ctx.strokeStyle = color;
+    //         ctx.stroke();
+    //     }
+    // }
+
     drawHeightmap = () => {
         let len = this.tiles.length;
         for (let i = 0; i < len; i++) {
@@ -236,52 +413,11 @@ class MapGenerator {
             let color;
 
             ctx.beginPath();
-            if (h > 100) {
-                color = "#FFFFFF";
-            } else if (h > 90) {
-                color = "#ce0000";
-            } else if (h > 80) {
-                color = "#e22f14";
-            } else if (h > 70) {
-                color = "#e56414";
-            } else if (h > 60) {
-                color = "#e59814";
-            } else if (h > 50) {
-                color = "#eac820";
-            } else if (h > 40) {
-                color = "#e7f702";
-            } else if (h > 30) {
-                color = "#ccea20";
-            } else if (h > 20) {
-                color = "#9ee52b";
-            } else if (h > 10) {
-                color = "#22c94e";
-            } else if (h >= 0) {
-                color = "#2ce861";
-            } else if (h > -10) {
-                color = "#5883F2";
-            } else if (h > -20) {
-                color = "#4072F0";
-            } else if (h > -30) {
-                color = "#2860EE";
-            } else if (h > -40) {
-                color = "#0F47D5";
-            } else if (h > -50) {
-                color = "#0D3FBD";
-            } else if (h > -60) {
-                color = "#0B37A5";
-            } else if (h > -70) {
-                color = "#0A2F8E";
-            } else if (h > -80) {
-                color = "#082776";
-            } else if (h > -90) {
-                color = "#061F5E";
-            } else if (h > -100) {
-                color = "#050830";
+            if (h >= 0) {
+                color = getLerpedColor('#4dff58', '#fd3a3a', highestPeak, h - 1);
             } else {
-                color = "black"
+                color = '#5883F2';
             }
-
             this.fillTile(i, color);
             ctx.strokeStyle = color;
             ctx.stroke();
@@ -1050,116 +1186,3 @@ canvas.addEventListener("click", (e) => {
     // displayTemperatureValues(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
-
-
-const hexToRgb = (hex) => {
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-    ] : null;
-}
-
-const rgbToHex = (rgb) => {
-    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-}
-
-let rgbToHsl = (color) => {
-    let r = color[0] / 255;
-    let g = color[1] / 255;
-    let b = color[2] / 255;
-
-    let max = Math.max(r, g, b), min = Math.min(r, g, b);
-    let h, s, l = (max + min) / 2;
-
-    if (max == min) {
-        h = s = 0; // achromatic
-    } else {
-        let d = max - min;
-        s = (l > 0.5 ? d / (2 - max - min) : d / (max + min));
-        switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
-        }
-        h /= 6;
-    }
-
-    return [h, s, l];
-}
-
-const hslToRgb = (color) => {
-    let l = color[2];
-
-    if (color[1] == 0) {
-        l = Math.round(l * 255);
-        return [l, l, l];
-    } else {
-        function hueToRgb(p, q, t) {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1 / 6) return p + (q - p) * 6 * t;
-            if (t < 1 / 2) return q;
-            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-            return p;
-        }
-
-        let s = color[1];
-        let q = (l < 0.5 ? l * (1 + s) : l + s - l * s);
-        let p = 2 * l - q;
-        let r = hueToRgb(p, q, color[0] + 1 / 3);
-        let g = hueToRgb(p, q, color[0]);
-        let b = hueToRgb(p, q, color[0] - 1 / 3);
-        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-    }
-}
-
-const lerpHSL = (color1, color2, factor) => {
-    let hsl1 = rgbToHsl(color1);
-    let hsl2 = rgbToHsl(color2);
-    for (let i = 0; i < 3; i++) {
-        hsl1[i] += factor * (hsl2[i] - hsl1[i]);
-    }
-    return hslToRgb(hsl1);
-}
-
-let lerpRGB = (color1, color2, factor) => {
-    var result = color1.slice();
-    for (var i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-    }
-    return result;
-}
-
-const lerpHexColorsAsHsl = (hexColor1, hexColor2, numOfColors) => {
-    let colors = [];
-    for (let i = 0; i < numOfColors; i++) {
-        colors.push(getLerpedColor(hexColor1, hexColor2, numOfColors, i));
-    }
-    return colors;
-}
-
-let lerpHexColorsAsRgb = (hexColor1, hexColor2, numOfColors) => {
-    let color1 = hexToRgb(hexColor1);
-    let color2 = hexToRgb(hexColor2);
-    let factorStep = 1 / (numOfColors - 1);
-    let colors = [];
-    for (let i = 0; i < numOfColors; i++) {
-        colors.push(rgbToHex(lerpRGB(color1, color2, factorStep * i)));
-    }
-    return colors;
-}
-
-const getLerpedColor = (fromColor, toColor, numOfColors, idx, useRgb = false) => {
-    let rgbColor1 = hexToRgb(fromColor);
-    let rgbColor2 = hexToRgb(toColor);
-    let factorStep = 1 / (numOfColors - 1);
-    return (useRgb) ?
-        rgbToHex(lerpRGB(rgbColor1, rgbColor2, factorStep * idx)) :
-        rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * idx));
-}
-
-let colorsHSL = lerpHexColorsAsHsl('#fd3a3a', '#4dff58', 5);
-let colorsRGB = lerpHexColorsAsRgb('#fd3a3a', '#4dff58', 5);
-console.log(colorsHSL, colorsRGB);
