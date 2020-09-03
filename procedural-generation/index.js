@@ -264,6 +264,7 @@ class MapGenerator {
                     n.height = Math.round(curHeight * decrement);
                     queue.push(n);
                     if (n.height > highestPeak) highestPeak = n.height;
+                    if (n.height < lowestDepth) lowestDepth = n.height;
                 }
             }
         }
@@ -568,6 +569,7 @@ let seaLevelTemperature = 18; // important value
 
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
+let lowestDepth = -initialPeakHeight;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
