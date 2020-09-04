@@ -417,8 +417,9 @@ class MapGenerator {
             if (h >= 0) {
                 color = getLerpedColor('#4dff58', '#fd3a3a', highestPeak, h - 1);
             } else {
-                color = getLerpedColor('#5883F2', '#050830', Math.abs(highestPeak), Math.abs(h) - 1);
-                // color = '#5883F2';
+                (showOceanDepth) ?
+                    color = getLerpedColor('#5883F2', '#050830', Math.abs(highestPeak), Math.abs(h) - 1) :
+                    color = '#5883F2';
             }
             this.fillTile(i, color);
             ctx.strokeStyle = color;
@@ -571,6 +572,7 @@ let seaLevelTemperature = 18; // important value
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
 let lowestDepth = -initialPeakHeight;
+let showOceanDepth = true;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
