@@ -417,7 +417,8 @@ class MapGenerator {
             if (h >= 0) {
                 color = getLerpedColor('#4dff58', '#fd3a3a', highestPeak, h - 1);
             } else {
-                color = '#5883F2';
+                color = getLerpedColor('#5883F2', '#050830', Math.abs(highestPeak), Math.abs(h) - 1);
+                // color = '#5883F2';
             }
             this.fillTile(i, color);
             ctx.strokeStyle = color;
