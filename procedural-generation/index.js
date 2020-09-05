@@ -418,7 +418,7 @@ class MapGenerator {
                 color = getLerpedColor('#4dff58', '#fd3a3a', highestPeak, h - 1);
             } else {
                 (showOceanDepth) ?
-                    color = getLerpedColor('#5883F2', '#050830', Math.abs(highestPeak), Math.abs(h) - 1) :
+                    color = getLerpedColor('#5883F2', '#050830', Math.abs(lowestDepth), Math.abs(h) - 1) :
                     color = '#5883F2';
             }
             this.fillTile(i, color);
