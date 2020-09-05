@@ -243,7 +243,7 @@ class MapGenerator {
     setTilesHeight = () => {
         let randTiles = this.getRandomTiles(numberOfRandomInitialPeaksOrTrenchesMin, numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
-            let dir = (this.rng() >= chanceForLand) ? 1 : -1;
+            let dir = (this.rng() < chanceForLand) ? 1 : -1;
             tile.setHeight(dir * initialPeakHeight)
         });
         let queue = [
