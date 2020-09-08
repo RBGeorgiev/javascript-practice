@@ -119,6 +119,33 @@ const getLerpedColor = (fromColor, toColor, numOfColors, idx, useRgb = false) =>
 
 // ___________________________________________________________________________________________________
 
+const BIOMES = {
+    "HOT_DESERT": 0,
+    "SAVANNA": 1,
+    "TROPICAL_DRY_FOREST": 2,
+    "TROPICAL_WET_FOREST": 3,
+    "XERIC_SHRUBLAND": 4,
+    "TEMPERATE_DRY_GRASSLAND": 5,
+    "TEMPERATE_WET_GRASSLAND": 6,
+    "TEMPERATE_DECIDUOUS_FOREST": 7,
+    "SUBTROPICAL_RAINFOREST": 8,
+    "COLD_DESERT": 9,
+    "TEMPERATE_RAINFOREST": 10,
+    "CONIFEROUS_WET_FOREST": 11,
+    "TEMPERATE_CONIFEROUS_FOREST": 12,
+    "SUBTAIGA": 13,
+    "BOREAL_WET_FOREST": 14,
+    "BOREAL_DRY_FOREST": 15,
+    "SUBPOLAR_SCRUB": 16,
+    "SUBPOLAR_DESERT": 17,
+    "TUNDRA": 18,
+    "ROCKY_DESERT": 19,
+    "POLAR_DESERT": 20,
+    "GLACIER": 21
+}
+
+Object.freeze(BIOMES)
+
 
 // 0	Hot desert	                    hottest-hot	        superarid           #fbfaae	
 // 1	Savanna	                        hottest     	    arid                #eef586	
