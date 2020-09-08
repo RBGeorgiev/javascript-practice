@@ -120,6 +120,31 @@ const getLerpedColor = (fromColor, toColor, numOfColors, idx, useRgb = false) =>
 // ___________________________________________________________________________________________________
 
 
+// 0	Hot desert	                    hottest-hot	        superarid           #fbfaae	
+// 1	Savanna	                        hottest     	    arid                #eef586	
+// 2	Tropical dry forest	            hottest	            humid               #b6d95d	
+// 3	Tropical wet forest	            hottest	            superhumid          #7dcb35	
+// 4	Xeric srubland	                temperate-cold	    superarid           #d6dd7f	
+// 5	Temperate dry grassland	        hot-temperate	    arid                #bdde82	
+// 6	Temperate wet grassland	        hot-temperate	    subhumid            #a1d77a	
+// 7	Temperate deciduous forest	    hot-temperate	    humid               #29bc56	
+// 8	Subtropical rain forest         hot	                superhumid          #76bd32	
+// 9	Cold desert	                    temperate-cold	    superarid           #e1df9b	
+// 10	Temperate rain forest	        temperate	        superhumid          #45b348	
+// 11	Coniferous wet forest	        temperate	        superhumid          #52a444	
+// 12	Temperate coniferous forest	    temperate	        humid               #6fb252	
+// 13	Subtaiga	                    cold	            superhumid          #567c2c	
+// 14	Boreal wet forest	            cold	            humid               #618a38	
+// 15	Boreal dry forest	            cold	            subhumid            #a4b36d	
+// 16	Subpolar scrub	                cold	            arid                #acb076	
+// 17	Subpolar desert	                cold-coldest	    superarid-arid      #b5ad8b	
+// 18	Tundra	                        coldest	            humid	            #d5d59d	
+// 19	Rocky desert	                coldest-frosty	    superarid           #bfbfbf	
+// 20	Polar desert	                frosty	            any                 #f2f2f2	
+// 21	Glacier                         frosty	            any                 #fafeff
+// ___________________________________________________________________________________________________
+
+
 const randomUint32 = () => (Math.random() * 4294967296) >>> 0; // random seed generator
 
 // Simple Fast Counter 32 bit - seeded pseudo random number generator
