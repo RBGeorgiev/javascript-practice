@@ -124,15 +124,15 @@ const BIOMES = {
     "SAVANNA": "#eef586",
     "TROPICAL_DRY_FOREST": "#b6d95d",
     "TROPICAL_WET_FOREST": "#7dcb35",
-    "XERIC_SHRUBLAND": "#d6dd7f",
+    "SUBTROPICAL_RAINFOREST": "#76bd32",
     "TEMPERATE_DRY_GRASSLAND": "#bdde82",
     "TEMPERATE_WET_GRASSLAND": "#a1d77a",
     "TEMPERATE_DECIDUOUS_FOREST": "#29bc56",
-    "SUBTROPICAL_RAINFOREST": "#76bd32",
-    "COLD_DESERT": "#e1df9b",
     "TEMPERATE_RAINFOREST": "#45b348",
     "CONIFEROUS_WET_FOREST": "#52a444",
     "TEMPERATE_CONIFEROUS_FOREST": "#6fb252",
+    "COLD_DESERT": "#e1df9b",
+    "XERIC_SHRUBLAND": "#d6dd7f",
     "SUBTAIGA": "#567c2c",
     "BOREAL_WET_FOREST": "#618a38",
     "BOREAL_DRY_FOREST": "#a4b36d",
@@ -151,24 +151,35 @@ Object.freeze(BIOMES)
 // 1	Savanna	                        hottest     	    arid                #eef586	
 // 2	Tropical dry forest	            hottest	            humid               #b6d95d	
 // 3	Tropical wet forest	            hottest	            superhumid          #7dcb35	
-// 4	Xeric srubland	                temperate-cold	    superarid           #d6dd7f	
+// 8	Subtropical rain forest         hot	                superhumid          #76bd32	
 // 5	Temperate dry grassland	        hot-temperate	    arid                #bdde82	
 // 6	Temperate wet grassland	        hot-temperate	    subhumid            #a1d77a	
 // 7	Temperate deciduous forest	    hot-temperate	    humid               #29bc56	
-// 8	Subtropical rain forest         hot	                superhumid          #76bd32	
-// 9	Cold desert	                    temperate-cold	    superarid           #e1df9b	
 // 10	Temperate rain forest	        temperate	        superhumid          #45b348	
 // 11	Coniferous wet forest	        temperate	        superhumid          #52a444	
 // 12	Temperate coniferous forest	    temperate	        humid               #6fb252	
+// 9	Cold desert	                    temperate-cold	    superarid           #e1df9b	
+// 4	Xeric srubland	                temperate-cold	    arid                #d6dd7f	
 // 13	Subtaiga	                    cold	            superhumid          #567c2c	
 // 14	Boreal wet forest	            cold	            humid               #618a38	
 // 15	Boreal dry forest	            cold	            subhumid            #a4b36d	
 // 16	Subpolar scrub	                cold	            arid                #acb076	
 // 17	Subpolar desert	                cold-coldest	    superarid-arid      #b5ad8b	
 // 18	Tundra	                        coldest	            humid	            #d5d59d	
-// 19	Rocky desert	                coldest-frosty	    superarid           #bfbfbf	
-// 20	Polar desert	                frosty	            any                 #f2f2f2	
-// 21	Glacier                         frosty	            any                 #fafeff
+// 19	Rocky desert	                coldest-freezing    superarid           #bfbfbf
+// 20	Polar desert	                freezing	        any                 #f2f2f2
+// 21	Glacier                         freezing	        any                 #fafeff
+
+// hottest-hot: 35+
+// hottest: 30 to 35
+// hot: 25 to 30
+// hot-temperate: 20 to 25
+// temperate: 15 to 20
+// cold-temperate: 10 to 15
+// cold: 5 to 10
+// coldest: 0 to 5
+// freezing: <= 0
+
 // ___________________________________________________________________________________________________
 
 
@@ -1239,7 +1250,7 @@ canvas.addEventListener("click", (e) => {
     // drawWindLines(windLines);
     // drawPartitionBounds(partitions);
     // displayPrecipitationValue(mapGen.tiles);
-    displayHeightValues(mapGen.tiles);
-    // displayTemperatureValues(mapGen.tiles);
+    // displayHeightValues(mapGen.tiles);
+    displayTemperatureValues(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
