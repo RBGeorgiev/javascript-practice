@@ -498,22 +498,22 @@ let heightDecrementMin = 50; // important value
 // if MAX number higher than 100 there is a chance for height increase
 let heightDecrementMax = 100; // important value
 
-let defaultTilePrecipitation = 100; // important value
+let defaultTilePrecipitation = 10; // important value
 let maxDefaultPrecipitationTiles = 20; // important value
-let heightPrecipitationMultiplier = 2; // important value
+let heightPrecipitationMultiplier = .2; // important value
 
-let precipitationForRiverMin = 200; // important value
-let precipitationForRiverMax = 1000; // important value
+let precipitationForRiverMin = 20; // important value
+let precipitationForRiverMax = 100; // important value
 
-let precipitationForLakeMin = 1000; // important value
-let precipitationForLakeMax = 5000; // important value
-let lakeHeightPrecipitationMultiplier = 70; // important value
+let precipitationForLakeMin = 100; // important value
+let precipitationForLakeMax = 500; // important value
+let lakeHeightPrecipitationMultiplier = 7; // important value
 
 let riverWidthMax = 10; // important value
 let riverWidthMin = 3; // important value
 let riverWidthDistanceStrengthControl = 20; // important value
 
-let precipitationFromClimate = -3000; // important value
+let precipitationFromClimate = 0; // important value
 
 let seaLevelTemperature = 18; // important value
 
@@ -888,7 +888,7 @@ canvas.addEventListener("click", (e) => {
 
                 let heightDifference = neighbor.height - lake.height;
 
-                let waterMoved = waterSpreadAverage + ((100 - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
+                let waterMoved = waterSpreadAverage + ((defaultTilePrecipitation - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
                 if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
 
                 neighbor.precipitation += waterMoved;
@@ -1134,8 +1134,8 @@ canvas.addEventListener("click", (e) => {
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
     // drawPartitionBounds(partitions);
-    // displayPrecipitationValue(mapGen.tiles);
+    displayPrecipitationValues(mapGen.tiles);
     // displayHeightValues(mapGen.tiles);
-    displayTemperatureValues(mapGen.tiles);
+    // displayTemperatureValues(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
