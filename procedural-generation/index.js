@@ -120,7 +120,7 @@ class Tile {
         this.neighbors = this.getNeighborsArray(idx, mapGen);
         this.height = null;
         this.precipitation = 0;
-        this.totalPrecipitation = 0;
+        this.totalPrecipitationPassedThroughTile = 0;
         this.river = null;
         this.temperature = 0;
     }
@@ -761,7 +761,7 @@ canvas.addEventListener("click", (e) => {
                 totalWaterAvailable -= precipitation;
 
                 tile.precipitation += Math.round(precipitation);
-                tile.totalPrecipitation += Math.round(precipitation);
+                tile.totalPrecipitationPassedThroughTile += Math.round(precipitation);
             }
         }
     }
@@ -782,7 +782,7 @@ canvas.addEventListener("click", (e) => {
             let x = tile.centroid[0];
             let y = tile.centroid[1];
             ctx.fillStyle = "#000000";
-            ctx.fillText(tile.totalPrecipitation, x, y);
+            ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
         }
     }
 
@@ -824,6 +824,7 @@ canvas.addEventListener("click", (e) => {
                 let flowAmount = tile.precipitation - precipitationForRiverLeftInTile;
 
                 lowestNeighbor.precipitation += flowAmount;
+                lowestNeighbor.totalPrecipitationPassedThroughTile += flowAmount;
                 tile.precipitation -= flowAmount;
 
                 if (!tile.river) {
@@ -904,6 +905,7 @@ canvas.addEventListener("click", (e) => {
                 if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
 
                 neighbor.precipitation += waterMoved;
+                neighbor.totalPrecipitationPassedThroughTile += waterMoved;
                 lake.precipitation -= waterMoved;
                 totalWaterAvailable -= waterMoved;
 
@@ -1045,13 +1047,13 @@ canvas.addEventListener("click", (e) => {
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
             tile.precipitation += precipitationFromClimate;
-            tile.totalPrecipitation += precipitationFromClimate;
+            tile.totalPrecipitationPassedThroughTile += precipitationFromClimate;
         }
 
         for (let idx in lakeTiles) {
             let tile = mapGen.getTile(+idx);
             tile.precipitation += precipitationFromClimate;
-            tile.totalPrecipitation += precipitationFromClimate;
+            tile.totalPrecipitationPassedThroughTile += precipitationFromClimate;
         }
     }
 
