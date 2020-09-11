@@ -120,6 +120,7 @@ class Tile {
         this.neighbors = this.getNeighborsArray(idx, mapGen);
         this.height = null;
         this.precipitation = 0;
+        this.totalPrecipitation = 0;
         this.river = null;
         this.temperature = 0;
     }
@@ -760,6 +761,7 @@ canvas.addEventListener("click", (e) => {
                 totalWaterAvailable -= precipitation;
 
                 tile.precipitation += Math.round(precipitation);
+                tile.totalPrecipitation += Math.round(precipitation);
             }
         }
     }
@@ -1033,11 +1035,13 @@ canvas.addEventListener("click", (e) => {
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
             tile.precipitation += precipitationFromClimate;
+            tile.totalPrecipitation += precipitationFromClimate;
         }
 
         for (let idx in lakeTiles) {
             let tile = mapGen.getTile(+idx);
             tile.precipitation += precipitationFromClimate;
+            tile.totalPrecipitation += precipitationFromClimate;
         }
     }
 
