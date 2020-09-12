@@ -65,6 +65,15 @@ Object.freeze(BIOMES)
 // coldest: 0 to 5
 // freezing: <= 0
 
+// superarid: < 0
+// perarid: 0 to 30
+// arid: 30 to 60
+// semiarid: 60 to 100
+// subhumid: 100 to 140
+// humid: 140 to 170
+// perhumid: 170 to 200
+// superhumid: > 200
+
 // ___________________________________________________________________________________________________
 
 
