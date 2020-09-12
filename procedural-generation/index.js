@@ -145,6 +145,11 @@ class Tile {
         return allNeighbors;
     }
 
+    resetPrecipitation = () => {
+        this.precipitation = 0;
+        this.totalPrecipitationPassedThroughTile = 0;
+    }
+
     setHeight = (height) => this.height = height;
 
     setTemperature = (degrees) => this.temperature = degrees;
@@ -726,7 +731,7 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const resetPrecipitation = () => mapGen.tiles.forEach(t => t.precipitation = 0);
+    const resetPrecipitation = () => mapGen.tiles.forEach(t => t.resetPrecipitation());
 
     const getDistanceBetweenPoints = (p1, p2) => {
         let x1 = p1[0];
