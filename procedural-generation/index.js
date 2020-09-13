@@ -1170,3 +1170,45 @@ canvas.addEventListener("click", (e) => {
     // displayTemperatureValues(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
+
+// Chaparral = Desert scrub
+// Savannas = Tropical grasslands
+// Boreal forest = Taiga
+
+
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// |                   | Superarid             | Perarid                     | Arid                     | Semiarid             | Subhumid              | Humid                       | Perhumid              | Superhumid              |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Scorching         | Hot desert            | Hot desert                  | Hot desert               | Hot desert           | Hot desert            | Hot desert                  | Hot desert            | Hot desert              |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Hottest(tropical) | Tropical desert       | Semi-arid desert            | Thorn steppe             | Dry savanna          | Dry woodland          | Wet savanna                 | Tropical wet forest   | Tropical rainforest     |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Hot(subtropical)  | Subtropical desert    | Desert scrub                | Thorn woodland           | Dry savanna          | Tropical dry forest   | Moist forest                | Wet forest            | Subtropical rain forest |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Hot-temperate     | Warm-temperate desert | Desert scrub                | Temperate dry grassland  | Temperate grassland  | Deciduous dry forest  | Temperate deciduous forest  | Wet forest            | Rain forest             |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Temperate         | Temperate Desert      | Xeric shrubland             | Dry woodland             | Woodland             | Dry forest            | Temperate forest            | Temperate wet forest  | Temperate wet forest    |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Cold-temperate    | Cold desert           | Cool temperate desert scrub | Steppe                   | Dry forest           | Coniferous dry forest | Temperate coniferous forest | Coniferous wet forest | Coniferous wet forest   |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Cold(boreal)      | Subpolar desert       | Dry scrub                   | Subpolar scrub           | Very dry forest      | Boreal dry forest     | Boreal forest               | Boreal wet forest     | Boreal wet forest       |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Coldest(subpolar) | Rocky desert          | Rocky desert                | Rocky desert             | Dry tundra           | Tundra                | Moist tundra                | Wet tundra            | Rain tundra             |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+// | Freezing(polar)   | Polar desert          | Polar desert                | Polar desert             | Polar desert         | Glacier               | Glacier                     | Glacier               | Glacier                 |
+// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
+
+
+
+// _________________________________________
+
+// Potential special biomes
+
+// Elfin woodland
+// Mires: Swamp, Bog, Fen, and Moor
+// Tropical fresh - water swamp forest
+// Temperate fresh - water swamp forest
+// Wetland Forests
+// Mangrove swamp
+// Salt marsh
+// Wetland
