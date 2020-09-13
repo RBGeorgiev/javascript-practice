@@ -29,50 +29,7 @@ const BIOMES = {
     "GLACIER": "#fafeff"
 }
 
-Object.freeze(BIOMES)
-
-
-// 0	Hot desert	                    hottest-hot	        superarid           #fbfaae	
-// 1	Savanna	                        hottest     	    arid                #eef586	
-// 2	Tropical dry forest	            hottest	            humid               #b6d95d	
-// 3	Tropical wet forest	            hottest	            superhumid          #7dcb35	
-// 8	Subtropical rain forest         hot	                superhumid          #76bd32	
-// 5	Temperate dry grassland	        hot-temperate	    arid                #bdde82	
-// 6	Temperate wet grassland	        hot-temperate	    subhumid            #a1d77a	
-// 7	Temperate deciduous forest	    hot-temperate	    humid               #29bc56	
-// 10	Temperate rain forest	        temperate	        superhumid          #45b348	
-// 11	Coniferous wet forest	        temperate	        superhumid          #52a444	
-// 12	Temperate coniferous forest	    temperate	        humid               #6fb252	
-// 9	Cold desert	                    temperate-cold	    superarid           #e1df9b	
-// 4	Xeric srubland	                temperate-cold	    arid                #d6dd7f	
-// 13	Subtaiga	                    cold	            superhumid          #567c2c	
-// 14	Boreal wet forest	            cold	            humid               #618a38	
-// 15	Boreal dry forest	            cold	            subhumid            #a4b36d	
-// 16	Subpolar scrub	                cold	            arid                #acb076	
-// 17	Subpolar desert	                cold-coldest	    superarid-arid      #b5ad8b	
-// 18	Tundra	                        coldest	            humid	            #d5d59d	
-// 19	Rocky desert	                coldest-freezing    superarid           #bfbfbf
-// 20	Polar desert	                freezing	        any                 #f2f2f2
-// 21	Glacier                         freezing	        any                 #fafeff
-
-// scorching: 35+
-// hottest: 30 to 35
-// hot: 25 to 30
-// hot-temperate: 20 to 25
-// temperate: 15 to 20
-// cold-temperate: 10 to 15
-// cold: 5 to 10
-// coldest: 0 to 5
-// freezing: <= 0
-
-// superarid: < 0
-// perarid: 0 to 30
-// arid: 30 to 60
-// semiarid: 60 to 100
-// subhumid: 100 to 140
-// humid: 140 to 170
-// perhumid: 170 to 200
-// superhumid: > 200
+Object.freeze(BIOMES);
 
 // ___________________________________________________________________________________________________
 
@@ -377,12 +334,22 @@ class MapGenerator {
             let color;
 
             ctx.beginPath();
-            if (h >= 0) {
-                color = getLerpedColor('#4dff58', '#fd3a3a', highestPeak, h - 1);
+            if (grayscaleHeightmap) {
+                if (h >= 0) {
+                    color = getLerpedColor('#7f7f7f', '#ffffff', highestPeak, h - 1);
+                } else {
+                    (showOceanDepth) ?
+                        color = getLerpedColor('#7f7f7f', '#000000', Math.abs(lowestDepth), Math.abs(h) - 1) :
+                        color = '#000000';
+                }
             } else {
-                (showOceanDepth) ?
-                    color = getLerpedColor('#5883F2', '#050830', Math.abs(lowestDepth), Math.abs(h) - 1) :
-                    color = '#5883F2';
+                if (h >= 0) {
+                    color = getLerpedColor('#4dff58', '#fd3a3a', highestPeak, h - 1);
+                } else {
+                    (showOceanDepth) ?
+                        color = getLerpedColor('#5883F2', '#050830', Math.abs(lowestDepth), Math.abs(h) - 1) :
+                        color = '#5883F2';
+                }
             }
             this.fillTile(i, color);
             ctx.strokeStyle = color;
@@ -536,6 +503,7 @@ let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
 let lowestDepth = -initialPeakHeight;
 let showOceanDepth = true;
+let grayscaleHeightmap = true;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
@@ -1198,6 +1166,48 @@ canvas.addEventListener("click", (e) => {
 // | Freezing(polar)   | Polar desert          | Polar desert                | Polar desert             | Polar desert         | Glacier               | Glacier                     | Glacier               | Glacier                 |
 // +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
 
+
+// 0	Hot desert	                    hottest-hot	        superarid           #fbfaae	
+// 1	Savanna	                        hottest     	    arid                #eef586	
+// 2	Tropical dry forest	            hottest	            humid               #b6d95d	
+// 3	Tropical wet forest	            hottest	            superhumid          #7dcb35	
+// 8	Subtropical rain forest         hot	                superhumid          #76bd32	
+// 5	Temperate dry grassland	        hot-temperate	    arid                #bdde82	
+// 6	Temperate wet grassland	        hot-temperate	    subhumid            #a1d77a	
+// 7	Temperate deciduous forest	    hot-temperate	    humid               #29bc56	
+// 10	Temperate rain forest	        temperate	        superhumid          #45b348	
+// 11	Coniferous wet forest	        temperate	        superhumid          #52a444	
+// 12	Temperate coniferous forest	    temperate	        humid               #6fb252	
+// 9	Cold desert	                    temperate-cold	    superarid           #e1df9b	
+// 4	Xeric srubland	                temperate-cold	    arid                #d6dd7f	
+// 13	Subtaiga	                    cold	            superhumid          #567c2c	
+// 14	Boreal wet forest	            cold	            humid               #618a38	
+// 15	Boreal dry forest	            cold	            subhumid            #a4b36d	
+// 16	Subpolar scrub	                cold	            arid                #acb076	
+// 17	Subpolar desert	                cold-coldest	    superarid-arid      #b5ad8b	
+// 18	Tundra	                        coldest	            humid	            #d5d59d	
+// 19	Rocky desert	                coldest-freezing    superarid           #bfbfbf
+// 20	Polar desert	                freezing	        any                 #f2f2f2
+// 21	Glacier                         freezing	        any                 #fafeff
+
+// scorching: 35+
+// hottest: 30 to 35
+// hot: 25 to 30
+// hot-temperate: 20 to 25
+// temperate: 15 to 20
+// cold-temperate: 10 to 15
+// cold: 5 to 10
+// coldest: 0 to 5
+// freezing: <= 0
+
+// superarid: < 0
+// perarid: 0 to 30
+// arid: 30 to 60
+// semiarid: 60 to 100
+// subhumid: 100 to 140
+// humid: 140 to 170
+// perhumid: 170 to 200
+// superhumid: > 200
 
 
 // _________________________________________
