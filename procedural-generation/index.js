@@ -1143,29 +1143,28 @@ canvas.addEventListener("click", (e) => {
 // Savannas = Tropical grasslands
 // Boreal forest = Taiga
 
-
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// |                   | Superarid             | Perarid                     | Arid                     | Semiarid             | Subhumid              | Humid                       | Perhumid              | Superhumid              |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Scorching         | Hot desert            | Hot desert                  | Hot desert               | Hot desert           | Hot desert            | Hot desert                  | Hot desert            | Hot desert              |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Hottest(tropical) | Tropical desert       | Semi-arid desert            | Thorn steppe             | Dry savanna          | Dry woodland          | Wet savanna                 | Tropical wet forest   | Tropical rainforest     |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Hot(subtropical)  | Subtropical desert    | Desert scrub                | Thorn woodland           | Dry savanna          | Tropical dry forest   | Moist forest                | Wet forest            | Subtropical rain forest |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Hot-temperate     | Warm-temperate desert | Desert scrub                | Temperate dry grassland  | Temperate grassland  | Deciduous dry forest  | Temperate deciduous forest  | Wet forest            | Rain forest             |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Temperate         | Temperate Desert      | Xeric shrubland             | Dry woodland             | Woodland             | Dry forest            | Temperate forest            | Temperate wet forest  | Temperate wet forest    |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Cold-temperate    | Cold desert           | Cool temperate desert scrub | Steppe                   | Dry forest           | Coniferous dry forest | Temperate coniferous forest | Coniferous wet forest | Coniferous wet forest   |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Cold(boreal)      | Subpolar desert       | Dry scrub                   | Subpolar scrub           | Very dry forest      | Boreal dry forest     | Boreal forest               | Boreal wet forest     | Boreal wet forest       |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Coldest(subpolar) | Rocky desert          | Rocky desert                | Rocky desert             | Dry tundra           | Tundra                | Moist tundra                | Wet tundra            | Rain tundra             |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-// | Freezing(polar)   | Polar desert          | Polar desert                | Polar desert             | Polar desert         | Glacier               | Glacier                     | Glacier               | Glacier                 |
-// +-------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+-----------------------+-------------------------+
-
+// Biomes table
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// |                             | Superarid: < 0        | Perarid: 0 to 30            | Arid: 30 to 60           | Semiarid: 60 to 100  | Subhumid: 100 to 140  | Humid: 140 to 170           | Perhumid: 170 to 200   | Superhumid: > 200       |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Scorching: > 35             | Hot desert            | Hot desert                  | Hot desert               | Hot desert           | Hot desert            | Hot desert                  | Hot desert             | Hot desert              |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Hottest(tropical): 30 to 35 | Tropical desert       | Semi-arid desert            | Thorn steppe             | Dry savanna          | Dry woodland          | Wet savanna                 | Tropical wet forest    | Tropical rainforest     |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Hot(subtropical): 25 to 30  | Subtropical desert    | Desert scrub                | Thorn woodland           | Dry savanna          | Subropical dry forest | Subtropical forest          | Subtropical wet forest | Subtropical rain forest |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Hot-temperate: 20 to 25     | Warm-temperate desert | Desert scrub                | Temperate dry grassland  | Temperate grassland  | Deciduous dry forest  | Temperate deciduous forest  | Wet forest             | Rain forest             |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Temperate: 15 to 20         | Temperate Desert      | Xeric shrubland             | Dry woodland             | Woodland             | Temperate dry forest  | Temperate forest            | Temperate wet forest   | Temperate rain forest   |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Cold-temperate: 10 to 15    | Cold desert           | Cool temperate desert scrub | Steppe                   | Dry forest           | Coniferous dry forest | Temperate coniferous forest | Coniferous wet forest  | Coniferous rain forest  |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Cold(boreal): 5 to 10       | Subpolar desert       | Dry scrub                   | Subpolar scrub           | Very dry forest      | Boreal dry forest     | Boreal forest               | Boreal wet forest      | Boreal wet forest       |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Coldest(subpolar): 0 to 5   | Rocky desert          | Rocky desert                | Rocky desert             | Dry tundra           | Tundra                | Moist tundra                | Wet tundra             | Rain tundra             |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
+// | Freezing(polar): < 0        | Polar desert          | Polar desert                | Polar desert             | Polar desert         | Glacier               | Glacier                     | Glacier                | Glacier                 |
+// +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 
 // 0	Hot desert	                    hottest-hot	        superarid           #fbfaae	
 // 1	Savanna	                        hottest     	    arid                #eef586	
@@ -1189,25 +1188,6 @@ canvas.addEventListener("click", (e) => {
 // 19	Rocky desert	                coldest-freezing    superarid           #bfbfbf
 // 20	Polar desert	                freezing	        any                 #f2f2f2
 // 21	Glacier                         freezing	        any                 #fafeff
-
-// scorching: 35+
-// hottest: 30 to 35
-// hot: 25 to 30
-// hot-temperate: 20 to 25
-// temperate: 15 to 20
-// cold-temperate: 10 to 15
-// cold: 5 to 10
-// coldest: 0 to 5
-// freezing: <= 0
-
-// superarid: < 0
-// perarid: 0 to 30
-// arid: 30 to 60
-// semiarid: 60 to 100
-// subhumid: 100 to 140
-// humid: 140 to 170
-// perhumid: 170 to 200
-// superhumid: > 200
 
 
 // _________________________________________
