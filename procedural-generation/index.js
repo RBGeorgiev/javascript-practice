@@ -1071,7 +1071,7 @@ canvas.addEventListener("click", (e) => {
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 // | Hot(subtropical): 25 to 30  | Subtropical desert    | Desert scrub                | Thorn woodland           | Dry savanna          | Subropical dry forest | Subtropical forest          | Subtropical wet forest | Subtropical rain forest |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
-// | Hottest(tropical): 30 to 35 | Tropical desert       | Semi-arid desert            | Thorn steppe             | Dry savanna          | Dry woodland          | Wet savanna                 | Tropical wet forest    | Tropical rainforest     |
+// | Hottest(tropical): 30 to 35 | Tropical desert       | Semi-arid desert            | Thorn steppe             | Dry savanna          | Wet savanna           | Dry tropical woodland       | Tropical wet forest    | Tropical rainforest     |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 // | Scorching: > 35             | Hot desert            | Hot desert                  | Hot desert               | Hot desert           | Hot desert            | Hot desert                  | Hot desert             | Hot desert              |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
@@ -1111,3 +1111,18 @@ canvas.addEventListener("click", (e) => {
 // Mangrove swamp
 // Salt marsh
 // Wetland
+
+
+
+const BIOMES = [
+    ["ROCKY_DESERT", "ROCKY_DESERT", "ROCKY_DESERT", "DRY_TUNDRA", "TUNDRA", "MOIST_TUNDRA", "WET_TUNDRA", "RAIN_TUNDRA"],
+    ["SUBPOLAR_DESERT", "DRY_SCRUB", "SUBPOLAR_SCRUB", "VERY_DRY_FOREST", "BOREAL_DRY_FOREST", "BOREAL_FOREST", "BOREAL_WET_FOREST", "BOREAL_WET_FOREST"],
+    ["COLD_DESERT", "COOL_TEMPERATE_DESERT_SCRUB", "STEPPE", "DRY_FOREST", "CONIFEROUS_DRY_FOREST", "TEMPERATE_CONIFEROUS_FOREST", "CONIFEROUS_WET_FOREST", "CONIFEROUS_RAIN_FOREST"],
+    ["TEMPERATE_DESERT", "XERIC_SHRUBLAND", "DRY_WOODLAND", "WOODLAND", "TEMPERATE_DRY_FOREST", "TEMPERATE_FOREST", "TEMPERATE_WET_FOREST", "TEMPERATE_RAIN_FOREST"],
+    ["WARM_TEMPERATE_DESERT", "DESERT_SCRUB", "TEMPERATE_DRY_GRASSLAND", "TEMPERATE_GRASSLAND", "DECIDUOUS_DRY_FOREST", "TEMPERATE_DECIDUOUS_FOREST", "WET_FOREST", "RAIN_FOREST"],
+    ["SUBTROPICAL_DESERT", "DESERT_SCRUB", "THORN_WOODLAND", "DRY_SAVANNA", "SUBROPICAL_DRY_FOREST", "SUBTROPICAL_FOREST", "SUBTROPICAL_WET_FOREST", "SUBTROPICAL_RAIN_FOREST"],
+    ["TROPICAL_DESERT", "SEMI_ARID_DESERT", "THORN_STEPPE", "DRY_SAVANNA", "WET_SAVANNA", "DRY_TROPICAL_WOODLAND", "TROPICAL_WET_FOREST", "TROPICAL_RAINFOREST"],
+    ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT"]
+]
+
+Object.freeze(BIOMES);
