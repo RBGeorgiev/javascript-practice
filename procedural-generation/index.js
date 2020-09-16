@@ -1077,6 +1077,7 @@ canvas.addEventListener("click", (e) => {
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 
 // Biomes color table
+
 // +-----------------------------+----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
 // |                             | Superarid: < 0 | Perarid: 0 to 30 | Arid: 30 to 60 | Semiarid: 60 to 100 | Subhumid: 100 to 140 | Humid: 140 to 170 | Perhumid: 170 to 200 | Superhumid: > 200 |
 // +-----------------------------+----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
@@ -1092,9 +1093,9 @@ canvas.addEventListener("click", (e) => {
 // +-----------------------------+----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
 // | Hot-temperate: 20 to 25     | D8D49D         | D6DD7F           | BDDE82         | A1D77A              | 65CA68               | 29BC56            | 28BA3C               | 1FBA1F            |
 // +-----------------------------+----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
-// | Hot(subtropical): 25 to 30  | E4E0A2         | D6DD7F           | D9E683         | D3E373              | B6D95D               | 5EBA28            | 59BF2D               | 52C62B            |
+// | Hot(subtropical): 25 to 30  | E4E0A2         | D6DD7F           | D9E683         | D3E373              | 8ACA43               | 5EBA28            | 59BF2D               | 52C62B            |
 // +-----------------------------+----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
-// | Hottest(tropical): 30 to 35 | EFEDA8         | E9EC97           | ECF18F         | D3E373              | D0D85D               | A3CC35            | 86CC2D               | 6DCC1A            |
+// | Hottest(tropical): 30 to 35 | EFEDA8         | E9EC97           | ECF18F         | D3E373              | BAD249               | A3CC35            | 86CC2D               | 6DCC1A            |
 // +-----------------------------+----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
 // | Scorching: > 35             | FBFAAE         | FBFAAE           | FBFAAE         | FBFAAE              | FBFAAE               | FBFAAE            | FBFAAE               | FBFAAE            |
 // +-----------------------------+----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
@@ -1125,4 +1126,4 @@ const BIOMES = [
     ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT"]
 ]
 
-Object.freeze(BIOMES);
+const BIOMES_COLORS = { "ROCKY_DESERT": "#BFBFBF", "DRY_TUNDRA": "#D5D59D", "TUNDRA": "#C3BA84", "MOIST_TUNDRA": "#B1A06A", "WET_TUNDRA": "#A8935E", "RAIN_TUNDRA": "#9E8551", "SUBPOLAR_DESERT": "#B5AD8B", "DRY_SCRUB": "#B1B280", "SUBPOLAR_SCRUB": "#ABB377", "VERY_DRY_FOREST": "#A4B36E", "BOREAL_DRY_FOREST": "#839F53", "BOREAL_FOREST": "#618A38", "BOREAL_WET_FOREST": "#567C2C", "COLD_DESERT": "#C1BA91", "COOL_TEMPERATE_DESERT_SCRUB": "#BDC080", "STEPPE": "#CBC283", "DRY_FOREST": "#A4BA6D", "CONIFEROUS_DRY_FOREST": "#70AF54", "TEMPERATE_CONIFEROUS_FOREST": "#61AB4B", "CONIFEROUS_WET_FOREST": "#52A444", "CONIFEROUS_RAIN_FOREST": "#47A536", "TEMPERATE_DESERT": "#CCC797", "XERIC_SHRUBLAND": "#CACF7F", "DRY_WOODLAND": "#B7CF7E", "WOODLAND": "#8EB468", "TEMPERATE_DRY_FOREST": "#62B65B", "TEMPERATE_FOREST": "#4CB754", "TEMPERATE_WET_FOREST": "#45B348", "TEMPERATE_RAIN_FOREST": "#37B239", "WARM_TEMPERATE_DESERT": "#D8D49D", "DESERT_SCRUB": "#D6DD7F", "TEMPERATE_DRY_GRASSLAND": "#BDDE82", "TEMPERATE_GRASSLAND": "#A1D77A", "DECIDUOUS_DRY_FOREST": "#65CA68", "TEMPERATE_DECIDUOUS_FOREST": "#29BC56", "WET_FOREST": "#28BA3C", "RAIN_FOREST": "#1FBA1F", "SUBTROPICAL_DESERT": "#E4E0A2", "THORN_WOODLAND": "#D9E683", "DRY_SAVANNA": "#D3E373", "SUBROPICAL_DRY_FOREST": "#8ACA43", "SUBTROPICAL_FOREST": "#5EBA28", "SUBTROPICAL_WET_FOREST": "#59BF2D", "SUBTROPICAL_RAIN_FOREST": "#52C62B", "TROPICAL_DESERT": "#EFEDA8", "SEMI_ARID_DESERT": "#E9EC97", "THORN_STEPPE": "#ECF18F", "WET_SAVANNA": "#BAD249", "DRY_TROPICAL_WOODLAND": "#A3CC35", "TROPICAL_WET_FOREST": "#86CC2D", "TROPICAL_RAINFOREST": "#6DCC1A", "HOT_DESERT": "#FBFAAE" }
