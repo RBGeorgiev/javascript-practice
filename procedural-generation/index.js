@@ -82,6 +82,72 @@ class Tile {
     setTemperature = (degrees) => this.temperature = degrees;
 }
 
+const BIOMES = [
+    ["ROCKY_DESERT", "ROCKY_DESERT", "ROCKY_DESERT", "DRY_TUNDRA", "TUNDRA", "MOIST_TUNDRA", "WET_TUNDRA", "RAIN_TUNDRA"],
+    ["SUBPOLAR_DESERT", "DRY_SCRUB", "SUBPOLAR_SCRUB", "VERY_DRY_FOREST", "BOREAL_DRY_FOREST", "BOREAL_FOREST", "BOREAL_WET_FOREST", "BOREAL_WET_FOREST"],
+    ["COLD_DESERT", "COOL_TEMPERATE_DESERT_SCRUB", "STEPPE", "DRY_FOREST", "CONIFEROUS_DRY_FOREST", "TEMPERATE_CONIFEROUS_FOREST", "CONIFEROUS_WET_FOREST", "CONIFEROUS_RAIN_FOREST"],
+    ["TEMPERATE_DESERT", "XERIC_SHRUBLAND", "DRY_WOODLAND", "WOODLAND", "TEMPERATE_DRY_FOREST", "TEMPERATE_FOREST", "TEMPERATE_WET_FOREST", "TEMPERATE_RAIN_FOREST"],
+    ["WARM_TEMPERATE_DESERT", "DESERT_SCRUB", "TEMPERATE_DRY_GRASSLAND", "TEMPERATE_GRASSLAND", "DECIDUOUS_DRY_FOREST", "TEMPERATE_DECIDUOUS_FOREST", "WET_FOREST", "RAIN_FOREST"],
+    ["SUBTROPICAL_DESERT", "DESERT_SCRUB", "THORN_WOODLAND", "DRY_SAVANNA", "SUBROPICAL_DRY_FOREST", "SUBTROPICAL_FOREST", "SUBTROPICAL_WET_FOREST", "SUBTROPICAL_RAIN_FOREST"],
+    ["TROPICAL_DESERT", "SEMI_ARID_DESERT", "THORN_STEPPE", "DRY_SAVANNA", "WET_SAVANNA", "DRY_TROPICAL_WOODLAND", "TROPICAL_WET_FOREST", "TROPICAL_RAINFOREST"],
+    ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT"]
+]
+
+const BIOMES_COLORS = {
+    "ROCKY_DESERT": "#BFBFBF",
+    "DRY_TUNDRA": "#D5D59D",
+    "TUNDRA": "#C3BA84",
+    "MOIST_TUNDRA": "#B1A06A",
+    "WET_TUNDRA": "#A8935E",
+    "RAIN_TUNDRA": "#9E8551",
+    "SUBPOLAR_DESERT": "#B5AD8B",
+    "DRY_SCRUB": "#B1B280",
+    "SUBPOLAR_SCRUB": "#ABB377",
+    "VERY_DRY_FOREST": "#A4B36E",
+    "BOREAL_DRY_FOREST": "#839F53",
+    "BOREAL_FOREST": "#618A38",
+    "BOREAL_WET_FOREST": "#567C2C",
+    "COLD_DESERT": "#C1BA91",
+    "COOL_TEMPERATE_DESERT_SCRUB": "#BDC080",
+    "STEPPE": "#CBC283",
+    "DRY_FOREST": "#A4BA6D",
+    "CONIFEROUS_DRY_FOREST": "#70AF54",
+    "TEMPERATE_CONIFEROUS_FOREST": "#61AB4B",
+    "CONIFEROUS_WET_FOREST": "#52A444",
+    "CONIFEROUS_RAIN_FOREST": "#47A536",
+    "TEMPERATE_DESERT": "#CCC797",
+    "XERIC_SHRUBLAND": "#CACF7F",
+    "DRY_WOODLAND": "#B7CF7E",
+    "WOODLAND": "#8EB468",
+    "TEMPERATE_DRY_FOREST": "#62B65B",
+    "TEMPERATE_FOREST": "#4CB754",
+    "TEMPERATE_WET_FOREST": "#45B348",
+    "TEMPERATE_RAIN_FOREST": "#37B239",
+    "WARM_TEMPERATE_DESERT": "#D8D49D",
+    "DESERT_SCRUB": "#D6DD7F",
+    "TEMPERATE_DRY_GRASSLAND": "#BDDE82",
+    "TEMPERATE_GRASSLAND": "#A1D77A",
+    "DECIDUOUS_DRY_FOREST": "#65CA68",
+    "TEMPERATE_DECIDUOUS_FOREST": "#29BC56",
+    "WET_FOREST": "#28BA3C",
+    "RAIN_FOREST": "#1FBA1F",
+    "SUBTROPICAL_DESERT": "#E4E0A2",
+    "THORN_WOODLAND": "#D9E683",
+    "DRY_SAVANNA": "#D3E373",
+    "SUBROPICAL_DRY_FOREST": "#8ACA43",
+    "SUBTROPICAL_FOREST": "#5EBA28",
+    "SUBTROPICAL_WET_FOREST": "#59BF2D",
+    "SUBTROPICAL_RAIN_FOREST": "#52C62B",
+    "TROPICAL_DESERT": "#EFEDA8",
+    "SEMI_ARID_DESERT": "#E9EC97",
+    "THORN_STEPPE": "#ECF18F",
+    "WET_SAVANNA": "#BAD249",
+    "DRY_TROPICAL_WOODLAND": "#A3CC35",
+    "TROPICAL_WET_FOREST": "#86CC2D",
+    "TROPICAL_RAINFOREST": "#6DCC1A",
+    "HOT_DESERT": "#FBFAAE"
+}
+
 class MapGenerator {
     constructor(numOfPoints, seed = null) {
         this.seed = seed || randomUint32();
@@ -1007,6 +1073,10 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const clamp = (number, min, max) => Math.max(min, Math.min(number, max));
+
+    const getClimateTypeIdx = (temp) => clamp(Math.ceil(temp / 5), 0, 8);
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
@@ -1043,9 +1113,9 @@ canvas.addEventListener("click", (e) => {
     // drawWindLines(windLines);
     // drawPartitionBounds(partitions);
     // displayPrecipitationValues(mapGen.tiles);
-    displayTotalPrecipitationValues(mapGen.tiles);
+    // displayTotalPrecipitationValues(mapGen.tiles);
     // displayHeightValues(mapGen.tiles);
-    // displayTemperatureValues(mapGen.tiles);
+    displayTemperatureValues(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
 
@@ -1057,7 +1127,7 @@ canvas.addEventListener("click", (e) => {
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 // |                             | Superarid: < 0        | Perarid: 0 to 30            | Arid: 30 to 60           | Semiarid: 60 to 100  | Subhumid: 100 to 140  | Humid: 140 to 170           | Perhumid: 170 to 200   | Superhumid: > 200       |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
-// | Freezing(polar): < 0        | Polar desert          | Polar desert                | Polar desert             | Polar desert         | Glacier               | Glacier                     | Glacier                | Glacier                 |
+// | Freezing(polar): <= 0        | Polar desert          | Polar desert                | Polar desert             | Polar desert         | Glacier               | Glacier                     | Glacier                | Glacier                 |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 // | Coldest(subpolar): 0 to 5   | Rocky desert          | Rocky desert                | Rocky desert             | Dry tundra           | Tundra                | Moist tundra                | Wet tundra             | Rain tundra             |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
@@ -1112,18 +1182,3 @@ canvas.addEventListener("click", (e) => {
 // Mangrove swamp
 // Salt marsh
 // Wetland
-
-
-
-const BIOMES = [
-    ["ROCKY_DESERT", "ROCKY_DESERT", "ROCKY_DESERT", "DRY_TUNDRA", "TUNDRA", "MOIST_TUNDRA", "WET_TUNDRA", "RAIN_TUNDRA"],
-    ["SUBPOLAR_DESERT", "DRY_SCRUB", "SUBPOLAR_SCRUB", "VERY_DRY_FOREST", "BOREAL_DRY_FOREST", "BOREAL_FOREST", "BOREAL_WET_FOREST", "BOREAL_WET_FOREST"],
-    ["COLD_DESERT", "COOL_TEMPERATE_DESERT_SCRUB", "STEPPE", "DRY_FOREST", "CONIFEROUS_DRY_FOREST", "TEMPERATE_CONIFEROUS_FOREST", "CONIFEROUS_WET_FOREST", "CONIFEROUS_RAIN_FOREST"],
-    ["TEMPERATE_DESERT", "XERIC_SHRUBLAND", "DRY_WOODLAND", "WOODLAND", "TEMPERATE_DRY_FOREST", "TEMPERATE_FOREST", "TEMPERATE_WET_FOREST", "TEMPERATE_RAIN_FOREST"],
-    ["WARM_TEMPERATE_DESERT", "DESERT_SCRUB", "TEMPERATE_DRY_GRASSLAND", "TEMPERATE_GRASSLAND", "DECIDUOUS_DRY_FOREST", "TEMPERATE_DECIDUOUS_FOREST", "WET_FOREST", "RAIN_FOREST"],
-    ["SUBTROPICAL_DESERT", "DESERT_SCRUB", "THORN_WOODLAND", "DRY_SAVANNA", "SUBROPICAL_DRY_FOREST", "SUBTROPICAL_FOREST", "SUBTROPICAL_WET_FOREST", "SUBTROPICAL_RAIN_FOREST"],
-    ["TROPICAL_DESERT", "SEMI_ARID_DESERT", "THORN_STEPPE", "DRY_SAVANNA", "WET_SAVANNA", "DRY_TROPICAL_WOODLAND", "TROPICAL_WET_FOREST", "TROPICAL_RAINFOREST"],
-    ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT"]
-]
-
-const BIOMES_COLORS = { "ROCKY_DESERT": "#BFBFBF", "DRY_TUNDRA": "#D5D59D", "TUNDRA": "#C3BA84", "MOIST_TUNDRA": "#B1A06A", "WET_TUNDRA": "#A8935E", "RAIN_TUNDRA": "#9E8551", "SUBPOLAR_DESERT": "#B5AD8B", "DRY_SCRUB": "#B1B280", "SUBPOLAR_SCRUB": "#ABB377", "VERY_DRY_FOREST": "#A4B36E", "BOREAL_DRY_FOREST": "#839F53", "BOREAL_FOREST": "#618A38", "BOREAL_WET_FOREST": "#567C2C", "COLD_DESERT": "#C1BA91", "COOL_TEMPERATE_DESERT_SCRUB": "#BDC080", "STEPPE": "#CBC283", "DRY_FOREST": "#A4BA6D", "CONIFEROUS_DRY_FOREST": "#70AF54", "TEMPERATE_CONIFEROUS_FOREST": "#61AB4B", "CONIFEROUS_WET_FOREST": "#52A444", "CONIFEROUS_RAIN_FOREST": "#47A536", "TEMPERATE_DESERT": "#CCC797", "XERIC_SHRUBLAND": "#CACF7F", "DRY_WOODLAND": "#B7CF7E", "WOODLAND": "#8EB468", "TEMPERATE_DRY_FOREST": "#62B65B", "TEMPERATE_FOREST": "#4CB754", "TEMPERATE_WET_FOREST": "#45B348", "TEMPERATE_RAIN_FOREST": "#37B239", "WARM_TEMPERATE_DESERT": "#D8D49D", "DESERT_SCRUB": "#D6DD7F", "TEMPERATE_DRY_GRASSLAND": "#BDDE82", "TEMPERATE_GRASSLAND": "#A1D77A", "DECIDUOUS_DRY_FOREST": "#65CA68", "TEMPERATE_DECIDUOUS_FOREST": "#29BC56", "WET_FOREST": "#28BA3C", "RAIN_FOREST": "#1FBA1F", "SUBTROPICAL_DESERT": "#E4E0A2", "THORN_WOODLAND": "#D9E683", "DRY_SAVANNA": "#D3E373", "SUBROPICAL_DRY_FOREST": "#8ACA43", "SUBTROPICAL_FOREST": "#5EBA28", "SUBTROPICAL_WET_FOREST": "#59BF2D", "SUBTROPICAL_RAIN_FOREST": "#52C62B", "TROPICAL_DESERT": "#EFEDA8", "SEMI_ARID_DESERT": "#E9EC97", "THORN_STEPPE": "#ECF18F", "WET_SAVANNA": "#BAD249", "DRY_TROPICAL_WOODLAND": "#A3CC35", "TROPICAL_WET_FOREST": "#86CC2D", "TROPICAL_RAINFOREST": "#6DCC1A", "HOT_DESERT": "#FBFAAE" }
