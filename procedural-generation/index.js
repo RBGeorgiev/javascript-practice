@@ -1124,6 +1124,13 @@ canvas.addEventListener("click", (e) => {
 
     mapGen.drawAll();
 
+    for (let idx in mapGen.landTiles) {
+        let tile = mapGen.getTile(+idx);
+        let biome = getBiomeForTile(tile);
+        let color = BIOMES_COLORS[biome];
+        mapGen.fillTile(+idx, color);
+    }
+
     drawRiversOnVoronoiEdges(rivers, 0.4);
     drawLakes();
 
@@ -1133,7 +1140,7 @@ canvas.addEventListener("click", (e) => {
     // displayPrecipitationValues(mapGen.tiles);
     // displayTotalPrecipitationValues(mapGen.tiles);
     // displayHeightValues(mapGen.tiles);
-    displayTemperatureValues(mapGen.tiles);
+    // displayTemperatureValues(mapGen.tiles);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
 
