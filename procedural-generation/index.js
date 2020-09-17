@@ -1075,7 +1075,7 @@ canvas.addEventListener("click", (e) => {
 
     const clamp = (number, min, max) => Math.max(min, Math.min(number, max));
 
-    const getClimateTypeIdx = (temp) => clamp(Math.ceil(temp / 5), 0, 8);
+    const getTemperatureTypeIdx = (temp) => clamp(Math.ceil(temp / 5), 0, 8);
 
     const getHumidityTypeIdx = (precip) => {
         let humidityLimits = [Number.NEGATIVE_INFINITY, 0, 30, 60, 100, 140, 170, 200, Number.POSITIVE_INFINITY];
@@ -1088,6 +1088,13 @@ canvas.addEventListener("click", (e) => {
             }
         }
     }
+
+    const getBiomeForTile = (tile) => {
+        let t = getTemperatureTypeIdx(tile.temperature);
+        let h = getHumidityTypeIdx(tile.totalPrecipitationPassedThroughTile);
+        return BIOMES[t][h];
+    }
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
