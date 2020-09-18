@@ -456,7 +456,7 @@ let heightDecrementMin = 50; // important value
 // if MAX number higher than 100 there is a chance for height increase
 let heightDecrementMax = 100; // important value
 
-let defaultTilePrecipitation = 10; // important value
+let defaultOceanTilePrecipitation = 10; // important value
 let maxDefaultPrecipitationTiles = 20; // important value
 let heightPrecipitationMultiplier = .2; // important value
 
@@ -692,7 +692,7 @@ canvas.addEventListener("click", (e) => {
     const calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
-            let totalWaterAvailable = defaultTilePrecipitation * maxDefaultPrecipitationTiles;
+            let totalWaterAvailable = defaultOceanTilePrecipitation * maxDefaultPrecipitationTiles;
             let tileDistances = [];
             // get tile distance
             for (let idx of tiles) {
@@ -711,7 +711,7 @@ canvas.addEventListener("click", (e) => {
                 let dist = cur[1];
                 let linePercentVal = windLineLength / 100;
                 let percentDistFromLineStart = dist / linePercentVal / 100;
-                let distPrecipitation = defaultTilePrecipitation - (defaultTilePrecipitation * percentDistFromLineStart);
+                let distPrecipitation = defaultOceanTilePrecipitation - (defaultOceanTilePrecipitation * percentDistFromLineStart);
                 let heightPrecipitation = tile.height * heightPrecipitationMultiplier;
 
                 let precipitation = distPrecipitation + heightPrecipitation;
@@ -859,7 +859,7 @@ canvas.addEventListener("click", (e) => {
 
                 let heightDifference = neighbor.height - lake.height;
 
-                let waterMoved = waterSpreadAverage + ((defaultTilePrecipitation - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
+                let waterMoved = waterSpreadAverage + ((defaultOceanTilePrecipitation - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
                 if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
 
                 neighbor.precipitation += waterMoved;
@@ -1095,6 +1095,15 @@ canvas.addEventListener("click", (e) => {
         return BIOMES[t][h];
     }
 
+    const drawBiomes = () => {
+        for (let idx in mapGen.landTiles) {
+            let tile = mapGen.getTile(+idx);
+            let biome = getBiomeForTile(tile);
+            let color = BIOMES_COLORS[biome];
+            mapGen.fillTile(+idx, color);
+        }
+    }
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
@@ -1124,13 +1133,7 @@ canvas.addEventListener("click", (e) => {
 
     mapGen.drawAll();
 
-    for (let idx in mapGen.landTiles) {
-        let tile = mapGen.getTile(+idx);
-        let biome = getBiomeForTile(tile);
-        let color = BIOMES_COLORS[biome];
-        mapGen.fillTile(+idx, color);
-    }
-
+    drawBiomes();
     drawRiversOnVoronoiEdges(rivers, 0.4);
     drawLakes();
 
