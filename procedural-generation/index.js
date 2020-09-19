@@ -321,11 +321,11 @@ class MapGenerator {
                 }
             } else {
                 if (h >= 0) {
-                    color = getLerpedColor('#4dff58', '#fd3a3a', highestPeak, h - 1);
+                    color = getLerpedColor('#7DC9A6', '#9b0101', highestPeak, h - 1, true);
                 } else {
                     (showOceanDepth) ?
-                        color = getLerpedColor('#5883F2', '#050830', Math.abs(lowestDepth), Math.abs(h) - 1) :
-                        color = '#5883F2';
+                        color = getLerpedColor('#5e86d1', '#2b2e49', Math.abs(lowestDepth), Math.abs(h) - 1) :
+                        color = '#5e86d1';
                 }
             }
             this.fillTile(i, color);
@@ -480,7 +480,7 @@ let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
 let lowestDepth = -initialPeakHeight;
 let showOceanDepth = true;
-let grayscaleHeightmap = true;
+let grayscaleHeightmap = false;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
