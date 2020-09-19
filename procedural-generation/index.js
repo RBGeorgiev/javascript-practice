@@ -1108,6 +1108,8 @@ canvas.addEventListener("click", (e) => {
             let biome = getBiomeForTile(tile);
             let color = BIOMES_COLORS[biome];
             mapGen.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
         }
     }
 
