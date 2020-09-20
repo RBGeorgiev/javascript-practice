@@ -379,7 +379,7 @@ class MapGenerator {
     drawAll = () => {
         this.clearCanvas();
         this.drawHeightmap();
-        this.drawCoastline();
+        // this.drawCoastline();
         // this.drawVoronoi();
         // this.drawDelaunay();
         // this.drawPoints();
@@ -1143,6 +1143,7 @@ canvas.addEventListener("click", (e) => {
     mapGen.drawAll();
 
     drawBiomes();
+    mapGen.drawCoastline();
     drawRiversOnVoronoiEdges(rivers, 0.4);
     drawLakes();
 
