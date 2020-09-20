@@ -1005,6 +1005,8 @@ canvas.addEventListener("click", (e) => {
         for (let idx in mapGen.lakeTiles) {
             let color = (mapGen.getTile(+idx).dryLake) ? "#bc9678" : "#0e97f2";
             mapGen.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
         }
     }
 
