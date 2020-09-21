@@ -468,8 +468,8 @@ let precipitationForLakeMin = 100; // important value
 let precipitationForLakeMax = 500; // important value
 let lakeHeightPrecipitationMultiplier = 7; // important value
 
-let riverWidthMax = 10; // important value
-let riverWidthMin = 3; // important value
+let riverWidthMax = 10 / (numOfPoints / 1000);
+let riverWidthMin = 1;
 let riverWidthDistanceStrengthControl = 20; // important value
 
 let precipitationFromClimate = 0; // important value
