@@ -470,9 +470,9 @@ let lakeHeightPrecipitationMultiplier = 7; // important value
 
 let riverWidthMax = 10 / (numOfPoints / 1000);
 let riverWidthMin = 1;
-let riverWidthDistanceStrengthControl = 20; // important value
+let riverWidthDistanceStrengthControl = 10; // important value
 
-let precipitationFromClimate = 0; // important value
+let humidityFromClimate = 0; // important value
 
 let seaLevelTemperature = 18; // important value
 
@@ -1010,17 +1010,17 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const addPrecipitationFromClimate = () => {
+    const addHumidityFromClimate = () => {
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
-            tile.precipitation += precipitationFromClimate;
-            tile.totalPrecipitationPassedThroughTile += precipitationFromClimate;
+            tile.precipitation += humidityFromClimate;
+            tile.totalPrecipitationPassedThroughTile += humidityFromClimate;
         }
 
         for (let idx in mapGen.lakeTiles) {
             let tile = mapGen.getTile(+idx);
-            tile.precipitation += precipitationFromClimate;
-            tile.totalPrecipitationPassedThroughTile += precipitationFromClimate;
+            tile.precipitation += humidityFromClimate;
+            tile.totalPrecipitationPassedThroughTile += humidityFromClimate;
         }
     }
 
@@ -1084,7 +1084,7 @@ canvas.addEventListener("click", (e) => {
 
     const clamp = (number, min, max) => Math.max(min, Math.min(number, max));
 
-    const getTemperatureTypeIdx = (temp) => clamp(Math.ceil(temp / 5), 0, 8);
+    const getTemperatureTypeIdx = (temp) => clamp(Math.ceil(temp / 5), 0, 7);
 
     const getHumidityTypeIdx = (precip) => {
         let humidityLimits = [Number.NEGATIVE_INFINITY, 0, 30, 60, 100, 140, 170, 200, Number.POSITIVE_INFINITY];
@@ -1134,7 +1134,7 @@ canvas.addEventListener("click", (e) => {
     defineLakes(rivers);
     expandLakes();
 
-    addPrecipitationFromClimate();
+    addHumidityFromClimate();
 
     checkForDryRivers(rivers);
     checkForDryLakes();
