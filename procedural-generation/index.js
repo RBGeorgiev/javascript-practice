@@ -90,7 +90,7 @@ const BIOMES = [
     ["WARM_TEMPERATE_DESERT", "DESERT_SCRUB", "TEMPERATE_DRY_GRASSLAND", "TEMPERATE_GRASSLAND", "DECIDUOUS_DRY_FOREST", "TEMPERATE_DECIDUOUS_FOREST", "WET_FOREST", "RAIN_FOREST"],
     ["SUBTROPICAL_DESERT", "DESERT_SCRUB", "THORN_WOODLAND", "DRY_SAVANNA", "SUBROPICAL_DRY_FOREST", "SUBTROPICAL_FOREST", "SUBTROPICAL_WET_FOREST", "SUBTROPICAL_RAIN_FOREST"],
     ["TROPICAL_DESERT", "SEMI_ARID_DESERT", "THORN_STEPPE", "DRY_SAVANNA", "WET_SAVANNA", "DRY_TROPICAL_WOODLAND", "TROPICAL_WET_FOREST", "TROPICAL_RAINFOREST"],
-    ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT"]
+    ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "OASIS"]
 ]
 
 const BIOMES_COLORS = {
@@ -145,7 +145,8 @@ const BIOMES_COLORS = {
     "DRY_TROPICAL_WOODLAND": "#A3CC35",
     "TROPICAL_WET_FOREST": "#86CC2D",
     "TROPICAL_RAINFOREST": "#6DCC1A",
-    "HOT_DESERT": "#FBFAAE"
+    "HOT_DESERT": "#FBFAAE",
+    "OASIS": "#ADDA6B"
 }
 
 class MapGenerator {
@@ -1183,7 +1184,7 @@ canvas.addEventListener("click", (e) => {
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 // | Hottest(tropical): 30 to 35 | Tropical desert       | Semi-arid desert            | Thorn steppe             | Dry savanna          | Wet savanna           | Dry tropical woodland       | Tropical wet forest    | Tropical rainforest     |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
-// | Scorching: > 35             | Hot desert            | Hot desert                  | Hot desert               | Hot desert           | Hot desert            | Hot desert                  | Hot desert             | Hot desert              |
+// | Scorching: > 35             | Hot desert            | Hot desert                  | Hot desert               | Hot desert           | Hot desert            | Hot desert                  | Hot desert             | Oasis                   |
 // +-----------------------------+-----------------------+-----------------------------+--------------------------+----------------------+-----------------------+-----------------------------+------------------------+-------------------------+
 
 // Biomes color table
@@ -1207,7 +1208,7 @@ canvas.addEventListener("click", (e) => {
 // +-----------------------------+-----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
 // | Hottest(tropical): 30 to 35 | EFEDA8          | E9EC97           | ECF18F         | D3E373              | BAD249               | A3CC35            | 86CC2D               | 6DCC1A            |
 // +-----------------------------+-----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
-// | Scorching: > 35             | FBFAAE          | FBFAAE           | FBFAAE         | FBFAAE              | FBFAAE               | FBFAAE            | FBFAAE               | FBFAAE            |
+// | Scorching: > 35             | FBFAAE          | FBFAAE           | FBFAAE         | FBFAAE              | FBFAAE               | FBFAAE            | FBFAAE               | ADDA6B            |
 // +-----------------------------+-----------------+------------------+----------------+---------------------+----------------------+-------------------+----------------------+-------------------+
 
 // _________________________________________
