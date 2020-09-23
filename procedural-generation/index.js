@@ -960,13 +960,25 @@ canvas.addEventListener("click", (e) => {
         }
 
         // /draw rivers paths with a curve and varying widths
+        let allRiverPathVertices = new Set(); // allRiverPathVertices is used to find special biome tiles (e.g. a tile surrounded by rivers on all sides)
         let drawnSubPaths = new Set();
+
         for (let riverNodeAndPath of allRiverPaths) {
             let riverNode = riverNodeAndPath[0];
             let riverPath = riverNodeAndPath[1];
             for (let riverSubPath of riverPath) {
+                for (let p of riverSubPath) {
+                    // add all vertices that a river passes by
+                    let pStr = `x${p[0]}y${p[1]}`;
+                    allRiverPathVertices.add(pStr);
+                }
+
                 let points = riverSubPath.flat();
-                let str = `x${points[0]}y${points[1]}x1${points[points.length - 2]}y1${points[points.length - 1]}`;
+                let v1 = `x${points[0]}y${points[1]}`;
+                let v2 = `x${points[points.length - 2]}y${points[points.length - 1]}`;
+                allRiverPathVertices.add(v1);
+                allRiverPathVertices.add(v2);
+                let str = v1 + v2; // use ony start and end river path vertices(points)
 
                 if (!drawnSubPaths.has(str)) {
                     // get width based on distance from end/root tile
@@ -1000,6 +1012,8 @@ canvas.addEventListener("click", (e) => {
                 drawnSubPaths.add(str);
             }
         }
+
+        return allRiverPathVertices;
     }
 
     const drawLakes = () => {
@@ -1153,8 +1167,26 @@ canvas.addEventListener("click", (e) => {
 
     drawBiomes();
     mapGen.drawCoastline();
-    drawRiversOnVoronoiEdges(rivers, 0.4);
+    let allRiverPathVertices = drawRiversOnVoronoiEdges(rivers, 0.4);
+
+
     drawLakes();
+
+
+    for (let idx in mapGen.landTiles) {
+        let tile = mapGen.getTile(+idx);
+        for (let i = 0; i < tile.polygon.length; i++) {
+            let points = tile.polygon[i];
+            let str = `x${points[0]}y${points[1]}`;
+
+            if (!allRiverPathVertices.has(str))
+                break;
+
+            if (i === tile.polygon.length - 1)
+                mapGen.fillTile(+idx, 'pink');
+        }
+    }
+
 
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
