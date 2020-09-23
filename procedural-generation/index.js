@@ -90,7 +90,7 @@ const BIOMES = [
     ["WARM_TEMPERATE_DESERT", "DESERT_SCRUB", "TEMPERATE_DRY_GRASSLAND", "TEMPERATE_GRASSLAND", "DECIDUOUS_DRY_FOREST", "TEMPERATE_DECIDUOUS_FOREST", "WET_FOREST", "RAIN_FOREST"],
     ["SUBTROPICAL_DESERT", "DESERT_SCRUB", "THORN_WOODLAND", "DRY_SAVANNA", "SUBROPICAL_DRY_FOREST", "SUBTROPICAL_FOREST", "SUBTROPICAL_WET_FOREST", "SUBTROPICAL_RAIN_FOREST"],
     ["TROPICAL_DESERT", "SEMI_ARID_DESERT", "THORN_STEPPE", "DRY_SAVANNA", "WET_SAVANNA", "DRY_TROPICAL_WOODLAND", "TROPICAL_WET_FOREST", "TROPICAL_RAINFOREST"],
-    ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "OASIS"]
+    ["HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT", "HOT_DESERT"]
 ]
 
 const BIOMES_COLORS = {
@@ -153,7 +153,7 @@ class MapGenerator {
     constructor(numOfPoints, seed = null) {
         this.seed = seed || randomUint32();
         this.rng = sfc32(this.seed, this.seed, this.seed, this.seed); // using this.rng() generates number between 0 and 1
-        console.log(this.seed)
+        console.log(this.seed);
 
         this.allPoints = this.generateRandomPoints(numOfPoints);
         this.delaunay;
@@ -473,9 +473,9 @@ let riverWidthMax = 10 / (numOfPoints / 1000);
 let riverWidthMin = 1;
 let riverWidthDistanceStrengthControl = 10; // important value
 
-let humidityFromClimate = 0; // important value
+let humidityFromClimate = 200; // important value
 
-let seaLevelTemperature = 18; // important value
+let seaLevelTemperature = 38; // important value
 
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
@@ -1102,7 +1102,13 @@ canvas.addEventListener("click", (e) => {
     const getBiomeForTile = (tile) => {
         let t = getTemperatureTypeIdx(tile.temperature);
         let h = getHumidityTypeIdx(tile.totalPrecipitationPassedThroughTile);
-        return BIOMES[t][h];
+        let biome = BIOMES[t][h];
+        if (biome === "HOT_DESERT") {
+            if (h === 7 && tile.river) {
+                biome = "OASIS";
+            }
+        }
+        return biome;
     }
 
     const drawBiomes = () => {
