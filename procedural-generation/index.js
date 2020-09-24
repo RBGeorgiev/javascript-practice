@@ -960,24 +960,16 @@ canvas.addEventListener("click", (e) => {
         }
 
         // /draw rivers paths with a curve and varying widths
-        let allRiverPathVertices = new Set(); // allRiverPathVertices is used to find special biome tiles (e.g. a tile surrounded by rivers on all sides)
+        let allRiverPathSteps = new Set(); // allRiverPathSteps is used to find special biome tiles (e.g. a tile surrounded by rivers on all sides)
         let drawnSubPaths = new Set();
 
         for (let riverNodeAndPath of allRiverPaths) {
             let riverNode = riverNodeAndPath[0];
             let riverPath = riverNodeAndPath[1];
             for (let riverSubPath of riverPath) {
-                for (let p of riverSubPath) {
-                    // add all vertices that a river passes by
-                    let pStr = `x${p[0]}y${p[1]}`;
-                    allRiverPathVertices.add(pStr);
-                }
-
                 let points = riverSubPath.flat();
                 let v1 = `x${points[0]}y${points[1]}`;
                 let v2 = `x${points[points.length - 2]}y${points[points.length - 1]}`;
-                allRiverPathVertices.add(v1);
-                allRiverPathVertices.add(v2);
                 let str = v1 + v2; // use ony start and end river path vertices(points)
 
                 if (!drawnSubPaths.has(str)) {
@@ -1002,6 +994,20 @@ canvas.addEventListener("click", (e) => {
                         precipitationWidth = 4;
                     }
 
+                    for (let i = 0; i < riverSubPath.length - 1; i++) {
+                        // allRiverPathSteps is used to find special biome tiles (e.g. a tile surrounded by rivers on all sides)
+                        let p1 = riverSubPath[i];
+                        let p2 = riverSubPath[i + 1];
+
+                        let p1Str = `x${p1[0]}y${p1[1]}`;
+                        let p2Str = `x${p2[0]}y${p2[1]}`;
+
+                        let stepDir1 = p1Str + p2Str;
+                        let stepDir2 = p2Str + p1Str;
+                        allRiverPathSteps.add(stepDir1);
+                        allRiverPathSteps.add(stepDir2);
+                    }
+
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = "round";
@@ -1013,7 +1019,7 @@ canvas.addEventListener("click", (e) => {
             }
         }
 
-        return allRiverPathVertices;
+        return allRiverPathSteps;
     }
 
     const drawLakes = () => {
@@ -1167,23 +1173,26 @@ canvas.addEventListener("click", (e) => {
 
     drawBiomes();
     mapGen.drawCoastline();
-    let allRiverPathVertices = drawRiversOnVoronoiEdges(rivers, 0.4);
-
-
+    let allRiverPathSteps = drawRiversOnVoronoiEdges(rivers, 0.4);
     drawLakes();
 
 
     for (let idx in mapGen.landTiles) {
         let tile = mapGen.getTile(+idx);
-        for (let i = 0; i < tile.polygon.length; i++) {
-            let points = tile.polygon[i];
-            let str = `x${points[0]}y${points[1]}`;
+        for (let i = 0; i <= tile.polygon.length - 2; i++) {
+            let p1 = tile.polygon[i];
+            let p2 = tile.polygon[i + 1];
 
-            if (!allRiverPathVertices.has(str))
+            let p1Str = `x${p1[0]}y${p1[1]}`;
+            let p2Str = `x${p2[0]}y${p2[1]}`;
+
+            let str = p1Str + p2Str;
+
+            if (!allRiverPathSteps.has(str))
                 break;
 
-            if (i === tile.polygon.length - 1)
-                mapGen.fillTile(+idx, 'pink');
+            if (i === tile.polygon.length - 2)
+                mapGen.fillTile(+idx, '#FFC0CBaa');
         }
     }
 
