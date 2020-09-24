@@ -1002,10 +1002,8 @@ canvas.addEventListener("click", (e) => {
                         let p1Str = `x${p1[0]}y${p1[1]}`;
                         let p2Str = `x${p2[0]}y${p2[1]}`;
 
-                        let stepDir1 = p1Str + p2Str;
-                        let stepDir2 = p2Str + p1Str;
-                        allRiverPathSteps.add(stepDir1);
-                        allRiverPathSteps.add(stepDir2);
+                        let step = p1Str + p2Str;
+                        allRiverPathSteps.add(step);
                     }
 
                     ctx.drawCurve(points, curveStrength);
@@ -1186,13 +1184,16 @@ canvas.addEventListener("click", (e) => {
             let p1Str = `x${p1[0]}y${p1[1]}`;
             let p2Str = `x${p2[0]}y${p2[1]}`;
 
-            let str = p1Str + p2Str;
+            let stepDir1 = p1Str + p2Str;
+            let stepDir2 = p2Str + p1Str;
 
-            if (!allRiverPathSteps.has(str))
+            if (!allRiverPathSteps.has(stepDir1) && !allRiverPathSteps.has(stepDir2)) {
                 break;
+            }
 
-            if (i === tile.polygon.length - 2)
+            if (i === tile.polygon.length - 2) {
                 mapGen.fillTile(+idx, '#FFC0CBaa');
+            }
         }
     }
 
