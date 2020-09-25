@@ -480,6 +480,7 @@ let seaLevelTemperature = 38; // important value
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
 let lowestDepth = -initialPeakHeight;
+let longestRiverLength = 0;
 let showOceanDepth = true;
 let grayscaleHeightmap = false;
 
@@ -762,6 +763,7 @@ canvas.addEventListener("click", (e) => {
         for (let tile of mapGen.tiles) {
             tile.river = null;
         }
+        longestRiverLength = 0;
     }
 
     const defineRivers = () => {
@@ -812,9 +814,16 @@ canvas.addEventListener("click", (e) => {
             }
         }
 
-        let riversSet = new Set();
-        riverNodes.forEach(river => riversSet.add(river.getRoot()));
-        return [...riversSet];
+        let riverRootsSet = new Set();
+
+        riverNodes.forEach(river => {
+            let root = river.getRoot();
+            let distToRoot = getDistanceBetweenPoints(river.getRoot().tile.centroid, river.tile.centroid);
+            if (distToRoot > longestRiverLength) longestRiverLength = distToRoot;
+            riverRootsSet.add(root);
+        });
+
+        return [...riverRootsSet];
     }
 
     const resetLakes = () => {
