@@ -36,6 +36,8 @@ class RiverNode {
         this.idx = idx;
         this.tile = tile;
         this.dry = false;
+        this.distToRoot = 0;
+        this.farthestLeafDist = 0; // only for root river nodes
     }
 
     addChild = (child) => this.children.push(child);
@@ -814,16 +816,17 @@ canvas.addEventListener("click", (e) => {
             }
         }
 
-        let riverRootsSet = new Set();
+        let riverRoots = new Set();
 
         riverNodes.forEach(river => {
             let root = river.getRoot();
             let distToRoot = getDistanceBetweenPoints(river.getRoot().tile.centroid, river.tile.centroid);
             if (distToRoot > longestRiverLength) longestRiverLength = distToRoot;
-            riverRootsSet.add(root);
+            river.distToRoot = distToRoot;
+            riverRoots.add(root);
         });
 
-        return [...riverRootsSet];
+        return [...riverRoots];
     }
 
     const resetLakes = () => {
@@ -938,8 +941,8 @@ canvas.addEventListener("click", (e) => {
         return (path1.length <= path2.length) ? [path1, path2] : [path2, path1]; // 0 is short path, 1 is long path
     }
 
-    const drawRiversOnVoronoiEdges = (rivers, curveStrength = 0.4) => {
-        let queue = [...rivers];
+    const drawRiversOnVoronoiEdges = (riverRoots, curveStrength = 0.4) => {
+        let queue = [...riverRoots];
         let visitedSet = {};
 
         let allRiverPaths = [];
@@ -947,7 +950,13 @@ canvas.addEventListener("click", (e) => {
         while (queue.length > 0) {
             let cur = queue.shift();
             let children = cur.children;
-            if (children.length === 0) continue;
+            if (children.length === 0) {
+                let leafRoot = cur.getRoot();
+                if (cur.distToRoot > leafRoot.farthestLeafDist) {
+                    leafRoot.farthestLeafDist = cur.distToRoot;
+                }
+                continue;
+            };
             let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(mapGen.randRange(0, cur.tile.polygon.length - 1))];
             let riverPath = [];
             for (let child of children) {
@@ -968,7 +977,7 @@ canvas.addEventListener("click", (e) => {
             allRiverPaths.push([cur, riverPath]);
         }
 
-        // /draw rivers paths with a curve and varying widths
+        // draw rivers paths with a curve and varying widths
         let allRiverPathSteps = new Set(); // allRiverPathSteps is used to find special biome tiles (e.g. a tile surrounded by rivers on all sides)
         let drawnSubPaths = new Set();
 
@@ -983,10 +992,12 @@ canvas.addEventListener("click", (e) => {
 
                 if (!drawnSubPaths.has(str)) {
                     // get width based on distance from end/root tile
-                    let riverRoot = riverNode.getRoot();
-                    let distToRoot = getDistanceBetweenPoints(riverRoot.tile.centroid, riverNode.tile.centroid);
+                    let distToRoot = riverNode.distToRoot;
+                    let farthestLeafDistToRoot = riverNode.getRoot().farthestLeafDist;
 
-                    let distWidth = riverWidthMax - Math.round(distToRoot / riverWidthDistanceStrengthControl);
+                    let normalizedDist = (distToRoot - 0) / (farthestLeafDistToRoot - 0);
+
+                    let distWidth = riverWidthMax - Math.round(normalizedDist * riverWidthDistanceStrengthControl);
                     if (distWidth < riverWidthMin) distWidth = riverWidthMin;
 
                     // get width based on precipitation left in tile
@@ -1157,20 +1168,20 @@ canvas.addEventListener("click", (e) => {
     let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     let partitions = createPartitions();
     let windLines = createWindLines();
-    let rivers;
+    let riverRoots;
 
     addTilesToPartitions(partitions);
     connectPartitionsToLines(partitions, windLines);
     findTilesIntersectingLineThroughPartitions(windLines);
     calculatePrecipitation(windLines);
 
-    rivers = defineRivers();
-    defineLakes(rivers);
+    riverRoots = defineRivers();
+    defineLakes(riverRoots);
     expandLakes();
 
     addHumidityFromClimate();
 
-    checkForDryRivers(rivers);
+    checkForDryRivers(riverRoots);
     checkForDryLakes();
 
     calcualteTemperature();
@@ -1180,7 +1191,7 @@ canvas.addEventListener("click", (e) => {
 
     drawBiomes();
     mapGen.drawCoastline();
-    let allRiverPathSteps = drawRiversOnVoronoiEdges(rivers, 0.4);
+    let allRiverPathSteps = drawRiversOnVoronoiEdges(riverRoots, 0.4);
     drawLakes();
 
 
