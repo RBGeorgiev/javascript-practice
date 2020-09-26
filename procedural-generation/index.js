@@ -1163,6 +1163,35 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const getTilesSurroundedByRivers = () => {
+        let tilesSurroundedByRivers = [];
+
+        for (let idx in mapGen.landTiles) {
+            let tile = mapGen.getTile(+idx);
+            for (let i = 0; i <= tile.polygon.length - 2; i++) {
+                let p1 = tile.polygon[i];
+                let p2 = tile.polygon[i + 1];
+
+                let p1Str = `x${p1[0]}y${p1[1]}`;
+                let p2Str = `x${p2[0]}y${p2[1]}`;
+
+                let stepDir1 = p1Str + p2Str;
+                let stepDir2 = p2Str + p1Str;
+
+                if (!allRiverPathSteps.has(stepDir1) && !allRiverPathSteps.has(stepDir2)) {
+                    break;
+                }
+
+                if (i === tile.polygon.length - 2) {
+                    tilesSurroundedByRivers.push(+idx);
+                }
+            }
+        }
+
+        return tilesSurroundedByRivers
+    }
+
+
 
     console.time("calculate wind precipitation rivers and lakes");
     resetPrecipitation();
@@ -1172,6 +1201,8 @@ canvas.addEventListener("click", (e) => {
     let partitions = createPartitions();
     let windLines = createWindLines();
     let riverRoots;
+    let allRiverPathSteps;
+    let tilesSurroundedByRivers;
 
     addTilesToPartitions(partitions);
     connectPartitionsToLines(partitions, windLines);
@@ -1194,31 +1225,9 @@ canvas.addEventListener("click", (e) => {
 
     drawBiomes();
     mapGen.drawCoastline();
-    let allRiverPathSteps = drawRiversOnVoronoiEdges(riverRoots, 0.4);
+    allRiverPathSteps = drawRiversOnVoronoiEdges(riverRoots, 0.4);
+    tilesSurroundedByRivers = getTilesSurroundedByRivers();
     drawLakes();
-
-
-    for (let idx in mapGen.landTiles) {
-        let tile = mapGen.getTile(+idx);
-        for (let i = 0; i <= tile.polygon.length - 2; i++) {
-            let p1 = tile.polygon[i];
-            let p2 = tile.polygon[i + 1];
-
-            let p1Str = `x${p1[0]}y${p1[1]}`;
-            let p2Str = `x${p2[0]}y${p2[1]}`;
-
-            let stepDir1 = p1Str + p2Str;
-            let stepDir2 = p2Str + p1Str;
-
-            if (!allRiverPathSteps.has(stepDir1) && !allRiverPathSteps.has(stepDir2)) {
-                break;
-            }
-
-            if (i === tile.polygon.length - 2) {
-                mapGen.fillTile(+idx, '#FFC0CBaa');
-            }
-        }
-    }
 
 
     // drawWindIntersectedTiles(windLines);
