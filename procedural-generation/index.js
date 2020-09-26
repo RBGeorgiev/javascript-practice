@@ -996,6 +996,9 @@ canvas.addEventListener("click", (e) => {
                     let farthestLeafDistToRoot = riverNode.getRoot().farthestLeafDist;
 
                     let normalizedDist = (distToRoot - 0) / (farthestLeafDistToRoot - 0);
+                    if (normalizedDist === Number.POSITIVE_INFINITY || isNaN(normalizedDist)) {
+                        normalizedDist = 0.9;
+                    }
 
                     let distWidth = riverWidthMax - Math.round(normalizedDist * riverWidthDistanceStrengthControl);
                     if (distWidth < riverWidthMin) distWidth = riverWidthMin;
