@@ -941,7 +941,7 @@ canvas.addEventListener("click", (e) => {
         return (path1.length <= path2.length) ? [path1, path2] : [path2, path1]; // 0 is short path, 1 is long path
     }
 
-    const drawRiversOnVoronoiEdges = (riverRoots, curveStrength = 0.4) => {
+    const defineRiversOnVoronoiEdges = (riverRoots) => {
         let queue = [...riverRoots];
         let visitedSet = {};
 
@@ -950,6 +950,7 @@ canvas.addEventListener("click", (e) => {
         while (queue.length > 0) {
             let cur = queue.shift();
             let children = cur.children;
+
             if (children.length === 0) {
                 let leafRoot = cur.getRoot();
                 if (cur.distToRoot > leafRoot.farthestLeafDist) {
@@ -957,6 +958,7 @@ canvas.addEventListener("click", (e) => {
                 }
                 continue;
             };
+
             let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(mapGen.randRange(0, cur.tile.polygon.length - 1))];
             let riverPath = [];
             for (let child of children) {
@@ -977,6 +979,10 @@ canvas.addEventListener("click", (e) => {
             allRiverPaths.push([cur, riverPath]);
         }
 
+        return allRiverPaths;
+    }
+
+    const drawRivers = (allRiverPaths, curveStrength = 0.4) => {
         // draw rivers paths with a curve and varying widths
         let allRiverPathSteps = new Set(); // allRiverPathSteps is used to find special biome tiles (e.g. a tile surrounded by rivers on all sides)
         let drawnSubPaths = new Set();
@@ -1188,7 +1194,7 @@ canvas.addEventListener("click", (e) => {
             }
         }
 
-        return tilesSurroundedByRivers
+        return tilesSurroundedByRivers;
     }
 
 
@@ -1201,6 +1207,7 @@ canvas.addEventListener("click", (e) => {
     let partitions = createPartitions();
     let windLines = createWindLines();
     let riverRoots;
+    let allRiverPaths;
     let allRiverPathSteps;
     let tilesSurroundedByRivers;
 
@@ -1225,7 +1232,8 @@ canvas.addEventListener("click", (e) => {
 
     drawBiomes();
     mapGen.drawCoastline();
-    allRiverPathSteps = drawRiversOnVoronoiEdges(riverRoots, 0.4);
+    allRiverPaths = defineRiversOnVoronoiEdges(riverRoots);
+    allRiverPathSteps = drawRivers(allRiverPaths, 0.4);
     tilesSurroundedByRivers = getTilesSurroundedByRivers();
     drawLakes();
 
