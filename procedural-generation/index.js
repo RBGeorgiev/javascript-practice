@@ -61,6 +61,7 @@ class Tile {
         this.totalPrecipitationPassedThroughTile = 0;
         this.river = null;
         this.temperature = 0;
+        this.biome = null;
     }
 
     getNeighborsArray = (idx, mapGen) => {
@@ -1158,14 +1159,11 @@ canvas.addEventListener("click", (e) => {
         return biome;
     }
 
-    const drawBiomes = () => {
+    const defineBiomes = () => {
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
             let biome = getBiomeForTile(tile);
-            let color = BIOMES_COLORS[biome];
-            mapGen.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            tile.biome = biome;
         }
     }
 
@@ -1227,32 +1225,58 @@ canvas.addEventListener("click", (e) => {
     checkForDryLakes();
 
     calcualteTemperature();
+    defineBiomes();
+
+    // mapGen.drawAll();
+
+    // drawBiomes();
+    // mapGen.drawCoastline();
+    // [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
+    // drawRivers(allRiverPaths, 0.4);
+    // tilesSurroundedByRivers = getTilesSurroundedByRivers();
+    // drawLakes();
 
 
-    mapGen.drawAll();
-
-    drawBiomes();
-    mapGen.drawCoastline();
-    [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
-    drawRivers(allRiverPaths, 0.4);
-    tilesSurroundedByRivers = getTilesSurroundedByRivers();
-    drawLakes();
 
 
+    let voronoiPoints = mapGen.allVoronoiPolygonPoints.flat();
+    let delaunay = Delaunay.from(voronoiPoints);
+    let triangles = delaunay.triangles;
+    let points = delaunay.points;
+
+    for (let i = 0; i < voronoiPoints.length; i++) {
+        let t0 = triangles[i * 3 + 0];
+        let t1 = triangles[i * 3 + 1];
+        let t2 = triangles[i * 3 + 2];
+
+        let p1 = [points[t0 * 2], points[t0 * 2 + 1]];
+        let p2 = [points[t1 * 2], points[t1 * 2 + 1]];
+        let p3 = [points[t2 * 2], points[t2 * 2 + 1]];
+
+        let centerX = (p1[0] + p2[0] + p3[0]) / 3;
+        let centerY = (p1[1] + p2[1] + p3[1]) / 3;
+
+        let voronoiIdx = mapGen.delaunay.find(centerX, centerY);
+        let voronoiTile = mapGen.getTile(voronoiIdx);
 
 
+        let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : 'yellow';
+        ctx.fillStyle = color;
 
-    let delaunay = Delaunay.from(mapGen.allVoronoiPolygonPoints.flat());
-    let p = delaunay.points;
-    for (let i = 0; i < p.length; i += 6) {
-        var centerX = (p[i] + p[i + 2] + p[i + 4]) / 3;
-        var centerY = (p[i + 1] + p[i + 3] + p[i + 5]) / 3;
-        let cell = mapGen.delaunay.find(centerX, centerY);
+        ctx.beginPath();
+        ctx.moveTo(p1[0], p1[1]);
+        ctx.lineTo(p2[0], p2[1]);
+        ctx.lineTo(p3[0], p3[1]);
+        ctx.closePath();
+
+        ctx.fill();
+        ctx.stroke();
     }
 
-    ctx.strokeStyle = "red";
-    delaunay.render(ctx);
-    ctx.stroke();
+    // ctx.strokeStyle = "#000000";
+    // delaunay.render(ctx);
+    // ctx.lineWidth = 1;
+    // ctx.stroke();
 
 
 
