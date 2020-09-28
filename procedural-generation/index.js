@@ -1239,6 +1239,23 @@ canvas.addEventListener("click", (e) => {
     drawLakes();
 
 
+
+
+
+    let delaunay = Delaunay.from(mapGen.allVoronoiPolygonPoints.flat());
+    let p = delaunay.points;
+    for (let i = 0; i < p.length; i += 6) {
+        var centerX = (p[i] + p[i + 2] + p[i + 4]) / 3;
+        var centerY = (p[i + 1] + p[i + 3] + p[i + 5]) / 3;
+        let cell = mapGen.delaunay.find(centerX, centerY);
+    }
+
+    ctx.strokeStyle = "red";
+    delaunay.render(ctx);
+    ctx.stroke();
+
+
+
     // drawWindIntersectedTiles(windLines);
     // drawWindLines(windLines);
     // drawPartitionBounds(partitions);
@@ -1304,8 +1321,13 @@ canvas.addEventListener("click", (e) => {
 
 // Potential special biomes
 
+// Oasis
 // Elfin woodland
-// Mires: Swamp, Bog, Fen, and Moor
+// Mire
+// Swamp
+// Bog
+// Fen
+// Moor
 // Tropical fresh - water swamp forest
 // Temperate fresh - water swamp forest
 // Wetland Forests
