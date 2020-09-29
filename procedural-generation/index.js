@@ -1242,9 +1242,67 @@ canvas.addEventListener("click", (e) => {
     let voronoiPoints = mapGen.allVoronoiPolygonPoints.flat();
     let delaunay = Delaunay.from(voronoiPoints);
     let triangles = delaunay.triangles;
+    let halfedges = delaunay.halfedges;
     let points = delaunay.points;
 
     for (let i = 0; i < voronoiPoints.length; i++) {
+        const getColorFromNeighbor = (n) => {
+            let t0 = triangles[n * 3 + 0];
+            let t1 = triangles[n * 3 + 1];
+            let t2 = triangles[n * 3 + 2];
+
+            let p1 = [points[t0 * 2], points[t0 * 2 + 1]];
+            let p2 = [points[t1 * 2], points[t1 * 2 + 1]];
+            let p3 = [points[t2 * 2], points[t2 * 2 + 1]];
+
+            let centerX = (p1[0] + p2[0] + p3[0]) / 3;
+            let centerY = (p1[1] + p2[1] + p3[1]) / 3;
+
+            let voronoiIdx = mapGen.delaunay.find(centerX, centerY);
+            let voronoiTile = mapGen.getTile(voronoiIdx);
+
+
+            let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : '#0000FF';
+
+
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(p1[0], p1[1]);
+            ctx.lineTo(p2[0], p2[1]);
+            ctx.lineTo(p3[0], p3[1]);
+            ctx.closePath();
+
+            ctx.fill();
+            ctx.stroke();
+
+            return color;
+        }
+
+        const edgesOfTriangle = (t) => [3 * t, 3 * t + 1, 3 * t + 2];
+
+        const triangleOfEdge = (e) => Math.floor(e / 3);
+
+        const trianglesAdjacentToTriangle = (t) => {
+            let adjacentTriangles = [];
+            for (let e of edgesOfTriangle(t)) {
+                let opposite = halfedges[e];
+                if (opposite >= 0) {
+                    adjacentTriangles.push(triangleOfEdge(opposite));
+                }
+            }
+            return adjacentTriangles;
+        }
+
+        const getAverageColor = (neighborTriangles) => getLerpedColor(
+            getLerpedColor(getColorFromNeighbor(neighborTriangles[0]), getColorFromNeighbor(neighborTriangles[1]), 3, 1, true),
+            getColorFromNeighbor(neighborTriangles[2]), 3, 1, true
+        );
+
+
+        let neighborTriangles = trianglesAdjacentToTriangle(i);
+        let avgColor = getAverageColor(neighborTriangles);
+
         let t0 = triangles[i * 3 + 0];
         let t1 = triangles[i * 3 + 1];
         let t2 = triangles[i * 3 + 2];
@@ -1253,16 +1311,9 @@ canvas.addEventListener("click", (e) => {
         let p2 = [points[t1 * 2], points[t1 * 2 + 1]];
         let p3 = [points[t2 * 2], points[t2 * 2 + 1]];
 
-        let centerX = (p1[0] + p2[0] + p3[0]) / 3;
-        let centerY = (p1[1] + p2[1] + p3[1]) / 3;
 
-        let voronoiIdx = mapGen.delaunay.find(centerX, centerY);
-        let voronoiTile = mapGen.getTile(voronoiIdx);
-
-
-        let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : 'yellow';
-        ctx.fillStyle = color;
-
+        ctx.fillStyle = avgColor;
+        ctx.strokeStyle = avgColor;
         ctx.beginPath();
         ctx.moveTo(p1[0], p1[1]);
         ctx.lineTo(p2[0], p2[1]);
