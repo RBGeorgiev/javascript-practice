@@ -1262,19 +1262,7 @@ canvas.addEventListener("click", (e) => {
             let voronoiTile = mapGen.getTile(voronoiIdx);
 
 
-            let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : '#0000FF';
-
-
-            ctx.fillStyle = color;
-            ctx.strokeStyle = color;
-            ctx.beginPath();
-            ctx.moveTo(p1[0], p1[1]);
-            ctx.lineTo(p2[0], p2[1]);
-            ctx.lineTo(p3[0], p3[1]);
-            ctx.closePath();
-
-            ctx.fill();
-            ctx.stroke();
+            let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : '#000000';
 
             return color;
         }
@@ -1294,10 +1282,16 @@ canvas.addEventListener("click", (e) => {
             return adjacentTriangles;
         }
 
-        const getAverageColor = (neighborTriangles) => getLerpedColor(
-            getLerpedColor(getColorFromNeighbor(neighborTriangles[0]), getColorFromNeighbor(neighborTriangles[1]), 3, 1, true),
-            getColorFromNeighbor(neighborTriangles[2]), 3, 1, true
-        );
+        const getAverageColor = (neighborTriangles) => {
+            let c0 = getColorFromNeighbor(neighborTriangles[0]);
+            let c1 = getColorFromNeighbor(neighborTriangles[1]);
+            let c2 = getColorFromNeighbor(neighborTriangles[2]);
+
+            let avg1 = getLerpedColor(c0, c1, 3, 1, true);
+            let avgColor = getLerpedColor(avg1, c2, 3, 1, true);
+
+            return avgColor;
+        }
 
 
         let neighborTriangles = trianglesAdjacentToTriangle(i);
