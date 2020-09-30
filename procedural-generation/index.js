@@ -1239,7 +1239,12 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    let voronoiPoints = mapGen.allVoronoiPolygonPoints.flat();
+    let voronoiPoints = [];
+    for (let idx in mapGen.landTiles) {
+        let tile = mapGen.getTile(+idx);
+        voronoiPoints.push(...tile.polygon);
+    }
+
     let delaunay = Delaunay.from(voronoiPoints);
     let triangles = delaunay.triangles;
     let halfedges = delaunay.halfedges;
@@ -1312,12 +1317,8 @@ canvas.addEventListener("click", (e) => {
 
         if (voronoiTile && BIOMES_COLORS[voronoiTile.biome]) {
             fallbackColor = BIOMES_COLORS[voronoiTile.biome];
-        } else if (mapGen.lakeTiles[voronoiIdx]) {
-            fallbackColor = '#0e97f2'
-        } else if (mapGen.oceanTiles[voronoiIdx]) {
-            fallbackColor = '#5e86d1'
         } else {
-            fallbackColor = '#000000'
+            continue;
         }
 
         let neighborTriangles = trianglesAdjacentToTriangle(i);
