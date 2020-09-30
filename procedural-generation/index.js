@@ -149,7 +149,13 @@ const BIOMES_COLORS = {
     "TROPICAL_WET_FOREST": "#86CC2D",
     "TROPICAL_RAINFOREST": "#6DCC1A",
     "HOT_DESERT": "#FBFAAE",
-    "OASIS": "#ADDA6B"
+    "OASIS": "#ADDA6B",
+    "RIVER": "#0E97F2",
+    "DRY_RIVER": "#C4A67D",
+    "LAKE": "#0E97F2",
+    "DRY_LAKE": "#C4A67D",
+    "OCEAN": "#5E86D1",
+    "DEEP_OCEAN": "#2b2e49"
 }
 
 class MapGenerator {
@@ -328,8 +334,8 @@ class MapGenerator {
                     color = getLerpedColor('#7DC9A6', '#9b0101', highestPeak, h - 1, true);
                 } else {
                     (showOceanDepth) ?
-                        color = getLerpedColor('#5e86d1', '#2b2e49', Math.abs(lowestDepth), Math.abs(h) - 1) :
-                        color = '#5e86d1';
+                        color = getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(lowestDepth), Math.abs(h) - 1) :
+                        color = BIOMES_COLORS['OCEAN'];
                 }
             }
             this.fillTile(i, color);
@@ -1040,8 +1046,8 @@ canvas.addEventListener("click", (e) => {
 
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
-                    ctx.lineCap = "round";
-                    ctx.strokeStyle = (riverNode.dry) ? "#C4A67D" : "#0e97f2";
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : BIOMES_COLORS['RIVER'];
                     ctx.stroke();
                 }
 
@@ -1052,7 +1058,7 @@ canvas.addEventListener("click", (e) => {
 
     const drawLakes = () => {
         for (let idx in mapGen.lakeTiles) {
-            let color = (mapGen.getTile(+idx).dryLake) ? "#C4A67D" : "#0e97f2";
+            let color = (mapGen.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : BIOMES_COLORS['LAKE'];
             mapGen.fillTile(+idx, color);
             ctx.strokeStyle = color;
             ctx.stroke();
