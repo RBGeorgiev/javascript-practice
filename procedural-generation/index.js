@@ -1246,7 +1246,7 @@ canvas.addEventListener("click", (e) => {
     let points = delaunay.points;
 
     for (let i = 0; i < voronoiPoints.length; i++) {
-        const getColorFromNeighbor = (n) => {
+        const getTriangleColorFromVoronoiTile = (n, fallbackColor) => {
             let t0 = triangles[n * 3 + 0];
             let t1 = triangles[n * 3 + 1];
             let t2 = triangles[n * 3 + 2];
@@ -1262,7 +1262,7 @@ canvas.addEventListener("click", (e) => {
             let voronoiTile = mapGen.getTile(voronoiIdx);
 
 
-            let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : '#000000';
+            let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : fallbackColor;
 
             return color;
         }
@@ -1282,10 +1282,10 @@ canvas.addEventListener("click", (e) => {
             return adjacentTriangles;
         }
 
-        const getAverageColor = (neighborTriangles) => {
-            let c0 = getColorFromNeighbor(neighborTriangles[0]);
-            let c1 = getColorFromNeighbor(neighborTriangles[1]);
-            let c2 = getColorFromNeighbor(neighborTriangles[2]);
+        const getAverageColor = (neighborTriangles, fallbackColor) => {
+            let c0 = getTriangleColorFromVoronoiTile(neighborTriangles[0], fallbackColor);
+            let c1 = getTriangleColorFromVoronoiTile(neighborTriangles[1], fallbackColor);
+            let c2 = getTriangleColorFromVoronoiTile(neighborTriangles[2], fallbackColor);
 
             let avg1 = getLerpedColor(c0, c1, 3, 1, true);
             let avgColor = getLerpedColor(avg1, c2, 3, 1, true);
@@ -1293,9 +1293,6 @@ canvas.addEventListener("click", (e) => {
             return avgColor;
         }
 
-
-        let neighborTriangles = trianglesAdjacentToTriangle(i);
-        let avgColor = getAverageColor(neighborTriangles);
 
         let t0 = triangles[i * 3 + 0];
         let t1 = triangles[i * 3 + 1];
@@ -1305,6 +1302,26 @@ canvas.addEventListener("click", (e) => {
         let p2 = [points[t1 * 2], points[t1 * 2 + 1]];
         let p3 = [points[t2 * 2], points[t2 * 2 + 1]];
 
+        let centerX = (p1[0] + p2[0] + p3[0]) / 3;
+        let centerY = (p1[1] + p2[1] + p3[1]) / 3;
+
+        let voronoiIdx = mapGen.delaunay.find(centerX, centerY);
+        let voronoiTile = mapGen.getTile(voronoiIdx);
+
+        let fallbackColor;
+
+        if (voronoiTile && BIOMES_COLORS[voronoiTile.biome]) {
+            fallbackColor = BIOMES_COLORS[voronoiTile.biome];
+        } else if (mapGen.lakeTiles[voronoiIdx]) {
+            fallbackColor = '#0e97f2'
+        } else if (mapGen.oceanTiles[voronoiIdx]) {
+            fallbackColor = '#5e86d1'
+        } else {
+            fallbackColor = '#000000'
+        }
+
+        let neighborTriangles = trianglesAdjacentToTriangle(i);
+        let avgColor = getAverageColor(neighborTriangles, fallbackColor);
 
         ctx.fillStyle = avgColor;
         ctx.strokeStyle = avgColor;
