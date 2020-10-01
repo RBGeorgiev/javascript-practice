@@ -1173,6 +1173,16 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const drawBiomes = () => {
+        for (let idx in mapGen.landTiles) {
+            let tile = mapGen.getTile(+idx);
+            let color = BIOMES_COLORS[tile.biome];
+            mapGen.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
+
     const getTilesSurroundedByRivers = () => {
         let tilesSurroundedByRivers = [];
 
