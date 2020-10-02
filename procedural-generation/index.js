@@ -321,26 +321,38 @@ class MapGenerator {
             let color;
 
             ctx.beginPath();
-            if (grayscaleHeightmap) {
-                if (h >= 0) {
-                    color = getLerpedColor('#7f7f7f', '#ffffff', highestPeak, h - 1);
-                } else {
-                    (showOceanDepth) ?
-                        color = getLerpedColor('#7f7f7f', '#000000', Math.abs(lowestDepth), Math.abs(h) - 1) :
-                        color = '#000000';
-                }
+
+            if (h >= 0) {
+                color = this.drawLandHeightmap(h);
+
             } else {
-                if (h >= 0) {
-                    color = getLerpedColor('#7DC9A6', '#9b0101', highestPeak, h - 1, true);
-                } else {
-                    (showOceanDepth) ?
-                        color = getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(lowestDepth), Math.abs(h) - 1) :
-                        color = BIOMES_COLORS['OCEAN'];
-                }
+                color = this.drawOceanHeightmap(h);
             }
+
             this.fillTile(i, color);
             ctx.strokeStyle = color;
             ctx.stroke();
+        }
+    }
+
+    drawLandHeightmap = (h) => {
+        if (grayscaleHeightmap) {
+            return getLerpedColor('#7f7f7f', '#ffffff', highestPeak, h - 1);
+        } else {
+            return getLerpedColor('#7DC9A6', '#9b0101', highestPeak, h - 1, true);
+        }
+    }
+
+    drawOceanHeightmap = (h) => {
+        if (grayscaleHeightmap) {
+            return (showOceanDepth) ?
+                getLerpedColor('#7f7f7f', '#000000', Math.abs(lowestDepth), Math.abs(h) - 1) :
+                '#000000';
+
+        } else {
+            return (showOceanDepth) ?
+                getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(lowestDepth), Math.abs(h) - 1) :
+                BIOMES_COLORS['OCEAN'];
         }
     }
 
