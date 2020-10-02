@@ -318,37 +318,25 @@ class MapGenerator {
         for (let i = 0; i < len; i++) {
             let tile = this.getTile(i);
             let h = tile.height;
-            let color;
+            let color = (h >= 0) ? this.getLandHeightmapColor(h) : this.getOceanHeightmapColor(h);
 
             ctx.beginPath();
-
-            if (h >= 0) {
-                color = this.drawLandHeightmap(h);
-
-            } else {
-                color = this.drawOceanHeightmap(h);
-            }
-
             this.fillTile(i, color);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
     }
 
-    drawLandHeightmap = (h) => {
-        if (grayscaleHeightmap) {
-            return getLerpedColor('#7f7f7f', '#ffffff', highestPeak, h - 1);
-        } else {
-            return getLerpedColor('#7DC9A6', '#9b0101', highestPeak, h - 1, true);
-        }
-    }
+    getLandHeightmapColor = (h) =>
+        (grayscaleHeightmap) ?
+            getLerpedColor('#7f7f7f', '#ffffff', highestPeak, h - 1) :
+            getLerpedColor('#7DC9A6', '#9b0101', highestPeak, h - 1, true);
 
-    drawOceanHeightmap = (h) => {
+    getOceanHeightmapColor = (h) => {
         if (grayscaleHeightmap) {
             return (showOceanDepth) ?
                 getLerpedColor('#7f7f7f', '#000000', Math.abs(lowestDepth), Math.abs(h) - 1) :
                 '#000000';
-
         } else {
             return (showOceanDepth) ?
                 getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(lowestDepth), Math.abs(h) - 1) :
@@ -1367,13 +1355,6 @@ canvas.addEventListener("click", (e) => {
     drawLakes();
 
 
-
-
-
-    // ctx.strokeStyle = "#000000";
-    // delaunay.render(ctx);
-    // ctx.lineWidth = 1;
-    // ctx.stroke();
 
 
 

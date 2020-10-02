@@ -78,10 +78,12 @@ const lerpRGB = (color1, color2, factor) => {
     return result;
 }
 
-export const getLerpedColor = (fromColor, toColor, numOfColors, idx, useRgb = false) => {
+// totalNumberOfColors is colors with start, end and all inbetween (min 3)
+// idx are the inbetween colors' index starting from 0
+export const getLerpedColor = (fromColor, toColor, totalNumOfColors, idx, useRgb = false) => {
     let rgbColor1 = hexToRgb(fromColor);
     let rgbColor2 = hexToRgb(toColor);
-    let factorStep = 1 / (numOfColors - 1);
+    let factorStep = 1 / (totalNumOfColors - 1);
     return (useRgb) ?
         rgbToHex(lerpRGB(rgbColor1, rgbColor2, factorStep * idx)) :
         rgbToHex(lerpHSL(rgbColor1, rgbColor2, factorStep * idx));
