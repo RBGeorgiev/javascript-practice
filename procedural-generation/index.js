@@ -1212,7 +1212,7 @@ canvas.addEventListener("click", (e) => {
         return tilesSurroundedByRivers;
     }
 
-    const drawBiomesAsTriangles = () => {
+    const drawBiomesAsTriangles = (tilesObject = mapGen.landTiles) => {
         // helper functions
         const getTriangleColorFromVoronoiTile = (n, fallbackColor) => {
             let t0 = triangles[n * 3 + 0];
@@ -1229,8 +1229,15 @@ canvas.addEventListener("click", (e) => {
             let voronoiIdx = mapGen.delaunay.find(centerX, centerY);
             let voronoiTile = mapGen.getTile(voronoiIdx);
 
+            let color;
 
-            let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : fallbackColor;
+            if (mapGen.oceanTiles[+voronoiIdx]) {
+                color = (mapGen.oceanTiles[+voronoiIdx]) ? mapGen.getOceanHeightmapColor(voronoiTile.height) : fallbackColor;
+            } else if (voronoiTile && BIOMES_COLORS[voronoiTile.biome]) {
+                color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : fallbackColor;
+            } else {
+                color = fallbackColor;
+            }
 
             return color;
         }
@@ -1264,7 +1271,7 @@ canvas.addEventListener("click", (e) => {
         // main function logic
         let voronoiVertices = [];
 
-        for (let idx in mapGen.landTiles) {
+        for (let idx in tilesObject) {
             let tile = mapGen.getTile(+idx);
             voronoiVertices.push(...tile.polygon);
         }
@@ -1291,7 +1298,10 @@ canvas.addEventListener("click", (e) => {
 
             let fallbackColor;
 
-            if (voronoiTile && BIOMES_COLORS[voronoiTile.biome]) {
+
+            if (mapGen.oceanTiles[+voronoiIdx]) {
+                fallbackColor = mapGen.getOceanHeightmapColor(voronoiTile.height);
+            } else if (voronoiTile && BIOMES_COLORS[voronoiTile.biome]) {
                 fallbackColor = BIOMES_COLORS[voronoiTile.biome];
             } else {
                 continue;
@@ -1350,7 +1360,7 @@ canvas.addEventListener("click", (e) => {
     mapGen.drawCoastline();
     [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
     tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
-    // drawBiomesAsTriangles();
+    drawBiomesAsTriangles(mapGen.oceanTiles);
     drawRivers(allRiverPaths, 0.4);
     drawLakes();
 
