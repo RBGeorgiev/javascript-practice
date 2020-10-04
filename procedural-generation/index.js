@@ -482,9 +482,9 @@ let riverWidthMax = 10 / (numOfPoints / 1000);
 let riverWidthMin = 1;
 let riverWidthDistanceStrengthControl = 10; // important value
 
-let humidityFromClimate = 200; // important value
+let humidityFromClimate = 0; // important value
 
-let seaLevelTemperature = 38; // important value
+let seaLevelTemperature = 18; // important value
 
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
@@ -1203,13 +1203,18 @@ canvas.addEventListener("click", (e) => {
                 }
 
                 if (i === tile.polygon.length - 2) {
-                    tilesSurroundedByRivers.push(+idx);
-                    mapGen.fillTile(+idx, "#FFC0CBaa");
+                    tilesSurroundedByRivers.push(+idx)
                 }
             }
         }
 
         return tilesSurroundedByRivers;
+    }
+
+    const drawTilesSurroundedByRivers = (tilesSurroundedByRivers) => {
+        for (let idx of tilesSurroundedByRivers) {
+            mapGen.fillTile(+idx, "#FFC0CBaa");
+        }
     }
 
     const drawBiomesAsTriangles = () => {
@@ -1350,7 +1355,8 @@ canvas.addEventListener("click", (e) => {
     mapGen.drawCoastline();
     [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
     tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
-    drawBiomesAsTriangles();
+    drawTilesSurroundedByRivers(tilesSurroundedByRivers);
+    // drawBiomesAsTriangles();
     drawRivers(allRiverPaths, 0.4);
     drawLakes();
 
