@@ -482,9 +482,9 @@ let riverWidthMax = 10 / (numOfPoints / 1000);
 let riverWidthMin = 1;
 let riverWidthDistanceStrengthControl = 10; // important value
 
-let humidityFromClimate = 0; // important value
+let humidityFromClimate = 200; // important value
 
-let seaLevelTemperature = 18; // important value
+let seaLevelTemperature = 38; // important value
 
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
@@ -1157,11 +1157,18 @@ canvas.addEventListener("click", (e) => {
         let t = getTemperatureTypeIdx(tile.temperature);
         let h = getHumidityTypeIdx(tile.totalPrecipitationPassedThroughTile);
         let biome = BIOMES[t][h];
-        if (biome === "HOT_DESERT") {
-            if (h === 7 && tile.river) {
-                biome = "OASIS";
-            }
+        biome = checkForSpecialBiome(biome, t, h, tile);
+        return biome;
+    }
+
+    const checkForSpecialBiome = (biome, temp, height, tile) => {
+        let conditions = [biome === "HOT_DESERT", height === 7, tile.river !== null];
+
+        if (conditions.every(cond => cond)) {
+            // if all conditions are met
+            biome = "OASIS";
         }
+
         return biome;
     }
 
