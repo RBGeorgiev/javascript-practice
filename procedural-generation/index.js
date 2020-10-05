@@ -1162,11 +1162,17 @@ canvas.addEventListener("click", (e) => {
     }
 
     const checkForSpecialBiome = (biome, temp, height, tile) => {
-        let conditions = [biome === "HOT_DESERT", height === 7, tile.river !== null];
+        let specialBiomes = {
+            "OASIS": [biome === "HOT_DESERT", height === 7, tile.river !== null]
+        };
 
-        if (conditions.every(cond => cond)) {
-            // if all conditions are met
-            biome = "OASIS";
+        for (let curBiome in specialBiomes) {
+            let conditions = specialBiomes[curBiome];
+            if (conditions.every(cond => cond)) {
+                // if all conditions are met
+                biome = curBiome;
+                break;
+            }
         }
 
         return biome;
