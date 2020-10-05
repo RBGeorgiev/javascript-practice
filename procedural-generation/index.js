@@ -155,7 +155,8 @@ const BIOMES_COLORS = {
     "LAKE": "#0E97F2",
     "DRY_LAKE": "#C4A67D",
     "OCEAN": "#5E86D1",
-    "DEEP_OCEAN": "#2b2e49"
+    "DEEP_OCEAN": "#2b2e49",
+    "SWAMP": "#828C51"
 }
 
 class MapGenerator {
@@ -482,9 +483,9 @@ let riverWidthMax = 10 / (numOfPoints / 1000);
 let riverWidthMin = 1;
 let riverWidthDistanceStrengthControl = 10; // important value
 
-let humidityFromClimate = 200; // important value
+let humidityFromClimate = 0; // important value
 
-let seaLevelTemperature = 38; // important value
+let seaLevelTemperature = 18; // important value
 
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
@@ -1163,12 +1164,13 @@ canvas.addEventListener("click", (e) => {
 
     const checkForSpecialBiome = (biome, temp, height, tile) => {
         let specialBiomes = {
-            "OASIS": [biome === "HOT_DESERT", height === 7, tile.river !== null]
+            "OASIS": [biome === "HOT_DESERT", height === 7, tile.river !== null],
+            "SWAMP": [tilesSurroundedByRivers.some(el => el === tile.idx)]
         };
 
         for (let curBiome in specialBiomes) {
             let conditions = specialBiomes[curBiome];
-            if (conditions.every(cond => cond)) {
+            if (conditions.length && conditions.every(cond => cond)) {
                 // if all conditions are met
                 biome = curBiome;
                 break;
@@ -1359,6 +1361,8 @@ canvas.addEventListener("click", (e) => {
     checkForDryRivers(riverRoots);
     checkForDryLakes();
 
+    [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
+    tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
     calcualteTemperature();
     defineBiomes();
 
@@ -1366,9 +1370,7 @@ canvas.addEventListener("click", (e) => {
 
     drawBiomes();
     mapGen.drawCoastline();
-    [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
-    tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
-    drawTilesSurroundedByRivers(tilesSurroundedByRivers);
+    // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
     // drawBiomesAsTriangles();
     drawRivers(allRiverPaths, 0.4);
     drawLakes();
