@@ -1167,7 +1167,7 @@ canvas.addEventListener("click", (e) => {
     const checkForSpecialBiome = (biome, temp, humidity, tile) => {
         let specialBiomes = {
             "OASIS": [biome === "HOT_DESERT", humidity === 7, tile.river !== null],
-            // "SWAMP": [tilesSurroundedByRivers.some(el => el === tile.idx)],
+            "SWAMP": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 6), (humidity >= 3 && humidity <= 4)],
             "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
             "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)]
         };
