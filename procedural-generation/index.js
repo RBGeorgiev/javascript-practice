@@ -1174,13 +1174,19 @@ canvas.addEventListener("click", (e) => {
             "BOG": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 1 && humidity <= 7)]
         };
 
+        let eligibleBiomes = [];
+
         for (let curBiome in specialBiomes) {
             let conditions = specialBiomes[curBiome];
             if (conditions.length && conditions.every(cond => cond)) {
                 // if all conditions are met
-                biome = curBiome;
-                break;
+                eligibleBiomes.push(curBiome);
             }
+        }
+
+        if (eligibleBiomes.length) {
+            let randEligibleBiome = Math.floor(0, eligibleBiomes.length);
+            biome = eligibleBiomes[randEligibleBiome];
         }
 
         return biome;
