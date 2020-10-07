@@ -158,7 +158,8 @@ const BIOMES_COLORS = {
     "DEEP_OCEAN": "#2b2e49",
     "SWAMP": "#828C51",
     "TEMPERATE_FRESHWATER_SWAMP_FOREST": "#527239",
-    "TROPICAL_FRESHWATER_SWAMP_FOREST": "#578e2d"
+    "TROPICAL_FRESHWATER_SWAMP_FOREST": "#578e2d",
+    "BOG": "#786231"
 }
 
 class MapGenerator {
@@ -1169,7 +1170,8 @@ canvas.addEventListener("click", (e) => {
             "OASIS": [biome === "HOT_DESERT", humidity === 7, tile.river !== null],
             "SWAMP": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 6), (humidity >= 3 && humidity <= 4)],
             "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
-            "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)]
+            "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)],
+            "BOG": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 1 && humidity <= 7)]
         };
 
         for (let curBiome in specialBiomes) {
