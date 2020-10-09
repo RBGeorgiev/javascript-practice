@@ -160,7 +160,8 @@ const BIOMES_COLORS = {
     "TEMPERATE_FRESHWATER_SWAMP_FOREST": "#527239",
     "TROPICAL_FRESHWATER_SWAMP_FOREST": "#578e2d",
     "BOG": "#7D7738",
-    "FEN": "#636334"
+    "FEN": "#636334",
+    "MOORLAND": "#9A907B"
 }
 
 class MapGenerator {
@@ -1173,7 +1174,8 @@ canvas.addEventListener("click", (e) => {
             "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
             "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)],
             "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 4 && humidity <= 7)],
-            "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)]
+            "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
+            "MOORLAND": [tile.height > 40 && tile.height < 100, (temp >= 2 && temp <= 6), (humidity >= 1 && humidity <= 3)]
         };
 
         let eligibleBiomes = [];
