@@ -160,7 +160,8 @@ const BIOMES_COLORS = {
     "TEMPERATE_FRESHWATER_SWAMP_FOREST": "#527239",
     "TROPICAL_FRESHWATER_SWAMP_FOREST": "#578e2d",
     "BOG": "#7D7738",
-    "FEN": "#636334"
+    "FEN": "#636334",
+    "ELFIN_WOODLAND": "#5CAD2B"
 }
 
 class MapGenerator {
@@ -487,9 +488,9 @@ let riverWidthMax = 10 / (numOfPoints / 1000);
 let riverWidthMin = 1;
 let riverWidthDistanceStrengthControl = 10; // important value
 
-let humidityFromClimate = 0; // important value
+let humidityFromClimate = 150; // important value
 
-let seaLevelTemperature = 18; // important value
+let seaLevelTemperature = 30; // important value
 
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
@@ -1173,7 +1174,8 @@ canvas.addEventListener("click", (e) => {
             "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
             "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)],
             "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 4 && humidity <= 7)],
-            "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)]
+            "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
+            "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6)]
         };
 
         let eligibleBiomes = [];
