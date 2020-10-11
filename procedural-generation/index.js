@@ -1170,14 +1170,14 @@ canvas.addEventListener("click", (e) => {
 
     const checkForSpecialBiome = (biome, temp, humidity, tile) => {
         let specialBiomes = {
-            "OASIS": [biome === "HOT_DESERT", humidity === 7, tile.river !== null],
+            "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 4 && humidity <= 7)],
+            "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.7],
+            "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
+            "MARSH": [tile.river, (temp >= 3 && temp <= 5), (humidity >= 4 && humidity <= 6), mapGen.rng() < 0.5],
+            "OASIS": [tile.river, temp === 7, (humidity >= 5 && humidity <= 7), mapGen.rng() < 0.5],
             "SWAMP": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 6), (humidity >= 3 && humidity <= 4)],
             "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
-            "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)],
-            "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 4 && humidity <= 7)],
-            "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
-            "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.7],
-            "MARSH": [tile.river, (temp >= 3 && temp <= 5), (humidity >= 4 && humidity <= 6), mapGen.rng() < 0.5]
+            "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)]
         };
 
         let eligibleBiomes = [];
@@ -1460,18 +1460,13 @@ canvas.addEventListener("click", (e) => {
 
 // _________________________________________
 
-// Potential special biomes
+// Special biomes
 
-// Oasis
-// Elfin woodland
-// Mire
-// Swamp
-// Bog
-// Fen
-// Moor
-// Tropical fresh - water swamp forest
-// Temperate fresh - water swamp forest
-// Wetland Forests
-// Mangrove swamp
-// Salt marsh
-// Wetland
+// Bog - In cool climates with consistently high rainfall (on more than c. 235 days a year), the ground surface may remain waterlogged for much of the time, providing conditions for the development of bog vegetation. A bog or bogland is a wetland that accumulates peat, a deposit of dead plant material—often mosses, and in a majority of cases, sphagnum moss. It is one of the four main types of wetlands.
+// Elfin woodland - Elfin woodland, stunted forest at high elevations in tropical wet areas. Its low, gnarled trees are heavily draped with air plants, and its floor is cushioned by mosses and other primitive plants. Elfinwood, or Krummholz, is a similar stunted forest characteristic of most Alpine regions.
+// Fen - Average temperature ~10C. A fen is one of the main types of wetlands, the others being grassy marshes, forested swamps, and peaty bogs. Along with bogs, fens are a kind of mire. Fens are minerotrophic peatlands, usually fed by mineral-rich surface water or groundwater.
+// Marsh - A marsh is a wetland that is dominated by herbaceous rather than woody plant species. Marshes can often be found at the edges of lakes and streams, where they form a transition between the aquatic and terrestrial ecosystems.They are often dominated by grasses, rushes or reeds. If woody plants are present they tend to be low - growing shrubs, and then sometimes called carrs. Marshes are wetlands, continually or frequently flooded by nearby running bodies of water, that are dominated by emergent soft-stem vegetation and herbaceous plants.
+// Oasis - Oases are made fertile when sources of freshwater, such as underground rivers or aquifers, irrigate the surface naturally or via man-made wells.
+// Swamp - A swamp is a forested wetland. Swamps are considered to be transition zones because both land and water play a role in creating this environment. Swamps vary in size and are located all around the world. Swamps are wetlands consisting of saturated soils or standing water and are dominated by water-tolerant woody vegetation such as shrubs, bushes, and trees.
+// Temperate freshwater swamp forest - Freshwater swamp forests are found in a range of climate zones, from boreal through temperate and subtropical to tropical
+// Tropical freshwater swamp forest - Freshwater swamp forests are found in a range of climate zones, from boreal through temperate and subtropical to tropical
