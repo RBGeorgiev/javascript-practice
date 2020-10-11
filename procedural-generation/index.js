@@ -489,9 +489,9 @@ let riverWidthMax = 10 / (numOfPoints / 1000);
 let riverWidthMin = 1;
 let riverWidthDistanceStrengthControl = 10; // important value
 
-let humidityFromClimate = 100; // important value
+let humidityFromClimate = 0; // important value
 
-let seaLevelTemperature = 25; // important value
+let seaLevelTemperature = 18; // important value
 
 let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
@@ -1175,7 +1175,7 @@ canvas.addEventListener("click", (e) => {
             "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
             "MARSH": [tile.river, (temp >= 3 && temp <= 5), (humidity >= 4 && humidity <= 6), mapGen.rng() < 0.5],
             "OASIS": [tile.river, temp === 7, (humidity >= 5 && humidity <= 7), mapGen.rng() < 0.5],
-            "SWAMP": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 6), (humidity >= 3 && humidity <= 4)],
+            "SWAMP": [tile.river, (temp >= 1 && temp <= 6), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.5],
             "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
             "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)]
         };
