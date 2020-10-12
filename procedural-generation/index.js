@@ -60,6 +60,7 @@ class Tile {
         this.precipitation = 0;
         this.totalPrecipitationPassedThroughTile = 0;
         this.river = null;
+        this.numOfRiversOnEdges = 0;
         this.temperature = 0;
         this.biome = null;
     }
@@ -1221,6 +1222,9 @@ canvas.addEventListener("click", (e) => {
 
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
+            let numOfEdges = tile.polygon.length - 1;
+
+            // first and last polygon vertices are the same
             for (let i = 0; i <= tile.polygon.length - 2; i++) {
                 let p1 = tile.polygon[i];
                 let p2 = tile.polygon[i + 1];
@@ -1231,12 +1235,15 @@ canvas.addEventListener("click", (e) => {
                 let stepDir1 = p1Str + p2Str;
                 let stepDir2 = p2Str + p1Str;
 
+
                 if (!allRiverSubPathSteps.has(stepDir1) && !allRiverSubPathSteps.has(stepDir2)) {
-                    break;
+                    continue;
                 }
 
-                if (i === tile.polygon.length - 2) {
-                    tilesSurroundedByRivers.push(+idx)
+                tile.numOfRiversOnEdges++;
+
+                if (numOfEdges === tile.numOfRiversOnEdges) {
+                    tilesSurroundedByRivers.push(+idx);
                 }
             }
         }
