@@ -779,6 +779,7 @@ canvas.addEventListener("click", (e) => {
     const resetRivers = () => {
         for (let tile of mapGen.tiles) {
             tile.river = null;
+            tile.numOfRiversOnEdges = 0;
         }
         longestRiverLength = 0;
     }
