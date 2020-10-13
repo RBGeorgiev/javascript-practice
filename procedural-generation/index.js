@@ -82,8 +82,8 @@ class Tile {
     }
 
     resetRiver = () => {
-        tile.river = null;
-        tile.numOfRiversOnEdges = 0;
+        this.river = null;
+        this.numOfRiversOnEdges = 0;
     }
 
     setHeight = (height) => this.height = height;
