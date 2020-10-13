@@ -81,6 +81,11 @@ class Tile {
         this.totalPrecipitationPassedThroughTile = 0;
     }
 
+    resetRiver = () => {
+        tile.river = null;
+        tile.numOfRiversOnEdges = 0;
+    }
+
     setHeight = (height) => this.height = height;
 
     setTemperature = (degrees) => this.temperature = degrees;
@@ -778,8 +783,7 @@ canvas.addEventListener("click", (e) => {
 
     const resetRivers = () => {
         for (let tile of mapGen.tiles) {
-            tile.river = null;
-            tile.numOfRiversOnEdges = 0;
+            tile.resetRiver();
         }
         longestRiverLength = 0;
     }
