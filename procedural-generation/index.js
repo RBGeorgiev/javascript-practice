@@ -327,14 +327,42 @@ class MapGenerator {
     }
 
     drawHeightmap = () => {
-        let len = this.tiles.length;
-        for (let i = 0; i < len; i++) {
-            let tile = this.getTile(i);
+        this.drawLandHeightmap();
+        this.drawOceanHeightmap();
+    }
+
+    drawLandHeightmap = () => {
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
             let h = tile.height;
-            let color = (h >= 0) ? this.getLandHeightmapColor(h) : this.getOceanHeightmapColor(h);
+            let color = this.getLandHeightmapColor(h);
 
             ctx.beginPath();
-            this.fillTile(i, color);
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            let h = tile.height;
+            let color = this.getLandHeightmapColor(h);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
+
+    drawOceanHeightmap = () => {
+        for (let idx in this.oceanTiles) {
+            let tile = this.getTile(+idx);
+            let h = tile.height;
+            let color = this.getOceanHeightmapColor(h);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
