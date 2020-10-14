@@ -1180,10 +1180,10 @@ canvas.addEventListener("click", (e) => {
             "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.7],
             "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
             "MARSH": [tile.river, tile.numOfRiversOnEdges >= 3, (temp >= 3 && temp <= 5), (humidity >= 4 && humidity <= 6), mapGen.rng() < 0.5],
-            "OASIS": [tile.river, temp === 7, (humidity >= 5 && humidity <= 7), mapGen.rng() < 0.5],
-            "SWAMP": [tile.river, (temp >= 1 && temp <= 6), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.5],
-            "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
-            "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)]
+            "OASIS": [tile.river, tile.numOfRiversOnEdges >= 2, temp === 7, (humidity >= 5 && humidity <= 7), mapGen.rng() < 0.5],
+            "SWAMP": [tile.river, tile.numOfRiversOnEdges >= 3, (temp >= 1 && temp <= 6), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.5],
+            "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.numOfRiversOnEdges >= 2, tile.river, (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
+            "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.numOfRiversOnEdges >= 2, tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)]
         };
 
         let eligibleBiomes = [];
