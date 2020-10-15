@@ -1394,6 +1394,9 @@ canvas.addEventListener("click", (e) => {
 
 
     console.time("calculate wind precipitation rivers and lakes");
+
+    let drawBiomesDelaunayStyle = false;
+
     resetPrecipitation();
     resetRivers();
     resetLakes();
@@ -1425,10 +1428,11 @@ canvas.addEventListener("click", (e) => {
     defineBiomes();
 
     mapGen.drawAll();
-
-    drawBiomes();
-    // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
-    drawBiomesAsTriangles();
+    if (drawBiomesDelaunayStyle) {
+        drawBiomesAsTriangles();
+    } else {
+        drawBiomes();
+    }
     mapGen.drawOceanHeightmap();
     mapGen.drawCoastline();
     drawRivers(allRiverPaths, 0.4);
@@ -1445,6 +1449,7 @@ canvas.addEventListener("click", (e) => {
     // displayTotalPrecipitationValues(mapGen.tiles);
     // displayHeightValues(mapGen.tiles);
     // displayTemperatureValues(mapGen.tiles);
+    // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
 
