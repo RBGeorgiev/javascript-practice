@@ -1427,9 +1427,10 @@ canvas.addEventListener("click", (e) => {
     mapGen.drawAll();
 
     drawBiomes();
-    mapGen.drawCoastline();
     // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
-    // drawBiomesAsTriangles();
+    drawBiomesAsTriangles();
+    mapGen.drawOceanHeightmap();
+    mapGen.drawCoastline();
     drawRivers(allRiverPaths, 0.4);
     drawLakes();
 
