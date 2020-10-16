@@ -1376,7 +1376,7 @@ canvas.addEventListener("click", (e) => {
             }
 
             let neighborTriangles = trianglesAdjacentToTriangle(i);
-            let avgColor = getAverageColor(neighborTriangles, fallbackColor) + 'aa';
+            let avgColor = getAverageColor(neighborTriangles, fallbackColor);
 
             ctx.fillStyle = avgColor;
             ctx.strokeStyle = avgColor;
@@ -1395,7 +1395,7 @@ canvas.addEventListener("click", (e) => {
 
     console.time("calculate wind precipitation rivers and lakes");
 
-    let drawBiomesDelaunayStyle = false;
+    let drawBiomesDelaunayStyle = true;
 
     resetPrecipitation();
     resetRivers();
