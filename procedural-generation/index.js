@@ -190,7 +190,6 @@ class MapGenerator {
         this.initTiles(this.allPoints);
         this.setTilesHeight();
         this.determineCoastline();
-        this.drawAll(this.allPoints);
     }
 
     getTile = (i) => this.tiles[i];
@@ -425,15 +424,6 @@ class MapGenerator {
         ctx.fillStyle = '#000000';
         points.forEach(p => ctx.rect(p[0], p[1], 3, 3));
         ctx.fill();
-    }
-
-    drawAll = () => {
-        this.clearCanvas();
-        this.drawHeightmap();
-        // this.drawCoastline();
-        // this.drawVoronoi();
-        // this.drawDelaunay();
-        // this.drawPoints();
     }
 
     initVoronoi = (points) => {
@@ -1391,6 +1381,33 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
+    const drawAll = () => {
+        mapGen.clearCanvas();
+        // mapGen.drawHeightmap();
+        // mapGen.drawVoronoi();
+        // mapGen.drawDelaunay();
+        // mapGen.drawPoints();
+
+        if (drawBiomesDelaunayStyle) {
+            drawBiomesAsTriangles();
+        } else {
+            drawBiomes();
+        }
+        mapGen.drawOceanHeightmap();
+        mapGen.drawCoastline();
+        drawRivers(allRiverPaths, 0.4);
+        drawLakes();
+
+        // drawWindIntersectedTiles(windLines);
+        // drawWindLines(windLines);
+        // drawPartitionBounds(partitions);
+        // displayPrecipitationValues(mapGen.tiles);
+        // displayTotalPrecipitationValues(mapGen.tiles);
+        // displayHeightValues(mapGen.tiles);
+        // displayTemperatureValues(mapGen.tiles);
+        // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
+    }
+
 
 
     console.time("calculate wind precipitation rivers and lakes");
@@ -1427,29 +1444,10 @@ canvas.addEventListener("click", (e) => {
     calcualteTemperature();
     defineBiomes();
 
-    mapGen.drawAll();
-    if (drawBiomesDelaunayStyle) {
-        drawBiomesAsTriangles();
-    } else {
-        drawBiomes();
-    }
-    mapGen.drawOceanHeightmap();
-    mapGen.drawCoastline();
-    drawRivers(allRiverPaths, 0.4);
-    drawLakes();
+
+    drawAll();
 
 
-
-
-
-    // drawWindIntersectedTiles(windLines);
-    // drawWindLines(windLines);
-    // drawPartitionBounds(partitions);
-    // displayPrecipitationValues(mapGen.tiles);
-    // displayTotalPrecipitationValues(mapGen.tiles);
-    // displayHeightValues(mapGen.tiles);
-    // displayTemperatureValues(mapGen.tiles);
-    // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
 
