@@ -526,6 +526,8 @@ let grayscaleHeightmap = false;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
+mapGen.drawHeightmap();
+
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;
     // let y = e.offsetY;
