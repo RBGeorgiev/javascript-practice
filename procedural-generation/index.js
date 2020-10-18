@@ -521,8 +521,10 @@ let initialPeakHeight = 100;
 let highestPeak = initialPeakHeight;
 let lowestDepth = -initialPeakHeight;
 let longestRiverLength = 0;
+
 let showOceanDepth = true;
 let grayscaleHeightmap = false;
+let drawBiomesDelaunayStyle = true;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
@@ -1410,18 +1412,22 @@ canvas.addEventListener("click", (e) => {
         // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
     }
 
+    const resetHumidity = () => {
+        resetPrecipitation();
+        resetRivers();
+        resetLakes();
+    }
 
 
     console.time("calculate wind precipitation rivers and lakes");
 
-    let drawBiomesDelaunayStyle = true;
 
-    resetPrecipitation();
-    resetRivers();
-    resetLakes();
+    resetHumidity();
+
     let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     let partitions = createPartitions();
     let windLines = createWindLines();
+
     let riverRoots;
     let allRiverPaths;
     let allRiverSubPathSteps;
