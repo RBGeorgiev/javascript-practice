@@ -569,7 +569,7 @@ canvas.addEventListener("click", (e) => {
         return [...tiles];
     }
 
-    const createWindLines = () => {
+    const createWindLines = (windLineLength) => {
         let windLines = [];
         let windAngle = Math.round(mapGen.randRange(0, 360));
 
@@ -626,7 +626,7 @@ canvas.addEventListener("click", (e) => {
         return allPartitions;
     }
 
-    const addTilesToPartitions = () => {
+    const addTilesToCanvasPartitions = (canvasPartitions) => {
         const isPointInPartition = (point, partition) => {
             let x = point[0];
             let y = point[1];
@@ -637,20 +637,22 @@ canvas.addEventListener("click", (e) => {
 
         for (let i = 0; i < mapGen.allPoints.length; i++) {
             let point = mapGen.allPoints[i];
-            for (let j = 0; j < partitions.length; j++) {
-                let inPartition = isPointInPartition(point, partitions[j])
+            for (let j = 0; j < canvasPartitions.length; j++) {
+                let inPartition = isPointInPartition(point, canvasPartitions[j])
                 if (inPartition) {
                     let type = (mapGen.landTiles[i]) ? 'landTiles' : 'oceanTiles';
-                    partitions[j].tiles[type][i] = (mapGen.getTile(i));
+                    canvasPartitions[j].tiles[type][i] = (mapGen.getTile(i));
                 }
             }
         }
+
+        return canvasPartitions;
     }
 
-    const findPartitionsIntersectingLine = (partitions, line1) => {
+    const findPartitionsIntersectingLine = (canvasPartitions, line1) => {
         let intersectedPartitions = [];
-        for (let i = 0; i < partitions.length; i++) {
-            let cur = partitions[i];
+        for (let i = 0; i < canvasPartitions.length; i++) {
+            let cur = canvasPartitions[i];
             let bounds = cur.bounds;
             for (let j = 0; j < bounds.length; j++) {
                 let line2 = bounds[j];
@@ -664,10 +666,10 @@ canvas.addEventListener("click", (e) => {
         return intersectedPartitions;
     }
 
-    const connectPartitionsToLines = (partitions, windLines) => {
+    const connectPartitionsToLines = (canvasPartitions, windLines) => {
         for (let i = 0; i < windLines.length; i++) {
             let line = windLines[i];
-            let intersectedPartitions = findPartitionsIntersectingLine(partitions, line.line);
+            let intersectedPartitions = findPartitionsIntersectingLine(canvasPartitions, line.line);
             line.intersectedPartitions = intersectedPartitions;
         }
     }
@@ -1404,7 +1406,7 @@ canvas.addEventListener("click", (e) => {
 
         // drawWindIntersectedTiles(windLines);
         // drawWindLines(windLines);
-        // drawPartitionBounds(partitions);
+        // drawPartitionBounds(canvasPartitions);
         // displayPrecipitationValues(mapGen.tiles);
         // displayTotalPrecipitationValues(mapGen.tiles);
         // displayHeightValues(mapGen.tiles);
@@ -1425,19 +1427,21 @@ canvas.addEventListener("click", (e) => {
     resetHumidity();
 
     let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    let partitions = createPartitions();
-    let windLines = createWindLines();
-
+    let canvasPartitions;
+    let windLines;
     let riverRoots;
     let allRiverPaths;
     let allRiverSubPathSteps;
     let tilesSurroundedByRivers;
 
-    addTilesToPartitions(partitions);
-    connectPartitionsToLines(partitions, windLines);
-    findTilesIntersectingLineThroughPartitions(windLines);
-    calculatePrecipitation(windLines);
+    canvasPartitions = createPartitions();
+    canvasPartitions = addTilesToCanvasPartitions(canvasPartitions);
 
+    windLines = createWindLines(windLineLength);
+    connectPartitionsToLines(canvasPartitions, windLines);
+    findTilesIntersectingLineThroughPartitions(windLines);
+
+    calculatePrecipitation(windLines);
     riverRoots = defineRivers();
     defineLakes(riverRoots);
     expandLakes();
@@ -1451,7 +1455,6 @@ canvas.addEventListener("click", (e) => {
     tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
     calcualteTemperature();
     defineBiomes();
-
 
     drawAll();
 
