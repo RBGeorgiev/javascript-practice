@@ -603,15 +603,16 @@ canvas.addEventListener("click", (e) => {
         return windLines;
     }
 
-    const createPartitions = () => {
-        let allPartitions = [];
-        let partitionSize = 100;
-        for (let x = 0; x < canvas.width; x += partitionSize) {
-            for (let y = 0; y < canvas.height; y += partitionSize) {
-                let top = [x, y, x + partitionSize, y];
-                let bottom = [x, y + partitionSize, x + partitionSize, y + partitionSize];
-                let left = [x, y, x, y + partitionSize];
-                let right = [x + partitionSize, y, x + partitionSize, y + partitionSize];
+    const createCanvasPartitions = () => {
+        let canvasPartitions = [];
+        let partitionSizeX = canvas.width / 8;
+        let partitionSizeY = canvas.height / 8;
+        for (let x = 0; x < canvas.width; x += partitionSizeX) {
+            for (let y = 0; y < canvas.height; y += partitionSizeY) {
+                let top = [x, y, x + partitionSizeX, y];
+                let bottom = [x, y + partitionSizeY, x + partitionSizeX, y + partitionSizeY];
+                let left = [x, y, x, y + partitionSizeY];
+                let right = [x + partitionSizeX, y, x + partitionSizeX, y + partitionSizeY];
                 let bounds = [top, bottom, left, right];
                 let partition = {
                     bounds,
@@ -620,10 +621,10 @@ canvas.addEventListener("click", (e) => {
                         'oceanTiles': {}
                     }
                 }
-                allPartitions.push(partition);
+                canvasPartitions.push(partition);
             }
         }
-        return allPartitions;
+        return canvasPartitions;
     }
 
     const addTilesToCanvasPartitions = (canvasPartitions) => {
@@ -1420,6 +1421,10 @@ canvas.addEventListener("click", (e) => {
         resetLakes();
     }
 
+    const initCanvasPartitions = () => addTilesToCanvasPartitions(
+        createCanvasPartitions()
+    );
+
 
     console.time("calculate wind precipitation rivers and lakes");
 
@@ -1434,8 +1439,8 @@ canvas.addEventListener("click", (e) => {
     let allRiverSubPathSteps;
     let tilesSurroundedByRivers;
 
-    canvasPartitions = createPartitions();
-    canvasPartitions = addTilesToCanvasPartitions(canvasPartitions);
+
+    canvasPartitions = initCanvasPartitions();
 
     windLines = createWindLines(windLineLength);
     connectPartitionsToLines(canvasPartitions, windLines);
