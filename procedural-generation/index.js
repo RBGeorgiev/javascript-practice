@@ -1425,6 +1425,17 @@ canvas.addEventListener("click", (e) => {
         createCanvasPartitions()
     );
 
+    const initWindLines = (windLineLength) => {
+        let windLines = [];
+
+        windLines = createWindLines(windLineLength);
+        connectPartitionsToLines(canvasPartitions, windLines);
+        findTilesIntersectingLineThroughPartitions(windLines);
+
+        return windLines;
+    }
+
+
 
     console.time("calculate wind precipitation rivers and lakes");
 
@@ -1442,9 +1453,7 @@ canvas.addEventListener("click", (e) => {
 
     canvasPartitions = initCanvasPartitions();
 
-    windLines = createWindLines(windLineLength);
-    connectPartitionsToLines(canvasPartitions, windLines);
-    findTilesIntersectingLineThroughPartitions(windLines);
+    windLines = initWindLines(windLineLength);
 
     calculatePrecipitation(windLines);
     riverRoots = defineRivers();
