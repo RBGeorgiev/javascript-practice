@@ -668,21 +668,25 @@ canvas.addEventListener("click", (e) => {
     }
 
     const connectPartitionsToLines = (canvasPartitions, windLines) => {
-        for (let i = 0; i < windLines.length; i++) {
-            let line = windLines[i];
+        let windLinesCopy = [...windLines];
+        for (let i = 0; i < windLinesCopy.length; i++) {
+            let line = windLinesCopy[i];
             let intersectedPartitions = findPartitionsIntersectingLine(canvasPartitions, line.line);
             line.intersectedPartitions = intersectedPartitions;
         }
+        return windLinesCopy;
     }
 
     const findTilesIntersectingLineThroughPartitions = (windLines) => {
-        for (let i = 0; i < windLines.length; i++) {
-            let line = windLines[i];
+        let windLinesCopy = [...windLines];
+        for (let i = 0; i < windLinesCopy.length; i++) {
+            let line = windLinesCopy[i];
             for (let j = 0; j < line.intersectedPartitions.length; j++) {
                 let tiles = findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
                 line.intersectedTiles.push(...tiles);
             }
         }
+        return windLinesCopy;
     }
 
     const drawWindLines = (windLines) => {
@@ -1429,8 +1433,8 @@ canvas.addEventListener("click", (e) => {
         let windLines = [];
 
         windLines = createWindLines(windLineLength);
-        connectPartitionsToLines(canvasPartitions, windLines);
-        findTilesIntersectingLineThroughPartitions(windLines);
+        windLines = connectPartitionsToLines(canvasPartitions, windLines);
+        windLines = findTilesIntersectingLineThroughPartitions(windLines);
 
         return windLines;
     }
