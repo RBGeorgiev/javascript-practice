@@ -1439,7 +1439,19 @@ canvas.addEventListener("click", (e) => {
         return windLines;
     }
 
+    const initWaterOnLand = (windLines) => {
+        calculatePrecipitation(windLines);
+        let riverRoots = defineRivers();
+        defineLakes(riverRoots);
+        expandLakes();
 
+        addHumidityFromClimate();
+
+        checkForDryRivers(riverRoots);
+        checkForDryLakes();
+
+        return riverRoots;
+    }
 
     console.time("calculate wind precipitation rivers and lakes");
 
@@ -1459,15 +1471,8 @@ canvas.addEventListener("click", (e) => {
 
     windLines = initWindLines(windLineLength);
 
-    calculatePrecipitation(windLines);
-    riverRoots = defineRivers();
-    defineLakes(riverRoots);
-    expandLakes();
+    riverRoots = initWaterOnLand(windLines);
 
-    addHumidityFromClimate();
-
-    checkForDryRivers(riverRoots);
-    checkForDryLakes();
 
     [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
     tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
