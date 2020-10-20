@@ -524,7 +524,7 @@ let longestRiverLength = 0;
 
 let showOceanDepth = true;
 let grayscaleHeightmap = false;
-let drawBiomesDelaunayStyle = true;
+let drawBiomesDelaunayStyle = false;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
@@ -689,46 +689,6 @@ canvas.addEventListener("click", (e) => {
         return windLinesCopy;
     }
 
-    const drawWindLines = (windLines) => {
-        for (let wind of windLines) {
-            let line = wind.line;
-            ctx.beginPath();
-            ctx.moveTo(line[0], line[1]);
-            ctx.lineTo(line[2], line[3]);
-            ctx.strokeStyle = '#FFFFFF99';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-    }
-
-    const drawPartitionBounds = (allPartitions) => {
-        for (let i = 0; i < allPartitions.length; i++) {
-            let bounds = allPartitions[i].bounds;
-            for (let j = 0; j < bounds.length; j++) {
-                let x1 = bounds[j][0];
-                let y1 = bounds[j][1];
-                let x2 = bounds[j][2];
-                let y2 = bounds[j][3];
-
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.strokeStyle = '#FFFFFF';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            }
-        }
-    }
-
-    const drawWindIntersectedTiles = (windLines) => {
-        for (let line of windLines) {
-            let tiles = line.intersectedTiles;
-            for (let idx of tiles) {
-                mapGen.fillTile(idx);
-            }
-        }
-    }
-
     const resetPrecipitation = () => mapGen.tiles.forEach(t => t.resetPrecipitation());
 
     const getDistanceBetweenPoints = (p1, p2) => {
@@ -778,25 +738,6 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const displayPrecipitationValues = (tiles) => {
-        for (let idx in tiles) {
-            let tile = mapGen.getTile(idx);
-            let x = tile.centroid[0];
-            let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
-            ctx.fillText(tile.precipitation, x, y);
-        }
-    }
-
-    const displayTotalPrecipitationValues = (tiles) => {
-        for (let idx in tiles) {
-            let tile = mapGen.getTile(idx);
-            let x = tile.centroid[0];
-            let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
-            ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
-        }
-    }
 
     // ____________________________________________________________________________________________________________
     // rivers and lakes
@@ -949,7 +890,6 @@ canvas.addEventListener("click", (e) => {
     // _________________________________________
 
 
-
     const voronoiFindPathsBetweenTwoVertices = (tile, start, end) => {
         // removes repeated polygon point
         let polygonPoints = tile.polygon.slice(0, -1);
@@ -1046,67 +986,6 @@ canvas.addEventListener("click", (e) => {
         return [allRiverPaths, allRiverSubPathSteps];
     }
 
-    const drawRivers = (allRiverPaths, curveStrength = 0.4) => {
-        // draw rivers paths with a curve and varying widths
-        let drawnSubPaths = new Set();
-
-        for (let riverNodeAndPath of allRiverPaths) {
-            let riverNode = riverNodeAndPath[0];
-            let riverPath = riverNodeAndPath[1];
-            for (let riverSubPath of riverPath) {
-                let points = riverSubPath.flat();
-                let v1 = `x${points[0]}y${points[1]}`;
-                let v2 = `x${points[points.length - 2]}y${points[points.length - 1]}`;
-                let str = v1 + v2; // use ony start and end river path vertices(points)
-
-                if (!drawnSubPaths.has(str)) {
-                    // get width based on distance from end/root tile
-                    let distToRoot = riverNode.distToRoot;
-                    let farthestLeafDistToRoot = riverNode.getRoot().farthestLeafDist;
-
-                    let normalizedDist = (distToRoot - 0) / (farthestLeafDistToRoot - 0);
-                    if (normalizedDist === Number.POSITIVE_INFINITY || isNaN(normalizedDist)) {
-                        normalizedDist = 0.9;
-                    }
-
-                    let distWidth = riverWidthMax - Math.round(normalizedDist * riverWidthDistanceStrengthControl);
-                    if (distWidth < riverWidthMin) distWidth = riverWidthMin;
-
-                    // get width based on precipitation left in tile
-                    let thirdOfPrecipitationRange = Math.round((precipitationForRiverMax - precipitationForRiverMin) / 3);
-                    let precipitationWidth;
-
-                    if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange) {
-                        precipitationWidth = 1;
-                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
-                        precipitationWidth = 2;
-                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
-                        precipitationWidth = 3;
-                    } else {
-                        precipitationWidth = 4;
-                    }
-
-                    ctx.drawCurve(points, curveStrength);
-                    ctx.lineWidth = (distWidth + precipitationWidth) / 2;
-                    ctx.lineCap = 'round';
-                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : BIOMES_COLORS['RIVER'];
-                    ctx.stroke();
-                }
-
-                drawnSubPaths.add(str);
-            }
-        }
-    }
-
-    const drawLakes = () => {
-        for (let idx in mapGen.lakeTiles) {
-            let color = (mapGen.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : BIOMES_COLORS['LAKE'];
-            mapGen.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
-        }
-    }
-
     const addHumidityFromClimate = () => {
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
@@ -1156,26 +1035,6 @@ canvas.addEventListener("click", (e) => {
             let height = (tile.height < 0) ? 0 : tile.height;
             let temperature = seaLevelTemperature - (height / tempDecreasePerKm);
             tile.setTemperature(Math.round(temperature));
-        }
-    }
-
-    const displayHeightValues = (tiles) => {
-        for (let idx in tiles) {
-            let tile = mapGen.getTile(+idx);
-            let x = tile.centroid[0];
-            let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
-            ctx.fillText(tile.height, x, y);
-        }
-    }
-
-    const displayTemperatureValues = (tiles) => {
-        for (let idx in tiles) {
-            let tile = mapGen.getTile(+idx);
-            let x = tile.centroid[0];
-            let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
-            ctx.fillText(tile.temperature, x, y);
         }
     }
 
@@ -1241,16 +1100,6 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const drawBiomes = () => {
-        for (let idx in mapGen.landTiles) {
-            let tile = mapGen.getTile(+idx);
-            let color = BIOMES_COLORS[tile.biome];
-            mapGen.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
-        }
-    }
-
     const getTilesSurroundedByRivers = (allRiverSubPathSteps) => {
         let tilesSurroundedByRivers = [];
 
@@ -1285,9 +1134,49 @@ canvas.addEventListener("click", (e) => {
         return tilesSurroundedByRivers;
     }
 
+    // _________________________________________
+    // draw methods
+
+    const drawAll = () => {
+        mapGen.clearCanvas();
+        // mapGen.drawHeightmap();
+        // mapGen.drawVoronoi();
+        // mapGen.drawDelaunay();
+        // mapGen.drawPoints();
+
+        if (drawBiomesDelaunayStyle) {
+            drawBiomesAsTriangles();
+        } else {
+            drawBiomes();
+        }
+        mapGen.drawOceanHeightmap();
+        mapGen.drawCoastline();
+        drawRivers(allRiverPaths, 0.4);
+        drawLakes();
+
+        // drawWindIntersectedTiles(windLines);
+        // drawWindLines(windLines);
+        // drawPartitionBounds(canvasPartitions);
+        // displayPrecipitationValues(mapGen.tiles);
+        // displayTotalPrecipitationValues(mapGen.tiles);
+        // displayHeightValues(mapGen.tiles);
+        // displayTemperatureValues(mapGen.tiles);
+        // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
+    }
+
     const drawTilesSurroundedByRivers = (tilesSurroundedByRivers) => {
         for (let idx of tilesSurroundedByRivers) {
             mapGen.fillTile(+idx, "#FFC0CBaa");
+        }
+    }
+
+    const drawBiomes = () => {
+        for (let idx in mapGen.landTiles) {
+            let tile = mapGen.getTile(+idx);
+            let color = BIOMES_COLORS[tile.biome];
+            mapGen.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
         }
     }
 
@@ -1392,32 +1281,148 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    const drawAll = () => {
-        mapGen.clearCanvas();
-        // mapGen.drawHeightmap();
-        // mapGen.drawVoronoi();
-        // mapGen.drawDelaunay();
-        // mapGen.drawPoints();
+    const drawRivers = (allRiverPaths, curveStrength = 0.4) => {
+        // draw rivers paths with a curve and varying widths
+        let drawnSubPaths = new Set();
 
-        if (drawBiomesDelaunayStyle) {
-            drawBiomesAsTriangles();
-        } else {
-            drawBiomes();
+        for (let riverNodeAndPath of allRiverPaths) {
+            let riverNode = riverNodeAndPath[0];
+            let riverPath = riverNodeAndPath[1];
+            for (let riverSubPath of riverPath) {
+                let points = riverSubPath.flat();
+                let v1 = `x${points[0]}y${points[1]}`;
+                let v2 = `x${points[points.length - 2]}y${points[points.length - 1]}`;
+                let str = v1 + v2; // use ony start and end river path vertices(points)
+
+                if (!drawnSubPaths.has(str)) {
+                    // get width based on distance from end/root tile
+                    let distToRoot = riverNode.distToRoot;
+                    let farthestLeafDistToRoot = riverNode.getRoot().farthestLeafDist;
+
+                    let normalizedDist = (distToRoot - 0) / (farthestLeafDistToRoot - 0);
+                    if (normalizedDist === Number.POSITIVE_INFINITY || isNaN(normalizedDist)) {
+                        normalizedDist = 0.9;
+                    }
+
+                    let distWidth = riverWidthMax - Math.round(normalizedDist * riverWidthDistanceStrengthControl);
+                    if (distWidth < riverWidthMin) distWidth = riverWidthMin;
+
+                    // get width based on precipitation left in tile
+                    let thirdOfPrecipitationRange = Math.round((precipitationForRiverMax - precipitationForRiverMin) / 3);
+                    let precipitationWidth;
+
+                    if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange) {
+                        precipitationWidth = 1;
+                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
+                        precipitationWidth = 2;
+                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
+                        precipitationWidth = 3;
+                    } else {
+                        precipitationWidth = 4;
+                    }
+
+                    ctx.drawCurve(points, curveStrength);
+                    ctx.lineWidth = (distWidth + precipitationWidth) / 2;
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : BIOMES_COLORS['RIVER'];
+                    ctx.stroke();
+                }
+
+                drawnSubPaths.add(str);
+            }
         }
-        mapGen.drawOceanHeightmap();
-        mapGen.drawCoastline();
-        drawRivers(allRiverPaths, 0.4);
-        drawLakes();
-
-        // drawWindIntersectedTiles(windLines);
-        // drawWindLines(windLines);
-        // drawPartitionBounds(canvasPartitions);
-        // displayPrecipitationValues(mapGen.tiles);
-        // displayTotalPrecipitationValues(mapGen.tiles);
-        // displayHeightValues(mapGen.tiles);
-        // displayTemperatureValues(mapGen.tiles);
-        // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
     }
+
+    const drawLakes = () => {
+        for (let idx in mapGen.lakeTiles) {
+            let color = (mapGen.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : BIOMES_COLORS['LAKE'];
+            mapGen.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
+
+    const drawWindLines = (windLines) => {
+        for (let wind of windLines) {
+            let line = wind.line;
+            ctx.beginPath();
+            ctx.moveTo(line[0], line[1]);
+            ctx.lineTo(line[2], line[3]);
+            ctx.strokeStyle = '#FFFFFF99';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+    }
+
+    const drawPartitionBounds = (allPartitions) => {
+        for (let i = 0; i < allPartitions.length; i++) {
+            let bounds = allPartitions[i].bounds;
+            for (let j = 0; j < bounds.length; j++) {
+                let x1 = bounds[j][0];
+                let y1 = bounds[j][1];
+                let x2 = bounds[j][2];
+                let y2 = bounds[j][3];
+
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+    }
+
+    const drawWindIntersectedTiles = (windLines) => {
+        for (let line of windLines) {
+            let tiles = line.intersectedTiles;
+            for (let idx of tiles) {
+                mapGen.fillTile(idx);
+            }
+        }
+    }
+
+    const displayHeightValues = (tiles) => {
+        for (let idx in tiles) {
+            let tile = mapGen.getTile(+idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.height, x, y);
+        }
+    }
+
+    const displayTemperatureValues = (tiles) => {
+        for (let idx in tiles) {
+            let tile = mapGen.getTile(+idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.temperature, x, y);
+        }
+    }
+
+    const displayPrecipitationValues = (tiles) => {
+        for (let idx in tiles) {
+            let tile = mapGen.getTile(idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.precipitation, x, y);
+        }
+    }
+
+    const displayTotalPrecipitationValues = (tiles) => {
+        for (let idx in tiles) {
+            let tile = mapGen.getTile(idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
+        }
+    }
+
+    // _________________________________________
 
     const resetHumidity = () => {
         resetPrecipitation();
@@ -1468,11 +1473,8 @@ canvas.addEventListener("click", (e) => {
 
 
     canvasPartitions = initCanvasPartitions();
-
     windLines = initWindLines(windLineLength);
-
     riverRoots = initWaterOnLand(windLines);
-
 
     [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
     tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
