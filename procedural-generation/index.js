@@ -186,6 +186,48 @@ class MapGenerator {
         this.oceanTiles = {};
         this.lakeTiles = {};
         this.coastline = [];
+
+
+
+        this.numberOfRandomInitialPeaksOrTrenchesMin = 5; // important value
+        this.numberOfRandomInitialPeaksOrTrenchesMax = 15; // important value
+        this.chanceForLand = 0.5; // important value
+
+        // the lower the MIN number is, the higher the chance for a sharp drop in height 
+        this.heightDecrementMin = 50; // important value
+        // if MAX number higher than 100 there is a chance for height increase
+        this.heightDecrementMax = 100; // important value
+
+        this.defaultOceanTilePrecipitation = 10; // important value
+        this.maxDefaultPrecipitationTiles = 20; // important value
+        this.heightPrecipitationMultiplier = .2; // important value
+
+        this.precipitationForRiverMin = 20; // important value
+        this.precipitationForRiverMax = 100; // important value
+
+        this.precipitationForLakeMin = 100; // important value
+        this.precipitationForLakeMax = 500; // important value
+        this.lakeHeightPrecipitationMultiplier = 7; // important value
+
+        this.riverWidthMax = 10 / (numOfPoints / 1000);
+        this.riverWidthMin = 1;
+        this.riverWidthDistanceStrengthControl = 10; // important value
+
+        this.humidityFromClimate = 0; // important value
+
+        this.seaLevelTemperature = 18; // important value
+
+        this.initialPeakHeight = 100;
+        this.highestPeak = this.initialPeakHeight;
+        this.lowestDepth = -this.initialPeakHeight;
+        this.longestRiverLength = 0;
+
+        this.showOceanDepth = true;
+        this.grayscaleHeightmap = false;
+        this.drawBiomesDelaunayStyle = false;
+
+
+
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
         this.setTilesHeight();
@@ -220,10 +262,10 @@ class MapGenerator {
     }
 
     setTilesHeight = () => {
-        let randTiles = this.getRandomTiles(numberOfRandomInitialPeaksOrTrenchesMin, numberOfRandomInitialPeaksOrTrenchesMax);
+        let randTiles = this.getRandomTiles(this.numberOfRandomInitialPeaksOrTrenchesMin, this.numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
-            let dir = (this.rng() < chanceForLand) ? 1 : -1;
-            tile.setHeight(dir * initialPeakHeight)
+            let dir = (this.rng() < this.chanceForLand) ? 1 : -1;
+            tile.setHeight(dir * this.initialPeakHeight)
         });
         let queue = [
             ...randTiles
@@ -231,7 +273,7 @@ class MapGenerator {
         let decrement;
 
         while (queue.length) {
-            decrement = this.randRange(heightDecrementMin, heightDecrementMax) / 100;
+            decrement = this.randRange(this.heightDecrementMin, this.heightDecrementMax) / 100;
 
             let cur = queue.shift();
             let curHeight = cur.height;
@@ -242,8 +284,8 @@ class MapGenerator {
                 if (n.height === null) {
                     n.height = Math.round(curHeight * decrement);
                     queue.push(n);
-                    if (n.height > highestPeak) highestPeak = n.height;
-                    if (n.height < lowestDepth) lowestDepth = n.height;
+                    if (n.height > this.highestPeak) this.highestPeak = n.height;
+                    if (n.height < this.lowestDepth) this.lowestDepth = n.height;
                 }
             }
         }
@@ -368,18 +410,18 @@ class MapGenerator {
     }
 
     getLandHeightmapColor = (h) =>
-        (grayscaleHeightmap) ?
-            getLerpedColor('#7f7f7f', '#ffffff', highestPeak, h - 1) :
-            getLerpedColor('#7DC9A6', '#9b0101', highestPeak, h - 1, true);
+        (this.grayscaleHeightmap) ?
+            getLerpedColor('#7f7f7f', '#ffffff', this.highestPeak, h - 1) :
+            getLerpedColor('#7DC9A6', '#9b0101', this.highestPeak, h - 1, true);
 
     getOceanHeightmapColor = (h) => {
-        if (grayscaleHeightmap) {
-            return (showOceanDepth) ?
-                getLerpedColor('#7f7f7f', '#000000', Math.abs(lowestDepth), Math.abs(h) - 1) :
+        if (this.grayscaleHeightmap) {
+            return (this.showOceanDepth) ?
+                getLerpedColor('#7f7f7f', '#000000', Math.abs(this.lowestDepth), Math.abs(h) - 1) :
                 '#000000';
         } else {
-            return (showOceanDepth) ?
-                getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(lowestDepth), Math.abs(h) - 1) :
+            return (this.showOceanDepth) ?
+                getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(this.lowestDepth), Math.abs(h) - 1) :
                 BIOMES_COLORS['OCEAN'];
         }
     }
@@ -489,42 +531,6 @@ class MapGenerator {
 
 let seed = 2546076188;
 let numOfPoints = 1000; // important value
-let numberOfRandomInitialPeaksOrTrenchesMin = 5; // important value
-let numberOfRandomInitialPeaksOrTrenchesMax = 15; // important value
-let chanceForLand = 0.5; // important value
-
-// the lower the MIN number is, the higher the chance for a sharp drop in height 
-let heightDecrementMin = 50; // important value
-// if MAX number higher than 100 there is a chance for height increase
-let heightDecrementMax = 100; // important value
-
-let defaultOceanTilePrecipitation = 10; // important value
-let maxDefaultPrecipitationTiles = 20; // important value
-let heightPrecipitationMultiplier = .2; // important value
-
-let precipitationForRiverMin = 20; // important value
-let precipitationForRiverMax = 100; // important value
-
-let precipitationForLakeMin = 100; // important value
-let precipitationForLakeMax = 500; // important value
-let lakeHeightPrecipitationMultiplier = 7; // important value
-
-let riverWidthMax = 10 / (numOfPoints / 1000);
-let riverWidthMin = 1;
-let riverWidthDistanceStrengthControl = 10; // important value
-
-let humidityFromClimate = 0; // important value
-
-let seaLevelTemperature = 18; // important value
-
-let initialPeakHeight = 100;
-let highestPeak = initialPeakHeight;
-let lowestDepth = -initialPeakHeight;
-let longestRiverLength = 0;
-
-let showOceanDepth = true;
-let grayscaleHeightmap = false;
-let drawBiomesDelaunayStyle = false;
 
 let mapGen = new MapGenerator(numOfPoints, seed);
 
@@ -706,7 +712,7 @@ canvas.addEventListener("click", (e) => {
     const calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
-            let totalWaterAvailable = defaultOceanTilePrecipitation * maxDefaultPrecipitationTiles;
+            let totalWaterAvailable = mapGen.defaultOceanTilePrecipitation * mapGen.maxDefaultPrecipitationTiles;
             let tileDistances = [];
             // get tile distance
             for (let idx of tiles) {
@@ -725,8 +731,8 @@ canvas.addEventListener("click", (e) => {
                 let dist = cur[1];
                 let linePercentVal = windLineLength / 100;
                 let percentDistFromLineStart = dist / linePercentVal / 100;
-                let distPrecipitation = defaultOceanTilePrecipitation - (defaultOceanTilePrecipitation * percentDistFromLineStart);
-                let heightPrecipitation = tile.height * heightPrecipitationMultiplier;
+                let distPrecipitation = mapGen.defaultOceanTilePrecipitation - (mapGen.defaultOceanTilePrecipitation * percentDistFromLineStart);
+                let heightPrecipitation = tile.height * mapGen.heightPrecipitationMultiplier;
 
                 let precipitation = distPrecipitation + heightPrecipitation;
                 if (totalWaterAvailable - precipitation < 0) precipitation = totalWaterAvailable;
@@ -755,7 +761,7 @@ canvas.addEventListener("click", (e) => {
         for (let tile of mapGen.tiles) {
             tile.resetRiver();
         }
-        longestRiverLength = 0;
+        mapGen.longestRiverLength = 0;
     }
 
     const defineRivers = () => {
@@ -772,9 +778,9 @@ canvas.addEventListener("click", (e) => {
                 if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
             }
 
-            if (tile.precipitation > precipitationForRiverMin) {
-                let precipitationForRiverUpperBound = (tile.precipitation > precipitationForRiverMax) ? precipitationForRiverMax : tile.precipitation;
-                let precipitationForRiverLeftInTile = Math.round(mapGen.randRange(precipitationForRiverMin, precipitationForRiverUpperBound));
+            if (tile.precipitation > mapGen.precipitationForRiverMin) {
+                let precipitationForRiverUpperBound = (tile.precipitation > mapGen.precipitationForRiverMax) ? mapGen.precipitationForRiverMax : tile.precipitation;
+                let precipitationForRiverLeftInTile = Math.round(mapGen.randRange(mapGen.precipitationForRiverMin, precipitationForRiverUpperBound));
                 let flowAmount = tile.precipitation - precipitationForRiverLeftInTile;
 
                 lowestNeighbor.precipitation += flowAmount;
@@ -811,7 +817,7 @@ canvas.addEventListener("click", (e) => {
         riverNodes.forEach(river => {
             let root = river.getRoot();
             let distToRoot = getDistanceBetweenPoints(river.getRoot().tile.centroid, river.tile.centroid);
-            if (distToRoot > longestRiverLength) longestRiverLength = distToRoot;
+            if (distToRoot > mapGen.longestRiverLength) mapGen.longestRiverLength = distToRoot;
             river.distToRoot = distToRoot;
             riverRoots.add(root);
         });
@@ -828,12 +834,12 @@ canvas.addEventListener("click", (e) => {
     const defineLakes = (rivers) => {
         let possibleLakes = [];
         // find possible lakes from lowest river tile on land
-        rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
+        rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > mapGen.precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
 
         // define lakes
         for (let i = 0; i < possibleLakes.length; i++) {
             let mbLake = possibleLakes[i];
-            if (mbLake.precipitation >= precipitationForLakeMin) {
+            if (mbLake.precipitation >= mapGen.precipitationForLakeMin) {
                 mapGen.lakeTiles[mbLake.idx] = mbLake;
                 delete mapGen.landTiles[mbLake.idx];
                 possibleLakes.splice(i, 1);
@@ -860,7 +866,7 @@ canvas.addEventListener("click", (e) => {
             }
             neighborsByHeight.sort((a, b) => a.height - b.height);
             let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
-            let totalWaterAvailable = lake.precipitation - precipitationForLakeMax;
+            let totalWaterAvailable = lake.precipitation - mapGen.precipitationForLakeMax;
 
             for (let neighbor of neighborsByHeight) {
                 if (totalWaterAvailable <= 0) break;
@@ -869,7 +875,7 @@ canvas.addEventListener("click", (e) => {
 
                 let heightDifference = neighbor.height - lake.height;
 
-                let waterMoved = waterSpreadAverage + ((defaultOceanTilePrecipitation - heightDifference) * lakeHeightPrecipitationMultiplier) - heightDifference * lakeHeightPrecipitationMultiplier;
+                let waterMoved = waterSpreadAverage + ((mapGen.defaultOceanTilePrecipitation - heightDifference) * mapGen.lakeHeightPrecipitationMultiplier) - heightDifference * mapGen.lakeHeightPrecipitationMultiplier;
                 if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
 
                 neighbor.precipitation += waterMoved;
@@ -877,7 +883,7 @@ canvas.addEventListener("click", (e) => {
                 lake.precipitation -= waterMoved;
                 totalWaterAvailable -= waterMoved;
 
-                if (neighbor.precipitation >= precipitationForLakeMin) {
+                if (neighbor.precipitation >= mapGen.precipitationForLakeMin) {
                     mapGen.lakeTiles[neighbor.idx] = neighbor;
                     delete mapGen.landTiles[neighbor.idx];
 
@@ -989,14 +995,14 @@ canvas.addEventListener("click", (e) => {
     const addHumidityFromClimate = () => {
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
-            tile.precipitation += humidityFromClimate;
-            tile.totalPrecipitationPassedThroughTile += humidityFromClimate;
+            tile.precipitation += mapGen.humidityFromClimate;
+            tile.totalPrecipitationPassedThroughTile += mapGen.humidityFromClimate;
         }
 
         for (let idx in mapGen.lakeTiles) {
             let tile = mapGen.getTile(+idx);
-            tile.precipitation += humidityFromClimate;
-            tile.totalPrecipitationPassedThroughTile += humidityFromClimate;
+            tile.precipitation += mapGen.humidityFromClimate;
+            tile.totalPrecipitationPassedThroughTile += mapGen.humidityFromClimate;
         }
     }
 
@@ -1015,7 +1021,7 @@ canvas.addEventListener("click", (e) => {
                 river.children.forEach(c => queue.push(c));
             }
 
-            if (tile.precipitation < precipitationForRiverMin) {
+            if (tile.precipitation < mapGen.precipitationForRiverMin) {
                 river.dry = true;
             }
         }
@@ -1024,7 +1030,7 @@ canvas.addEventListener("click", (e) => {
     const checkForDryLakes = () => {
         for (let idx in mapGen.lakeTiles) {
             let tile = mapGen.getTile(+idx);
-            tile.dryLake = !!(tile.precipitation < precipitationForLakeMin);
+            tile.dryLake = !!(tile.precipitation < mapGen.precipitationForLakeMin);
         }
     }
 
@@ -1033,7 +1039,7 @@ canvas.addEventListener("click", (e) => {
         let tempDecreasePerKm = 10;
         for (let tile of mapGen.tiles) {
             let height = (tile.height < 0) ? 0 : tile.height;
-            let temperature = seaLevelTemperature - (height / tempDecreasePerKm);
+            let temperature = mapGen.seaLevelTemperature - (height / tempDecreasePerKm);
             tile.setTemperature(Math.round(temperature));
         }
     }
@@ -1144,7 +1150,7 @@ canvas.addEventListener("click", (e) => {
         // mapGen.drawDelaunay();
         // mapGen.drawPoints();
 
-        if (drawBiomesDelaunayStyle) {
+        if (mapGen.drawBiomesDelaunayStyle) {
             drawBiomesAsTriangles();
         } else {
             drawBiomes();
@@ -1304,18 +1310,18 @@ canvas.addEventListener("click", (e) => {
                         normalizedDist = 0.9;
                     }
 
-                    let distWidth = riverWidthMax - Math.round(normalizedDist * riverWidthDistanceStrengthControl);
-                    if (distWidth < riverWidthMin) distWidth = riverWidthMin;
+                    let distWidth = mapGen.riverWidthMax - Math.round(normalizedDist * mapGen.riverWidthDistanceStrengthControl);
+                    if (distWidth < mapGen.riverWidthMin) distWidth = mapGen.riverWidthMin;
 
                     // get width based on precipitation left in tile
-                    let thirdOfPrecipitationRange = Math.round((precipitationForRiverMax - precipitationForRiverMin) / 3);
+                    let thirdOfPrecipitationRange = Math.round((mapGen.precipitationForRiverMax - mapGen.precipitationForRiverMin) / 3);
                     let precipitationWidth;
 
-                    if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange) {
+                    if (riverNode.tile.precipitation <= mapGen.precipitationForRiverMin + thirdOfPrecipitationRange) {
                         precipitationWidth = 1;
-                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
+                    } else if (riverNode.tile.precipitation <= mapGen.precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
                         precipitationWidth = 2;
-                    } else if (riverNode.tile.precipitation <= precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
+                    } else if (riverNode.tile.precipitation <= mapGen.precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
                         precipitationWidth = 3;
                     } else {
                         precipitationWidth = 4;
