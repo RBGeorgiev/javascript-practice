@@ -1,3 +1,3 @@
 # Procedural map generation is JS
 
-Procedural map generation is vanilla JS
+A polygon tile-based seeded procedural map generation in vanilla JS.
