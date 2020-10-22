@@ -173,11 +173,12 @@ const BIOMES_COLORS = {
 
 class MapGenerator {
     constructor(numOfPoints, seed = null) {
+        this.numOfPoints = numOfPoints; // important value
         this.seed = seed || randomUint32();
         this.rng = sfc32(this.seed, this.seed, this.seed, this.seed); // using this.rng() generates number between 0 and 1
         console.log(this.seed);
 
-        this.allPoints = this.generateRandomPoints(numOfPoints);
+        this.allPoints = this.generateRandomPoints(this.numOfPoints);
         this.delaunay;
         this.voronoi;
         this.allVoronoiPolygonPoints;
@@ -209,7 +210,7 @@ class MapGenerator {
         this.precipitationForLakeMax = 500; // important value
         this.lakeHeightPrecipitationMultiplier = 7; // important value
 
-        this.riverWidthMax = 10 / (numOfPoints / 1000);
+        this.riverWidthMax = 10 / (this.numOfPoints / 1000);
         this.riverWidthMin = 1;
         this.riverWidthDistanceStrengthControl = 10; // important value
 
@@ -530,9 +531,9 @@ class MapGenerator {
 }
 
 let seed = 2546076188;
-let numOfPoints = 1000; // important value
+let initialNumOfPoints = 1000;
 
-let mapGen = new MapGenerator(numOfPoints, seed);
+let mapGen = new MapGenerator(initialNumOfPoints, seed);
 
 mapGen.drawHeightmap();
 
