@@ -228,6 +228,14 @@ class MapGenerator {
         this.drawBiomesDelaunayStyle = false;
 
 
+        this.windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+        this.canvasPartitions;
+        this.windLines;
+        this.riverRoots;
+        this.allRiverPaths;
+        this.allRiverSubPathSteps;
+        this.tilesSurroundedByRivers;
+
 
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
@@ -730,7 +738,7 @@ canvas.addEventListener("click", (e) => {
                 if (totalWaterAvailable <= 0) break;
                 let tile = mapGen.getTile(cur[0]);
                 let dist = cur[1];
-                let linePercentVal = windLineLength / 100;
+                let linePercentVal = mapGen.windLineLength / 100;
                 let percentDistFromLineStart = dist / linePercentVal / 100;
                 let distPrecipitation = mapGen.defaultOceanTilePrecipitation - (mapGen.defaultOceanTilePrecipitation * percentDistFromLineStart);
                 let heightPrecipitation = tile.height * mapGen.heightPrecipitationMultiplier;
@@ -1070,6 +1078,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     const checkForSpecialBiome = (biome, temp, humidity, tile) => {
+        let tilesSurroundedByRivers = mapGen.tilesSurroundedByRivers;
         let specialBiomes = {
             "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 4 && humidity <= 7)],
             "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.7],
@@ -1158,7 +1167,7 @@ canvas.addEventListener("click", (e) => {
         }
         mapGen.drawOceanHeightmap();
         mapGen.drawCoastline();
-        drawRivers(allRiverPaths, 0.4);
+        drawRivers(mapGen.allRiverPaths, 0.4);
         drawLakes();
 
         // drawWindIntersectedTiles(windLines);
@@ -1441,7 +1450,7 @@ canvas.addEventListener("click", (e) => {
         createCanvasPartitions()
     );
 
-    const initWindLines = (windLineLength) => {
+    const initWindLines = (windLineLength, canvasPartitions) => {
         let windLines = [];
 
         windLines = createWindLines(windLineLength);
@@ -1470,21 +1479,12 @@ canvas.addEventListener("click", (e) => {
 
     resetHumidity();
 
-    let windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    let canvasPartitions;
-    let windLines;
-    let riverRoots;
-    let allRiverPaths;
-    let allRiverSubPathSteps;
-    let tilesSurroundedByRivers;
+    mapGen.canvasPartitions = initCanvasPartitions();
+    mapGen.windLines = initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
+    mapGen.riverRoots = initWaterOnLand(mapGen.windLines);
 
-
-    canvasPartitions = initCanvasPartitions();
-    windLines = initWindLines(windLineLength);
-    riverRoots = initWaterOnLand(windLines);
-
-    [allRiverPaths, allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(riverRoots)];
-    tilesSurroundedByRivers = getTilesSurroundedByRivers(allRiverSubPathSteps);
+    [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(mapGen.riverRoots)];
+    mapGen.tilesSurroundedByRivers = getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
     calcualteTemperature();
     defineBiomes();
 
