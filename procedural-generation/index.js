@@ -537,6 +537,26 @@ class MapGenerator {
 
         return [totalX / len, totalY / len];
     }
+
+    resetPrecipitation = () => this.tiles.forEach(t => t.resetPrecipitation());
+
+    resetRivers = () => {
+        for (let tile of this.tiles) {
+            tile.resetRiver();
+        }
+        this.longestRiverLength = 0;
+    }
+
+    resetLakes = () => {
+        Object.assign(this.landTiles, this.lakeTiles);
+        this.lakeTiles = {};
+    }
+
+    resetHumidity = () => {
+        this.resetPrecipitation();
+        this.resetRivers();
+        this.resetLakes();
+    }
 }
 
 let seed = 2546076188;
@@ -691,8 +711,6 @@ canvas.addEventListener("click", (e) => {
         return windLinesCopy;
     }
 
-    const resetPrecipitation = () => mapGen.tiles.forEach(t => t.resetPrecipitation());
-
     const getDistanceBetweenPoints = (p1, p2) => {
         let x1 = p1[0];
         let y1 = p1[1];
@@ -751,13 +769,6 @@ canvas.addEventListener("click", (e) => {
             tilesByHeight.push(tile);
         }
         return tilesByHeight.sort((a, b) => b.height - a.height);
-    }
-
-    const resetRivers = () => {
-        for (let tile of mapGen.tiles) {
-            tile.resetRiver();
-        }
-        mapGen.longestRiverLength = 0;
     }
 
     const defineRivers = () => {
@@ -820,12 +831,6 @@ canvas.addEventListener("click", (e) => {
 
         return [...riverRoots];
     }
-
-    const resetLakes = () => {
-        Object.assign(mapGen.landTiles, mapGen.lakeTiles);
-        mapGen.lakeTiles = {};
-    }
-
 
     const defineLakes = (rivers) => {
         let possibleLakes = [];
@@ -1427,11 +1432,6 @@ canvas.addEventListener("click", (e) => {
 
     // _________________________________________
 
-    const resetHumidity = () => {
-        resetPrecipitation();
-        resetRivers();
-        resetLakes();
-    }
 
     const initCanvasPartitions = () => addTilesToCanvasPartitions(
         createCanvasPartitions()
@@ -1464,7 +1464,7 @@ canvas.addEventListener("click", (e) => {
     console.time("calculate wind precipitation rivers and lakes");
 
 
-    resetHumidity();
+    mapGen.resetHumidity();
 
     mapGen.canvasPartitions = initCanvasPartitions();
     mapGen.windLines = initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
