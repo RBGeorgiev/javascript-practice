@@ -557,6 +557,57 @@ class MapGenerator {
         this.resetRivers();
         this.resetLakes();
     }
+
+    createCanvasPartitions = () => {
+        let canvasPartitions = [];
+        let partitionSizeX = canvas.width / 8;
+        let partitionSizeY = canvas.height / 8;
+        for (let x = 0; x < canvas.width; x += partitionSizeX) {
+            for (let y = 0; y < canvas.height; y += partitionSizeY) {
+                let top = [x, y, x + partitionSizeX, y];
+                let bottom = [x, y + partitionSizeY, x + partitionSizeX, y + partitionSizeY];
+                let left = [x, y, x, y + partitionSizeY];
+                let right = [x + partitionSizeX, y, x + partitionSizeX, y + partitionSizeY];
+                let bounds = [top, bottom, left, right];
+                let partition = {
+                    bounds,
+                    'tiles': {
+                        'landTiles': {},
+                        'oceanTiles': {}
+                    }
+                }
+                canvasPartitions.push(partition);
+            }
+        }
+        return canvasPartitions;
+    }
+
+    addTilesToCanvasPartitions = (canvasPartitions) => {
+        const isPointInPartition = (point, partition) => {
+            let x = point[0];
+            let y = point[1];
+            let topLine = partition.bounds[0];
+            let leftLine = partition.bounds[2];
+            return x > topLine[0] && x < topLine[2] && y > leftLine[1] && y < leftLine[3];
+        }
+
+        for (let i = 0; i < this.allPoints.length; i++) {
+            let point = this.allPoints[i];
+            for (let j = 0; j < canvasPartitions.length; j++) {
+                let inPartition = isPointInPartition(point, canvasPartitions[j])
+                if (inPartition) {
+                    let type = (this.landTiles[i]) ? 'landTiles' : 'oceanTiles';
+                    canvasPartitions[j].tiles[type][i] = (this.getTile(i));
+                }
+            }
+        }
+
+        return canvasPartitions;
+    }
+
+    initCanvasPartitions = () => this.addTilesToCanvasPartitions(
+        this.createCanvasPartitions()
+    );
 }
 
 let seed = 2546076188;
@@ -623,53 +674,6 @@ canvas.addEventListener("click", (e) => {
         }
 
         return windLines;
-    }
-
-    const createCanvasPartitions = () => {
-        let canvasPartitions = [];
-        let partitionSizeX = canvas.width / 8;
-        let partitionSizeY = canvas.height / 8;
-        for (let x = 0; x < canvas.width; x += partitionSizeX) {
-            for (let y = 0; y < canvas.height; y += partitionSizeY) {
-                let top = [x, y, x + partitionSizeX, y];
-                let bottom = [x, y + partitionSizeY, x + partitionSizeX, y + partitionSizeY];
-                let left = [x, y, x, y + partitionSizeY];
-                let right = [x + partitionSizeX, y, x + partitionSizeX, y + partitionSizeY];
-                let bounds = [top, bottom, left, right];
-                let partition = {
-                    bounds,
-                    'tiles': {
-                        'landTiles': {},
-                        'oceanTiles': {}
-                    }
-                }
-                canvasPartitions.push(partition);
-            }
-        }
-        return canvasPartitions;
-    }
-
-    const addTilesToCanvasPartitions = (canvasPartitions) => {
-        const isPointInPartition = (point, partition) => {
-            let x = point[0];
-            let y = point[1];
-            let topLine = partition.bounds[0];
-            let leftLine = partition.bounds[2];
-            return x > topLine[0] && x < topLine[2] && y > leftLine[1] && y < leftLine[3];
-        }
-
-        for (let i = 0; i < mapGen.allPoints.length; i++) {
-            let point = mapGen.allPoints[i];
-            for (let j = 0; j < canvasPartitions.length; j++) {
-                let inPartition = isPointInPartition(point, canvasPartitions[j])
-                if (inPartition) {
-                    let type = (mapGen.landTiles[i]) ? 'landTiles' : 'oceanTiles';
-                    canvasPartitions[j].tiles[type][i] = (mapGen.getTile(i));
-                }
-            }
-        }
-
-        return canvasPartitions;
     }
 
     const findPartitionsIntersectingLine = (canvasPartitions, line1) => {
@@ -1433,10 +1437,6 @@ canvas.addEventListener("click", (e) => {
     // _________________________________________
 
 
-    const initCanvasPartitions = () => addTilesToCanvasPartitions(
-        createCanvasPartitions()
-    );
-
     const initWindLines = (windLineLength, canvasPartitions) => {
         let windLines = [];
 
@@ -1466,7 +1466,7 @@ canvas.addEventListener("click", (e) => {
 
     mapGen.resetHumidity();
 
-    mapGen.canvasPartitions = initCanvasPartitions();
+    mapGen.canvasPartitions = mapGen.initCanvasPartitions();
     mapGen.windLines = initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
     mapGen.riverRoots = initWaterOnLand(mapGen.windLines);
 
