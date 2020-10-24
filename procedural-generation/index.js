@@ -608,43 +608,10 @@ class MapGenerator {
     initCanvasPartitions = () => this.addTilesToCanvasPartitions(
         this.createCanvasPartitions()
     );
-}
 
-let seed = 2546076188;
-let initialNumOfPoints = 1000;
-
-let mapGen = new MapGenerator(initialNumOfPoints, seed);
-
-mapGen.drawHeightmap();
-
-canvas.addEventListener("click", (e) => {
-    // let x = e.offsetX;
-    // let y = e.offsetY;
-    // let cell = mapGen.delaunay.find(x, y);
-    // console.log(mapGen.tiles[cell]);
-    // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
-    const findTilesIntersectingLine = (tileType, line1) => {
-        let tiles = new Set;
-        for (let idx in tileType) {
-            let tile = tileType[idx];
-            let vertices = tile.polygon;
-            // first and last vertex are the same
-            for (let i = 1; i < vertices.length; i++) {
-                let line2 = [vertices[i - 1][0], vertices[i - 1][1], vertices[i][0], vertices[i][1]];
-                let collision = lineCollision(...line1, ...line2);
-                if (collision) {
-                    tiles.add(+idx);
-                }
-            }
-        }
-        return [...tiles];
-    }
-
-    const createWindLines = (windLineLength) => {
+    createWindLines = (windLineLength) => {
         let windLines = [];
-        let windAngle = Math.round(mapGen.randRange(0, 360));
+        let windAngle = Math.round(this.randRange(0, 360));
 
         const rotateAroundCenter = (cx, cy, x, y, angle) => {
             let radians = (Math.PI / 180) * angle,
@@ -656,9 +623,9 @@ canvas.addEventListener("click", (e) => {
         }
 
         // prevailing wind direction
-        for (let idx in mapGen.oceanTiles) {
-            let windOffset = Math.round(mapGen.randRange(-5, 5));
-            let tile = mapGen.oceanTiles[idx];
+        for (let idx in this.oceanTiles) {
+            let windOffset = Math.round(this.randRange(-5, 5));
+            let tile = this.oceanTiles[idx];
             let x1 = tile.centroid[0];
             let y1 = tile.centroid[1];
             let rot = rotateAroundCenter(x1, y1, x1, y1 - windLineLength, windAngle + windOffset);
@@ -676,7 +643,17 @@ canvas.addEventListener("click", (e) => {
         return windLines;
     }
 
-    const findPartitionsIntersectingLine = (canvasPartitions, line1) => {
+    connectPartitionsToLines = (canvasPartitions, windLines) => {
+        let windLinesCopy = [...windLines];
+        for (let i = 0; i < windLinesCopy.length; i++) {
+            let line = windLinesCopy[i];
+            let intersectedPartitions = this.findPartitionsIntersectingLine(canvasPartitions, line.line);
+            line.intersectedPartitions = intersectedPartitions;
+        }
+        return windLinesCopy;
+    }
+
+    findPartitionsIntersectingLine = (canvasPartitions, line1) => {
         let intersectedPartitions = [];
         for (let i = 0; i < canvasPartitions.length; i++) {
             let cur = canvasPartitions[i];
@@ -693,27 +670,61 @@ canvas.addEventListener("click", (e) => {
         return intersectedPartitions;
     }
 
-    const connectPartitionsToLines = (canvasPartitions, windLines) => {
-        let windLinesCopy = [...windLines];
-        for (let i = 0; i < windLinesCopy.length; i++) {
-            let line = windLinesCopy[i];
-            let intersectedPartitions = findPartitionsIntersectingLine(canvasPartitions, line.line);
-            line.intersectedPartitions = intersectedPartitions;
-        }
-        return windLinesCopy;
-    }
-
-    const findTilesIntersectingLineThroughPartitions = (windLines) => {
+    findTilesIntersectingLineThroughPartitions = (windLines) => {
         let windLinesCopy = [...windLines];
         for (let i = 0; i < windLinesCopy.length; i++) {
             let line = windLinesCopy[i];
             for (let j = 0; j < line.intersectedPartitions.length; j++) {
-                let tiles = findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
+                let tiles = this.findTilesIntersectingLine(line.intersectedPartitions[j].tiles.landTiles, line.line);
                 line.intersectedTiles.push(...tiles);
             }
         }
         return windLinesCopy;
     }
+
+    findTilesIntersectingLine = (tileType, line1) => {
+        let tiles = new Set;
+        for (let idx in tileType) {
+            let tile = tileType[idx];
+            let vertices = tile.polygon;
+            // first and last vertex are the same
+            for (let i = 1; i < vertices.length; i++) {
+                let line2 = [vertices[i - 1][0], vertices[i - 1][1], vertices[i][0], vertices[i][1]];
+                let collision = lineCollision(...line1, ...line2);
+                if (collision) {
+                    tiles.add(+idx);
+                }
+            }
+        }
+        return [...tiles];
+    }
+
+    initWindLines = (windLineLength, canvasPartitions) => {
+        let windLines = [];
+
+        windLines = this.createWindLines(windLineLength);
+        windLines = this.connectPartitionsToLines(canvasPartitions, windLines);
+        windLines = this.findTilesIntersectingLineThroughPartitions(windLines);
+
+        return windLines;
+    }
+}
+
+
+let seed = 2546076188;
+let initialNumOfPoints = 1000;
+
+let mapGen = new MapGenerator(initialNumOfPoints, seed);
+
+mapGen.drawHeightmap();
+
+canvas.addEventListener("click", (e) => {
+    // let x = e.offsetX;
+    // let y = e.offsetY;
+    // let cell = mapGen.delaunay.find(x, y);
+    // console.log(mapGen.tiles[cell]);
+    // let neighbors = mapGen.voronoi.neighbors(cell);
+
 
     const getDistanceBetweenPoints = (p1, p2) => {
         let x1 = p1[0];
@@ -1437,16 +1448,6 @@ canvas.addEventListener("click", (e) => {
     // _________________________________________
 
 
-    const initWindLines = (windLineLength, canvasPartitions) => {
-        let windLines = [];
-
-        windLines = createWindLines(windLineLength);
-        windLines = connectPartitionsToLines(canvasPartitions, windLines);
-        windLines = findTilesIntersectingLineThroughPartitions(windLines);
-
-        return windLines;
-    }
-
     const initWaterOnLand = (windLines) => {
         calculatePrecipitation(windLines);
         let riverRoots = defineRivers();
@@ -1467,7 +1468,7 @@ canvas.addEventListener("click", (e) => {
     mapGen.resetHumidity();
 
     mapGen.canvasPartitions = mapGen.initCanvasPartitions();
-    mapGen.windLines = initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
+    mapGen.windLines = mapGen.initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
     mapGen.riverRoots = initWaterOnLand(mapGen.windLines);
 
     [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(mapGen.riverRoots)];
