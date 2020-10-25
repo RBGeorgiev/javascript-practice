@@ -744,39 +744,21 @@ class MapGenerator {
             }
         }
     }
-}
-
-
-let seed = 2546076188;
-let initialNumOfPoints = 1000;
-
-let mapGen = new MapGenerator(initialNumOfPoints, seed);
-
-mapGen.drawHeightmap();
-
-canvas.addEventListener("click", (e) => {
-    // let x = e.offsetX;
-    // let y = e.offsetY;
-    // let cell = mapGen.delaunay.find(x, y);
-    // console.log(mapGen.tiles[cell]);
-    // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
 
     // ____________________________________________________________________________________________________________
     // rivers and lakes
 
-    const getTilesByHeight = (tiles) => {
-        let tilesByHeight = [];
+    getTilesByHeight = (tiles) => {
+        let tilesArr = [];
         for (let idx in tiles) {
-            let tile = mapGen.getTile(idx);
-            tilesByHeight.push(tile);
+            let tile = this.getTile(idx);
+            tilesArr.push(tile);
         }
-        return tilesByHeight.sort((a, b) => b.height - a.height);
+        return tilesArr.sort((a, b) => b.height - a.height);
     }
 
-    const defineRivers = () => {
-        let tilesByHeight = getTilesByHeight(mapGen.landTiles);
+    defineRivers = () => {
+        let tilesByHeight = this.getTilesByHeight(this.landTiles);
         let riverNodes = [];
 
         for (let i = 0; i < tilesByHeight.length; i++) {
@@ -785,13 +767,13 @@ canvas.addEventListener("click", (e) => {
             let lowestNeighbor;
 
             for (let idx of neighbors) {
-                let n = mapGen.getTile(idx);
+                let n = this.getTile(idx);
                 if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
             }
 
-            if (tile.precipitation > mapGen.precipitationForRiverMin) {
-                let precipitationForRiverUpperBound = (tile.precipitation > mapGen.precipitationForRiverMax) ? mapGen.precipitationForRiverMax : tile.precipitation;
-                let precipitationForRiverLeftInTile = Math.round(mapGen.randRange(mapGen.precipitationForRiverMin, precipitationForRiverUpperBound));
+            if (tile.precipitation > this.precipitationForRiverMin) {
+                let precipitationForRiverUpperBound = (tile.precipitation > this.precipitationForRiverMax) ? this.precipitationForRiverMax : tile.precipitation;
+                let precipitationForRiverLeftInTile = Math.round(this.randRange(this.precipitationForRiverMin, precipitationForRiverUpperBound));
                 let flowAmount = tile.precipitation - precipitationForRiverLeftInTile;
 
                 lowestNeighbor.precipitation += flowAmount;
@@ -828,13 +810,31 @@ canvas.addEventListener("click", (e) => {
         riverNodes.forEach(river => {
             let root = river.getRoot();
             let distToRoot = getDistanceBetweenPoints(river.getRoot().tile.centroid, river.tile.centroid);
-            if (distToRoot > mapGen.longestRiverLength) mapGen.longestRiverLength = distToRoot;
+            if (distToRoot > this.longestRiverLength) this.longestRiverLength = distToRoot;
             river.distToRoot = distToRoot;
             riverRoots.add(root);
         });
 
         return [...riverRoots];
     }
+}
+
+
+let seed = 2546076188;
+let initialNumOfPoints = 1000;
+
+let mapGen = new MapGenerator(initialNumOfPoints, seed);
+
+mapGen.drawHeightmap();
+
+canvas.addEventListener("click", (e) => {
+    // let x = e.offsetX;
+    // let y = e.offsetY;
+    // let cell = mapGen.delaunay.find(x, y);
+    // console.log(mapGen.tiles[cell]);
+    // let neighbors = mapGen.voronoi.neighbors(cell);
+
+
 
     const defineLakes = (rivers) => {
         let possibleLakes = [];
@@ -1439,7 +1439,7 @@ canvas.addEventListener("click", (e) => {
 
     const initWaterOnLand = (windLines) => {
         mapGen.calculatePrecipitation(windLines);
-        let riverRoots = defineRivers();
+        let riverRoots = mapGen.defineRivers();
         defineLakes(riverRoots);
         expandLakes();
 
