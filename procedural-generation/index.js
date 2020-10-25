@@ -709,6 +709,41 @@ class MapGenerator {
 
         return windLines;
     }
+
+    calculatePrecipitation = (windLines) => {
+        for (let line of windLines) {
+            let tiles = line.intersectedTiles;
+            let totalWaterAvailable = this.defaultOceanTilePrecipitation * this.maxDefaultPrecipitationTiles;
+            let tileDistances = [];
+            // get tile distance
+            for (let idx of tiles) {
+                let tile = this.getTile(idx);
+                let dist = getDistanceBetweenPoints(line.line, tile.centroid);
+                tileDistances.push([idx, dist]);
+            }
+
+            // sort tiles by ascending distance
+            tileDistances = tileDistances.sort((a, b) => a[1] - b[1]);
+
+            // get tile precipitation
+            for (let cur of tileDistances) {
+                if (totalWaterAvailable <= 0) break;
+                let tile = this.getTile(cur[0]);
+                let dist = cur[1];
+                let linePercentVal = this.windLineLength / 100;
+                let percentDistFromLineStart = dist / linePercentVal / 100;
+                let distPrecipitation = this.defaultOceanTilePrecipitation - (this.defaultOceanTilePrecipitation * percentDistFromLineStart);
+                let heightPrecipitation = tile.height * this.heightPrecipitationMultiplier;
+
+                let precipitation = distPrecipitation + heightPrecipitation;
+                if (totalWaterAvailable - precipitation < 0) precipitation = totalWaterAvailable;
+                totalWaterAvailable -= precipitation;
+
+                tile.precipitation += Math.round(precipitation);
+                tile.totalPrecipitationPassedThroughTile += Math.round(precipitation);
+            }
+        }
+    }
 }
 
 
@@ -726,41 +761,6 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-
-    const calculatePrecipitation = (windLines) => {
-        for (let line of windLines) {
-            let tiles = line.intersectedTiles;
-            let totalWaterAvailable = mapGen.defaultOceanTilePrecipitation * mapGen.maxDefaultPrecipitationTiles;
-            let tileDistances = [];
-            // get tile distance
-            for (let idx of tiles) {
-                let tile = mapGen.getTile(idx);
-                let dist = getDistanceBetweenPoints(line.line, tile.centroid);
-                tileDistances.push([idx, dist]);
-            }
-
-            // sort tiles by ascending distance
-            tileDistances = tileDistances.sort((a, b) => a[1] - b[1]);
-
-            // get tile precipitation
-            for (let cur of tileDistances) {
-                if (totalWaterAvailable <= 0) break;
-                let tile = mapGen.getTile(cur[0]);
-                let dist = cur[1];
-                let linePercentVal = mapGen.windLineLength / 100;
-                let percentDistFromLineStart = dist / linePercentVal / 100;
-                let distPrecipitation = mapGen.defaultOceanTilePrecipitation - (mapGen.defaultOceanTilePrecipitation * percentDistFromLineStart);
-                let heightPrecipitation = tile.height * mapGen.heightPrecipitationMultiplier;
-
-                let precipitation = distPrecipitation + heightPrecipitation;
-                if (totalWaterAvailable - precipitation < 0) precipitation = totalWaterAvailable;
-                totalWaterAvailable -= precipitation;
-
-                tile.precipitation += Math.round(precipitation);
-                tile.totalPrecipitationPassedThroughTile += Math.round(precipitation);
-            }
-        }
-    }
 
 
     // ____________________________________________________________________________________________________________
@@ -1438,7 +1438,7 @@ canvas.addEventListener("click", (e) => {
 
 
     const initWaterOnLand = (windLines) => {
-        calculatePrecipitation(windLines);
+        mapGen.calculatePrecipitation(windLines);
         let riverRoots = defineRivers();
         defineLakes(riverRoots);
         expandLakes();
