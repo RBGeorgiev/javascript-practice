@@ -3,6 +3,7 @@ import { canvas, ctx } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
 import { lineCollision } from './lineCollision.js';
+import { getDistanceBetweenPoints } from './distanceBetween.js';
 
 
 const randomUint32 = () => (Math.random() * 4294967296) >>> 0; // random seed generator
@@ -725,18 +726,6 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-
-    const getDistanceBetweenPoints = (p1, p2) => {
-        let x1 = p1[0];
-        let y1 = p1[1];
-        let x2 = p2[0];
-        let y2 = p2[1];
-
-        let a = x1 - x2;
-        let b = y1 - y2;
-
-        return Math.sqrt(a * a + b * b);
-    }
 
     const calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
