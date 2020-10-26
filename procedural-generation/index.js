@@ -817,6 +817,67 @@ class MapGenerator {
 
         return [...riverRoots];
     }
+
+    defineLakes = (rivers) => {
+        let possibleLakes = [];
+        // find possible lakes from lowest river tile on land
+        rivers.forEach(river => (!this.oceanTiles[river.tile.idx] && river.tile.precipitation > this.precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
+
+        // define lakes
+        for (let i = 0; i < possibleLakes.length; i++) {
+            let mbLake = possibleLakes[i];
+            if (mbLake.precipitation >= this.precipitationForLakeMin) {
+                this.lakeTiles[mbLake.idx] = mbLake;
+                delete this.landTiles[mbLake.idx];
+                possibleLakes.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
+    expandLakes = () => {
+        let queue = [];
+        for (let idx in this.lakeTiles) {
+            let lake = this.lakeTiles[idx];
+            queue.push(lake);
+        }
+
+        while (queue.length > 0) {
+            let lake = queue.shift();
+            let neighbors = lake.neighbors;
+
+            let neighborsByHeight = [];
+            for (let n of neighbors) {
+                neighborsByHeight.push(this.getTile(n));
+            }
+            neighborsByHeight.sort((a, b) => a.height - b.height);
+            let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
+            let totalWaterAvailable = lake.precipitation - this.precipitationForLakeMax;
+
+            for (let neighbor of neighborsByHeight) {
+                if (totalWaterAvailable <= 0) break;
+                if (this.oceanTiles[neighbor.idx]) break;
+                if (this.lakeTiles[neighbor.idx]) continue;
+
+                let heightDifference = neighbor.height - lake.height;
+
+                let waterMoved = waterSpreadAverage + ((this.defaultOceanTilePrecipitation - heightDifference) * this.lakeHeightPrecipitationMultiplier) - heightDifference * this.lakeHeightPrecipitationMultiplier;
+                if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
+
+                neighbor.precipitation += waterMoved;
+                neighbor.totalPrecipitationPassedThroughTile += waterMoved;
+                lake.precipitation -= waterMoved;
+                totalWaterAvailable -= waterMoved;
+
+                if (neighbor.precipitation >= this.precipitationForLakeMin) {
+                    this.lakeTiles[neighbor.idx] = neighbor;
+                    delete this.landTiles[neighbor.idx];
+
+                    queue.push(neighbor);
+                }
+            }
+        }
+    }
 }
 
 
@@ -827,78 +888,13 @@ let mapGen = new MapGenerator(initialNumOfPoints, seed);
 
 mapGen.drawHeightmap();
 
+
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;
     // let y = e.offsetY;
     // let cell = mapGen.delaunay.find(x, y);
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
-
-    const defineLakes = (rivers) => {
-        let possibleLakes = [];
-        // find possible lakes from lowest river tile on land
-        rivers.forEach(river => (!mapGen.oceanTiles[river.tile.idx] && river.tile.precipitation > mapGen.precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
-
-        // define lakes
-        for (let i = 0; i < possibleLakes.length; i++) {
-            let mbLake = possibleLakes[i];
-            if (mbLake.precipitation >= mapGen.precipitationForLakeMin) {
-                mapGen.lakeTiles[mbLake.idx] = mbLake;
-                delete mapGen.landTiles[mbLake.idx];
-                possibleLakes.splice(i, 1);
-                i--;
-            }
-        }
-    }
-
-    // expand lakes
-    const expandLakes = () => {
-        let queue = [];
-        for (let idx in mapGen.lakeTiles) {
-            let lake = mapGen.lakeTiles[idx];
-            queue.push(lake);
-        }
-
-        while (queue.length > 0) {
-            let lake = queue.shift();
-            let neighbors = lake.neighbors;
-
-            let neighborsByHeight = [];
-            for (let n of neighbors) {
-                neighborsByHeight.push(mapGen.getTile(n));
-            }
-            neighborsByHeight.sort((a, b) => a.height - b.height);
-            let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
-            let totalWaterAvailable = lake.precipitation - mapGen.precipitationForLakeMax;
-
-            for (let neighbor of neighborsByHeight) {
-                if (totalWaterAvailable <= 0) break;
-                if (mapGen.oceanTiles[neighbor.idx]) break;
-                if (mapGen.lakeTiles[neighbor.idx]) continue;
-
-                let heightDifference = neighbor.height - lake.height;
-
-                let waterMoved = waterSpreadAverage + ((mapGen.defaultOceanTilePrecipitation - heightDifference) * mapGen.lakeHeightPrecipitationMultiplier) - heightDifference * mapGen.lakeHeightPrecipitationMultiplier;
-                if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
-
-                neighbor.precipitation += waterMoved;
-                neighbor.totalPrecipitationPassedThroughTile += waterMoved;
-                lake.precipitation -= waterMoved;
-                totalWaterAvailable -= waterMoved;
-
-                if (neighbor.precipitation >= mapGen.precipitationForLakeMin) {
-                    mapGen.lakeTiles[neighbor.idx] = neighbor;
-                    delete mapGen.landTiles[neighbor.idx];
-
-                    queue.push(neighbor);
-                }
-            }
-        }
-    }
-
-    // _________________________________________
 
 
     const voronoiFindPathsBetweenTwoVertices = (tile, start, end) => {
@@ -1440,8 +1436,8 @@ canvas.addEventListener("click", (e) => {
     const initWaterOnLand = (windLines) => {
         mapGen.calculatePrecipitation(windLines);
         let riverRoots = mapGen.defineRivers();
-        defineLakes(riverRoots);
-        expandLakes();
+        mapGen.defineLakes(riverRoots);
+        mapGen.expandLakes();
 
         addHumidityFromClimate();
 
