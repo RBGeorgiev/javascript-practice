@@ -710,6 +710,18 @@ class MapGenerator {
         return windLines;
     }
 
+    getTilesByHeight = (tiles) => {
+        let tilesArr = [];
+        for (let idx in tiles) {
+            let tile = this.getTile(idx);
+            tilesArr.push(tile);
+        }
+        return tilesArr.sort((a, b) => b.height - a.height);
+    }
+
+    // ____________________________________________________________________________________________________________
+    // precipitation and humidity
+
     calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
@@ -743,18 +755,6 @@ class MapGenerator {
                 tile.totalPrecipitationPassedThroughTile += Math.round(precipitation);
             }
         }
-    }
-
-    // ____________________________________________________________________________________________________________
-    // rivers and lakes
-
-    getTilesByHeight = (tiles) => {
-        let tilesArr = [];
-        for (let idx in tiles) {
-            let tile = this.getTile(idx);
-            tilesArr.push(tile);
-        }
-        return tilesArr.sort((a, b) => b.height - a.height);
     }
 
     defineRivers = () => {
@@ -878,6 +878,50 @@ class MapGenerator {
             }
         }
     }
+
+    addHumidityFromClimate = () => {
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
+            tile.precipitation += this.humidityFromClimate;
+            tile.totalPrecipitationPassedThroughTile += this.humidityFromClimate;
+        }
+
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            tile.precipitation += this.humidityFromClimate;
+            tile.totalPrecipitationPassedThroughTile += this.humidityFromClimate;
+        }
+    }
+
+    checkForDryRivers = (rivers) => {
+        let visited = new Set();
+        let queue = [...rivers];
+
+        while (queue.length) {
+            let river = queue.shift();
+            let tile = river.tile;
+
+            if (visited.has(tile.idx)) continue;
+            visited.add(tile.idx);
+
+            if (river.children) {
+                river.children.forEach(c => queue.push(c));
+            }
+
+            if (tile.precipitation < this.precipitationForRiverMin) {
+                river.dry = true;
+            }
+        }
+    }
+
+    checkForDryLakes = () => {
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin);
+        }
+    }
+
+    // _________________________________________
 }
 
 
@@ -991,48 +1035,6 @@ canvas.addEventListener("click", (e) => {
         }
 
         return [allRiverPaths, allRiverSubPathSteps];
-    }
-
-    const addHumidityFromClimate = () => {
-        for (let idx in mapGen.landTiles) {
-            let tile = mapGen.getTile(+idx);
-            tile.precipitation += mapGen.humidityFromClimate;
-            tile.totalPrecipitationPassedThroughTile += mapGen.humidityFromClimate;
-        }
-
-        for (let idx in mapGen.lakeTiles) {
-            let tile = mapGen.getTile(+idx);
-            tile.precipitation += mapGen.humidityFromClimate;
-            tile.totalPrecipitationPassedThroughTile += mapGen.humidityFromClimate;
-        }
-    }
-
-    const checkForDryRivers = (rivers) => {
-        let visited = new Set();
-        let queue = [...rivers];
-
-        while (queue.length) {
-            let river = queue.shift();
-            let tile = river.tile;
-
-            if (visited.has(tile.idx)) continue;
-            visited.add(tile.idx);
-
-            if (river.children) {
-                river.children.forEach(c => queue.push(c));
-            }
-
-            if (tile.precipitation < mapGen.precipitationForRiverMin) {
-                river.dry = true;
-            }
-        }
-    }
-
-    const checkForDryLakes = () => {
-        for (let idx in mapGen.lakeTiles) {
-            let tile = mapGen.getTile(+idx);
-            tile.dryLake = !!(tile.precipitation < mapGen.precipitationForLakeMin);
-        }
     }
 
     const calcualteTemperature = () => {
@@ -1439,10 +1441,10 @@ canvas.addEventListener("click", (e) => {
         mapGen.defineLakes(riverRoots);
         mapGen.expandLakes();
 
-        addHumidityFromClimate();
+        mapGen.addHumidityFromClimate();
 
-        checkForDryRivers(riverRoots);
-        checkForDryLakes();
+        mapGen.checkForDryRivers(riverRoots);
+        mapGen.checkForDryLakes();
 
         return riverRoots;
     }
