@@ -1019,6 +1019,19 @@ class MapGenerator {
 
         return [allRiverPaths, allRiverSubPathSteps];
     }
+
+    // _________________________________________
+    // biomes
+
+    calcualteTemperature = () => {
+        // each unit of tile height = 10 meters (i.e. 100 tile height = 1km)
+        let tempDecreasePerKm = 10;
+        for (let tile of this.tiles) {
+            let height = (tile.height < 0) ? 0 : tile.height;
+            let temperature = this.seaLevelTemperature - (height / tempDecreasePerKm);
+            tile.setTemperature(Math.round(temperature));
+        }
+    }
 }
 
 
@@ -1037,16 +1050,6 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-
-    const calcualteTemperature = () => {
-        // each unit of tile height = 10 meters (i.e. 100 tile height = 1km)
-        let tempDecreasePerKm = 10;
-        for (let tile of mapGen.tiles) {
-            let height = (tile.height < 0) ? 0 : tile.height;
-            let temperature = mapGen.seaLevelTemperature - (height / tempDecreasePerKm);
-            tile.setTemperature(Math.round(temperature));
-        }
-    }
 
     const clamp = (number, min, max) => Math.max(min, Math.min(number, max));
 
@@ -1461,7 +1464,7 @@ canvas.addEventListener("click", (e) => {
 
     [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
     mapGen.tilesSurroundedByRivers = getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
-    calcualteTemperature();
+    mapGen.calcualteTemperature();
     defineBiomes();
 
     drawAll();
