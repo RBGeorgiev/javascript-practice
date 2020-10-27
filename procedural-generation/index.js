@@ -922,26 +922,9 @@ class MapGenerator {
     }
 
     // _________________________________________
-}
+    // river path
 
-
-let seed = 2546076188;
-let initialNumOfPoints = 1000;
-
-let mapGen = new MapGenerator(initialNumOfPoints, seed);
-
-mapGen.drawHeightmap();
-
-
-canvas.addEventListener("click", (e) => {
-    // let x = e.offsetX;
-    // let y = e.offsetY;
-    // let cell = mapGen.delaunay.find(x, y);
-    // console.log(mapGen.tiles[cell]);
-    // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
-    const voronoiFindPathsBetweenTwoVertices = (tile, start, end) => {
+    voronoiFindPathsBetweenTwoVertices = (tile, start, end) => {
         // removes repeated polygon point
         let polygonPoints = tile.polygon.slice(0, -1);
         let path1 = [];
@@ -981,7 +964,7 @@ canvas.addEventListener("click", (e) => {
         return (path1.length <= path2.length) ? [path1, path2] : [path2, path1]; // 0 is short path, 1 is long path
     }
 
-    const defineRiversOnVoronoiEdges = (riverRoots) => {
+    defineRiversOnVoronoiEdges = (riverRoots) => {
         let queue = [...riverRoots];
         let visitedSet = {};
 
@@ -1000,16 +983,16 @@ canvas.addEventListener("click", (e) => {
                 continue;
             };
 
-            let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(mapGen.randRange(0, cur.tile.polygon.length - 1))];
+            let start = (visitedSet[cur.tile.idx]) ? visitedSet[cur.tile.idx] : cur.tile.polygon[Math.round(this.randRange(0, cur.tile.polygon.length - 1))];
             let riverPath = [];
             for (let child of children) {
                 if (visitedSet[child.tile.idx]) continue;
-                let edge = mapGen.getEdgeBetweenTiles(cur.tile, child.tile);
-                let randConnectingPoint = (mapGen.rng() < 0.5) ? edge[0] : edge[1];
+                let edge = this.getEdgeBetweenTiles(cur.tile, child.tile);
+                let randConnectingPoint = (this.rng() < 0.5) ? edge[0] : edge[1];
 
                 // don't draw river inside the ocean
-                if (!mapGen.oceanTiles.hasOwnProperty(cur.tile.idx)) {
-                    let possibleRiverPaths = voronoiFindPathsBetweenTwoVertices(cur.tile, start, randConnectingPoint);
+                if (!this.oceanTiles.hasOwnProperty(cur.tile.idx)) {
+                    let possibleRiverPaths = this.voronoiFindPathsBetweenTwoVertices(cur.tile, start, randConnectingPoint);
                     let riverSubPath = possibleRiverPaths[0]; // 0 is short path, 1 is long path
 
                     for (let i = 0; i < riverSubPath.length - 1; i++) {
@@ -1036,6 +1019,24 @@ canvas.addEventListener("click", (e) => {
 
         return [allRiverPaths, allRiverSubPathSteps];
     }
+}
+
+
+let seed = 2546076188;
+let initialNumOfPoints = 1000;
+
+let mapGen = new MapGenerator(initialNumOfPoints, seed);
+
+mapGen.drawHeightmap();
+
+
+canvas.addEventListener("click", (e) => {
+    // let x = e.offsetX;
+    // let y = e.offsetY;
+    // let cell = mapGen.delaunay.find(x, y);
+    // console.log(mapGen.tiles[cell]);
+    // let neighbors = mapGen.voronoi.neighbors(cell);
+
 
     const calcualteTemperature = () => {
         // each unit of tile height = 10 meters (i.e. 100 tile height = 1km)
@@ -1458,7 +1459,7 @@ canvas.addEventListener("click", (e) => {
     mapGen.windLines = mapGen.initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
     mapGen.riverRoots = initWaterOnLand(mapGen.windLines);
 
-    [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...defineRiversOnVoronoiEdges(mapGen.riverRoots)];
+    [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
     mapGen.tilesSurroundedByRivers = getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
     calcualteTemperature();
     defineBiomes();
