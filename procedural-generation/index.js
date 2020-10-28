@@ -1032,6 +1032,10 @@ class MapGenerator {
             tile.setTemperature(Math.round(temperature));
         }
     }
+
+    clamp = (number, min, max) => Math.max(min, Math.min(number, max));
+
+    getTemperatureTypeIdx = (temp) => this.clamp(Math.ceil(temp / 5), 0, 7);
 }
 
 
@@ -1051,10 +1055,6 @@ canvas.addEventListener("click", (e) => {
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
 
-    const clamp = (number, min, max) => Math.max(min, Math.min(number, max));
-
-    const getTemperatureTypeIdx = (temp) => clamp(Math.ceil(temp / 5), 0, 7);
-
     const getHumidityTypeIdx = (precip) => {
         let humidityLimits = [Number.NEGATIVE_INFINITY, 0, 30, 60, 100, 140, 170, 200, Number.POSITIVE_INFINITY];
 
@@ -1068,7 +1068,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     const getBiomeForTile = (tile) => {
-        let t = getTemperatureTypeIdx(tile.temperature);
+        let t = mapGen.getTemperatureTypeIdx(tile.temperature);
         let h = getHumidityTypeIdx(tile.totalPrecipitationPassedThroughTile);
         let biome = BIOMES[t][h];
         biome = checkForSpecialBiome(biome, t, h, tile);
