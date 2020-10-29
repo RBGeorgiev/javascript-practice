@@ -1048,42 +1048,24 @@ class MapGenerator {
             }
         }
     }
-}
 
-
-let seed = 2546076188;
-let initialNumOfPoints = 1000;
-
-let mapGen = new MapGenerator(initialNumOfPoints, seed);
-
-mapGen.drawHeightmap();
-
-
-canvas.addEventListener("click", (e) => {
-    // let x = e.offsetX;
-    // let y = e.offsetY;
-    // let cell = mapGen.delaunay.find(x, y);
-    // console.log(mapGen.tiles[cell]);
-    // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
-    const getBiomeForTile = (tile) => {
-        let t = mapGen.getTemperatureTypeIdx(tile.temperature);
-        let h = mapGen.getHumidityTypeIdx(tile.totalPrecipitationPassedThroughTile);
+    getBiomeForTile = (tile) => {
+        let t = this.getTemperatureTypeIdx(tile.temperature);
+        let h = this.getHumidityTypeIdx(tile.totalPrecipitationPassedThroughTile);
         let biome = BIOMES[t][h];
-        biome = checkForSpecialBiome(biome, t, h, tile);
+        biome = this.checkForSpecialBiome(biome, t, h, tile);
         return biome;
     }
 
-    const checkForSpecialBiome = (biome, temp, humidity, tile) => {
-        let tilesSurroundedByRivers = mapGen.tilesSurroundedByRivers;
+    checkForSpecialBiome = (biome, temp, humidity, tile) => {
+        let tilesSurroundedByRivers = this.tilesSurroundedByRivers;
         let specialBiomes = {
             "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 4 && humidity <= 7)],
-            "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.7],
+            "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6), this.rng() < 0.7],
             "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
-            "MARSH": [tile.river, tile.numOfRiversOnEdges >= 3, (temp >= 3 && temp <= 5), (humidity >= 4 && humidity <= 6), mapGen.rng() < 0.5],
-            "OASIS": [tile.river, tile.numOfRiversOnEdges >= 2, temp === 7, (humidity >= 5 && humidity <= 7), mapGen.rng() < 0.5],
-            "SWAMP": [tile.river, tile.numOfRiversOnEdges >= 3, (temp >= 1 && temp <= 6), (humidity >= 5 && humidity <= 6), mapGen.rng() < 0.5],
+            "MARSH": [tile.river, tile.numOfRiversOnEdges >= 3, (temp >= 3 && temp <= 5), (humidity >= 4 && humidity <= 6), this.rng() < 0.5],
+            "OASIS": [tile.river, tile.numOfRiversOnEdges >= 2, temp === 7, (humidity >= 5 && humidity <= 7), this.rng() < 0.5],
+            "SWAMP": [tile.river, tile.numOfRiversOnEdges >= 3, (temp >= 1 && temp <= 6), (humidity >= 5 && humidity <= 6), this.rng() < 0.5],
             "TEMPERATE_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.numOfRiversOnEdges >= 2, tile.river, (temp >= 1 && temp <= 3), (humidity >= 5 && humidity <= 7)],
             "TROPICAL_FRESHWATER_SWAMP_FOREST": [tilesSurroundedByRivers.some(el => el === tile.idx), tile.numOfRiversOnEdges >= 2, tile.river, (temp >= 4 && temp <= 6), (humidity >= 5 && humidity <= 7)]
         };
@@ -1105,11 +1087,29 @@ canvas.addEventListener("click", (e) => {
 
         return biome;
     }
+}
+
+
+let seed = 2546076188;
+let initialNumOfPoints = 1000;
+
+let mapGen = new MapGenerator(initialNumOfPoints, seed);
+
+mapGen.drawHeightmap();
+
+
+canvas.addEventListener("click", (e) => {
+    // let x = e.offsetX;
+    // let y = e.offsetY;
+    // let cell = mapGen.delaunay.find(x, y);
+    // console.log(mapGen.tiles[cell]);
+    // let neighbors = mapGen.voronoi.neighbors(cell);
+
 
     const defineBiomes = () => {
         for (let idx in mapGen.landTiles) {
             let tile = mapGen.getTile(+idx);
-            let biome = getBiomeForTile(tile);
+            let biome = mapGen.getBiomeForTile(tile);
             tile.biome = biome;
         }
     }
