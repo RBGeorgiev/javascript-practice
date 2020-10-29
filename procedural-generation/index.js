@@ -1087,6 +1087,14 @@ class MapGenerator {
 
         return biome;
     }
+
+    defineBiomes = () => {
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
+            let biome = this.getBiomeForTile(tile);
+            tile.biome = biome;
+        }
+    }
 }
 
 
@@ -1105,14 +1113,6 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-
-    const defineBiomes = () => {
-        for (let idx in mapGen.landTiles) {
-            let tile = mapGen.getTile(+idx);
-            let biome = mapGen.getBiomeForTile(tile);
-            tile.biome = biome;
-        }
-    }
 
     const getTilesSurroundedByRivers = (allRiverSubPathSteps) => {
         let tilesSurroundedByRivers = [];
@@ -1465,7 +1465,7 @@ canvas.addEventListener("click", (e) => {
     [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
     mapGen.tilesSurroundedByRivers = getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
     mapGen.calcualteTemperature();
-    defineBiomes();
+    mapGen.defineBiomes();
 
     drawAll();
 
