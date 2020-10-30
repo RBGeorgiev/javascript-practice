@@ -378,48 +378,6 @@ class MapGenerator {
         ctx.fill();
     }
 
-    drawHeightmap = () => {
-        this.drawLandHeightmap();
-        this.drawOceanHeightmap();
-    }
-
-    drawLandHeightmap = () => {
-        for (let idx in this.landTiles) {
-            let tile = this.getTile(+idx);
-            let h = tile.height;
-            let color = this.getLandHeightmapColor(h);
-
-            ctx.beginPath();
-            this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
-        }
-
-        for (let idx in this.lakeTiles) {
-            let tile = this.getTile(+idx);
-            let h = tile.height;
-            let color = this.getLandHeightmapColor(h);
-
-            ctx.beginPath();
-            this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
-        }
-    }
-
-    drawOceanHeightmap = () => {
-        for (let idx in this.oceanTiles) {
-            let tile = this.getTile(+idx);
-            let h = tile.height;
-            let color = this.getOceanHeightmapColor(h);
-
-            ctx.beginPath();
-            this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
-        }
-    }
-
     getLandHeightmapColor = (h) =>
         (this.grayscaleHeightmap) ?
             getLerpedColor('#7f7f7f', '#ffffff', this.highestPeak, h - 1) :
@@ -435,48 +393,6 @@ class MapGenerator {
                 getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(this.lowestDepth), Math.abs(h) - 1) :
                 BIOMES_COLORS['OCEAN'];
         }
-    }
-
-    drawCoastline = () => {
-        let coastline = this.coastline;
-
-        for (let i = 0; i < coastline.length; i++) {
-            let tileCoast = coastline[i];
-            ctx.beginPath();
-            for (let j = 0; j < tileCoast.length; j++) {
-                let edge = tileCoast[j];
-                let x1 = edge[0][0];
-                let y1 = edge[0][1];
-                let x2 = edge[1][0];
-                let y2 = edge[1][1];
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-            }
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-        }
-    }
-
-    drawDelaunay = () => {
-        ctx.strokeStyle = "red";
-        this.delaunay.render(ctx);
-        ctx.stroke();
-    }
-
-    drawVoronoi = () => {
-        ctx.strokeStyle = "#000000";
-        this.voronoi.render(ctx);
-        this.voronoi.renderBounds(ctx); //border around canvas
-        ctx.stroke();
-    }
-
-    drawPoints = () => {
-        let points = this.allPoints;
-        ctx.beginPath();
-        ctx.fillStyle = '#000000';
-        points.forEach(p => ctx.rect(p[0], p[1], 3, 3));
-        ctx.fill();
     }
 
     initVoronoi = (points) => {
@@ -1129,6 +1045,93 @@ class MapGenerator {
             tile.biome = biome;
         }
     }
+
+    // _________________________________________
+    // draw methods
+
+    drawDelaunay = () => {
+        ctx.strokeStyle = "red";
+        this.delaunay.render(ctx);
+        ctx.stroke();
+    }
+
+    drawVoronoi = () => {
+        ctx.strokeStyle = "#000000";
+        this.voronoi.render(ctx);
+        this.voronoi.renderBounds(ctx); //border around canvas
+        ctx.stroke();
+    }
+
+    drawPoints = () => {
+        let points = this.allPoints;
+        ctx.beginPath();
+        ctx.fillStyle = '#000000';
+        points.forEach(p => ctx.rect(p[0], p[1], 3, 3));
+        ctx.fill();
+    }
+
+    drawHeightmap = () => {
+        this.drawLandHeightmap();
+        this.drawOceanHeightmap();
+    }
+
+    drawLandHeightmap = () => {
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
+            let h = tile.height;
+            let color = this.getLandHeightmapColor(h);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            let h = tile.height;
+            let color = this.getLandHeightmapColor(h);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
+
+    drawOceanHeightmap = () => {
+        for (let idx in this.oceanTiles) {
+            let tile = this.getTile(+idx);
+            let h = tile.height;
+            let color = this.getOceanHeightmapColor(h);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
+
+    drawCoastline = () => {
+        let coastline = this.coastline;
+
+        for (let i = 0; i < coastline.length; i++) {
+            let tileCoast = coastline[i];
+            ctx.beginPath();
+            for (let j = 0; j < tileCoast.length; j++) {
+                let edge = tileCoast[j];
+                let x1 = edge[0][0];
+                let y1 = edge[0][1];
+                let x2 = edge[1][0];
+                let y2 = edge[1][1];
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+            }
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+    }
 }
 
 
@@ -1148,8 +1151,7 @@ canvas.addEventListener("click", (e) => {
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
 
-    // _________________________________________
-    // draw methods
+
 
     const drawAll = () => {
         mapGen.clearCanvas();
