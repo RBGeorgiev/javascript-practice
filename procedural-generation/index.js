@@ -1020,6 +1020,40 @@ class MapGenerator {
         return [allRiverPaths, allRiverSubPathSteps];
     }
 
+    getTilesSurroundedByRivers = (allRiverSubPathSteps) => {
+        let tilesSurroundedByRivers = [];
+
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
+            let numOfEdges = tile.polygon.length - 1;
+
+            // first and last polygon vertices are the same
+            for (let i = 0; i <= tile.polygon.length - 2; i++) {
+                let p1 = tile.polygon[i];
+                let p2 = tile.polygon[i + 1];
+
+                let p1Str = `x${p1[0]}y${p1[1]}`;
+                let p2Str = `x${p2[0]}y${p2[1]}`;
+
+                let stepDir1 = p1Str + p2Str;
+                let stepDir2 = p2Str + p1Str;
+
+
+                if (!allRiverSubPathSteps.has(stepDir1) && !allRiverSubPathSteps.has(stepDir2)) {
+                    continue;
+                }
+
+                tile.numOfRiversOnEdges++;
+
+                if (numOfEdges === tile.numOfRiversOnEdges) {
+                    tilesSurroundedByRivers.push(+idx);
+                }
+            }
+        }
+
+        return tilesSurroundedByRivers;
+    }
+
     // _________________________________________
     // biomes
 
@@ -1113,40 +1147,6 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-
-    const getTilesSurroundedByRivers = (allRiverSubPathSteps) => {
-        let tilesSurroundedByRivers = [];
-
-        for (let idx in mapGen.landTiles) {
-            let tile = mapGen.getTile(+idx);
-            let numOfEdges = tile.polygon.length - 1;
-
-            // first and last polygon vertices are the same
-            for (let i = 0; i <= tile.polygon.length - 2; i++) {
-                let p1 = tile.polygon[i];
-                let p2 = tile.polygon[i + 1];
-
-                let p1Str = `x${p1[0]}y${p1[1]}`;
-                let p2Str = `x${p2[0]}y${p2[1]}`;
-
-                let stepDir1 = p1Str + p2Str;
-                let stepDir2 = p2Str + p1Str;
-
-
-                if (!allRiverSubPathSteps.has(stepDir1) && !allRiverSubPathSteps.has(stepDir2)) {
-                    continue;
-                }
-
-                tile.numOfRiversOnEdges++;
-
-                if (numOfEdges === tile.numOfRiversOnEdges) {
-                    tilesSurroundedByRivers.push(+idx);
-                }
-            }
-        }
-
-        return tilesSurroundedByRivers;
-    }
 
     // _________________________________________
     // draw methods
@@ -1463,7 +1463,7 @@ canvas.addEventListener("click", (e) => {
     mapGen.riverRoots = initWaterOnLand(mapGen.windLines);
 
     [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
-    mapGen.tilesSurroundedByRivers = getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
+    mapGen.tilesSurroundedByRivers = mapGen.getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
     mapGen.calcualteTemperature();
     mapGen.defineBiomes();
 
