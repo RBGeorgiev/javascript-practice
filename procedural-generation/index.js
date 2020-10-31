@@ -1138,6 +1138,16 @@ class MapGenerator {
             this.fillTile(+idx, "#FFC0CBaa");
         }
     }
+
+    drawBiomes = () => {
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
+            let color = BIOMES_COLORS[tile.biome];
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
 }
 
 
@@ -1169,7 +1179,7 @@ canvas.addEventListener("click", (e) => {
         if (mapGen.drawBiomesDelaunayStyle) {
             drawBiomesAsTriangles();
         } else {
-            drawBiomes();
+            mapGen.drawBiomes();
         }
         mapGen.drawOceanHeightmap();
         mapGen.drawCoastline();
@@ -1184,16 +1194,6 @@ canvas.addEventListener("click", (e) => {
         // displayHeightValues(mapGen.tiles);
         // displayTemperatureValues(mapGen.tiles);
         // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
-    }
-
-    const drawBiomes = () => {
-        for (let idx in mapGen.landTiles) {
-            let tile = mapGen.getTile(+idx);
-            let color = BIOMES_COLORS[tile.biome];
-            mapGen.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
-        }
     }
 
     const drawBiomesAsTriangles = () => {
