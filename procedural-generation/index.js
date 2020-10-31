@@ -1132,6 +1132,12 @@ class MapGenerator {
             ctx.stroke();
         }
     }
+
+    drawTilesSurroundedByRivers = (tilesSurroundedByRivers) => {
+        for (let idx of tilesSurroundedByRivers) {
+            this.fillTile(+idx, "#FFC0CBaa");
+        }
+    }
 }
 
 
@@ -1177,13 +1183,7 @@ canvas.addEventListener("click", (e) => {
         // displayTotalPrecipitationValues(mapGen.tiles);
         // displayHeightValues(mapGen.tiles);
         // displayTemperatureValues(mapGen.tiles);
-        // drawTilesSurroundedByRivers(tilesSurroundedByRivers);
-    }
-
-    const drawTilesSurroundedByRivers = (tilesSurroundedByRivers) => {
-        for (let idx of tilesSurroundedByRivers) {
-            mapGen.fillTile(+idx, "#FFC0CBaa");
-        }
+        // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
     }
 
     const drawBiomes = () => {
