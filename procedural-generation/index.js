@@ -1149,7 +1149,6 @@ class MapGenerator {
         }
     }
 
-
     drawBiomesAsTriangles = () => {
         // helper functions
         const getTriangleColorFromVoronoiTile = (n, fallbackColor) => {
@@ -1250,6 +1249,58 @@ class MapGenerator {
             ctx.stroke();
         }
     }
+
+    drawRivers = (allRiverPaths, curveStrength = 0.4) => {
+        // draw rivers paths with a curve and varying widths
+        let drawnSubPaths = new Set();
+
+        for (let riverNodeAndPath of allRiverPaths) {
+            let riverNode = riverNodeAndPath[0];
+            let riverPath = riverNodeAndPath[1];
+            for (let riverSubPath of riverPath) {
+                let points = riverSubPath.flat();
+                let v1 = `x${points[0]}y${points[1]}`;
+                let v2 = `x${points[points.length - 2]}y${points[points.length - 1]}`;
+                let str = v1 + v2; // use ony start and end river path vertices(points)
+
+                if (!drawnSubPaths.has(str)) {
+                    // get width based on distance from end/root tile
+                    let distToRoot = riverNode.distToRoot;
+                    let farthestLeafDistToRoot = riverNode.getRoot().farthestLeafDist;
+
+                    let normalizedDist = (distToRoot - 0) / (farthestLeafDistToRoot - 0);
+                    if (normalizedDist === Number.POSITIVE_INFINITY || isNaN(normalizedDist)) {
+                        normalizedDist = 0.9;
+                    }
+
+                    let distWidth = this.riverWidthMax - Math.round(normalizedDist * this.riverWidthDistanceStrengthControl);
+                    if (distWidth < this.riverWidthMin) distWidth = this.riverWidthMin;
+
+                    // get width based on precipitation left in tile
+                    let thirdOfPrecipitationRange = Math.round((this.precipitationForRiverMax - this.precipitationForRiverMin) / 3);
+                    let precipitationWidth;
+
+                    if (riverNode.tile.precipitation <= this.precipitationForRiverMin + thirdOfPrecipitationRange) {
+                        precipitationWidth = 1;
+                    } else if (riverNode.tile.precipitation <= this.precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
+                        precipitationWidth = 2;
+                    } else if (riverNode.tile.precipitation <= this.precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
+                        precipitationWidth = 3;
+                    } else {
+                        precipitationWidth = 4;
+                    }
+
+                    ctx.drawCurve(points, curveStrength);
+                    ctx.lineWidth = (distWidth + precipitationWidth) / 2;
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : BIOMES_COLORS['RIVER'];
+                    ctx.stroke();
+                }
+
+                drawnSubPaths.add(str);
+            }
+        }
+    }
 }
 
 
@@ -1285,7 +1336,7 @@ canvas.addEventListener("click", (e) => {
         }
         mapGen.drawOceanHeightmap();
         mapGen.drawCoastline();
-        drawRivers(mapGen.allRiverPaths, 0.4);
+        mapGen.drawRivers(mapGen.allRiverPaths, 0.4);
         drawLakes();
 
         // drawWindIntersectedTiles(windLines);
@@ -1296,58 +1347,6 @@ canvas.addEventListener("click", (e) => {
         // displayHeightValues(mapGen.tiles);
         // displayTemperatureValues(mapGen.tiles);
         // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
-    }
-
-    const drawRivers = (allRiverPaths, curveStrength = 0.4) => {
-        // draw rivers paths with a curve and varying widths
-        let drawnSubPaths = new Set();
-
-        for (let riverNodeAndPath of allRiverPaths) {
-            let riverNode = riverNodeAndPath[0];
-            let riverPath = riverNodeAndPath[1];
-            for (let riverSubPath of riverPath) {
-                let points = riverSubPath.flat();
-                let v1 = `x${points[0]}y${points[1]}`;
-                let v2 = `x${points[points.length - 2]}y${points[points.length - 1]}`;
-                let str = v1 + v2; // use ony start and end river path vertices(points)
-
-                if (!drawnSubPaths.has(str)) {
-                    // get width based on distance from end/root tile
-                    let distToRoot = riverNode.distToRoot;
-                    let farthestLeafDistToRoot = riverNode.getRoot().farthestLeafDist;
-
-                    let normalizedDist = (distToRoot - 0) / (farthestLeafDistToRoot - 0);
-                    if (normalizedDist === Number.POSITIVE_INFINITY || isNaN(normalizedDist)) {
-                        normalizedDist = 0.9;
-                    }
-
-                    let distWidth = mapGen.riverWidthMax - Math.round(normalizedDist * mapGen.riverWidthDistanceStrengthControl);
-                    if (distWidth < mapGen.riverWidthMin) distWidth = mapGen.riverWidthMin;
-
-                    // get width based on precipitation left in tile
-                    let thirdOfPrecipitationRange = Math.round((mapGen.precipitationForRiverMax - mapGen.precipitationForRiverMin) / 3);
-                    let precipitationWidth;
-
-                    if (riverNode.tile.precipitation <= mapGen.precipitationForRiverMin + thirdOfPrecipitationRange) {
-                        precipitationWidth = 1;
-                    } else if (riverNode.tile.precipitation <= mapGen.precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
-                        precipitationWidth = 2;
-                    } else if (riverNode.tile.precipitation <= mapGen.precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
-                        precipitationWidth = 3;
-                    } else {
-                        precipitationWidth = 4;
-                    }
-
-                    ctx.drawCurve(points, curveStrength);
-                    ctx.lineWidth = (distWidth + precipitationWidth) / 2;
-                    ctx.lineCap = 'round';
-                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : BIOMES_COLORS['RIVER'];
-                    ctx.stroke();
-                }
-
-                drawnSubPaths.add(str);
-            }
-        }
     }
 
     const drawLakes = () => {
