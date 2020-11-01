@@ -1148,55 +1148,9 @@ class MapGenerator {
             ctx.stroke();
         }
     }
-}
 
 
-let seed = 2546076188;
-let initialNumOfPoints = 1000;
-
-let mapGen = new MapGenerator(initialNumOfPoints, seed);
-
-mapGen.drawHeightmap();
-
-
-canvas.addEventListener("click", (e) => {
-    // let x = e.offsetX;
-    // let y = e.offsetY;
-    // let cell = mapGen.delaunay.find(x, y);
-    // console.log(mapGen.tiles[cell]);
-    // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
-
-
-    const drawAll = () => {
-        mapGen.clearCanvas();
-        // mapGen.drawHeightmap();
-        // mapGen.drawVoronoi();
-        // mapGen.drawDelaunay();
-        // mapGen.drawPoints();
-
-        if (mapGen.drawBiomesDelaunayStyle) {
-            drawBiomesAsTriangles();
-        } else {
-            mapGen.drawBiomes();
-        }
-        mapGen.drawOceanHeightmap();
-        mapGen.drawCoastline();
-        drawRivers(mapGen.allRiverPaths, 0.4);
-        drawLakes();
-
-        // drawWindIntersectedTiles(windLines);
-        // drawWindLines(windLines);
-        // drawPartitionBounds(canvasPartitions);
-        // displayPrecipitationValues(mapGen.tiles);
-        // displayTotalPrecipitationValues(mapGen.tiles);
-        // displayHeightValues(mapGen.tiles);
-        // displayTemperatureValues(mapGen.tiles);
-        // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
-    }
-
-    const drawBiomesAsTriangles = () => {
+    drawBiomesAsTriangles = () => {
         // helper functions
         const getTriangleColorFromVoronoiTile = (n, fallbackColor) => {
             let t0 = triangles[n * 3 + 0];
@@ -1210,8 +1164,8 @@ canvas.addEventListener("click", (e) => {
             let centerX = (p1[0] + p2[0] + p3[0]) / 3;
             let centerY = (p1[1] + p2[1] + p3[1]) / 3;
 
-            let voronoiIdx = mapGen.delaunay.find(centerX, centerY);
-            let voronoiTile = mapGen.getTile(voronoiIdx);
+            let voronoiIdx = this.delaunay.find(centerX, centerY);
+            let voronoiTile = this.getTile(voronoiIdx);
 
 
             let color = (voronoiTile && voronoiTile.biome) ? BIOMES_COLORS[voronoiTile.biome] : fallbackColor;
@@ -1248,8 +1202,8 @@ canvas.addEventListener("click", (e) => {
         // main function logic
         let voronoiVertices = [];
 
-        for (let idx in mapGen.landTiles) {
-            let tile = mapGen.getTile(+idx);
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
             voronoiVertices.push(...tile.polygon);
         }
 
@@ -1270,8 +1224,8 @@ canvas.addEventListener("click", (e) => {
             let centerX = (p1[0] + p2[0] + p3[0]) / 3;
             let centerY = (p1[1] + p2[1] + p3[1]) / 3;
 
-            let voronoiIdx = mapGen.delaunay.find(centerX, centerY);
-            let voronoiTile = mapGen.getTile(voronoiIdx);
+            let voronoiIdx = this.delaunay.find(centerX, centerY);
+            let voronoiTile = this.getTile(voronoiIdx);
 
             let fallbackColor;
 
@@ -1295,6 +1249,53 @@ canvas.addEventListener("click", (e) => {
             ctx.fill();
             ctx.stroke();
         }
+    }
+}
+
+
+let seed = 2546076188;
+let initialNumOfPoints = 1000;
+
+let mapGen = new MapGenerator(initialNumOfPoints, seed);
+
+mapGen.drawHeightmap();
+
+
+canvas.addEventListener("click", (e) => {
+    // let x = e.offsetX;
+    // let y = e.offsetY;
+    // let cell = mapGen.delaunay.find(x, y);
+    // console.log(mapGen.tiles[cell]);
+    // let neighbors = mapGen.voronoi.neighbors(cell);
+
+
+
+
+    const drawAll = () => {
+        mapGen.clearCanvas();
+        // mapGen.drawHeightmap();
+        // mapGen.drawVoronoi();
+        // mapGen.drawDelaunay();
+        // mapGen.drawPoints();
+
+        if (mapGen.drawBiomesDelaunayStyle) {
+            mapGen.drawBiomesAsTriangles();
+        } else {
+            mapGen.drawBiomes();
+        }
+        mapGen.drawOceanHeightmap();
+        mapGen.drawCoastline();
+        drawRivers(mapGen.allRiverPaths, 0.4);
+        drawLakes();
+
+        // drawWindIntersectedTiles(windLines);
+        // drawWindLines(windLines);
+        // drawPartitionBounds(canvasPartitions);
+        // displayPrecipitationValues(mapGen.tiles);
+        // displayTotalPrecipitationValues(mapGen.tiles);
+        // displayHeightValues(mapGen.tiles);
+        // displayTemperatureValues(mapGen.tiles);
+        // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
     }
 
     const drawRivers = (allRiverPaths, curveStrength = 0.4) => {
