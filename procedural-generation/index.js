@@ -1310,6 +1310,18 @@ class MapGenerator {
             ctx.stroke();
         }
     }
+
+    drawWindLines = (windLines) => {
+        for (let wind of windLines) {
+            let line = wind.line;
+            ctx.beginPath();
+            ctx.moveTo(line[0], line[1]);
+            ctx.lineTo(line[2], line[3]);
+            ctx.strokeStyle = '#FFFFFF99';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+    }
 }
 
 
@@ -1349,25 +1361,13 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawLakes();
 
         // drawWindIntersectedTiles(windLines);
-        // drawWindLines(windLines);
+        // mapGen.drawWindLines(mapGen.windLines);
         // drawPartitionBounds(canvasPartitions);
         // displayPrecipitationValues(mapGen.tiles);
         // displayTotalPrecipitationValues(mapGen.tiles);
         // displayHeightValues(mapGen.tiles);
         // displayTemperatureValues(mapGen.tiles);
         // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
-    }
-
-    const drawWindLines = (windLines) => {
-        for (let wind of windLines) {
-            let line = wind.line;
-            ctx.beginPath();
-            ctx.moveTo(line[0], line[1]);
-            ctx.lineTo(line[2], line[3]);
-            ctx.strokeStyle = '#FFFFFF99';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
     }
 
     const drawPartitionBounds = (allPartitions) => {
