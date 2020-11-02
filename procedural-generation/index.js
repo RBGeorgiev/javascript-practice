@@ -1301,6 +1301,15 @@ class MapGenerator {
             }
         }
     }
+
+    drawLakes = () => {
+        for (let idx in this.lakeTiles) {
+            let color = (this.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : BIOMES_COLORS['LAKE'];
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
 }
 
 
@@ -1337,7 +1346,7 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawOceanHeightmap();
         mapGen.drawCoastline();
         mapGen.drawRivers(mapGen.allRiverPaths, 0.4);
-        drawLakes();
+        mapGen.drawLakes();
 
         // drawWindIntersectedTiles(windLines);
         // drawWindLines(windLines);
@@ -1347,15 +1356,6 @@ canvas.addEventListener("click", (e) => {
         // displayHeightValues(mapGen.tiles);
         // displayTemperatureValues(mapGen.tiles);
         // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
-    }
-
-    const drawLakes = () => {
-        for (let idx in mapGen.lakeTiles) {
-            let color = (mapGen.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : BIOMES_COLORS['LAKE'];
-            mapGen.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
-        }
     }
 
     const drawWindLines = (windLines) => {
