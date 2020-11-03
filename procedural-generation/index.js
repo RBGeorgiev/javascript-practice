@@ -1311,6 +1311,28 @@ class MapGenerator {
         }
     }
 
+    // _________________________________________
+    // extra draw methods
+
+    drawPartitionBounds = (allPartitions) => {
+        for (let i = 0; i < allPartitions.length; i++) {
+            let bounds = allPartitions[i].bounds;
+            for (let j = 0; j < bounds.length; j++) {
+                let x1 = bounds[j][0];
+                let y1 = bounds[j][1];
+                let x2 = bounds[j][2];
+                let y2 = bounds[j][3];
+
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+    }
+
     drawWindLines = (windLines) => {
         for (let wind of windLines) {
             let line = wind.line;
@@ -1360,9 +1382,9 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawRivers(mapGen.allRiverPaths, 0.4);
         mapGen.drawLakes();
 
-        // drawWindIntersectedTiles(windLines);
+        // mapGen.drawPartitionBounds(mapGen.canvasPartitions);
         // mapGen.drawWindLines(mapGen.windLines);
-        // drawPartitionBounds(canvasPartitions);
+        // drawWindIntersectedTiles(windLines);
         // displayPrecipitationValues(mapGen.tiles);
         // displayTotalPrecipitationValues(mapGen.tiles);
         // displayHeightValues(mapGen.tiles);
@@ -1370,24 +1392,6 @@ canvas.addEventListener("click", (e) => {
         // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
     }
 
-    const drawPartitionBounds = (allPartitions) => {
-        for (let i = 0; i < allPartitions.length; i++) {
-            let bounds = allPartitions[i].bounds;
-            for (let j = 0; j < bounds.length; j++) {
-                let x1 = bounds[j][0];
-                let y1 = bounds[j][1];
-                let x2 = bounds[j][2];
-                let y2 = bounds[j][3];
-
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.strokeStyle = '#FFFFFF';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            }
-        }
-    }
 
     const drawWindIntersectedTiles = (windLines) => {
         for (let line of windLines) {
