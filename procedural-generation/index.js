@@ -1345,26 +1345,29 @@ class MapGenerator {
         }
     }
 
-    drawWindIntersectedPartitions = (windLines) => {
+    drawAllWindIntersectedPartitions = (windLines) => {
         for (let line of windLines) {
             let intersectedPartitions = line.intersectedPartitions;
+            this.drawIntersectedPartitions(intersectedPartitions);
+        }
+    }
 
-            for (let i = 0; i < intersectedPartitions.length; i++) {
-                let bounds = intersectedPartitions[i].bounds;
-                ctx.beginPath();
-                ctx.moveTo(bounds[0][0], bounds[0][1]);
-                for (let j = 0; j < bounds.length; j++) {
-                    let x1 = bounds[j][0];
-                    let y1 = bounds[j][1];
-                    let x2 = bounds[j][2];
-                    let y2 = bounds[j][3];
+    drawIntersectedPartitions = (intersectedPartitions) => {
+        for (let i = 0; i < intersectedPartitions.length; i++) {
+            let bounds = intersectedPartitions[i].bounds;
+            ctx.beginPath();
+            ctx.moveTo(bounds[0][0], bounds[0][1]);
+            for (let j = 0; j < bounds.length; j++) {
+                let x1 = bounds[j][0];
+                let y1 = bounds[j][1];
+                let x2 = bounds[j][2];
+                let y2 = bounds[j][3];
 
-                    ctx.lineTo(x1, y1);
-                    ctx.lineTo(x2, y2);
-                }
-                ctx.fillStyle = '#FF000005';
-                ctx.fill();
+                ctx.lineTo(x1, y1);
+                ctx.lineTo(x2, y2);
             }
+            ctx.fillStyle = '#FF000005';
+            ctx.fill();
         }
     }
 }
@@ -1406,7 +1409,7 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawLakes();
 
         // mapGen.drawPartitionBounds(mapGen.canvasPartitions);
-        // mapGen.drawWindIntersectedPartitions(mapGen.windLines);
+        // mapGen.drawAllWindIntersectedPartitions(mapGen.windLines);
         // mapGen.drawWindLines(mapGen.windLines);
         // drawWindIntersectedTiles(windLines);
         // displayPrecipitationValues(mapGen.tiles);
