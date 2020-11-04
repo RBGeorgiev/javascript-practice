@@ -1370,6 +1370,15 @@ class MapGenerator {
             ctx.fill();
         }
     }
+
+    drawWindIntersectedTiles = (windLines) => {
+        for (let line of windLines) {
+            let tiles = line.intersectedTiles;
+            for (let idx of tiles) {
+                this.fillTile(idx);
+            }
+        }
+    }
 }
 
 
@@ -1411,7 +1420,7 @@ canvas.addEventListener("click", (e) => {
         // mapGen.drawPartitionBounds(mapGen.canvasPartitions);
         // mapGen.drawAllWindIntersectedPartitions(mapGen.windLines);
         // mapGen.drawWindLines(mapGen.windLines);
-        // drawWindIntersectedTiles(windLines);
+        // mapGen.drawWindIntersectedTiles(mapGen.windLines);
         // displayPrecipitationValues(mapGen.tiles);
         // displayTotalPrecipitationValues(mapGen.tiles);
         // displayHeightValues(mapGen.tiles);
@@ -1420,14 +1429,7 @@ canvas.addEventListener("click", (e) => {
     }
 
 
-    const drawWindIntersectedTiles = (windLines) => {
-        for (let line of windLines) {
-            let tiles = line.intersectedTiles;
-            for (let idx of tiles) {
-                mapGen.fillTile(idx);
-            }
-        }
-    }
+
 
     const displayHeightValues = (tiles) => {
         for (let idx in tiles) {
