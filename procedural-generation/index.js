@@ -1379,6 +1379,16 @@ class MapGenerator {
             }
         }
     }
+
+    displayHeightValues = (tiles) => {
+        for (let idx in tiles) {
+            let tile = this.getTile(+idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.height, x, y);
+        }
+    }
 }
 
 
@@ -1423,7 +1433,7 @@ canvas.addEventListener("click", (e) => {
         // mapGen.drawWindIntersectedTiles(mapGen.windLines);
         // displayPrecipitationValues(mapGen.tiles);
         // displayTotalPrecipitationValues(mapGen.tiles);
-        // displayHeightValues(mapGen.tiles);
+        // mapGen.displayHeightValues(mapGen.tiles);
         // displayTemperatureValues(mapGen.tiles);
         // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
     }
@@ -1431,15 +1441,6 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    const displayHeightValues = (tiles) => {
-        for (let idx in tiles) {
-            let tile = mapGen.getTile(+idx);
-            let x = tile.centroid[0];
-            let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
-            ctx.fillText(tile.height, x, y);
-        }
-    }
 
     const displayTemperatureValues = (tiles) => {
         for (let idx in tiles) {
