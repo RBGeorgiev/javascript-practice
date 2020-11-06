@@ -1399,6 +1399,16 @@ class MapGenerator {
             ctx.fillText(tile.temperature, x, y);
         }
     }
+
+    displayPrecipitationValues = (tiles) => {
+        for (let idx in tiles) {
+            let tile = this.getTile(idx);
+            let x = tile.centroid[0];
+            let y = tile.centroid[1];
+            ctx.fillStyle = "#000000";
+            ctx.fillText(tile.precipitation, x, y);
+        }
+    }
 }
 
 
@@ -1441,7 +1451,7 @@ canvas.addEventListener("click", (e) => {
         // mapGen.drawAllWindIntersectedPartitions(mapGen.windLines);
         // mapGen.drawWindLines(mapGen.windLines);
         // mapGen.drawWindIntersectedTiles(mapGen.windLines);
-        // displayPrecipitationValues(mapGen.tiles);
+        // mapGen.displayPrecipitationValues(mapGen.tiles);
         // displayTotalPrecipitationValues(mapGen.tiles);
         // mapGen.displayHeightValues(mapGen.tiles);
         // mapGen.displayTemperatureValues(mapGen.tiles);
@@ -1454,15 +1464,6 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    const displayPrecipitationValues = (tiles) => {
-        for (let idx in tiles) {
-            let tile = mapGen.getTile(idx);
-            let x = tile.centroid[0];
-            let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
-            ctx.fillText(tile.precipitation, x, y);
-        }
-    }
 
     const displayTotalPrecipitationValues = (tiles) => {
         for (let idx in tiles) {
