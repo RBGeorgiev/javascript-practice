@@ -837,6 +837,20 @@ class MapGenerator {
         }
     }
 
+    initWaterOnLand = (windLines) => {
+        this.calculatePrecipitation(windLines);
+        let riverRoots = this.defineRivers();
+        this.defineLakes(riverRoots);
+        this.expandLakes();
+
+        this.addHumidityFromClimate();
+
+        this.checkForDryRivers(riverRoots);
+        this.checkForDryLakes();
+
+        return riverRoots;
+    }
+
     // _________________________________________
     // river path
 
@@ -1472,20 +1486,6 @@ canvas.addEventListener("click", (e) => {
     // _________________________________________
 
 
-    const initWaterOnLand = (windLines) => {
-        mapGen.calculatePrecipitation(windLines);
-        let riverRoots = mapGen.defineRivers();
-        mapGen.defineLakes(riverRoots);
-        mapGen.expandLakes();
-
-        mapGen.addHumidityFromClimate();
-
-        mapGen.checkForDryRivers(riverRoots);
-        mapGen.checkForDryLakes();
-
-        return riverRoots;
-    }
-
     console.time("calculate wind precipitation rivers and lakes");
 
 
@@ -1493,7 +1493,7 @@ canvas.addEventListener("click", (e) => {
 
     mapGen.canvasPartitions = mapGen.initCanvasPartitions();
     mapGen.windLines = mapGen.initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
-    mapGen.riverRoots = initWaterOnLand(mapGen.windLines);
+    mapGen.riverRoots = mapGen.initWaterOnLand(mapGen.windLines);
 
     [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
     mapGen.tilesSurroundedByRivers = mapGen.getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
