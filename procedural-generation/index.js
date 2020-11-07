@@ -1481,24 +1481,24 @@ canvas.addEventListener("click", (e) => {
 
 
 
+    const run = () => {
+        mapGen.resetHumidity();
 
+        mapGen.canvasPartitions = mapGen.initCanvasPartitions();
+        mapGen.windLines = mapGen.initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
+        mapGen.riverRoots = mapGen.initWaterOnLand(mapGen.windLines);
+
+        [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
+        mapGen.tilesSurroundedByRivers = mapGen.getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
+        mapGen.calcualteTemperature();
+        mapGen.defineBiomes();
+
+        mapGen.drawAll();
+    }
 
     console.time("calculate wind precipitation rivers and lakes");
 
-
-    mapGen.resetHumidity();
-
-    mapGen.canvasPartitions = mapGen.initCanvasPartitions();
-    mapGen.windLines = mapGen.initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
-    mapGen.riverRoots = mapGen.initWaterOnLand(mapGen.windLines);
-
-    [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
-    mapGen.tilesSurroundedByRivers = mapGen.getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
-    mapGen.calcualteTemperature();
-    mapGen.defineBiomes();
-
-    mapGen.drawAll();
-
+    run();
 
     console.timeEnd("calculate wind precipitation rivers and lakes");
 })
