@@ -1063,6 +1063,34 @@ class MapGenerator {
     // _________________________________________
     // draw methods
 
+    drawAll = () => {
+        this.clearCanvas();
+        // this.drawHeightmap();
+        // this.drawVoronoi();
+        // this.drawDelaunay();
+        // this.drawPoints();
+
+        if (this.drawBiomesDelaunayStyle) {
+            this.drawBiomesAsTriangles();
+        } else {
+            this.drawBiomes();
+        }
+        this.drawOceanHeightmap();
+        this.drawCoastline();
+        this.drawRivers(this.allRiverPaths, 0.4);
+        this.drawLakes();
+
+        // this.drawPartitionBounds(this.canvasPartitions);
+        // this.drawAllWindIntersectedPartitions(this.windLines);
+        // this.drawWindLines(this.windLines);
+        // this.drawWindIntersectedTiles(this.windLines);
+        // this.displayPrecipitationValues(this.tiles);
+        // this.displayTotalPrecipitationValues(this.tiles);
+        // this.displayHeightValues(this.tiles);
+        // this.displayTemperatureValues(this.tiles);
+        // this.drawTilesSurroundedByRivers(this.tilesSurroundedByRivers);
+    }
+
     drawDelaunay = () => {
         ctx.strokeStyle = "red";
         this.delaunay.render(ctx);
@@ -1454,37 +1482,6 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    const drawAll = () => {
-        mapGen.clearCanvas();
-        // mapGen.drawHeightmap();
-        // mapGen.drawVoronoi();
-        // mapGen.drawDelaunay();
-        // mapGen.drawPoints();
-
-        if (mapGen.drawBiomesDelaunayStyle) {
-            mapGen.drawBiomesAsTriangles();
-        } else {
-            mapGen.drawBiomes();
-        }
-        mapGen.drawOceanHeightmap();
-        mapGen.drawCoastline();
-        mapGen.drawRivers(mapGen.allRiverPaths, 0.4);
-        mapGen.drawLakes();
-
-        // mapGen.drawPartitionBounds(mapGen.canvasPartitions);
-        // mapGen.drawAllWindIntersectedPartitions(mapGen.windLines);
-        // mapGen.drawWindLines(mapGen.windLines);
-        // mapGen.drawWindIntersectedTiles(mapGen.windLines);
-        // mapGen.displayPrecipitationValues(mapGen.tiles);
-        // mapGen.displayTotalPrecipitationValues(mapGen.tiles);
-        // mapGen.displayHeightValues(mapGen.tiles);
-        // mapGen.displayTemperatureValues(mapGen.tiles);
-        // mapGen.drawTilesSurroundedByRivers(mapGen.tilesSurroundedByRivers);
-    }
-
-
-    // _________________________________________
-
 
     console.time("calculate wind precipitation rivers and lakes");
 
@@ -1500,7 +1497,7 @@ canvas.addEventListener("click", (e) => {
     mapGen.calcualteTemperature();
     mapGen.defineBiomes();
 
-    drawAll();
+    mapGen.drawAll();
 
 
     console.timeEnd("calculate wind precipitation rivers and lakes");
