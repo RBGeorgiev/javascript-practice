@@ -1483,15 +1483,25 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-
-    const run = () => {
-        resetHeight();
+    const resetTileTypes = () => {
         mapGen.landTiles = {};
         mapGen.oceanTiles = {};
         mapGen.lakeTiles = {};
-        mapGen.coastline = [];
+    }
+
+    const resetCoastline = () => mapGen.coastline = [];
+
+    const defineTerrain = () => {
+        resetHeight();
+        resetTileTypes();
+        resetCoastline();
+
         mapGen.setTilesHeight();
         mapGen.determineCoastline();
+    }
+
+    const run = () => {
+        defineTerrain();
 
         mapGen.resetHumidity();
 
