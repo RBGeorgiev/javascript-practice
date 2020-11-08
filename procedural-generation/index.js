@@ -88,6 +88,8 @@ class Tile {
         this.numOfRiversOnEdges = 0;
     }
 
+    resetHeight = () => this.height = null;
+
     setHeight = (height) => this.height = height;
 
     setTemperature = (degrees) => this.temperature = degrees;
@@ -241,8 +243,6 @@ class MapGenerator {
 
         this.initVoronoi(this.allPoints);
         this.initTiles(this.allPoints);
-        this.setTilesHeight();
-        this.determineCoastline();
     }
 
     getTile = (i) => this.tiles[i];
@@ -1469,8 +1469,6 @@ let initialNumOfPoints = 1000;
 
 let mapGen = new MapGenerator(initialNumOfPoints, seed);
 
-mapGen.drawHeightmap();
-
 
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;
@@ -1479,9 +1477,22 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
+    const resetHeight = () => {
+        for (let tile of mapGen.tiles) {
+            tile.resetHeight();
+        }
+    }
 
 
     const run = () => {
+        resetHeight();
+        mapGen.landTiles = {};
+        mapGen.oceanTiles = {};
+        mapGen.lakeTiles = {};
+        mapGen.coastline = [];
+        mapGen.setTilesHeight();
+        mapGen.determineCoastline();
+
         mapGen.resetHumidity();
 
         mapGen.canvasPartitions = mapGen.initCanvasPartitions();
