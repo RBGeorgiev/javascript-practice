@@ -239,10 +239,6 @@ class MapGenerator {
         this.allRiverPaths;
         this.allRiverSubPathSteps;
         this.tilesSurroundedByRivers;
-
-
-        this.initVoronoi(this.allPoints);
-        this.initTiles(this.allPoints);
     }
 
     getTile = (i) => this.tiles[i];
@@ -1477,6 +1473,11 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
+    const defineTileset = () => {
+        mapGen.initVoronoi(mapGen.allPoints);
+        mapGen.initTiles(mapGen.allPoints);
+    }
+
     const resetHeight = () => {
         for (let tile of mapGen.tiles) {
             tile.resetHeight();
@@ -1501,6 +1502,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     const run = () => {
+        defineTileset();
         defineTerrain();
 
         mapGen.resetHumidity();
@@ -1516,6 +1518,16 @@ canvas.addEventListener("click", (e) => {
 
         mapGen.drawAll();
     }
+
+    // todo
+    // method to get new tilemap
+    // method to get new tilemap
+    // method to get new tilemap
+    // method to get new tilemap
+    // method to choose new wind direction on same terrain
+    // method to choose new wind direction on same terrain
+    // method to choose new wind direction on same terrain
+    // method to choose new wind direction on same terrain
 
     console.time("calculate wind precipitation rivers and lakes");
 
