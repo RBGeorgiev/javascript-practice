@@ -1501,10 +1501,7 @@ canvas.addEventListener("click", (e) => {
         mapGen.determineCoastline();
     }
 
-    const run = () => {
-        defineTileset();
-        defineTerrain();
-
+    const defineHumidity = () => {
         mapGen.resetHumidity();
 
         mapGen.canvasPartitions = mapGen.initCanvasPartitions();
@@ -1513,21 +1510,19 @@ canvas.addEventListener("click", (e) => {
 
         [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
         mapGen.tilesSurroundedByRivers = mapGen.getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
+    }
+
+    const run = () => {
+        defineTileset();
+        defineTerrain();
+
+        defineHumidity();
         mapGen.calcualteTemperature();
         mapGen.defineBiomes();
 
         mapGen.drawAll();
     }
 
-    // todo
-    // method to get new tilemap
-    // method to get new tilemap
-    // method to get new tilemap
-    // method to get new tilemap
-    // method to choose new wind direction on same terrain
-    // method to choose new wind direction on same terrain
-    // method to choose new wind direction on same terrain
-    // method to choose new wind direction on same terrain
 
     console.time("calculate wind precipitation rivers and lakes");
 
