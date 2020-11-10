@@ -1474,6 +1474,7 @@ canvas.addEventListener("click", (e) => {
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
     const defineTileset = () => {
+        mapGen.allPoints = mapGen.generateRandomPoints(mapGen.numOfPoints);
         mapGen.initVoronoi(mapGen.allPoints);
         mapGen.initTiles(mapGen.allPoints);
     }
@@ -1499,12 +1500,12 @@ canvas.addEventListener("click", (e) => {
 
         mapGen.setTilesHeight();
         mapGen.determineCoastline();
+        mapGen.canvasPartitions = mapGen.initCanvasPartitions();
     }
 
     const defineHumidity = () => {
         mapGen.resetHumidity();
 
-        mapGen.canvasPartitions = mapGen.initCanvasPartitions();
         mapGen.windLines = mapGen.initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
         mapGen.riverRoots = mapGen.initWaterOnLand(mapGen.windLines);
 
