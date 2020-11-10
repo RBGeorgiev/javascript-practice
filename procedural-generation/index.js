@@ -983,7 +983,7 @@ class MapGenerator {
     // _________________________________________
     // biomes
 
-    calcualteTemperature = () => {
+    defineTemperature = () => {
         // each unit of tile height = 10 meters (i.e. 100 tile height = 1km)
         let tempDecreasePerKm = 10;
         for (let tile of this.tiles) {
@@ -1515,9 +1515,8 @@ canvas.addEventListener("click", (e) => {
     const run = () => {
         defineTileset();
         defineTerrain();
-
         defineHumidity();
-        mapGen.calcualteTemperature();
+        mapGen.defineTemperature();
         mapGen.defineBiomes();
 
         mapGen.drawAll();
