@@ -391,6 +391,19 @@ class MapGenerator {
         }
     }
 
+    generateRandomPoints = (amount, startX = 0, startY = 0, endX = canvas.width, endY = canvas.height) => {
+        let points = [];
+        ctx.fillStyle = '#000000';
+
+        for (let i = 0; i < amount; i++) {
+            let x = this.rng() * (endX - startX) + startX;
+            let y = this.rng() * (endY - startY) + startY;
+            points.push([x, y]);
+        }
+
+        return points;
+    }
+
     initVoronoi = (points) => {
         this.createVoronoi(points);
         this.relaxVoronoi(5);
@@ -404,24 +417,17 @@ class MapGenerator {
         }
     }
 
+    defineTileset = () => {
+        this.allPoints = this.generateRandomPoints(this.numOfPoints);
+        this.initVoronoi(this.allPoints);
+        this.initTiles(this.allPoints);
+    }
+
     relaxVoronoi = (times) => {
         for (let i = 0; i < times; i++) {
             this.allPoints = this.lloydRelaxation(this.allPoints);
             this.createVoronoi(this.allPoints);
         }
-    }
-
-    generateRandomPoints = (amount, startX = 0, startY = 0, endX = canvas.width, endY = canvas.height) => {
-        let points = [];
-        ctx.fillStyle = '#000000';
-
-        for (let i = 0; i < amount; i++) {
-            let x = this.rng() * (endX - startX) + startX;
-            let y = this.rng() * (endY - startY) + startY;
-            points.push([x, y]);
-        }
-
-        return points;
     }
 
     getAllVoronoiPolygonPoints = (points) => {
@@ -1473,11 +1479,7 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-    const defineTileset = () => {
-        mapGen.allPoints = mapGen.generateRandomPoints(mapGen.numOfPoints);
-        mapGen.initVoronoi(mapGen.allPoints);
-        mapGen.initTiles(mapGen.allPoints);
-    }
+
 
     const resetHeight = () => {
         for (let tile of mapGen.tiles) {
@@ -1514,7 +1516,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     const run = () => {
-        defineTileset();
+        mapGen.defineTileset();
         defineTerrain();
         defineHumidity();
         mapGen.defineTemperature();
@@ -1524,11 +1526,11 @@ canvas.addEventListener("click", (e) => {
     }
 
 
-    console.time("calculate wind precipitation rivers and lakes");
+    console.time("run map generation");
 
     run();
 
-    console.timeEnd("calculate wind precipitation rivers and lakes");
+    console.timeEnd("run map generation");
 })
 
 // Chaparral = Desert scrub
