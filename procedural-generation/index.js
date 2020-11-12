@@ -469,6 +469,8 @@ class MapGenerator {
         this.lakeTiles = {};
     }
 
+    resetCoastline = () => this.coastline = [];
+
     resetPrecipitation = () => this.tiles.forEach(t => t.resetPrecipitation());
 
     resetRivers = () => {
@@ -1494,12 +1496,11 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    const resetCoastline = () => mapGen.coastline = [];
 
     const defineTerrain = () => {
         mapGen.resetTerrainHeight();
         mapGen.resetTileTypes();
-        resetCoastline();
+        mapGen.resetCoastline();
 
         mapGen.setTilesHeight();
         mapGen.determineCoastline();
