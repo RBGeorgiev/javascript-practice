@@ -538,9 +538,17 @@ class MapGenerator {
         return canvasPartitions;
     }
 
-    initCanvasPartitions = () => this.addTilesToCanvasPartitions(
-        this.createCanvasPartitions()
-    );
+    initCanvasPartitions = () => this.canvasPartitions = this.addTilesToCanvasPartitions(this.createCanvasPartitions());
+
+    defineTerrain = () => {
+        this.resetTerrainHeight();
+        this.resetTileTypes();
+        this.resetCoastline();
+
+        this.setTilesHeight();
+        this.determineCoastline();
+        this.initCanvasPartitions();
+    }
 
     createWindLines = (windLineLength) => {
         let windLines = [];
@@ -1497,16 +1505,6 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    const defineTerrain = () => {
-        mapGen.resetTerrainHeight();
-        mapGen.resetTileTypes();
-        mapGen.resetCoastline();
-
-        mapGen.setTilesHeight();
-        mapGen.determineCoastline();
-        mapGen.canvasPartitions = mapGen.initCanvasPartitions();
-    }
-
     const defineHumidity = () => {
         mapGen.resetHumidity();
 
@@ -1519,7 +1517,7 @@ canvas.addEventListener("click", (e) => {
 
     const run = () => {
         mapGen.defineTileset();
-        defineTerrain();
+        mapGen.defineTerrain();
         defineHumidity();
         mapGen.defineTemperature();
         mapGen.defineBiomes();
