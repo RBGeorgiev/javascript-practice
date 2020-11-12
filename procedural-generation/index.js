@@ -458,9 +458,15 @@ class MapGenerator {
     }
 
     resetTerrainHeight = () => {
-        for (let tile of mapGen.tiles) {
+        for (let tile of this.tiles) {
             tile.resetHeight();
         }
+    }
+
+    resetTileTypes = () => {
+        this.landTiles = {};
+        this.oceanTiles = {};
+        this.lakeTiles = {};
     }
 
     resetPrecipitation = () => this.tiles.forEach(t => t.resetPrecipitation());
@@ -1487,17 +1493,12 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    const resetTileTypes = () => {
-        mapGen.landTiles = {};
-        mapGen.oceanTiles = {};
-        mapGen.lakeTiles = {};
-    }
 
     const resetCoastline = () => mapGen.coastline = [];
 
     const defineTerrain = () => {
         mapGen.resetTerrainHeight();
-        resetTileTypes();
+        mapGen.resetTileTypes();
         resetCoastline();
 
         mapGen.setTilesHeight();
