@@ -491,6 +491,16 @@ class MapGenerator {
         this.resetLakes();
     }
 
+    run = () => {
+        this.defineTileset();
+        this.defineTerrain();
+        this.defineHumidity();
+        this.defineTemperature();
+        this.defineBiomes();
+
+        this.drawAll();
+    }
+
     createCanvasPartitions = () => {
         let canvasPartitions = [];
         let partitionSizeX = canvas.width / 8;
@@ -1513,20 +1523,9 @@ canvas.addEventListener("click", (e) => {
 
 
 
-    const run = () => {
-        mapGen.defineTileset();
-        mapGen.defineTerrain();
-        mapGen.defineHumidity();
-        mapGen.defineTemperature();
-        mapGen.defineBiomes();
-
-        mapGen.drawAll();
-    }
-
-
     console.time("run map generation");
 
-    run();
+    mapGen.run();
 
     console.timeEnd("run map generation");
 })
