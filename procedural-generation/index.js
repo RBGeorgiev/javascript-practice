@@ -662,6 +662,16 @@ class MapGenerator {
     // ____________________________________________________________________________________________________________
     // precipitation and humidity
 
+    defineHumidity = () => {
+        this.resetHumidity();
+
+        this.windLines = this.initWindLines(this.windLineLength, this.canvasPartitions);
+        this.riverRoots = this.initWaterOnLand(this.windLines);
+
+        [this.allRiverPaths, this.allRiverSubPathSteps] = [...this.defineRiversOnVoronoiEdges(this.riverRoots)];
+        this.tilesSurroundedByRivers = this.getTilesSurroundedByRivers(this.allRiverSubPathSteps);
+    }
+
     calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
@@ -1503,22 +1513,10 @@ canvas.addEventListener("click", (e) => {
 
 
 
-
-
-    const defineHumidity = () => {
-        mapGen.resetHumidity();
-
-        mapGen.windLines = mapGen.initWindLines(mapGen.windLineLength, mapGen.canvasPartitions);
-        mapGen.riverRoots = mapGen.initWaterOnLand(mapGen.windLines);
-
-        [mapGen.allRiverPaths, mapGen.allRiverSubPathSteps] = [...mapGen.defineRiversOnVoronoiEdges(mapGen.riverRoots)];
-        mapGen.tilesSurroundedByRivers = mapGen.getTilesSurroundedByRivers(mapGen.allRiverSubPathSteps);
-    }
-
     const run = () => {
         mapGen.defineTileset();
         mapGen.defineTerrain();
-        defineHumidity();
+        mapGen.defineHumidity();
         mapGen.defineTemperature();
         mapGen.defineBiomes();
 
