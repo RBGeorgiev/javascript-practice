@@ -1530,9 +1530,17 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawAll();
     }
 
+    const changeWindAndHumidity = () => {
+        mapGen.defineHumidity();
+        mapGen.defineTemperature();
+        mapGen.defineBiomes();
+
+        mapGen.drawAll();
+    }
+
     console.time("run map generation");
 
-    changeTerrain();
+    changeWindAndHumidity();
 
     console.timeEnd("run map generation");
 })
