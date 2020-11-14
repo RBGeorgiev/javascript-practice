@@ -1512,7 +1512,7 @@ let seed = 2546076188;
 let initialNumOfPoints = 1000;
 
 let mapGen = new MapGenerator(initialNumOfPoints, seed);
-
+mapGen.run();
 
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;
@@ -1521,11 +1521,18 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
+    const changeTerrain = () => {
+        mapGen.defineTerrain();
+        mapGen.defineHumidity();
+        mapGen.defineTemperature();
+        mapGen.defineBiomes();
 
+        mapGen.drawAll();
+    }
 
     console.time("run map generation");
 
-    mapGen.run();
+    changeTerrain();
 
     console.timeEnd("run map generation");
 })
