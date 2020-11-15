@@ -1538,9 +1538,17 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawAll();
     }
 
+    const changeTemperature = (newTemp) => {
+        mapGen.seaLevelTemperature = newTemp;
+        mapGen.defineTemperature();
+        mapGen.defineBiomes();
+
+        mapGen.drawAll();
+    }
+
     console.time("run map generation");
 
-    changeWindAndHumidity();
+    changeTemperature(25);
 
     console.timeEnd("run map generation");
 })
