@@ -853,34 +853,6 @@ class MapGenerator {
         }
     }
 
-    checkForDryRivers = (rivers) => {
-        let visited = new Set();
-        let queue = [...rivers];
-
-        while (queue.length) {
-            let river = queue.shift();
-            let tile = river.tile;
-
-            if (visited.has(tile.idx)) continue;
-            visited.add(tile.idx);
-
-            if (river.children) {
-                river.children.forEach(c => queue.push(c));
-            }
-
-            if (tile.precipitation < this.precipitationForRiverMin) {
-                river.dry = true;
-            }
-        }
-    }
-
-    checkForDryLakes = () => {
-        for (let idx in this.lakeTiles) {
-            let tile = this.getTile(+idx);
-            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin);
-        }
-    }
-
     initWaterOnLand = (windLines) => {
         this.calculatePrecipitation(windLines);
         let riverRoots = this.defineRivers();
@@ -888,10 +860,6 @@ class MapGenerator {
         this.expandLakes();
 
         this.addHumidityFromClimate();
-
-        this.checkForDryRivers(riverRoots);
-        this.checkForDryLakes();
-
         return riverRoots;
     }
 
@@ -1096,12 +1064,43 @@ class MapGenerator {
         return biome;
     }
 
+    checkForDryRivers = (rivers) => {
+        let visited = new Set();
+        let queue = [...rivers];
+
+        while (queue.length) {
+            let river = queue.shift();
+            let tile = river.tile;
+
+            if (visited.has(tile.idx)) continue;
+            visited.add(tile.idx);
+
+            if (river.children) {
+                river.children.forEach(c => queue.push(c));
+            }
+
+            if (tile.precipitation < this.precipitationForRiverMin) {
+                river.dry = true;
+            }
+        }
+    }
+
+    checkForDryLakes = () => {
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin);
+        }
+    }
+
     defineBiomes = () => {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let biome = this.getBiomeForTile(tile);
             tile.biome = biome;
         }
+
+        this.checkForDryRivers(this.riverRoots);
+        this.checkForDryLakes();
     }
 
     // _________________________________________
