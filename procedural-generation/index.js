@@ -38,6 +38,7 @@ class RiverNode {
         this.idx = idx;
         this.tile = tile;
         this.dry = false;
+        this.frozen = false;
         this.distToRoot = 0;
         this.farthestLeafDist = 0; // only for root river nodes
     }
@@ -193,7 +194,6 @@ class MapGenerator {
         this.coastline = [];
 
 
-
         this.numberOfRandomInitialPeaksOrTrenchesMin = 5; // important value
         this.numberOfRandomInitialPeaksOrTrenchesMax = 15; // important value
         this.chanceForLand = 0.5; // important value
@@ -220,7 +220,7 @@ class MapGenerator {
 
         this.humidityFromClimate = 0; // important value
 
-        this.seaLevelTemperature = 18; // important value
+        this.seaLevelTemperature = -18; // important value
 
         this.initialPeakHeight = 100;
         this.highestPeak = this.initialPeakHeight;
@@ -1082,6 +1082,10 @@ class MapGenerator {
             if (tile.precipitation < this.precipitationForRiverMin) {
                 river.dry = true;
             }
+
+            if (tile.temperature < 0) {
+                river.frozen = true;
+            }
         }
     }
 
@@ -1089,6 +1093,7 @@ class MapGenerator {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin);
+            tile.frozenLake = !!(tile.temperature < 0);
         }
     }
 
