@@ -1064,7 +1064,7 @@ class MapGenerator {
         return biome;
     }
 
-    checkForDryRivers = (rivers) => {
+    checkForRiversModifiers = (rivers) => {
         let visited = new Set();
         let queue = [...rivers];
 
@@ -1079,17 +1079,12 @@ class MapGenerator {
                 river.children.forEach(c => queue.push(c));
             }
 
-            if (tile.precipitation < this.precipitationForRiverMin) {
-                river.dry = true;
-            }
-
-            if (tile.temperature < 0) {
-                river.frozen = true;
-            }
+            river.dry = !!(tile.precipitation < this.precipitationForRiverMin);
+            river.frozen = !!(tile.temperature < 0);
         }
     }
 
-    checkForDryLakes = () => {
+    checkForLakesModifiers = () => {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin);
@@ -1104,8 +1099,8 @@ class MapGenerator {
             tile.biome = biome;
         }
 
-        this.checkForDryRivers(this.riverRoots);
-        this.checkForDryLakes();
+        this.checkForRiversModifiers(this.riverRoots);
+        this.checkForLakesModifiers();
     }
 
     // _________________________________________
