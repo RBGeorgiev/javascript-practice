@@ -163,8 +163,10 @@ const BIOMES_COLORS = {
     "OASIS": "#ADDA6B",
     "RIVER": "#0E97F2",
     "DRY_RIVER": "#C4A67D",
+    "FROZEN_RIVER": "#91d0f7",
     "LAKE": "#0E97F2",
     "DRY_LAKE": "#C4A67D",
+    "FROZEN_LAKE": "#91d0f7",
     "OCEAN": "#5E86D1",
     "DEEP_OCEAN": "#2b2e49",
     "SWAMP": "#828C51",
@@ -1378,7 +1380,7 @@ class MapGenerator {
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = 'round';
-                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : BIOMES_COLORS['RIVER'];
+                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : (riverNode.frozen) ? BIOMES_COLORS['FROZEN_RIVER'] : BIOMES_COLORS['RIVER'];
                     ctx.stroke();
                 }
 
@@ -1389,7 +1391,7 @@ class MapGenerator {
 
     drawLakes = () => {
         for (let idx in this.lakeTiles) {
-            let color = (this.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : BIOMES_COLORS['LAKE'];
+            let color = (this.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : (this.getTile(+idx).frozenLake) ? BIOMES_COLORS['FROZEN_LAKE'] : BIOMES_COLORS['LAKE'];
             this.fillTile(+idx, color);
             ctx.strokeStyle = color;
             ctx.stroke();
