@@ -1377,10 +1377,20 @@ class MapGenerator {
                         precipitationWidth = 4;
                     }
 
+                    let color;
+
+                    if (riverNode.dry) {
+                        color = BIOMES_COLORS['DRY_RIVER']
+                    } else if (riverNode.frozen) {
+                        color = BIOMES_COLORS['FROZEN_RIVER']
+                    } else {
+                        color = BIOMES_COLORS['RIVER'];
+                    }
+
                     ctx.drawCurve(points, curveStrength);
                     ctx.lineWidth = (distWidth + precipitationWidth) / 2;
                     ctx.lineCap = 'round';
-                    ctx.strokeStyle = (riverNode.dry) ? BIOMES_COLORS['DRY_RIVER'] : (riverNode.frozen) ? BIOMES_COLORS['FROZEN_RIVER'] : BIOMES_COLORS['RIVER'];
+                    ctx.strokeStyle = color;
                     ctx.stroke();
                 }
 
@@ -1391,7 +1401,17 @@ class MapGenerator {
 
     drawLakes = () => {
         for (let idx in this.lakeTiles) {
-            let color = (this.getTile(+idx).dryLake) ? BIOMES_COLORS['DRY_LAKE'] : (this.getTile(+idx).frozenLake) ? BIOMES_COLORS['FROZEN_LAKE'] : BIOMES_COLORS['LAKE'];
+            let tile = this.getTile(+idx);
+            let color;
+
+            if (tile.dryLake) {
+                color = BIOMES_COLORS['DRY_LAKE']
+            } else if (tile.frozenLake) {
+                color = BIOMES_COLORS['FROZEN_LAKE']
+            } else {
+                color = BIOMES_COLORS['LAKE'];
+            }
+
             this.fillTile(+idx, color);
             ctx.strokeStyle = color;
             ctx.stroke();
