@@ -205,8 +205,8 @@ class MapGenerator {
         // if MAX number higher than 100 there is a chance for height increase
         this.heightDecrementMax = 100; // important value
 
-        this.defaultOceanTilePrecipitation = 10; // important value
-        this.maxDefaultPrecipitationTiles = 20; // important value
+        this.defaultOceanTilePrecipitation = 10; // g/kg // important value
+        this.windSpeed = 20; // km/h // Beaufort wind force scale // important value
         this.heightPrecipitationMultiplier = .2; // important value
 
         this.precipitationForRiverMin = 20; // important value
@@ -222,7 +222,7 @@ class MapGenerator {
 
         this.humidityFromClimate = 0; // important value
 
-        this.seaLevelTemperature = -18; // important value
+        this.seaLevelTemperature = 14; // important value
 
         this.initialPeakHeight = 100;
         this.highestPeak = this.initialPeakHeight;
@@ -687,7 +687,7 @@ class MapGenerator {
     calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
-            let totalWaterAvailable = this.defaultOceanTilePrecipitation * this.maxDefaultPrecipitationTiles;
+            let totalWaterAvailable = this.defaultOceanTilePrecipitation * this.windSpeed;
             let tileDistances = [];
             // get tile distance
             for (let idx of tiles) {
