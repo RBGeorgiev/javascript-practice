@@ -674,10 +674,10 @@ class MapGenerator {
     // ____________________________________________________________________________________________________________
     // precipitation and humidity
 
-    defineHumidity = () => {
+    defineHumidity = (windLines = null) => {
         this.resetHumidity();
 
-        this.windLines = this.initWindLines(this.windLineLength, this.canvasPartitions);
+        this.windLines = (windLines) ? windLines : this.initWindLines(this.windLineLength, this.canvasPartitions);
         this.riverRoots = this.initWaterOnLand(this.windLines);
 
         [this.allRiverPaths, this.allRiverSubPathSteps] = [...this.defineRiversOnVoronoiEdges(this.riverRoots)];
@@ -1551,7 +1551,16 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawAll();
     }
 
-    const changeWindAndHumidity = () => {
+    const changeWindSpeed = (newSpeed) => {
+        mapGen.windSpeed = newSpeed;
+        mapGen.defineHumidity(mapGen.windLines);
+        mapGen.defineTemperature();
+        mapGen.defineBiomes();
+
+        mapGen.drawAll();
+    }
+
+    const changeWindDirection = () => {
         mapGen.defineHumidity();
         mapGen.defineTemperature();
         mapGen.defineBiomes();
@@ -1569,7 +1578,17 @@ canvas.addEventListener("click", (e) => {
 
     console.time("run map generation");
 
-    changeTemperature(25);
+    // changeTerrain();
+
+    changeWindSpeed(mapGen.windSpeed);
+    console.log(mapGen.windSpeed);
+    mapGen.windSpeed -= 1;
+
+    // changeWindDirection();
+
+    // changeTemperature(mapGen.seaLevelTemperature);
+    // console.log(mapGen.seaLevelTemperature);
+    // mapGen.seaLevelTemperature += 1;
 
     console.timeEnd("run map generation");
 })
