@@ -496,6 +496,7 @@ class MapGenerator {
     run = () => {
         this.defineTileset();
         this.defineTerrain();
+        this.defineWindLines();
         this.defineHumidity();
         this.defineTemperature();
         this.defineBiomes();
@@ -674,10 +675,11 @@ class MapGenerator {
     // ____________________________________________________________________________________________________________
     // precipitation and humidity
 
-    defineHumidity = (windLines = null) => {
+    defineWindLines = (windLines = null) => this.windLines = (windLines) ? windLines : this.initWindLines(this.windLineLength, this.canvasPartitions);
+
+    defineHumidity = () => {
         this.resetHumidity();
 
-        this.windLines = (windLines) ? windLines : this.initWindLines(this.windLineLength, this.canvasPartitions);
         this.riverRoots = this.initWaterOnLand(this.windLines);
 
         [this.allRiverPaths, this.allRiverSubPathSteps] = [...this.defineRiversOnVoronoiEdges(this.riverRoots)];
@@ -1544,6 +1546,7 @@ canvas.addEventListener("click", (e) => {
 
     const changeTerrain = () => {
         mapGen.defineTerrain();
+        mapGen.defineWindLines();
         mapGen.defineHumidity();
         mapGen.defineTemperature();
         mapGen.defineBiomes();
@@ -1553,7 +1556,8 @@ canvas.addEventListener("click", (e) => {
 
     const changeWindSpeed = (newSpeed) => {
         mapGen.windSpeed = newSpeed;
-        mapGen.defineHumidity(mapGen.windLines);
+        mapGen.defineWindLines(mapGen.windLines);
+        mapGen.defineHumidity();
         mapGen.defineTemperature();
         mapGen.defineBiomes();
 
@@ -1561,6 +1565,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     const changeWindDirection = () => {
+        mapGen.defineWindLines();
         mapGen.defineHumidity();
         mapGen.defineTemperature();
         mapGen.defineBiomes();
