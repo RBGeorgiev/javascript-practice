@@ -493,17 +493,6 @@ class MapGenerator {
         this.resetLakes();
     }
 
-    run = () => {
-        this.defineTileset();
-        this.defineTerrain();
-        this.defineWindLines();
-        this.defineHumidity();
-        this.defineTemperature();
-        this.defineBiomes();
-
-        this.drawAll();
-    }
-
     createCanvasPartitions = () => {
         let canvasPartitions = [];
         let partitionSizeX = canvas.width / 8;
@@ -1108,6 +1097,30 @@ class MapGenerator {
     }
 
     // _________________________________________
+    // run methods
+
+    run = () => {
+        this.defineTileset();
+        this.defineTerrain();
+        this.defineWindLines();
+        this.defineHumidity();
+        this.defineTemperature();
+        this.defineBiomes();
+
+        this.drawAll();
+    }
+
+    changeTerrain = () => {
+        this.defineTerrain();
+        this.defineWindLines();
+        this.defineHumidity();
+        this.defineTemperature();
+        this.defineBiomes();
+
+        this.drawAll();
+    }
+
+    // _________________________________________
     // draw methods
 
     drawAll = () => {
@@ -1544,15 +1557,6 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
-    const changeTerrain = () => {
-        mapGen.defineTerrain();
-        mapGen.defineWindLines();
-        mapGen.defineHumidity();
-        mapGen.defineTemperature();
-        mapGen.defineBiomes();
-
-        mapGen.drawAll();
-    }
 
     const changeWindSpeed = (newSpeed) => {
         mapGen.windSpeed = newSpeed;
@@ -1583,11 +1587,11 @@ canvas.addEventListener("click", (e) => {
 
     console.time("run map generation");
 
-    // changeTerrain();
+    mapGen.changeTerrain();
 
-    changeWindSpeed(mapGen.windSpeed);
-    console.log(mapGen.windSpeed);
-    mapGen.windSpeed -= 1;
+    // changeWindSpeed(mapGen.windSpeed);
+    // console.log(mapGen.windSpeed);
+    // mapGen.windSpeed -= 1;
 
     // changeWindDirection();
 
