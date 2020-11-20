@@ -1130,6 +1130,16 @@ class MapGenerator {
         this.drawAll();
     }
 
+    changeWindDirection = () => {
+        this.defineWindLines();
+        this.defineHumidity();
+        this.defineTemperature();
+        this.defineBiomes();
+
+        this.drawAll();
+    }
+
+
     // _________________________________________
     // draw methods
 
@@ -1568,15 +1578,6 @@ canvas.addEventListener("click", (e) => {
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
 
-    const changeWindDirection = () => {
-        mapGen.defineWindLines();
-        mapGen.defineHumidity();
-        mapGen.defineTemperature();
-        mapGen.defineBiomes();
-
-        mapGen.drawAll();
-    }
-
     const changeTemperature = (newTemp) => {
         mapGen.seaLevelTemperature = newTemp;
         mapGen.defineTemperature();
@@ -1589,11 +1590,11 @@ canvas.addEventListener("click", (e) => {
 
     // mapGen.changeTerrain();
 
-    mapGen.changeWindSpeed(mapGen.windSpeed);
-    console.log(mapGen.windSpeed);
-    mapGen.windSpeed -= 1;
+    // mapGen.changeWindSpeed(mapGen.windSpeed);
+    // console.log(mapGen.windSpeed);
+    // mapGen.windSpeed -= 1;
 
-    // changeWindDirection();
+    mapGen.changeWindDirection();
 
     // changeTemperature(mapGen.seaLevelTemperature);
     // console.log(mapGen.seaLevelTemperature);
