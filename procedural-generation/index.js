@@ -205,7 +205,7 @@ class MapGenerator {
         // if MAX number higher than 100 there is a chance for height increase
         this.heightDecrementMax = 100; // important value
 
-        this.defaultOceanTilePrecipitation = 10; // g/kg // important value
+        this.oceanTileWaterVapor = 10; // g/kg // important value
         this.windSpeed = 20; // km/h // Beaufort wind force scale // important value
         this.heightPrecipitationMultiplier = .2; // important value
 
@@ -678,7 +678,7 @@ class MapGenerator {
     calculatePrecipitation = (windLines) => {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
-            let totalWaterAvailable = this.defaultOceanTilePrecipitation * this.windSpeed;
+            let totalWaterAvailable = this.oceanTileWaterVapor * this.windSpeed;
             let tileDistances = [];
             // get tile distance
             for (let idx of tiles) {
@@ -697,7 +697,7 @@ class MapGenerator {
                 let dist = cur[1];
                 let linePercentVal = this.windLineLength / 100;
                 let percentDistFromLineStart = dist / linePercentVal / 100;
-                let distPrecipitation = this.defaultOceanTilePrecipitation - (this.defaultOceanTilePrecipitation * percentDistFromLineStart);
+                let distPrecipitation = this.oceanTileWaterVapor - (this.oceanTileWaterVapor * percentDistFromLineStart);
                 let heightPrecipitation = tile.height * this.heightPrecipitationMultiplier;
 
                 let precipitation = distPrecipitation + heightPrecipitation;
@@ -814,7 +814,7 @@ class MapGenerator {
 
                 let heightDifference = neighbor.height - lake.height;
 
-                let waterMoved = waterSpreadAverage + ((this.defaultOceanTilePrecipitation - heightDifference) * this.lakeHeightPrecipitationMultiplier) - heightDifference * this.lakeHeightPrecipitationMultiplier;
+                let waterMoved = waterSpreadAverage + ((this.oceanTileWaterVapor - heightDifference) * this.lakeHeightPrecipitationMultiplier) - heightDifference * this.lakeHeightPrecipitationMultiplier;
                 if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
 
                 neighbor.precipitation += waterMoved;
@@ -1586,6 +1586,15 @@ canvas.addEventListener("click", (e) => {
     // let neighbors = mapGen.voronoi.neighbors(cell);
 
 
+    const changeHumidity = (newOceanTileWaterVapor) => {
+        mapGen.oceanTileWaterVapor = newOceanTileWaterVapor;
+        mapGen.defineHumidity();
+        mapGen.defineTemperature();
+        mapGen.defineBiomes();
+
+        mapGen.drawAll();
+    }
+
     const tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture
 
     console.time("run map generation");
@@ -1598,9 +1607,11 @@ canvas.addEventListener("click", (e) => {
 
     // mapGen.changeWindDirection();
 
-    mapGen.changeTemperature(mapGen.seaLevelTemperature);
-    console.log(mapGen.seaLevelTemperature);
-    mapGen.seaLevelTemperature += 1;
+    changeHumidity(15);
+
+    // mapGen.changeTemperature(mapGen.seaLevelTemperature);
+    // console.log(mapGen.seaLevelTemperature);
+    // mapGen.seaLevelTemperature += 1;
 
     console.timeEnd("run map generation");
 })
