@@ -1595,8 +1595,12 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawAll();
     }
 
-    const tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture
+    let dewpoint = 10; //dewpoint can't be higher than temperature
+
+    const setDewpoint = (val) => dewpoint = mapGen.clamp(val, Number.NEGATIVE_INFINITY, mapGen.seaLevelTemperature)
     const calcDewpoint = (temp, relativeHumidity) => 243.04 * (Math.log(relativeHumidity / 100) + ((17.625 * temp) / (243.04 + temp))) / (17.625 - Math.log(relativeHumidity / 100) - ((17.625 * temp) / (243.04 + temp))); // degrees
+
+    const tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture
 
     console.time("run map generation");
 
