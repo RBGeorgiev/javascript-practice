@@ -1595,6 +1595,7 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawAll();
     }
 
+    const updateOceanTileWaterVapor = () => tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
 
     const setDewpoint = (val) => dewpoint = mapGen.clamp(val, Number.NEGATIVE_INFINITY, mapGen.seaLevelTemperature);
     const calcDewpoint = (temp, relativeHumidity) => 243.04 * (Math.log(relativeHumidity / 100) + ((17.625 * temp) / (243.04 + temp))) / (17.625 - Math.log(relativeHumidity / 100) - ((17.625 * temp) / (243.04 + temp))); // degrees
@@ -1604,9 +1605,9 @@ canvas.addEventListener("click", (e) => {
     const calcRelativeHumidity = (temp, dewpoint) => 100 * Math.exp((17.625 * dewpoint) / (243.04 + dewpoint)) / Math.exp((17.625 * temp) / (243.04 + temp)); // percent
     const calcTemperature = (dewpoint, relativeHumidity) => 243.04 * (((17.625 * dewpoint) / (243.04 + dewpoint)) - Math.log(relativeHumidity / 100)) / (17.625 + Math.log(relativeHumidity / 100) - ((17.625 * dewpoint) / (243.04 + dewpoint))); // degrees
 
-    let relativeHumidity = 80 // percent
-    let dewpoint = setDewpoint(calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity)); //dewpoint can't be higher than temperature
-    // mapGen.oceanTileWaterVapor = tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
+    let relativeHumidity = 80 // percent // important value
+    let dewpoint = setDewpoint(calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity)); //dewpoint can't be higher than temperature // important value
+    mapGen.oceanTileWaterVapor = updateOceanTileWaterVapor();
 
     console.time("run map generation");
 
