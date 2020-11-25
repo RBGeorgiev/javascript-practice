@@ -1595,6 +1595,12 @@ canvas.addEventListener("click", (e) => {
         mapGen.drawAll();
     }
 
+    const updateDewpoint = (newDewpoint) => {
+        dewpoint = newDewpoint
+        mapGen.seaLevelTemperature = calcTemperature(dewpoint, relativeHumidity);
+    }
+
+
     const updateOceanTileWaterVapor = () => tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
 
     const setDewpoint = (val) => dewpoint = mapGen.clamp(val, Number.NEGATIVE_INFINITY, mapGen.seaLevelTemperature);
