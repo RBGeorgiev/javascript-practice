@@ -8,8 +8,13 @@
 
 <body>
     <canvas id="canvas" width="800" height="800"></canvas>
+
     <label id="relativeHumidityLabel">Relative Humidity: <span id="relativeHumiditySpan">80</span>%
         <input type="range" id="relativeHumidityInput" min="0" max="100" value="80">
+    </label>
+
+    <label id="dewpointLabel">Dew Point: <span id="dewpointSpan">10</span>°C
+        <input type="range" id="dewpointInput" value="10">
     </label>
 
     <script type="module" src="index.js" async defer></script>
