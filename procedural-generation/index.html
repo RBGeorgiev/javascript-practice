@@ -9,13 +9,19 @@
 <body>
     <canvas id="canvas" width="800" height="800"></canvas>
 
-    <label id="relativeHumidityLabel">Relative Humidity: <span id="relativeHumiditySpan">80</span>%
-        <input type="range" id="relativeHumidityInput" min="0" max="100" value="80">
-    </label>
+    <div>
+        <label id="temperatureLabel">Sea Level Temperature: <span id="temperatureSpan">14</span>°C
+            <input type="range" id="temperatureInput" min="-40" max="55" value="14">
+        </label>
 
-    <label id="dewpointLabel">Dew Point: <span id="dewpointSpan">10</span>°C
-        <input type="range" id="dewpointInput" value="10">
-    </label>
+        <label id="relativeHumidityLabel">Relative Humidity: <span id="relativeHumiditySpan">80</span>%
+            <input type="range" id="relativeHumidityInput" min="0" max="100" value="80">
+        </label>
+
+        <label id="dewpointLabel">Dew Point: <span id="dewpointSpan">10</span>°C
+            <input type="range" id="dewpointInput" value="10">
+        </label>
+    </div>
 
     <script type="module" src="index.js" async defer></script>
 </body>
