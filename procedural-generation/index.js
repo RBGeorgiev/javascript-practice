@@ -1,5 +1,17 @@
 import { Delaunay } from "./d3-delaunay/index.js";
-import { canvas, ctx } from './constants.js';
+import {
+    canvas,
+    ctx,
+    temperatureLabel,
+    temperatureSpan,
+    temperatureInput,
+    relativeHumidityLabel,
+    relativeHumiditySpan,
+    relativeHumidityInput,
+    dewpointLabel,
+    dewpointSpan,
+    dewpointInput
+} from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
 import { lineCollision } from './lineCollision.js';
@@ -1578,57 +1590,77 @@ let initialNumOfPoints = 1000;
 let mapGen = new MapGenerator(initialNumOfPoints, seed);
 mapGen.run();
 
+
+
+
+
+
+
+
+
+
+const changeHumidity = (newOceanTileWaterVapor) => {
+    mapGen.oceanTileWaterVapor = newOceanTileWaterVapor;
+    mapGen.defineHumidity();
+    mapGen.defineTemperature();
+    mapGen.defineBiomes();
+
+    mapGen.drawAll();
+}
+
+// changing temp -> RH
+// changing RH -> dewpoint
+// changing dewpoint -> temp
+// ... -> temp -> RH -> dewpoint -> temp -> ...
+
+const updateTemperature = (newTemperature) => {
+    mapGen.seaLevelTemperature = newTemperature;
+    relativeHumidity = calcRelativeHumidity(mapGen.seaLevelTemperature, dewpoint);
+}
+
+const updateRelativeHumidity = (newRelativeHumidity) => {
+    relativeHumidity = newRelativeHumidity;
+    dewpoint = calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity);
+}
+
+const updateDewpoint = (newDewpoint) => {
+    dewpoint = newDewpoint
+    mapGen.seaLevelTemperature = calcTemperature(dewpoint, relativeHumidity);
+}
+
+
+const updateOceanTileWaterVapor = () => tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
+
+const calcDewpoint = (temp, relativeHumidity) => 243.04 * (Math.log(relativeHumidity / 100) + ((17.625 * temp) / (243.04 + temp))) / (17.625 - Math.log(relativeHumidity / 100) - ((17.625 * temp) / (243.04 + temp))); // degrees
+
+const tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture; used for how much water vapor comes out of ocean tiles
+
+const calcRelativeHumidity = (temp, dewpoint) => 100 * Math.exp((17.625 * dewpoint) / (243.04 + dewpoint)) / Math.exp((17.625 * temp) / (243.04 + temp)); // percent
+const calcTemperature = (dewpoint, relativeHumidity) => 243.04 * (((17.625 * dewpoint) / (243.04 + dewpoint)) - Math.log(relativeHumidity / 100)) / (17.625 + Math.log(relativeHumidity / 100) - ((17.625 * dewpoint) / (243.04 + dewpoint))); // degrees
+
+let relativeHumidity = 80 // percent // important value
+let dewpoint = calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity); //dewpoint can't be higher than temperature // important value
+mapGen.oceanTileWaterVapor = updateOceanTileWaterVapor();
+
+
+
+dewpointInput.oninput = (e) => {
+    let newDewpoint = +e.target.value;
+    dewpoint = newDewpoint;
+
+    mapGen.seaLevelTemperature = calcTemperature(dewpoint, relativeHumidity);
+    dewpointSpan.innerText = dewpoint;
+    temperatureInput.value = mapGen.seaLevelTemperature;
+    temperatureSpan.innerText = Math.round(mapGen.seaLevelTemperature);
+}
+
+
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;
     // let y = e.offsetY;
     // let cell = mapGen.delaunay.find(x, y);
     // console.log(mapGen.tiles[cell]);
     // let neighbors = mapGen.voronoi.neighbors(cell);
-
-
-    const changeHumidity = (newOceanTileWaterVapor) => {
-        mapGen.oceanTileWaterVapor = newOceanTileWaterVapor;
-        mapGen.defineHumidity();
-        mapGen.defineTemperature();
-        mapGen.defineBiomes();
-
-        mapGen.drawAll();
-    }
-
-    // changing temp -> RH
-    // changing RH -> dewpoint
-    // changing dewpoint -> temp
-    // ... -> temp -> RH -> dewpoint -> temp -> ...
-
-    const updateTemperature = (newTemperature) => {
-        mapGen.seaLevelTemperature = newTemperature;
-        relativeHumidity = calcRelativeHumidity(mapGen.seaLevelTemperature, dewpoint);
-    }
-
-    const updateRelativeHumidity = (newRelativeHumidity) => {
-        relativeHumidity = newRelativeHumidity;
-        dewpoint = calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity);
-    }
-
-    const updateDewpoint = (newDewpoint) => {
-        dewpoint = newDewpoint
-        mapGen.seaLevelTemperature = calcTemperature(dewpoint, relativeHumidity);
-    }
-
-
-    const updateOceanTileWaterVapor = () => tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
-
-    const setDewpoint = (val) => dewpoint = mapGen.clamp(val, Number.NEGATIVE_INFINITY, mapGen.seaLevelTemperature);
-    const calcDewpoint = (temp, relativeHumidity) => 243.04 * (Math.log(relativeHumidity / 100) + ((17.625 * temp) / (243.04 + temp))) / (17.625 - Math.log(relativeHumidity / 100) - ((17.625 * temp) / (243.04 + temp))); // degrees
-
-    const tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture; used for how much water vapor comes out of ocean tiles
-
-    const calcRelativeHumidity = (temp, dewpoint) => 100 * Math.exp((17.625 * dewpoint) / (243.04 + dewpoint)) / Math.exp((17.625 * temp) / (243.04 + temp)); // percent
-    const calcTemperature = (dewpoint, relativeHumidity) => 243.04 * (((17.625 * dewpoint) / (243.04 + dewpoint)) - Math.log(relativeHumidity / 100)) / (17.625 + Math.log(relativeHumidity / 100) - ((17.625 * dewpoint) / (243.04 + dewpoint))); // degrees
-
-    let relativeHumidity = 80 // percent // important value
-    let dewpoint = setDewpoint(calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity)); //dewpoint can't be higher than temperature // important value
-    mapGen.oceanTileWaterVapor = updateOceanTileWaterVapor();
 
     console.time("run map generation");
 
