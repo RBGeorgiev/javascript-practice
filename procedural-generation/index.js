@@ -1644,6 +1644,22 @@ mapGen.oceanTileWaterVapor = updateOceanTileWaterVapor();
 
 
 
+
+
+
+
+
+
+temperatureInput.oninput = (e) => {
+    let newTemp = +e.target.value;
+    mapGen.seaLevelTemperature = newTemp;
+
+    relativeHumidity = calcRelativeHumidity(mapGen.seaLevelTemperature, dewpoint);
+    temperatureSpan.innerText = mapGen.seaLevelTemperature;
+    relativeHumidityInput.value = relativeHumidity
+    relativeHumiditySpan.innerText = Math.round(relativeHumidity);
+}
+
 relativeHumidityInput.oninput = (e) => {
     relativeHumidity = +e.target.value;
 
