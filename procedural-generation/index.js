@@ -1668,6 +1668,8 @@ temperatureInput.oninput = (e) => {
     relativeHumiditySpan.innerText = Math.round(relativeHumidity);
 
     dewpointInput.max = Math.round(calcDewpoint(mapGen.seaLevelTemperature, 100));
+
+    mapGen.changeTemperature(mapGen.seaLevelTemperature);
 }
 
 relativeHumidityInput.oninput = (e) => {
