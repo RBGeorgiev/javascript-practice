@@ -1652,6 +1652,10 @@ let maxAllowedTemp = 55;
 temperatureInput.oninput = (e) => {
     let newTemp = +e.target.value;
 
+    if (Math.round(calcRelativeHumidity(newTemp, dewpoint)) > 100) {
+        return console.log(`Relative humidity can't exceed 100%`);
+    }
+
     if (Math.round(calcRelativeHumidity(newTemp, dewpoint)) < 1) {
         return console.log(`Relative humidity can't go below 1%`);
     }
