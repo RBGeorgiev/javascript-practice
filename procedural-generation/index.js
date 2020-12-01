@@ -1613,19 +1613,40 @@ const changeHumidity = (newOceanTileWaterVapor) => {
 // changing dewpoint -> temp
 // ... -> temp -> RH -> dewpoint -> temp -> ...
 
-const updateTemperature = (newTemperature) => {
-    mapGen.seaLevelTemperature = newTemperature;
-    relativeHumidity = calcRelativeHumidity(mapGen.seaLevelTemperature, dewpoint);
+const updateTemperature = (newTemp, newRH) => {
+    mapGen.seaLevelTemperature = newTemp;
+    relativeHumidity = newRH;
+
+    temperatureSpan.innerText = mapGen.seaLevelTemperature;
+    relativeHumidityInput.value = relativeHumidity;
+    relativeHumiditySpan.innerText = Math.round(relativeHumidity);
+
+    dewpointInput.max = Math.round(calcDewpoint(mapGen.seaLevelTemperature, 100));
+
+    updateInputVariables();
 }
 
-const updateRelativeHumidity = (newRelativeHumidity) => {
-    relativeHumidity = newRelativeHumidity;
-    dewpoint = calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity);
+const updateRelativeHumidity = (newRH, newDewpoint) => {
+    relativeHumidity = newRH;
+    dewpoint = newDewpoint;
+    relativeHumiditySpan.innerText = relativeHumidity;
+    dewpointInput.value = dewpoint;
+    dewpointSpan.innerText = Math.round(dewpoint);
+
+    updateInputVariables();
 }
 
-const updateDewpoint = (newDewpoint) => {
-    dewpoint = newDewpoint
-    mapGen.seaLevelTemperature = calcTemperature(dewpoint, relativeHumidity);
+const updateDewpoint = (newDewpoint, newTemp) => {
+    dewpoint = newDewpoint;
+    mapGen.seaLevelTemperature = newTemp;
+
+    dewpointSpan.innerText = dewpoint;
+    temperatureInput.value = mapGen.seaLevelTemperature;
+    temperatureSpan.innerText = Math.round(mapGen.seaLevelTemperature);
+
+    temperatureInput.min = Math.round(dewpoint);
+
+    updateInputVariables();
 }
 
 
@@ -1668,59 +1689,35 @@ temperatureInput.oninput = (e) => {
     let newTemp = +e.target.value;
     let newRH = Math.round(calcRelativeHumidity(newTemp, dewpoint));
 
+    if (newRH < 1) {
+        return console.log(`Relative humidity can't go below 1%`);
+    }
     if (newRH > 100) {
         return console.log(`Relative humidity can't exceed 100%`);
     }
 
-    if (newRH < 1) {
-        return console.log(`Relative humidity can't go below 1%`);
-    }
-
-    mapGen.seaLevelTemperature = newTemp;
-    relativeHumidity = newRH;
-
-    temperatureSpan.innerText = mapGen.seaLevelTemperature;
-    relativeHumidityInput.value = relativeHumidity;
-    relativeHumiditySpan.innerText = Math.round(relativeHumidity);
-
-    dewpointInput.max = Math.round(calcDewpoint(mapGen.seaLevelTemperature, 100));
-
-    updateInputVariables();
+    updateTemperature(newTemp, newRH);
 }
 
 relativeHumidityInput.oninput = (e) => {
-    relativeHumidity = +e.target.value;
+    let newRH = +e.target.value;
+    let newDewpoint = Math.round(calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity));
 
-    dewpoint = Math.round(calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity));
-    relativeHumiditySpan.innerText = relativeHumidity;
-    dewpointInput.value = dewpoint;
-    dewpointSpan.innerText = Math.round(dewpoint);
-
-    updateInputVariables();
+    updateRelativeHumidity(newRH, newDewpoint);
 }
 
 dewpointInput.oninput = (e) => {
     let newDewpoint = +e.target.value;
     let newTemp = Math.round(calcTemperature(newDewpoint, relativeHumidity));
 
+    if (newTemp < minAllowedTemp) {
+        return console.log(`Temperature can't be below ${minAllowedTemp}°C`);
+    }
     if (newTemp > maxAllowedTemp) {
         return console.log(`Temperature can't exceed ${maxAllowedTemp}°C`);
     }
 
-    if (newTemp < minAllowedTemp) {
-        return console.log(`Temperature can't be below ${minAllowedTemp}°C`);
-    }
-
-    dewpoint = newDewpoint;
-    mapGen.seaLevelTemperature = newTemp;
-
-    dewpointSpan.innerText = dewpoint;
-    temperatureInput.value = mapGen.seaLevelTemperature;
-    temperatureSpan.innerText = Math.round(mapGen.seaLevelTemperature);
-
-    temperatureInput.min = Math.round(dewpoint);
-
-    updateInputVariables();
+    updateDewpoint(newDewpoint, newTemp);
 }
 
 
