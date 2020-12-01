@@ -1647,62 +1647,80 @@ mapGen.oceanTileWaterVapor = updateOceanTileWaterVapor();
 
 let minAllowedTemp = -40;
 let maxAllowedTemp = 55;
+let oldTemp = +temperatureInput.value;
+let oldRH = +relativeHumidityInput.value;
+
+const updateInputVariables = () => {
+    if (oldTemp !== mapGen.seaLevelTemperature) {
+        mapGen.changeTemperature(mapGen.seaLevelTemperature);
+        oldTemp = mapGen.seaLevelTemperature;
+    }
+
+    if (oldRH !== relativeHumidity) {
+        mapGen.oceanTileWaterVapor = tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
+        changeHumidity(mapGen.oceanTileWaterVapor);
+        oldRH = relativeHumidity;
+    }
+}
 
 
 temperatureInput.oninput = (e) => {
     let newTemp = +e.target.value;
+    let newRH = Math.round(calcRelativeHumidity(newTemp, dewpoint));
 
-    if (Math.round(calcRelativeHumidity(newTemp, dewpoint)) > 100) {
+    if (newRH > 100) {
         return console.log(`Relative humidity can't exceed 100%`);
     }
 
-    if (Math.round(calcRelativeHumidity(newTemp, dewpoint)) < 1) {
+    if (newRH < 1) {
         return console.log(`Relative humidity can't go below 1%`);
     }
 
     mapGen.seaLevelTemperature = newTemp;
+    relativeHumidity = newRH;
 
-    relativeHumidity = calcRelativeHumidity(mapGen.seaLevelTemperature, dewpoint);
     temperatureSpan.innerText = mapGen.seaLevelTemperature;
     relativeHumidityInput.value = relativeHumidity;
     relativeHumiditySpan.innerText = Math.round(relativeHumidity);
 
     dewpointInput.max = Math.round(calcDewpoint(mapGen.seaLevelTemperature, 100));
 
-    mapGen.changeTemperature(mapGen.seaLevelTemperature);
+    updateInputVariables();
 }
 
 relativeHumidityInput.oninput = (e) => {
     relativeHumidity = +e.target.value;
 
-    dewpoint = calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity);
+    dewpoint = Math.round(calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity));
     relativeHumiditySpan.innerText = relativeHumidity;
     dewpointInput.value = dewpoint;
     dewpointSpan.innerText = Math.round(dewpoint);
 
-    mapGen.oceanTileWaterVapor = tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
-    changeHumidity(mapGen.oceanTileWaterVapor);
+    updateInputVariables();
 }
 
 dewpointInput.oninput = (e) => {
     let newDewpoint = +e.target.value;
+    let newTemp = Math.round(calcTemperature(newDewpoint, relativeHumidity));
 
-    if (Math.round(calcTemperature(newDewpoint, relativeHumidity)) > maxAllowedTemp) {
+    if (newTemp > maxAllowedTemp) {
         return console.log(`Temperature can't exceed ${maxAllowedTemp}°C`);
     }
 
-    if (Math.round(calcTemperature(newDewpoint, relativeHumidity)) < minAllowedTemp) {
+    if (newTemp < minAllowedTemp) {
         return console.log(`Temperature can't be below ${minAllowedTemp}°C`);
     }
 
     dewpoint = newDewpoint;
+    mapGen.seaLevelTemperature = newTemp;
 
-    mapGen.seaLevelTemperature = calcTemperature(dewpoint, relativeHumidity);
     dewpointSpan.innerText = dewpoint;
     temperatureInput.value = mapGen.seaLevelTemperature;
     temperatureSpan.innerText = Math.round(mapGen.seaLevelTemperature);
 
     temperatureInput.min = Math.round(dewpoint);
+
+    updateInputVariables();
 }
 
 
