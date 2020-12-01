@@ -1679,6 +1679,9 @@ relativeHumidityInput.oninput = (e) => {
     relativeHumiditySpan.innerText = relativeHumidity;
     dewpointInput.value = dewpoint;
     dewpointSpan.innerText = Math.round(dewpoint);
+
+    mapGen.oceanTileWaterVapor = tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
+    changeHumidity(mapGen.oceanTileWaterVapor);
 }
 
 dewpointInput.oninput = (e) => {
