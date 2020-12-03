@@ -1726,10 +1726,11 @@ dewpointInput.oninput = (e) => {
 }
 
 windSpeedInput.oninput = (e) => {
-    let newWindSpeed = +e.target.value;
-    mapGen.windSpeed = newWindSpeed;
+    mapGen.windSpeed = +e.target.value;
 
     windSpeedSpan.innerText = mapGen.windSpeed;
+
+    mapGen.changeMapWindSpeed(mapGen.windSpeed);
 }
 
 canvas.addEventListener("click", (e) => {
