@@ -10,7 +10,10 @@ import {
     relativeHumidityInput,
     dewpointLabel,
     dewpointSpan,
-    dewpointInput
+    dewpointInput,
+    windSpeedLabel,
+    windSpeedSpan,
+    windSpeedInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1623,7 +1626,7 @@ const updateTemperature = (newTemp, newRH) => {
 
     dewpointInput.max = Math.round(calcDewpoint(mapGen.seaLevelTemperature, 100));
 
-    updateInputVariables();
+    updateMapFromInputVariables();
 }
 
 const updateRelativeHumidity = (newRH, newDewpoint) => {
@@ -1633,7 +1636,7 @@ const updateRelativeHumidity = (newRH, newDewpoint) => {
     dewpointInput.value = dewpoint;
     dewpointSpan.innerText = Math.round(dewpoint);
 
-    updateInputVariables();
+    updateMapFromInputVariables();
 }
 
 const updateDewpoint = (newDewpoint, newTemp) => {
@@ -1646,7 +1649,7 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
     temperatureInput.min = Math.round(dewpoint);
 
-    updateInputVariables();
+    updateMapFromInputVariables();
 }
 
 
@@ -1669,16 +1672,20 @@ let maxAllowedTemp = 55;
 let oldTemp = +temperatureInput.value;
 let oldRH = +relativeHumidityInput.value;
 
-const updateInputVariables = () => {
-    if (oldTemp !== mapGen.seaLevelTemperature) {
-        mapGen.changeMapTemperature(mapGen.seaLevelTemperature);
-        oldTemp = mapGen.seaLevelTemperature;
+const updateMapFromInputVariables = () => {
+    // mapGen.seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
+    let newTemp = mapGen.seaLevelTemperature;
+    let newRH = relativeHumidity;
+
+    if (oldTemp !== newTemp) {
+        mapGen.changeMapTemperature(newTemp);
+        oldTemp = newTemp;
     }
 
-    if (oldRH !== relativeHumidity) {
-        let newOceanTileWaterVapor = tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
+    if (oldRH !== newRH) {
+        let newOceanTileWaterVapor = tempAndRelativeHumidityToMoisture(newTemp, newRH);
         changeMapHumidity(newOceanTileWaterVapor);
-        oldRH = relativeHumidity;
+        oldRH = newRH;
     }
 }
 
@@ -1718,6 +1725,12 @@ dewpointInput.oninput = (e) => {
     updateDewpoint(newDewpoint, newTemp);
 }
 
+windSpeedInput.oninput = (e) => {
+    let newWindSpeed = +e.target.value;
+    mapGen.windSpeed = newWindSpeed;
+
+    windSpeedSpan.innerText = mapGen.windSpeed;
+}
 
 canvas.addEventListener("click", (e) => {
     // let x = e.offsetX;

@@ -12,3 +12,6 @@ export const relativeHumidityInput = id('relativeHumidityInput');
 export const dewpointLabel = id('dewpointLabel');
 export const dewpointSpan = id('dewpointSpan');
 export const dewpointInput = id('dewpointInput');
+export const windSpeedLabel = id('windSpeedLabel');
+export const windSpeedSpan = id('windSpeedSpan');
+export const windSpeedInput = id('windSpeedInput');
