@@ -235,8 +235,6 @@ class MapGenerator {
         this.riverWidthMin = 1;
         this.riverWidthDistanceStrengthControl = 10; // important value
 
-        this.humidityFromClimate = 0; // important value
-
         this.seaLevelTemperature = 14; // important value
 
         this.initialPeakHeight = 100;
@@ -847,27 +845,12 @@ class MapGenerator {
         }
     }
 
-    addHumidityFromClimate = () => {
-        for (let idx in this.landTiles) {
-            let tile = this.getTile(+idx);
-            tile.precipitation += this.humidityFromClimate;
-            tile.totalPrecipitationPassedThroughTile += this.humidityFromClimate;
-        }
-
-        for (let idx in this.lakeTiles) {
-            let tile = this.getTile(+idx);
-            tile.precipitation += this.humidityFromClimate;
-            tile.totalPrecipitationPassedThroughTile += this.humidityFromClimate;
-        }
-    }
-
     initWaterOnLand = (windLines) => {
         this.calculatePrecipitation(windLines);
         let riverRoots = this.defineRivers();
         this.defineLakes(riverRoots);
         this.expandLakes();
 
-        this.addHumidityFromClimate();
         return riverRoots;
     }
 
