@@ -1146,6 +1146,15 @@ class MapGenerator {
         this.drawAll();
     }
 
+    changeMapHumidity = (newOceanTileWaterVapor) => {
+        this.oceanTileWaterVapor = newOceanTileWaterVapor;
+        this.defineHumidity();
+        this.defineTemperature();
+        this.defineBiomes();
+
+        this.drawAll();
+    }
+
     // _________________________________________
     // draw methods
 
@@ -1580,20 +1589,6 @@ mapGen.run();
 
 
 
-
-
-
-
-
-const changeMapHumidity = (newOceanTileWaterVapor) => {
-    mapGen.oceanTileWaterVapor = newOceanTileWaterVapor;
-    mapGen.defineHumidity();
-    mapGen.defineTemperature();
-    mapGen.defineBiomes();
-
-    mapGen.drawAll();
-}
-
 // changing temp -> RH
 // changing RH -> dewpoint
 // changing dewpoint -> temp
@@ -1667,7 +1662,7 @@ const updateMapFromInputVariables = () => {
 
     if (oldRH !== newRH) {
         let newOceanTileWaterVapor = tempAndRelativeHumidityToMoisture(newTemp, newRH);
-        changeMapHumidity(newOceanTileWaterVapor);
+        mapGen.changeMapHumidity(newOceanTileWaterVapor);
         oldRH = newRH;
     }
 }
@@ -1733,7 +1728,7 @@ canvas.addEventListener("click", (e) => {
 
     // mapGen.changeWindDirection();
 
-    // changeMapHumidity(15);
+    // mapGen.changeMapHumidity(15);
 
     // mapGen.changeTemperature(mapGen.seaLevelTemperature);
     // console.log(mapGen.seaLevelTemperature);
