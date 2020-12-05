@@ -1070,7 +1070,7 @@ class MapGenerator {
                 river.children.forEach(c => queue.push(c));
             }
 
-            river.dry = !!(tile.precipitation < this.precipitationForRiverMin);
+            river.dry = !!(tile.precipitation < this.precipitationForRiverMin + tile.temperature);
             river.frozen = !!(tile.temperature < 0);
         }
     }
@@ -1078,7 +1078,7 @@ class MapGenerator {
     checkForLakesModifiers = () => {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
-            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin);
+            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin + tile.temperature);
             tile.frozenLake = !!(tile.temperature < 0);
         }
     }
