@@ -1078,7 +1078,7 @@ class MapGenerator {
     checkForLakesModifiers = () => {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
-            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin + tile.temperature);
+            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin + Math.exp((tile.temperature - 14) / 5));
             tile.frozenLake = !!(tile.temperature < 0);
         }
     }
