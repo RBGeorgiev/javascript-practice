@@ -1070,7 +1070,7 @@ class MapGenerator {
                 river.children.forEach(c => queue.push(c));
             }
 
-            river.dry = !!(tile.precipitation < this.precipitationForRiverMin + tile.temperature);
+            river.dry = !!(tile.precipitation < this.precipitationForRiverMin + Math.exp((tile.temperature - 14) / 5));
             river.frozen = !!(tile.temperature < 0);
         }
     }
