@@ -1159,6 +1159,8 @@ class MapGenerator {
 
     calcRelativeHumidity = (temp, dewpoint) => 100 * Math.exp((17.625 * dewpoint) / (243.04 + dewpoint)) / Math.exp((17.625 * temp) / (243.04 + temp)); // percent
 
+    calcTemperature = (dewpoint, relativeHumidity) => 243.04 * (((17.625 * dewpoint) / (243.04 + dewpoint)) - Math.log(relativeHumidity / 100)) / (17.625 + Math.log(relativeHumidity / 100) - ((17.625 * dewpoint) / (243.04 + dewpoint))); // degrees
+
     // _________________________________________
     // draw methods
 
@@ -1639,7 +1641,6 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
 const tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture; used for how much water vapor comes out of ocean tiles
 
-const calcTemperature = (dewpoint, relativeHumidity) => 243.04 * (((17.625 * dewpoint) / (243.04 + dewpoint)) - Math.log(relativeHumidity / 100)) / (17.625 + Math.log(relativeHumidity / 100) - ((17.625 * dewpoint) / (243.04 + dewpoint))); // degrees
 
 let relativeHumidity = 80 // percent // important value
 let dewpoint = mapGen.calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity); //dewpoint can't be higher than temperature // important value
@@ -1694,7 +1695,7 @@ relativeHumidityInput.oninput = (e) => {
 
 dewpointInput.oninput = (e) => {
     let newDewpoint = +e.target.value;
-    let newTemp = Math.round(calcTemperature(newDewpoint, relativeHumidity));
+    let newTemp = Math.round(mapGen.calcTemperature(newDewpoint, relativeHumidity));
 
     if (newTemp < minAllowedTemp) {
         return console.log(`Temperature can't be below ${minAllowedTemp}°C`);
