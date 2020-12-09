@@ -220,6 +220,8 @@ class MapGenerator {
         // if MAX number higher than 100 there is a chance for height increase
         this.heightDecrementMax = 100; // important value
 
+        this.relativeHumidity = 80 // percent // important value
+
         this.oceanTileWaterVapor = 10; // g/kg // important value
         this.windSpeed = 20; // km/h // Beaufort wind force scale // important value
         this.heightPrecipitationMultiplier = .2; // important value
@@ -1604,11 +1606,11 @@ mapGen.run();
 
 const updateTemperature = (newTemp, newRH) => {
     mapGen.seaLevelTemperature = newTemp;
-    relativeHumidity = newRH;
+    mapGen.relativeHumidity = newRH;
 
     temperatureSpan.innerText = mapGen.seaLevelTemperature;
-    relativeHumidityInput.value = relativeHumidity;
-    relativeHumiditySpan.innerText = Math.round(relativeHumidity);
+    relativeHumidityInput.value = mapGen.relativeHumidity;
+    relativeHumiditySpan.innerText = Math.round(mapGen.relativeHumidity);
 
     dewpointInput.max = Math.round(mapGen.calcDewpoint(mapGen.seaLevelTemperature, 100));
 
@@ -1616,9 +1618,9 @@ const updateTemperature = (newTemp, newRH) => {
 }
 
 const updateRelativeHumidity = (newRH, newDewpoint) => {
-    relativeHumidity = newRH;
+    mapGen.relativeHumidity = newRH;
     dewpoint = newDewpoint;
-    relativeHumiditySpan.innerText = relativeHumidity;
+    relativeHumiditySpan.innerText = mapGen.relativeHumidity;
     dewpointInput.value = dewpoint;
     dewpointSpan.innerText = Math.round(dewpoint);
 
@@ -1644,9 +1646,8 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
 
 
-let relativeHumidity = 80 // percent // important value
-let dewpoint = mapGen.calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity); //dewpoint can't be higher than temperature // important value
-mapGen.oceanTileWaterVapor = mapGen.tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, relativeHumidity);
+let dewpoint = mapGen.calcDewpoint(mapGen.seaLevelTemperature, mapGen.relativeHumidity); //dewpoint can't be higher than temperature // important value
+mapGen.oceanTileWaterVapor = mapGen.tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, mapGen.relativeHumidity);
 
 
 
@@ -1659,7 +1660,7 @@ let oldRH = +relativeHumidityInput.value;
 const updateMapFromInputVariables = () => {
     // mapGen.seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
     let newTemp = mapGen.seaLevelTemperature;
-    let newRH = relativeHumidity;
+    let newRH = mapGen.relativeHumidity;
 
     if (oldTemp !== newTemp) {
         mapGen.changeMapTemperature(newTemp);
@@ -1690,14 +1691,14 @@ temperatureInput.oninput = (e) => {
 
 relativeHumidityInput.oninput = (e) => {
     let newRH = +e.target.value;
-    let newDewpoint = Math.round(mapGen.calcDewpoint(mapGen.seaLevelTemperature, relativeHumidity));
+    let newDewpoint = Math.round(mapGen.calcDewpoint(mapGen.seaLevelTemperature, mapGen.relativeHumidity));
 
     updateRelativeHumidity(newRH, newDewpoint);
 }
 
 dewpointInput.oninput = (e) => {
     let newDewpoint = +e.target.value;
-    let newTemp = Math.round(mapGen.calcTemperature(newDewpoint, relativeHumidity));
+    let newTemp = Math.round(mapGen.calcTemperature(newDewpoint, mapGen.relativeHumidity));
 
     if (newTemp < minAllowedTemp) {
         return console.log(`Temperature can't be below ${minAllowedTemp}°C`);
