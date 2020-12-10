@@ -224,7 +224,7 @@ class MapGenerator {
         this.relativeHumidity = 80 // percent // important value
         this.dewpoint = this.calcDewpoint(this.seaLevelTemperature, this.relativeHumidity); //dewpoint can't be higher than temperature // important value
 
-        this.oceanTileWaterVapor = 10; // g/kg // important value
+        this.oceanTileWaterVapor = this.tempAndRelativeHumidityToMoisture(this.seaLevelTemperature, this.relativeHumidity); // g/kg // important value
         this.windSpeed = 20; // km/h // Beaufort wind force scale // important value
         this.heightPrecipitationMultiplier = .2; // important value
 
@@ -1642,13 +1642,6 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 }
 
 
-
-
-
-
-
-
-mapGen.oceanTileWaterVapor = mapGen.tempAndRelativeHumidityToMoisture(mapGen.seaLevelTemperature, mapGen.relativeHumidity);
 
 
 
