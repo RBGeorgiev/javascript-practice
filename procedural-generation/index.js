@@ -1611,11 +1611,11 @@ const updateTemperature = (newTemp, newRH) => {
 
     temperatureSpan.innerText = mapGen.seaLevelTemperature;
     relativeHumidityInput.value = mapGen.relativeHumidity;
-    relativeHumiditySpan.innerText = Math.round(mapGen.relativeHumidity);
+    relativeHumiditySpan.innerText = mapGen.relativeHumidity;
 
-    dewpointInput.max = Math.round(mapGen.calcDewpoint(mapGen.seaLevelTemperature, 100));
+    dewpointInput.max = mapGen.calcDewpoint(mapGen.seaLevelTemperature, 100);
 
-    updateMapFromInputVariables();
+    applyUpdatesToMapFromInputs();
 }
 
 const updateRelativeHumidity = (newRH, newDewpoint) => {
@@ -1623,9 +1623,9 @@ const updateRelativeHumidity = (newRH, newDewpoint) => {
     mapGen.dewpoint = newDewpoint;
     relativeHumiditySpan.innerText = mapGen.relativeHumidity;
     dewpointInput.value = mapGen.dewpoint;
-    dewpointSpan.innerText = Math.round(mapGen.dewpoint);
+    dewpointSpan.innerText = mapGen.dewpoint;
 
-    updateMapFromInputVariables();
+    applyUpdatesToMapFromInputs();
 }
 
 const updateDewpoint = (newDewpoint, newTemp) => {
@@ -1634,11 +1634,11 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
     dewpointSpan.innerText = mapGen.dewpoint;
     temperatureInput.value = mapGen.seaLevelTemperature;
-    temperatureSpan.innerText = Math.round(mapGen.seaLevelTemperature);
+    temperatureSpan.innerText = mapGen.seaLevelTemperature;
 
-    temperatureInput.min = Math.round(mapGen.dewpoint);
+    temperatureInput.min = mapGen.dewpoint;
 
-    updateMapFromInputVariables();
+    applyUpdatesToMapFromInputs();
 }
 
 
@@ -1658,7 +1658,7 @@ let maxAllowedTemp = 55;
 let oldTemp = +temperatureInput.value;
 let oldRH = +relativeHumidityInput.value;
 
-const updateMapFromInputVariables = () => {
+const applyUpdatesToMapFromInputs = () => {
     // mapGen.seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
     let newTemp = mapGen.seaLevelTemperature;
     let newRH = mapGen.relativeHumidity;
