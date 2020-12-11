@@ -220,6 +220,9 @@ class MapGenerator {
         // if MAX number higher than 100 there is a chance for height increase
         this.heightDecrementMax = 100; // important value
 
+        this.minAllowedTemp = -40;
+        this.maxAllowedTemp = 55;
+
         this.seaLevelTemperature = 14; // important value
         this.relativeHumidity = 80 // percent // important value
         this.dewpoint = this.calcDewpoint(this.seaLevelTemperature, this.relativeHumidity); //dewpoint can't be higher than temperature // important value
@@ -1646,8 +1649,6 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
 
 
-let minAllowedTemp = -40;
-let maxAllowedTemp = 55;
 let oldTemp = +temperatureInput.value;
 let oldRH = +relativeHumidityInput.value;
 
@@ -1694,11 +1695,11 @@ dewpointInput.oninput = (e) => {
     let newDewpoint = +e.target.value;
     let newTemp = Math.round(mapGen.calcTemperature(newDewpoint, mapGen.relativeHumidity));
 
-    if (newTemp < minAllowedTemp) {
-        return console.log(`Temperature can't be below ${minAllowedTemp}°C`);
+    if (newTemp < mapGen.minAllowedTemp) {
+        return console.log(`Temperature can't be below ${mapGen.minAllowedTemp}°C`);
     }
-    if (newTemp > maxAllowedTemp) {
-        return console.log(`Temperature can't exceed ${maxAllowedTemp}°C`);
+    if (newTemp > mapGen.maxAllowedTemp) {
+        return console.log(`Temperature can't exceed ${mapGen.maxAllowedTemp}°C`);
     }
 
     updateDewpoint(newDewpoint, newTemp);
