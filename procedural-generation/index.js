@@ -1609,6 +1609,9 @@ mapGen.run();
 // ... -> temp -> RH -> dewpoint -> temp -> ...
 
 const updateTemperature = (newTemp, newRH) => {
+    let oldTemp = this.seaLevelTemperature;
+    let oldRH = this.relativeHumidity;
+
     mapGen.seaLevelTemperature = newTemp;
     mapGen.relativeHumidity = newRH;
 
@@ -1618,20 +1621,26 @@ const updateTemperature = (newTemp, newRH) => {
 
     dewpointInput.max = mapGen.calcDewpoint(mapGen.seaLevelTemperature, 100);
 
-    applyUpdatesToMapFromInputs();
+    applyUpdatesToMapFromInputs(oldTemp, oldRH);
 }
 
 const updateRelativeHumidity = (newRH, newDewpoint) => {
+    let oldTemp = this.seaLevelTemperature;
+    let oldRH = this.relativeHumidity;
+
     mapGen.relativeHumidity = newRH;
     mapGen.dewpoint = newDewpoint;
     relativeHumiditySpan.innerText = mapGen.relativeHumidity;
     dewpointInput.value = mapGen.dewpoint;
     dewpointSpan.innerText = mapGen.dewpoint;
 
-    applyUpdatesToMapFromInputs();
+    applyUpdatesToMapFromInputs(oldTemp, oldRH);
 }
 
 const updateDewpoint = (newDewpoint, newTemp) => {
+    let oldTemp = this.seaLevelTemperature;
+    let oldRH = this.relativeHumidity;
+
     mapGen.dewpoint = newDewpoint;
     mapGen.seaLevelTemperature = newTemp;
 
@@ -1641,7 +1650,7 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
     temperatureInput.min = mapGen.dewpoint;
 
-    applyUpdatesToMapFromInputs();
+    applyUpdatesToMapFromInputs(oldTemp, oldRH);
 }
 
 
@@ -1649,10 +1658,7 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
 
 
-let oldTemp = +temperatureInput.value;
-let oldRH = +relativeHumidityInput.value;
-
-const applyUpdatesToMapFromInputs = () => {
+const applyUpdatesToMapFromInputs = (oldTemp, oldRH) => {
     // mapGen.seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
     let newTemp = mapGen.seaLevelTemperature;
     let newRH = mapGen.relativeHumidity;
