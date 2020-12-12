@@ -1169,6 +1169,22 @@ class MapGenerator {
 
     tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture; used for how much water vapor comes out of ocean tiles
 
+    updateTemperature = (newTemp, newRH) => {
+        let oldTemp = this.seaLevelTemperature;
+        let oldRH = this.relativeHumidity;
+
+        this.seaLevelTemperature = newTemp;
+        this.relativeHumidity = newRH;
+
+        temperatureSpan.innerText = this.seaLevelTemperature;
+        relativeHumidityInput.value = this.relativeHumidity;
+        relativeHumiditySpan.innerText = this.relativeHumidity;
+
+        dewpointInput.max = this.calcDewpoint(this.seaLevelTemperature, 100);
+
+        applyUpdatesToMapFromInputs(oldTemp, oldRH);
+    }
+
     // _________________________________________
     // draw methods
 
@@ -1608,25 +1624,11 @@ mapGen.run();
 // changing dewpoint -> temp
 // ... -> temp -> RH -> dewpoint -> temp -> ...
 
-const updateTemperature = (newTemp, newRH) => {
-    let oldTemp = this.seaLevelTemperature;
-    let oldRH = this.relativeHumidity;
 
-    mapGen.seaLevelTemperature = newTemp;
-    mapGen.relativeHumidity = newRH;
-
-    temperatureSpan.innerText = mapGen.seaLevelTemperature;
-    relativeHumidityInput.value = mapGen.relativeHumidity;
-    relativeHumiditySpan.innerText = mapGen.relativeHumidity;
-
-    dewpointInput.max = mapGen.calcDewpoint(mapGen.seaLevelTemperature, 100);
-
-    applyUpdatesToMapFromInputs(oldTemp, oldRH);
-}
 
 const updateRelativeHumidity = (newRH, newDewpoint) => {
-    let oldTemp = this.seaLevelTemperature;
-    let oldRH = this.relativeHumidity;
+    let oldTemp = mapGen.seaLevelTemperature;
+    let oldRH = mapGen.relativeHumidity;
 
     mapGen.relativeHumidity = newRH;
     mapGen.dewpoint = newDewpoint;
@@ -1638,8 +1640,8 @@ const updateRelativeHumidity = (newRH, newDewpoint) => {
 }
 
 const updateDewpoint = (newDewpoint, newTemp) => {
-    let oldTemp = this.seaLevelTemperature;
-    let oldRH = this.relativeHumidity;
+    let oldTemp = mapGen.seaLevelTemperature;
+    let oldRH = mapGen.relativeHumidity;
 
     mapGen.dewpoint = newDewpoint;
     mapGen.seaLevelTemperature = newTemp;
