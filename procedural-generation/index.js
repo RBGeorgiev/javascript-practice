@@ -1182,8 +1182,26 @@ class MapGenerator {
 
         dewpointInput.max = this.calcDewpoint(this.seaLevelTemperature, 100);
 
-        applyUpdatesToMapFromInputs(oldTemp, oldRH);
+        this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
     }
+
+    applyUpdatesToMapFromInputs = (oldTemp, oldRH) => {
+        // seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
+        let newTemp = this.seaLevelTemperature;
+        let newRH = this.relativeHumidity;
+
+        if (oldTemp !== newTemp) {
+            this.changeMapTemperature(newTemp);
+            oldTemp = newTemp;
+        }
+
+        if (oldRH !== newRH) {
+            let newOceanTileWaterVapor = this.tempAndRelativeHumidityToMoisture(newTemp, newRH);
+            this.changeMapHumidity(newOceanTileWaterVapor);
+            oldRH = newRH;
+        }
+    }
+
 
     // _________________________________________
     // draw methods
@@ -1636,7 +1654,7 @@ const updateRelativeHumidity = (newRH, newDewpoint) => {
     dewpointInput.value = mapGen.dewpoint;
     dewpointSpan.innerText = mapGen.dewpoint;
 
-    applyUpdatesToMapFromInputs(oldTemp, oldRH);
+    mapGen.applyUpdatesToMapFromInputs(oldTemp, oldRH);
 }
 
 const updateDewpoint = (newDewpoint, newTemp) => {
@@ -1652,7 +1670,7 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
     temperatureInput.min = mapGen.dewpoint;
 
-    applyUpdatesToMapFromInputs(oldTemp, oldRH);
+    mapGen.applyUpdatesToMapFromInputs(oldTemp, oldRH);
 }
 
 
@@ -1660,22 +1678,6 @@ const updateDewpoint = (newDewpoint, newTemp) => {
 
 
 
-const applyUpdatesToMapFromInputs = (oldTemp, oldRH) => {
-    // mapGen.seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
-    let newTemp = mapGen.seaLevelTemperature;
-    let newRH = mapGen.relativeHumidity;
-
-    if (oldTemp !== newTemp) {
-        mapGen.changeMapTemperature(newTemp);
-        oldTemp = newTemp;
-    }
-
-    if (oldRH !== newRH) {
-        let newOceanTileWaterVapor = mapGen.tempAndRelativeHumidityToMoisture(newTemp, newRH);
-        mapGen.changeMapHumidity(newOceanTileWaterVapor);
-        oldRH = newRH;
-    }
-}
 
 
 temperatureInput.oninput = (e) => {
