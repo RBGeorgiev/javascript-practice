@@ -1198,6 +1198,22 @@ class MapGenerator {
         this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
     }
 
+    updateDewpoint = (newDewpoint, newTemp) => {
+        let oldTemp = this.seaLevelTemperature;
+        let oldRH = this.relativeHumidity;
+
+        this.dewpoint = newDewpoint;
+        this.seaLevelTemperature = newTemp;
+
+        dewpointSpan.innerText = this.dewpoint;
+        temperatureInput.value = this.seaLevelTemperature;
+        temperatureSpan.innerText = this.seaLevelTemperature;
+
+        temperatureInput.min = this.dewpoint;
+
+        this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
+    }
+
     applyUpdatesToMapFromInputs = (oldTemp, oldRH) => {
         // seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
         let newTemp = this.seaLevelTemperature;
@@ -1659,21 +1675,7 @@ mapGen.run();
 
 
 
-const updateDewpoint = (newDewpoint, newTemp) => {
-    let oldTemp = mapGen.seaLevelTemperature;
-    let oldRH = mapGen.relativeHumidity;
 
-    mapGen.dewpoint = newDewpoint;
-    mapGen.seaLevelTemperature = newTemp;
-
-    dewpointSpan.innerText = mapGen.dewpoint;
-    temperatureInput.value = mapGen.seaLevelTemperature;
-    temperatureSpan.innerText = mapGen.seaLevelTemperature;
-
-    temperatureInput.min = mapGen.dewpoint;
-
-    mapGen.applyUpdatesToMapFromInputs(oldTemp, oldRH);
-}
 
 
 
@@ -1693,7 +1695,7 @@ temperatureInput.oninput = (e) => {
         return console.log(`Relative humidity can't exceed 100%`);
     }
 
-    updateTemperature(newTemp, newRH);
+    mapGen.updateTemperature(newTemp, newRH);
 }
 
 relativeHumidityInput.oninput = (e) => {
@@ -1714,7 +1716,7 @@ dewpointInput.oninput = (e) => {
         return console.log(`Temperature can't exceed ${mapGen.maxAllowedTemp}°C`);
     }
 
-    updateDewpoint(newDewpoint, newTemp);
+    mapGen.updateDewpoint(newDewpoint, newTemp);
 }
 
 windSpeedInput.oninput = (e) => {
