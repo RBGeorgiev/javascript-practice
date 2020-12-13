@@ -1170,9 +1170,6 @@ class MapGenerator {
     tempAndRelativeHumidityToMoisture = (temp = 14, relativeHumidityPercent = 100) => +(relativeHumidityPercent * 0.42 * Math.exp(temp * 10 * 0.006235398) / 10).toFixed(2); //absolute moisture; used for how much water vapor comes out of ocean tiles
 
     updateTemperature = (newTemp, newRH) => {
-        let oldTemp = this.seaLevelTemperature;
-        let oldRH = this.relativeHumidity;
-
         this.seaLevelTemperature = newTemp;
         this.relativeHumidity = newRH;
 
@@ -1182,26 +1179,20 @@ class MapGenerator {
 
         dewpointInput.max = this.calcDewpoint(this.seaLevelTemperature, 100);
 
-        this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
+        this.applyUpdatesToMapFromInputs();
     }
 
     updateRelativeHumidity = (newRH, newDewpoint) => {
-        let oldTemp = this.seaLevelTemperature;
-        let oldRH = this.relativeHumidity;
-
         this.relativeHumidity = newRH;
         this.dewpoint = newDewpoint;
         relativeHumiditySpan.innerText = this.relativeHumidity;
         dewpointInput.value = this.dewpoint;
         dewpointSpan.innerText = this.dewpoint;
 
-        this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
+        this.applyUpdatesToMapFromInputs();
     }
 
     updateDewpoint = (newDewpoint, newTemp) => {
-        let oldTemp = this.seaLevelTemperature;
-        let oldRH = this.relativeHumidity;
-
         this.dewpoint = newDewpoint;
         this.seaLevelTemperature = newTemp;
 
@@ -1211,24 +1202,15 @@ class MapGenerator {
 
         temperatureInput.min = this.dewpoint;
 
-        this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
+        this.applyUpdatesToMapFromInputs();
     }
 
-    applyUpdatesToMapFromInputs = (oldTemp, oldRH) => {
+    applyUpdatesToMapFromInputs = () => {
         // seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
-        let newTemp = this.seaLevelTemperature;
-        let newRH = this.relativeHumidity;
+        this.changeMapTemperature(this.seaLevelTemperature);
 
-        if (oldTemp !== newTemp) {
-            this.changeMapTemperature(newTemp);
-            oldTemp = newTemp;
-        }
-
-        if (oldRH !== newRH) {
-            let newOceanTileWaterVapor = this.tempAndRelativeHumidityToMoisture(newTemp, newRH);
-            this.changeMapHumidity(newOceanTileWaterVapor);
-            oldRH = newRH;
-        }
+        let newOceanTileWaterVapor = this.tempAndRelativeHumidityToMoisture(this.seaLevelTemperature, this.relativeHumidity);
+        this.changeMapHumidity(newOceanTileWaterVapor);
     }
 
 
