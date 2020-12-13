@@ -1185,6 +1185,19 @@ class MapGenerator {
         this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
     }
 
+    updateRelativeHumidity = (newRH, newDewpoint) => {
+        let oldTemp = this.seaLevelTemperature;
+        let oldRH = this.relativeHumidity;
+
+        this.relativeHumidity = newRH;
+        this.dewpoint = newDewpoint;
+        relativeHumiditySpan.innerText = this.relativeHumidity;
+        dewpointInput.value = this.dewpoint;
+        dewpointSpan.innerText = this.dewpoint;
+
+        this.applyUpdatesToMapFromInputs(oldTemp, oldRH);
+    }
+
     applyUpdatesToMapFromInputs = (oldTemp, oldRH) => {
         // seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
         let newTemp = this.seaLevelTemperature;
@@ -1644,18 +1657,7 @@ mapGen.run();
 
 
 
-const updateRelativeHumidity = (newRH, newDewpoint) => {
-    let oldTemp = mapGen.seaLevelTemperature;
-    let oldRH = mapGen.relativeHumidity;
 
-    mapGen.relativeHumidity = newRH;
-    mapGen.dewpoint = newDewpoint;
-    relativeHumiditySpan.innerText = mapGen.relativeHumidity;
-    dewpointInput.value = mapGen.dewpoint;
-    dewpointSpan.innerText = mapGen.dewpoint;
-
-    mapGen.applyUpdatesToMapFromInputs(oldTemp, oldRH);
-}
 
 const updateDewpoint = (newDewpoint, newTemp) => {
     let oldTemp = mapGen.seaLevelTemperature;
@@ -1698,7 +1700,7 @@ relativeHumidityInput.oninput = (e) => {
     let newRH = +e.target.value;
     let newDewpoint = Math.round(mapGen.calcDewpoint(mapGen.seaLevelTemperature, mapGen.relativeHumidity));
 
-    updateRelativeHumidity(newRH, newDewpoint);
+    mapGen.updateRelativeHumidity(newRH, newDewpoint);
 }
 
 dewpointInput.oninput = (e) => {
