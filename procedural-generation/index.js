@@ -1009,7 +1009,7 @@ class MapGenerator {
 
     clamp = (number, min, max) => Math.max(min, Math.min(number, max));
 
-    getTemperatureTypeIdx = (temp) => this.clamp(Math.ceil(temp / 5), 0, 7);
+    getTemperatureTypeIdx = (temp) => this.clamp(Math.ceil(temp / 5), 0, 8);
 
     getHumidityTypeIdx = (precip) => {
         let humidityLimits = [Number.NEGATIVE_INFINITY, 0, 30, 60, 100, 140, 170, 200, Number.POSITIVE_INFINITY];
