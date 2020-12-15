@@ -125,6 +125,7 @@ const BIOMES = [
 
 const BIOMES_COLORS = {
     "POLAR_DESERT": "#F2F2F2",
+    "GLACIER": "#FAFEFF",
     "ROCKY_DESERT": "#BFBFBF",
     "DRY_TUNDRA": "#D5D59D",
     "TUNDRA": "#C3BA84",
