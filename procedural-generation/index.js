@@ -13,7 +13,13 @@ import {
     dewpointInput,
     windSpeedLabel,
     windSpeedSpan,
-    windSpeedInput
+    windSpeedInput,
+    precipitationForRiverMinLabel,
+    precipitationForRiverMinSpan,
+    precipitationForRiverMinInput,
+    precipitationForRiverMaxLabel,
+    precipitationForRiverMaxSpan,
+    precipitationForRiverMaxInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -230,7 +236,7 @@ class MapGenerator {
         this.relativeHumidity = 80 // percent // important value
         this.dewpoint = this.calcDewpoint(this.seaLevelTemperature, this.relativeHumidity); //dewpoint can't be higher than temperature // important value
 
-        this.oceanTileWaterVapor = this.tempAndRelativeHumidityToMoisture(this.seaLevelTemperature, this.relativeHumidity); // g/kg // important value
+        this.oceanTileWaterVapor = this.tempAndRelativeHumidityToMoisture(this.seaLevelTemperature, this.relativeHumidity); // g/kg
         this.windSpeed = 20; // km/h // Beaufort wind force scale // important value
         this.heightPrecipitationMultiplier = .2; // important value
 
@@ -1651,23 +1657,24 @@ mapGen.run();
 
 
 
+
+
+
+
+
+precipitationForRiverMinInput.oninput = (e) => {
+    let val = +e.target.value;
+    precipitationForRiverMinSpan.innerText = val;
+
+    mapGen.precipitationForRiverMin = val;
+    mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+}
+
+
 // changing temp -> RH
 // changing RH -> dewpoint
 // changing dewpoint -> temp
 // ... -> temp -> RH -> dewpoint -> temp -> ...
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 temperatureInput.oninput = (e) => {
     let newTemp = +e.target.value;
