@@ -1670,6 +1670,14 @@ precipitationForRiverMinInput.oninput = (e) => {
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 }
 
+precipitationForRiverMaxInput.oninput = (e) => {
+    let val = +e.target.value;
+    precipitationForRiverMaxSpan.innerText = val;
+
+    mapGen.precipitationForRiverMax = val;
+    mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+}
+
 
 // changing temp -> RH
 // changing RH -> dewpoint
