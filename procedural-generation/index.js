@@ -19,7 +19,13 @@ import {
     precipitationForRiverMinInput,
     precipitationForRiverMaxLabel,
     precipitationForRiverMaxSpan,
-    precipitationForRiverMaxInput
+    precipitationForRiverMaxInput,
+    precipitationForLakeMinLabel,
+    precipitationForLakeMinSpan,
+    precipitationForLakeMinInput,
+    precipitationForLakeMaxLabel,
+    precipitationForLakeMaxSpan,
+    precipitationForLakeMaxInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1675,6 +1681,14 @@ precipitationForRiverMaxInput.oninput = (e) => {
     precipitationForRiverMaxSpan.innerText = val;
 
     mapGen.precipitationForRiverMax = val;
+    mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+}
+
+precipitationForLakeMinInput.oninput = (e) => {
+    let val = +e.target.value;
+    precipitationForLakeMinSpan.innerText = val;
+
+    mapGen.precipitationForLakeMin = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 }
 
