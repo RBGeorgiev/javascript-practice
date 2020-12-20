@@ -27,3 +27,7 @@ export const precipitationForLakeMinInput = id('precipitationForLakeMinInput');
 export const precipitationForLakeMaxLabel = id('precipitationForLakeMaxLabel');
 export const precipitationForLakeMaxSpan = id('precipitationForLakeMaxSpan');
 export const precipitationForLakeMaxInput = id('precipitationForLakeMaxInput');
+
+export const heightPrecipitationMultiplier = id('heightPrecipitationMultiplier');
+export const lakeHeightPrecipitationMultiplier = id('lakeHeightPrecipitationMultiplier');
+export const riverWidthDistanceStrengthControl = id('riverWidthDistanceStrengthControl');
