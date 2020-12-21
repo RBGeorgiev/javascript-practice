@@ -29,7 +29,9 @@ import {
     heightPrecipitationMultiplierLabel,
     heightPrecipitationMultiplierSpan,
     heightPrecipitationMultiplierInput,
-    lakeHeightPrecipitationMultiplier,
+    lakeHeightPrecipitationMultiplierLabel,
+    lakeHeightPrecipitationMultiplierSpan,
+    lakeHeightPrecipitationMultiplierInput,
     riverWidthDistanceStrengthControl
 } from './constants.js';
 import drawCurve from './drawCurve.js';
@@ -1754,11 +1756,20 @@ windSpeedInput.oninput = (e) => {
     mapGen.changeMapWindSpeed(mapGen.windSpeed);
 }
 
+
 heightPrecipitationMultiplierInput.oninput = (e) => {
     let val = +e.target.value / 10;
     heightPrecipitationMultiplierSpan.innerText = val;
 
     mapGen.heightPrecipitationMultiplier = val;
+    mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+}
+
+lakeHeightPrecipitationMultiplierInput.oninput = (e) => {
+    let val = +e.target.value;
+    lakeHeightPrecipitationMultiplierSpan.innerText = val;
+
+    mapGen.lakeHeightPrecipitationMultiplier = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 }
 
