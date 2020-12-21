@@ -25,7 +25,12 @@ import {
     precipitationForLakeMinInput,
     precipitationForLakeMaxLabel,
     precipitationForLakeMaxSpan,
-    precipitationForLakeMaxInput
+    precipitationForLakeMaxInput,
+    heightPrecipitationMultiplierLabel,
+    heightPrecipitationMultiplierSpan,
+    heightPrecipitationMultiplierInput,
+    lakeHeightPrecipitationMultiplier,
+    riverWidthDistanceStrengthControl
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1747,6 +1752,14 @@ windSpeedInput.oninput = (e) => {
     windSpeedSpan.innerText = mapGen.windSpeed;
 
     mapGen.changeMapWindSpeed(mapGen.windSpeed);
+}
+
+heightPrecipitationMultiplierInput.oninput = (e) => {
+    let val = +e.target.value / 10;
+    heightPrecipitationMultiplierSpan.innerText = val;
+
+    mapGen.heightPrecipitationMultiplier = val;
+    mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 }
 
 canvas.addEventListener("click", (e) => {
