@@ -32,7 +32,9 @@ import {
     lakeHeightPrecipitationMultiplierLabel,
     lakeHeightPrecipitationMultiplierSpan,
     lakeHeightPrecipitationMultiplierInput,
-    riverWidthDistanceStrengthControl
+    riverWidthDistanceStrengthControlLabel,
+    riverWidthDistanceStrengthControlSpan,
+    riverWidthDistanceStrengthControlInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1770,6 +1772,14 @@ lakeHeightPrecipitationMultiplierInput.oninput = (e) => {
     lakeHeightPrecipitationMultiplierSpan.innerText = val;
 
     mapGen.lakeHeightPrecipitationMultiplier = val;
+    mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+}
+
+riverWidthDistanceStrengthControlInput.oninput = (e) => {
+    let val = +e.target.value;
+    riverWidthDistanceStrengthControlSpan.innerText = val;
+
+    mapGen.riverWidthDistanceStrengthControl = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 }
 
