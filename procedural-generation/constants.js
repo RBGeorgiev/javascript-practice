@@ -37,3 +37,10 @@ export const lakeHeightPrecipitationMultiplierInput = id('lakeHeightPrecipitatio
 export const riverWidthDistanceStrengthControlLabel = id('riverWidthDistanceStrengthControlLabel');
 export const riverWidthDistanceStrengthControlSpan = id('riverWidthDistanceStrengthControlSpan');
 export const riverWidthDistanceStrengthControlInput = id('riverWidthDistanceStrengthControlInput');
+
+export const heightDecrementMinLabel = id('heightDecrementMinLabel');
+export const heightDecrementMinSpan = id('heightDecrementMinSpan');
+export const heightDecrementMinInput = id('heightDecrementMinInput');
+export const heightDecrementMaxLabel = id('heightDecrementMaxLabel');
+export const heightDecrementMaxSpan = id('heightDecrementMaxSpan');
+export const heightDecrementMaxInput = id('heightDecrementMaxInput');
