@@ -34,7 +34,10 @@ import {
     lakeHeightPrecipitationMultiplierInput,
     riverWidthDistanceStrengthControlLabel,
     riverWidthDistanceStrengthControlSpan,
-    riverWidthDistanceStrengthControlInput
+    riverWidthDistanceStrengthControlInput,
+    heightDecrementMinLabel,
+    heightDecrementMinSpan,
+    heightDecrementMinInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1781,6 +1784,14 @@ riverWidthDistanceStrengthControlInput.oninput = (e) => {
 
     mapGen.riverWidthDistanceStrengthControl = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+}
+
+heightDecrementMinInput.oninput = (e) => {
+    let val = +e.target.value;
+    heightDecrementMinSpan.innerText = val;
+
+    mapGen.heightDecrementMin = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 }
 
 canvas.addEventListener("click", (e) => {
