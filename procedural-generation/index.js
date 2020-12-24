@@ -37,7 +37,10 @@ import {
     riverWidthDistanceStrengthControlInput,
     heightDecrementMinLabel,
     heightDecrementMinSpan,
-    heightDecrementMinInput
+    heightDecrementMinInput,
+    heightDecrementMaxLabel,
+    heightDecrementMaxSpan,
+    heightDecrementMaxInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1791,6 +1794,14 @@ heightDecrementMinInput.oninput = (e) => {
     heightDecrementMinSpan.innerText = val;
 
     mapGen.heightDecrementMin = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+}
+
+heightDecrementMaxInput.oninput = (e) => {
+    let val = +e.target.value;
+    heightDecrementMaxSpan.innerText = val;
+
+    mapGen.heightDecrementMax = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 }
 
