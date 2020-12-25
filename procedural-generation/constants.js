@@ -44,3 +44,7 @@ export const heightDecrementMinInput = id('heightDecrementMinInput');
 export const heightDecrementMaxLabel = id('heightDecrementMaxLabel');
 export const heightDecrementMaxSpan = id('heightDecrementMaxSpan');
 export const heightDecrementMaxInput = id('heightDecrementMaxInput');
+
+export const chanceForLandLabel = id('chanceForLandLabel');
+export const chanceForLandSpan = id('chanceForLandSpan');
+export const chanceForLandInput = id('chanceForLandInput');
