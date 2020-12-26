@@ -40,7 +40,10 @@ import {
     heightDecrementMinInput,
     heightDecrementMaxLabel,
     heightDecrementMaxSpan,
-    heightDecrementMaxInput
+    heightDecrementMaxInput,
+    chanceForLandLabel,
+    chanceForLandSpan,
+    chanceForLandInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1802,6 +1805,14 @@ heightDecrementMaxInput.oninput = (e) => {
     heightDecrementMaxSpan.innerText = val;
 
     mapGen.heightDecrementMax = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+}
+
+chanceForLandInput.oninput = (e) => {
+    let val = +e.target.value;
+    chanceForLandSpan.innerText = val;
+
+    mapGen.chanceForLand = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 }
 
