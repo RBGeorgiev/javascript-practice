@@ -8,6 +8,7 @@ import {
     relativeHumidityInput,
     dewpointSpan,
     dewpointInput,
+    runMapGenBtn,
     windSpeedSpan,
     windSpeedInput,
     precipitationForRiverMinSpan,
@@ -1744,6 +1745,8 @@ dewpointInput.oninput = (e) => {
 
     mapGen.updateDewpoint(newDewpoint, newTemp);
 }
+
+runMapGenBtn.onclick = () => mapGen.run();
 
 windSpeedInput.oninput = (e) => {
     mapGen.windSpeed = +e.target.value;

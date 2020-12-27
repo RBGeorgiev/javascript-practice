@@ -9,8 +9,11 @@ export const relativeHumiditySpan = id('relativeHumiditySpan');
 export const relativeHumidityInput = id('relativeHumidityInput');
 export const dewpointSpan = id('dewpointSpan');
 export const dewpointInput = id('dewpointInput');
+
+export const runMapGenBtn = id('runMapGenBtn');
 export const windSpeedSpan = id('windSpeedSpan');
 export const windSpeedInput = id('windSpeedInput');
+
 export const precipitationForRiverMinSpan = id('precipitationForRiverMinSpan');
 export const precipitationForRiverMinInput = id('precipitationForRiverMinInput');
 export const precipitationForRiverMaxSpan = id('precipitationForRiverMaxSpan');
