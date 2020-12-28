@@ -37,3 +37,8 @@ export const heightDecrementMaxInput = id('heightDecrementMaxInput');
 
 export const chanceForLandSpan = id('chanceForLandSpan');
 export const chanceForLandInput = id('chanceForLandInput');
+
+export const numberOfRandomInitialPeaksOrTrenchesMinSpan = id('numberOfRandomInitialPeaksOrTrenchesMinSpan');
+export const numberOfRandomInitialPeaksOrTrenchesMinInput = id('numberOfRandomInitialPeaksOrTrenchesMinInput');
+export const numberOfRandomInitialPeaksOrTrenchesMaxSpan = id('numberOfRandomInitialPeaksOrTrenchesMaxSpan');
+export const numberOfRandomInitialPeaksOrTrenchesMaxInput = id('numberOfRandomInitialPeaksOrTrenchesMaxInput');
