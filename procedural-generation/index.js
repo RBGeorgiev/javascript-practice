@@ -30,7 +30,9 @@ import {
     heightDecrementMaxSpan,
     heightDecrementMaxInput,
     chanceForLandSpan,
-    chanceForLandInput
+    chanceForLandInput,
+    numberOfRandomInitialPeaksOrTrenchesMinSpan,
+    numberOfRandomInitialPeaksOrTrenchesMinInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1802,6 +1804,14 @@ chanceForLandInput.oninput = (e) => {
     chanceForLandSpan.innerText = val;
 
     mapGen.chanceForLand = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+}
+
+numberOfRandomInitialPeaksOrTrenchesMinInput.oninput = (e) => {
+    let val = +e.target.value;
+    numberOfRandomInitialPeaksOrTrenchesMinSpan.innerText = val;
+
+    mapGen.numberOfRandomInitialPeaksOrTrenchesMin = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 }
 
