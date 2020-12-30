@@ -3,6 +3,8 @@ const id = (id) => document.getElementById(id);
 export const canvas = id('canvas');
 export const ctx = canvas.getContext('2d');
 
+export const seedInput = id('seedInput');
+
 export const temperatureSpan = id('temperatureSpan');
 export const temperatureInput = id('temperatureInput');
 export const relativeHumiditySpan = id('relativeHumiditySpan');

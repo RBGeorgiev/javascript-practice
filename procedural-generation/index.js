@@ -2,6 +2,7 @@ import { Delaunay } from "./d3-delaunay/index.js";
 import {
     canvas,
     ctx,
+    seedInput,
     temperatureSpan,
     temperatureInput,
     relativeHumiditySpan,
@@ -1715,6 +1716,15 @@ precipitationForLakeMaxInput.oninput = (e) => {
 // changing dewpoint -> temp
 // ... -> temp -> RH -> dewpoint -> temp -> ...
 
+
+seedInput.oninput = (e) => {
+    let newSeed = +e.target.value;
+    mapGen.seed = newSeed;
+    mapGen.rng = sfc32(newSeed, newSeed, newSeed, newSeed);
+
+    mapGen.run();
+}
+
 temperatureInput.oninput = (e) => {
     let newTemp = +e.target.value;
     let newRH = Math.round(mapGen.calcRelativeHumidity(newTemp, mapGen.dewpoint));
@@ -1759,7 +1769,6 @@ windSpeedInput.oninput = (e) => {
 
     mapGen.changeMapWindSpeed(mapGen.windSpeed);
 }
-
 
 heightPrecipitationMultiplierInput.oninput = (e) => {
     let val = +e.target.value / 10;
