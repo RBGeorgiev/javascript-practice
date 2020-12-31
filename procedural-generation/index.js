@@ -225,7 +225,7 @@ class MapGenerator {
         this.rng = sfc32(this.seed, this.seed, this.seed, this.seed); // using this.rng() generates number between 0 and 1
         console.log(this.seed);
 
-        this.allPoints = this.generateRandomPoints(this.numOfPoints);
+        this.allPoints;
         this.delaunay;
         this.voronoi;
         this.allVoronoiPolygonPoints;
