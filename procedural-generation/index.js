@@ -3,6 +3,7 @@ import {
     canvas,
     ctx,
     seedInput,
+    randomSeedBtn,
     temperatureSpan,
     temperatureInput,
     relativeHumiditySpan,
@@ -1719,6 +1720,14 @@ precipitationForLakeMaxInput.oninput = (e) => {
 
 seedInput.oninput = (e) => {
     let newSeed = +e.target.value;
+    mapGen.seed = newSeed;
+    mapGen.rng = sfc32(newSeed, newSeed, newSeed, newSeed);
+
+    mapGen.run();
+}
+
+randomSeedBtn.onclick = () => {
+    let newSeed = Math.floor(Math.random() * 2147483647) + 1;
     mapGen.seed = newSeed;
     mapGen.rng = sfc32(newSeed, newSeed, newSeed, newSeed);
 
