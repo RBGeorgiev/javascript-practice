@@ -4,6 +4,7 @@ export const canvas = id('canvas');
 export const ctx = canvas.getContext('2d');
 
 export const seedInput = id('seedInput');
+export const randomSeedBtn = id('randomSeedBtn');
 
 export const temperatureSpan = id('temperatureSpan');
 export const temperatureInput = id('temperatureInput');
@@ -13,6 +14,7 @@ export const dewpointSpan = id('dewpointSpan');
 export const dewpointInput = id('dewpointInput');
 
 export const runMapGenBtn = id('runMapGenBtn');
+
 export const windSpeedSpan = id('windSpeedSpan');
 export const windSpeedInput = id('windSpeedInput');
 
