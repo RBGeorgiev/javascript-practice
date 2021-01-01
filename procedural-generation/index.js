@@ -1730,6 +1730,7 @@ randomSeedBtn.onclick = () => {
     let newSeed = Math.floor(Math.random() * 2147483647) + 1;
     mapGen.seed = newSeed;
     mapGen.rng = sfc32(newSeed, newSeed, newSeed, newSeed);
+    seedInput.value = newSeed;
 
     mapGen.run();
 }
