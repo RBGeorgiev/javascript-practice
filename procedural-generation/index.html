@@ -10,10 +10,14 @@
     <canvas id="canvas" width="800" height="800"></canvas>
 
     <div>
+        <button id="randomSeedBtn" type="button">Generate random seed</button>
         <label id="seedLabel">
             Seed: <input type="number" id="seedInput" value="2546076188">
         </label>
-        <button id="randomSeedBtn" type="button">Random seed</button>
+        <button id="runMapGenBtn" type="button">Run</button>
+        <label id="numOfTilesLabel">
+            Number of tiles: <input type="number" id="numOfTilesInput" min="1" max="10000" value="1000">
+        </label>
     </div>
 
     <div>
@@ -28,8 +32,6 @@
         <label id="dewpointLabel">Dew Point: <span id="dewpointSpan">10</span>°C
             <input type="range" id="dewpointInput" min="-77" max="14" value="10">
         </label>
-
-        <button id="runMapGenBtn" type="button">Run</button>
     </div>
 
     <div>
