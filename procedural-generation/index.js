@@ -2,15 +2,16 @@ import { Delaunay } from "./d3-delaunay/index.js";
 import {
     canvas,
     ctx,
-    seedInput,
     randomSeedBtn,
+    seedInput,
+    runMapGenBtn,
+    numOfTilesInput,
     temperatureSpan,
     temperatureInput,
     relativeHumiditySpan,
     relativeHumidityInput,
     dewpointSpan,
     dewpointInput,
-    runMapGenBtn,
     windSpeedSpan,
     windSpeedInput,
     precipitationForRiverMinSpan,
@@ -1735,6 +1736,14 @@ randomSeedBtn.onclick = () => {
     mapGen.run();
 }
 
+runMapGenBtn.onclick = () => mapGen.run();
+
+numOfTilesInput.onchange = (e) => {
+    mapGen.numOfPoints = +e.target.value;
+
+    mapGen.run();
+}
+
 temperatureInput.oninput = (e) => {
     let newTemp = +e.target.value;
     let newRH = Math.round(mapGen.calcRelativeHumidity(newTemp, mapGen.dewpoint));
@@ -1769,8 +1778,6 @@ dewpointInput.oninput = (e) => {
 
     mapGen.updateDewpoint(newDewpoint, newTemp);
 }
-
-runMapGenBtn.onclick = () => mapGen.run();
 
 windSpeedInput.oninput = (e) => {
     mapGen.windSpeed = +e.target.value;
