@@ -5,6 +5,7 @@ import {
     randomSeedBtn,
     seedInput,
     runMapGenBtn,
+    numOfTilesSpan,
     numOfTilesInput,
     temperatureSpan,
     temperatureInput,
@@ -1739,7 +1740,10 @@ randomSeedBtn.onclick = () => {
 runMapGenBtn.onclick = () => mapGen.run();
 
 numOfTilesInput.onchange = (e) => {
-    mapGen.numOfPoints = +e.target.value;
+    let val = +e.target.value;
+    mapGen.numOfPoints = val;
+
+    numOfTilesSpan.innerText = val;
 
     mapGen.run();
 }

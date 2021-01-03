@@ -6,6 +6,7 @@ export const ctx = canvas.getContext('2d');
 export const randomSeedBtn = id('randomSeedBtn');
 export const seedInput = id('seedInput');
 export const runMapGenBtn = id('runMapGenBtn');
+export const numOfTilesSpan = id('numOfTilesSpan');
 export const numOfTilesInput = id('numOfTilesInput');
 
 export const temperatureSpan = id('temperatureSpan');
