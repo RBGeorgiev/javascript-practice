@@ -18,6 +18,7 @@ export const dewpointInput = id('dewpointInput');
 
 export const windSpeedSpan = id('windSpeedSpan');
 export const windSpeedInput = id('windSpeedInput');
+export const changeMapWindDirectionBtn = id('changeMapWindDirectionBtn');
 
 export const precipitationForRiverMinSpan = id('precipitationForRiverMinSpan');
 export const precipitationForRiverMinInput = id('precipitationForRiverMinInput');
