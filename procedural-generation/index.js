@@ -15,6 +15,7 @@ import {
     dewpointInput,
     windSpeedSpan,
     windSpeedInput,
+    changeMapWindDirectionBtn,
     precipitationForRiverMinSpan,
     precipitationForRiverMinInput,
     precipitationForRiverMaxSpan,
@@ -1791,6 +1792,8 @@ windSpeedInput.oninput = (e) => {
     mapGen.changeMapWindSpeed(mapGen.windSpeed);
 }
 
+changeMapWindDirectionBtn.onclick = () => mapGen.changeMapWindDirection();
+
 heightPrecipitationMultiplierInput.oninput = (e) => {
     let val = +e.target.value / 10;
     heightPrecipitationMultiplierSpan.innerText = val;
@@ -1870,7 +1873,7 @@ canvas.addEventListener("click", (e) => {
     // console.log(mapGen.windSpeed);
     // mapGen.windSpeed -= 1;
 
-    // mapGen.changeWindDirection();
+    // mapGen.changeMapWindDirection();
 
     // mapGen.changeMapHumidity(15);
 
