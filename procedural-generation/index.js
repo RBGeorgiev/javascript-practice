@@ -1207,7 +1207,7 @@ class MapGenerator {
 
         dewpointInput.max = this.calcDewpoint(this.seaLevelTemperature, 100);
 
-        this.applyUpdatesToMapFromInputs();
+        this.applyAtmosphereChangesFromInputs();
     }
 
     updateRelativeHumidity = (newRH, newDewpoint) => {
@@ -1217,7 +1217,7 @@ class MapGenerator {
         dewpointInput.value = this.dewpoint;
         dewpointSpan.innerText = this.dewpoint;
 
-        this.applyUpdatesToMapFromInputs();
+        this.applyAtmosphereChangesFromInputs();
     }
 
     updateDewpoint = (newDewpoint, newTemp) => {
@@ -1230,10 +1230,10 @@ class MapGenerator {
 
         temperatureInput.min = this.dewpoint;
 
-        this.applyUpdatesToMapFromInputs();
+        this.applyAtmosphereChangesFromInputs();
     }
 
-    applyUpdatesToMapFromInputs = () => {
+    applyAtmosphereChangesFromInputs = () => {
         // seaLevelTemperature and relativeHumidity get reassigned the new values from the inputs in previous functions
         this.changeMapTemperature(this.seaLevelTemperature);
 
