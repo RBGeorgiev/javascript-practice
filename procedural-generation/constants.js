@@ -48,3 +48,5 @@ export const numberOfRandomInitialPeaksOrTrenchesMinSpan = id('numberOfRandomIni
 export const numberOfRandomInitialPeaksOrTrenchesMinInput = id('numberOfRandomInitialPeaksOrTrenchesMinInput');
 export const numberOfRandomInitialPeaksOrTrenchesMaxSpan = id('numberOfRandomInitialPeaksOrTrenchesMaxSpan');
 export const numberOfRandomInitialPeaksOrTrenchesMaxInput = id('numberOfRandomInitialPeaksOrTrenchesMaxInput');
+
+export const drawBiomesDelaunayStyleInput = id('drawBiomesDelaunayStyleInput');
