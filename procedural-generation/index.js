@@ -39,7 +39,8 @@ import {
     numberOfRandomInitialPeaksOrTrenchesMinSpan,
     numberOfRandomInitialPeaksOrTrenchesMinInput,
     numberOfRandomInitialPeaksOrTrenchesMaxSpan,
-    numberOfRandomInitialPeaksOrTrenchesMaxInput
+    numberOfRandomInitialPeaksOrTrenchesMaxInput,
+    drawBiomesDelaunayStyleInput
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1856,6 +1857,12 @@ numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
 
     mapGen.numberOfRandomInitialPeaksOrTrenchesMax = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+}
+
+drawBiomesDelaunayStyleInput.onchange = (e) => {
+    mapGen.drawBiomesDelaunayStyle = e.target.checked;
+
+    mapGen.drawAll();
 }
 
 canvas.addEventListener("click", (e) => {
