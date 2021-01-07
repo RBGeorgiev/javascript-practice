@@ -40,7 +40,7 @@ import {
     numberOfRandomInitialPeaksOrTrenchesMinInput,
     numberOfRandomInitialPeaksOrTrenchesMaxSpan,
     numberOfRandomInitialPeaksOrTrenchesMaxInput,
-    drawBiomesDelaunayStyleInput
+    drawBiomesDelaunayStyleCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1859,7 +1859,7 @@ numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 }
 
-drawBiomesDelaunayStyleInput.onchange = (e) => {
+drawBiomesDelaunayStyleCheckbox.onchange = (e) => {
     mapGen.drawBiomesDelaunayStyle = e.target.checked;
 
     mapGen.drawAll();
