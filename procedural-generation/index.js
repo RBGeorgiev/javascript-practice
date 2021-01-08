@@ -279,6 +279,7 @@ class MapGenerator {
         this.longestRiverLength = 0;
 
         this.showOceanDepth = true;
+        this.showHeightmap = false;
         this.grayscaleHeightmap = false;
         this.drawBiomesDelaunayStyle = false;
 
@@ -1249,15 +1250,18 @@ class MapGenerator {
 
     drawAll = () => {
         this.clearCanvas();
-        // this.drawHeightmap();
         // this.drawVoronoi();
         // this.drawDelaunay();
         // this.drawPoints();
 
-        if (this.drawBiomesDelaunayStyle) {
-            this.drawBiomesAsTriangles();
+        if (this.showHeightmap) {
+            this.drawHeightmap();
         } else {
-            this.drawBiomes();
+            if (this.drawBiomesDelaunayStyle) {
+                this.drawBiomesAsTriangles();
+            } else {
+                this.drawBiomes();
+            }
         }
         this.drawOceanHeightmap();
         this.drawCoastline();
