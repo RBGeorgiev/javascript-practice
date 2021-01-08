@@ -40,6 +40,7 @@ import {
     numberOfRandomInitialPeaksOrTrenchesMinInput,
     numberOfRandomInitialPeaksOrTrenchesMaxSpan,
     numberOfRandomInitialPeaksOrTrenchesMaxInput,
+    showHeightmapCheckbox,
     drawBiomesDelaunayStyleCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
@@ -1861,6 +1862,12 @@ numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
 
     mapGen.numberOfRandomInitialPeaksOrTrenchesMax = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+}
+
+showHeightmapCheckbox.onchange = (e) => {
+    mapGen.showHeightmap = e.target.checked;
+
+    mapGen.drawAll();
 }
 
 drawBiomesDelaunayStyleCheckbox.onchange = (e) => {
