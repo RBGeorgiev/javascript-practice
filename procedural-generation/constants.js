@@ -49,4 +49,6 @@ export const numberOfRandomInitialPeaksOrTrenchesMinInput = id('numberOfRandomIn
 export const numberOfRandomInitialPeaksOrTrenchesMaxSpan = id('numberOfRandomInitialPeaksOrTrenchesMaxSpan');
 export const numberOfRandomInitialPeaksOrTrenchesMaxInput = id('numberOfRandomInitialPeaksOrTrenchesMaxInput');
 
+export const showHeightmapCheckbox = id('showHeightmapCheckbox');
+export const grayscaleHeightmapCheckbox = id('grayscaleHeightmapCheckbox');
 export const drawBiomesDelaunayStyleCheckbox = id('drawBiomesDelaunayStyleCheckbox');
