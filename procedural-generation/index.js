@@ -42,7 +42,8 @@ import {
     numberOfRandomInitialPeaksOrTrenchesMaxInput,
     showHeightmapCheckbox,
     grayscaleHeightmapCheckbox,
-    drawBiomesDelaunayStyleCheckbox
+    drawBiomesDelaunayStyleCheckbox,
+    showOceanDepthCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1879,6 +1880,12 @@ grayscaleHeightmapCheckbox.onchange = (e) => {
 
 drawBiomesDelaunayStyleCheckbox.onchange = (e) => {
     mapGen.drawBiomesDelaunayStyle = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+showOceanDepthCheckbox.onchange = (e) => {
+    mapGen.showOceanDepth = e.target.checked;
 
     mapGen.drawAll();
 }
