@@ -53,3 +53,5 @@ export const showHeightmapCheckbox = id('showHeightmapCheckbox');
 export const grayscaleHeightmapCheckbox = id('grayscaleHeightmapCheckbox');
 export const drawBiomesDelaunayStyleCheckbox = id('drawBiomesDelaunayStyleCheckbox');
 export const showOceanDepthCheckbox = id('showOceanDepthCheckbox');
+
+export const showTilesCheckbox = id('showTilesCheckbox');
