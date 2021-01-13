@@ -281,6 +281,7 @@ class MapGenerator {
         this.lowestDepth = -this.initialPeakHeight;
         this.longestRiverLength = 0;
 
+        this.showTiles = true;
         this.showOceanDepth = true;
         this.showHeightmap = false;
         this.grayscaleHeightmap = false;
@@ -1253,7 +1254,6 @@ class MapGenerator {
 
     drawAll = () => {
         this.clearCanvas();
-        // this.drawVoronoi();
         // this.drawDelaunay();
         // this.drawPoints();
 
@@ -1270,6 +1270,10 @@ class MapGenerator {
         this.drawCoastline();
         this.drawRivers(this.allRiverPaths, 0.4);
         this.drawLakes();
+
+        if (this.showTiles) {
+            this.drawVoronoi();
+        }
 
         // this.drawPartitionBounds(this.canvasPartitions);
         // this.drawAllWindIntersectedPartitions(this.windLines);
