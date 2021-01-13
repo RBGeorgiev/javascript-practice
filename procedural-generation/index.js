@@ -43,7 +43,8 @@ import {
     showHeightmapCheckbox,
     grayscaleHeightmapCheckbox,
     drawBiomesDelaunayStyleCheckbox,
-    showOceanDepthCheckbox
+    showOceanDepthCheckbox,
+    showTilesCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -281,7 +282,7 @@ class MapGenerator {
         this.lowestDepth = -this.initialPeakHeight;
         this.longestRiverLength = 0;
 
-        this.showTiles = true;
+        this.showTiles = false;
         this.showOceanDepth = true;
         this.showHeightmap = false;
         this.grayscaleHeightmap = false;
@@ -1890,6 +1891,12 @@ drawBiomesDelaunayStyleCheckbox.onchange = (e) => {
 
 showOceanDepthCheckbox.onchange = (e) => {
     mapGen.showOceanDepth = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+showTilesCheckbox.onchange = (e) => {
+    mapGen.showTiles = e.target.checked;
 
     mapGen.drawAll();
 }
