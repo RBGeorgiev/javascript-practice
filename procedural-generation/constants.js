@@ -56,3 +56,4 @@ export const showOceanDepthCheckbox = id('showOceanDepthCheckbox');
 
 export const showTilesCheckbox = id('showTilesCheckbox');
 export const showWindDirectionCheckbox = id('showWindDirectionCheckbox');
+export const displayTileHeightValuesCheckbox = id('displayTileHeightValuesCheckbox');
