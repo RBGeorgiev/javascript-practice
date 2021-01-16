@@ -289,6 +289,7 @@ class MapGenerator {
         this.grayscaleHeightmap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
+        this.displayTileHeightValuesBool = true;
 
 
         this.windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
@@ -1280,15 +1281,19 @@ class MapGenerator {
             this.drawWindLines(this.windLines);
         }
 
+        if (this.displayTileHeightValuesBool) {
+            this.displayHeightValues(this.tiles);
+        }
+
+        // this.displayPrecipitationValues(this.tiles);
+        // this.displayTotalPrecipitationValues(this.tiles);
+        // this.displayTemperatureValues(this.tiles);
+
         // this.drawDelaunay();
         // this.drawPoints();
         // this.drawPartitionBounds(this.canvasPartitions);
         // this.drawAllWindIntersectedPartitions(this.windLines);
         // this.drawWindIntersectedTiles(this.windLines);
-        // this.displayPrecipitationValues(this.tiles);
-        // this.displayTotalPrecipitationValues(this.tiles);
-        // this.displayHeightValues(this.tiles);
-        // this.displayTemperatureValues(this.tiles);
         // this.drawTilesSurroundedByRivers(this.tilesSurroundedByRivers);
     }
 
