@@ -1655,7 +1655,9 @@ class MapGenerator {
             let x = tile.centroid[0];
             let y = tile.centroid[1];
             ctx.fillStyle = "#000000";
-            ctx.fillText(tile.height, x, y);
+            ctx.textAlign = "center";
+            let heightInMeters = tile.height * 10;
+            ctx.fillText(heightInMeters, x, y);
         }
     }
 
