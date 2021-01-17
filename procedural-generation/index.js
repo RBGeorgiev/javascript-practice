@@ -45,7 +45,8 @@ import {
     drawBiomesDelaunayStyleCheckbox,
     showOceanDepthCheckbox,
     showTilesCheckbox,
-    showWindDirectionCheckbox
+    showWindDirectionCheckbox,
+    displayTileHeightValuesCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -289,7 +290,7 @@ class MapGenerator {
         this.grayscaleHeightmap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
-        this.displayTileHeightValuesBool = true;
+        this.displayTileHeightValuesBool = false;
 
 
         this.windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
@@ -1913,6 +1914,12 @@ showTilesCheckbox.onchange = (e) => {
 
 showWindDirectionCheckbox.onchange = (e) => {
     mapGen.showWindDirection = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+displayTileHeightValuesCheckbox.onchange = (e) => {
+    mapGen.displayTileHeightValuesBool = e.target.checked;
 
     mapGen.drawAll();
 }
