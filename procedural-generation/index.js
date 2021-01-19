@@ -290,7 +290,7 @@ class MapGenerator {
         this.grayscaleHeightmap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
-        this.displayTileHeightValuesBool = false;
+        this.displayHeightValuesBool = false;
         this.displayTemperatureValuesBool = true;
 
 
@@ -1283,7 +1283,7 @@ class MapGenerator {
             this.drawWindLines(this.windLines);
         }
 
-        if (this.displayTileHeightValuesBool) {
+        if (this.displayHeightValuesBool) {
             this.displayHeightValues(this.tiles);
         }
 
@@ -1672,7 +1672,10 @@ class MapGenerator {
             let tile = this.getTile(+idx);
             let x = tile.centroid[0];
             let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
+            ctx.fillStyle = "#FFFFFF";
+            ctx.strokeStyle = "#000000";
+            ctx.textAlign = "center";
+            ctx.strokeText(tile.temperature, x, y);
             ctx.fillText(tile.temperature, x, y);
         }
     }
@@ -1927,7 +1930,7 @@ showWindDirectionCheckbox.onchange = (e) => {
 }
 
 displayTileHeightValuesCheckbox.onchange = (e) => {
-    mapGen.displayTileHeightValuesBool = e.target.checked;
+    mapGen.displayHeightValuesBool = e.target.checked;
 
     mapGen.drawAll();
 }
