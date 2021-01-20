@@ -46,7 +46,8 @@ import {
     showOceanDepthCheckbox,
     showTilesCheckbox,
     showWindDirectionCheckbox,
-    displayTileHeightValuesCheckbox
+    displayTileHeightValuesCheckbox,
+    displayTileTemperatureValuesCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1931,6 +1932,12 @@ showWindDirectionCheckbox.onchange = (e) => {
 
 displayTileHeightValuesCheckbox.onchange = (e) => {
     mapGen.displayHeightValuesBool = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+displayTileTemperatureValuesCheckbox.onchange = (e) => {
+    mapGen.displayTemperatureValuesBool = e.target.checked;
 
     mapGen.drawAll();
 }
