@@ -47,7 +47,8 @@ import {
     showTilesCheckbox,
     showWindDirectionCheckbox,
     displayTileHeightValuesCheckbox,
-    displayTileTemperatureValuesCheckbox
+    displayTileTemperatureValuesCheckbox,
+    displayTileTotalPrecipitationValuesCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1942,6 +1943,12 @@ displayTileHeightValuesCheckbox.onchange = (e) => {
 
 displayTileTemperatureValuesCheckbox.onchange = (e) => {
     mapGen.displayTemperatureValuesBool = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+displayTileTotalPrecipitationValuesCheckbox.onchange = (e) => {
+    mapGen.displayTotalPrecipitationValuesBool = e.target.checked;
 
     mapGen.drawAll();
 }
