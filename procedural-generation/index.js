@@ -294,7 +294,7 @@ class MapGenerator {
         this.showWindDirection = false;
         this.displayHeightValuesBool = false;
         this.displayTemperatureValuesBool = false;
-        this.displayTotalPrecipitationValuesBool = true;
+        this.displayTotalPrecipitationValuesBool = false;
 
 
         this.windLineLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
@@ -1701,7 +1701,10 @@ class MapGenerator {
             let tile = this.getTile(idx);
             let x = tile.centroid[0];
             let y = tile.centroid[1];
-            ctx.fillStyle = "#000000";
+            ctx.fillStyle = "#FFFFFF";
+            ctx.strokeStyle = "#000000";
+            ctx.textAlign = "center";
+            ctx.strokeText(tile.totalPrecipitationPassedThroughTile, x, y);
             ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
         }
     }
