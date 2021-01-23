@@ -1704,8 +1704,9 @@ class MapGenerator {
             ctx.fillStyle = "#FFFFFF";
             ctx.strokeStyle = "#000000";
             ctx.textAlign = "center";
-            ctx.strokeText(tile.totalPrecipitationPassedThroughTile, x, y);
-            ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
+            let totalPrecip = Math.round(tile.totalPrecipitationPassedThroughTile);
+            ctx.strokeText(totalPrecip, x, y);
+            ctx.fillText(totalPrecip, x, y);
         }
     }
 }
