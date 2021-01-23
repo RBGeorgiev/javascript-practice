@@ -879,6 +879,7 @@ class MapGenerator {
 
                 let waterMoved = waterSpreadAverage + ((this.oceanTileWaterVapor - heightDifference) * this.lakeHeightPrecipitationMultiplier) - heightDifference * this.lakeHeightPrecipitationMultiplier;
                 if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
+                waterMoved = Math.round(waterMoved);
 
                 neighbor.precipitation += waterMoved;
                 neighbor.totalPrecipitationPassedThroughTile += waterMoved;
@@ -1704,9 +1705,8 @@ class MapGenerator {
             ctx.fillStyle = "#FFFFFF";
             ctx.strokeStyle = "#000000";
             ctx.textAlign = "center";
-            let totalPrecip = Math.round(tile.totalPrecipitationPassedThroughTile);
-            ctx.strokeText(totalPrecip, x, y);
-            ctx.fillText(totalPrecip, x, y);
+            ctx.strokeText(tile.totalPrecipitationPassedThroughTile, x, y);
+            ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
         }
     }
 }
