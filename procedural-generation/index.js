@@ -294,6 +294,7 @@ class MapGenerator {
         this.showWindDirection = false;
         this.displayHeightValuesBool = false;
         this.displayTemperatureValuesBool = false;
+        this.displayCurrentPrecipitationValuesBool = false;
         this.displayTotalPrecipitationValuesBool = false;
 
 
@@ -1291,15 +1292,17 @@ class MapGenerator {
             this.displayHeightValues(this.tiles);
         }
 
-        // this.displayPrecipitationValues(this.tiles);
+        if (this.displayCurrentPrecipitationValuesBool) {
+            this.displayCurrentPrecipitationValues(this.tiles);
+        }
 
         if (this.displayTotalPrecipitationValuesBool) {
             this.displayTotalPrecipitationValues(this.tiles);
         }
 
-        // if (this.displayTemperatureValuesBool) {
-        //     this.displayTemperatureValues(this.tiles);
-        // }
+        if (this.displayTemperatureValuesBool) {
+            this.displayTemperatureValues(this.tiles);
+        }
 
         // this.drawDelaunay();
         // this.drawPoints();
@@ -1687,7 +1690,7 @@ class MapGenerator {
         }
     }
 
-    displayPrecipitationValues = (tiles) => {
+    displayCurrentPrecipitationValues = (tiles) => {
         for (let idx in tiles) {
             let tile = this.getTile(idx);
             let x = tile.centroid[0];
