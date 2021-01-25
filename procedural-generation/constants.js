@@ -58,4 +58,5 @@ export const showTilesCheckbox = id('showTilesCheckbox');
 export const showWindDirectionCheckbox = id('showWindDirectionCheckbox');
 export const displayTileHeightValuesCheckbox = id('displayTileHeightValuesCheckbox');
 export const displayTileTemperatureValuesCheckbox = id('displayTileTemperatureValuesCheckbox');
+export const displayTileCurrentPrecipitationValuesCheckbox = id('displayTileCurrentPrecipitationValuesCheckbox');
 export const displayTileTotalPrecipitationValuesCheckbox = id('displayTileTotalPrecipitationValuesCheckbox');
