@@ -48,6 +48,7 @@ import {
     showWindDirectionCheckbox,
     displayTileHeightValuesCheckbox,
     displayTileTemperatureValuesCheckbox,
+    displayTileCurrentPrecipitationValuesCheckbox,
     displayTileTotalPrecipitationValuesCheckbox
 } from './constants.js';
 import drawCurve from './drawCurve.js';
@@ -1950,6 +1951,12 @@ displayTileHeightValuesCheckbox.onchange = (e) => {
 
 displayTileTemperatureValuesCheckbox.onchange = (e) => {
     mapGen.displayTemperatureValuesBool = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+displayTileCurrentPrecipitationValuesCheckbox.onchange = (e) => {
+    mapGen.displayCurrentPrecipitationValuesBool = e.target.checked;
 
     mapGen.drawAll();
 }
