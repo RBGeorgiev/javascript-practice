@@ -46,6 +46,7 @@ import {
     showOceanDepthCheckbox,
     showTilesCheckbox,
     showWindDirectionCheckbox,
+    displayTileValuesForm,
     displayTileHeightValuesCheckbox,
     displayTileTemperatureValuesCheckbox,
     displayTileCurrentPrecipitationValuesCheckbox,
@@ -293,6 +294,7 @@ class MapGenerator {
         this.grayscaleHeightmap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
+
         this.displayHeightValuesBool = false;
         this.displayTemperatureValuesBool = false;
         this.displayCurrentPrecipitationValuesBool = false;
@@ -1946,26 +1948,11 @@ showWindDirectionCheckbox.onchange = (e) => {
     mapGen.drawAll();
 }
 
-displayTileHeightValuesCheckbox.onchange = (e) => {
-    mapGen.displayHeightValuesBool = e.target.checked;
-
-    mapGen.drawAll();
-}
-
-displayTileTemperatureValuesCheckbox.onchange = (e) => {
-    mapGen.displayTemperatureValuesBool = e.target.checked;
-
-    mapGen.drawAll();
-}
-
-displayTileCurrentPrecipitationValuesCheckbox.onchange = (e) => {
-    mapGen.displayCurrentPrecipitationValuesBool = e.target.checked;
-
-    mapGen.drawAll();
-}
-
-displayTileTotalPrecipitationValuesCheckbox.onchange = (e) => {
-    mapGen.displayTotalPrecipitationValuesBool = e.target.checked;
+displayTileValuesForm.onchange = () => {
+    mapGen.displayHeightValuesBool = displayTileHeightValuesCheckbox.checked;
+    mapGen.displayTemperatureValuesBool = displayTileTemperatureValuesCheckbox.checked;
+    mapGen.displayCurrentPrecipitationValuesBool = displayTileCurrentPrecipitationValuesCheckbox.checked;
+    mapGen.displayTotalPrecipitationValuesBool = displayTileTotalPrecipitationValuesCheckbox.checked;
 
     mapGen.drawAll();
 }
