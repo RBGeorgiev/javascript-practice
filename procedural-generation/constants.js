@@ -56,7 +56,9 @@ export const showOceanDepthCheckbox = id('showOceanDepthCheckbox');
 
 export const showTilesCheckbox = id('showTilesCheckbox');
 export const showWindDirectionCheckbox = id('showWindDirectionCheckbox');
-export const displayTileHeightValuesCheckbox = id('displayTileHeightValuesCheckbox');
-export const displayTileTemperatureValuesCheckbox = id('displayTileTemperatureValuesCheckbox');
-export const displayTileCurrentPrecipitationValuesCheckbox = id('displayTileCurrentPrecipitationValuesCheckbox');
-export const displayTileTotalPrecipitationValuesCheckbox = id('displayTileTotalPrecipitationValuesCheckbox');
+
+export const displayTileValuesForm = id('displayTileValuesForm');
+export const displayTileHeightValuesRadioBtn = id('displayTileHeightValuesRadioBtn');
+export const displayTileTemperatureValuesRadioBtn = id('displayTileTemperatureValuesRadioBtn');
+export const displayTileCurrentPrecipitationValuesRadioBtn = id('displayTileCurrentPrecipitationValuesRadioBtn');
+export const displayTileTotalPrecipitationValuesRadioBtn = id('displayTileTotalPrecipitationValuesRadioBtn');
