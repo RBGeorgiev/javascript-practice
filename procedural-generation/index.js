@@ -47,10 +47,10 @@ import {
     showTilesCheckbox,
     showWindDirectionCheckbox,
     displayTileValuesForm,
-    displayTileHeightValuesCheckbox,
-    displayTileTemperatureValuesCheckbox,
-    displayTileCurrentPrecipitationValuesCheckbox,
-    displayTileTotalPrecipitationValuesCheckbox
+    displayTileHeightValuesRadioBtn,
+    displayTileTemperatureValuesRadioBtn,
+    displayTileCurrentPrecipitationValuesRadioBtn,
+    displayTileTotalPrecipitationValuesRadioBtn
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1949,10 +1949,10 @@ showWindDirectionCheckbox.onchange = (e) => {
 }
 
 displayTileValuesForm.onchange = () => {
-    mapGen.displayHeightValuesBool = displayTileHeightValuesCheckbox.checked;
-    mapGen.displayTemperatureValuesBool = displayTileTemperatureValuesCheckbox.checked;
-    mapGen.displayCurrentPrecipitationValuesBool = displayTileCurrentPrecipitationValuesCheckbox.checked;
-    mapGen.displayTotalPrecipitationValuesBool = displayTileTotalPrecipitationValuesCheckbox.checked;
+    mapGen.displayHeightValuesBool = displayTileHeightValuesRadioBtn.checked;
+    mapGen.displayTemperatureValuesBool = displayTileTemperatureValuesRadioBtn.checked;
+    mapGen.displayCurrentPrecipitationValuesBool = displayTileCurrentPrecipitationValuesRadioBtn.checked;
+    mapGen.displayTotalPrecipitationValuesBool = displayTileTotalPrecipitationValuesRadioBtn.checked;
 
     mapGen.drawAll();
 }
