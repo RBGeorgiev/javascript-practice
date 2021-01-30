@@ -3,6 +3,10 @@ const id = (id) => document.getElementById(id);
 export const canvas = id('canvas');
 export const ctx = canvas.getContext('2d');
 
+export const highestPeakSpan = id('highestPeakSpan');
+export const deepestDepthSpan = id('deepestDepthSpan');
+export const longestRiverSpan = id('longestRiverSpan');
+
 export const randomSeedBtn = id('randomSeedBtn');
 export const seedInput = id('seedInput');
 export const runMapGenBtn = id('runMapGenBtn');
