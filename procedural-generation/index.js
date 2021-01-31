@@ -52,7 +52,8 @@ import {
     displayTileCurrentPrecipitationValuesRadioBtn,
     displayTileTotalPrecipitationValuesRadioBtn,
     highestPeakSpan,
-    deepestDepthSpan
+    deepestDepthSpan,
+    longestRiverSpan
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1166,6 +1167,7 @@ class MapGenerator {
 
         highestPeakSpan.innerText = this.highestPeak;
         deepestDepthSpan.innerText = this.deepestDepth;
+        longestRiverSpan.innerText = this.longestRiverLength;
     }
 
     changeMapTerrain = () => {
