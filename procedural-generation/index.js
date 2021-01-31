@@ -51,6 +51,7 @@ import {
     displayTileTemperatureValuesRadioBtn,
     displayTileCurrentPrecipitationValuesRadioBtn,
     displayTileTotalPrecipitationValuesRadioBtn,
+    highestPeakSpan,
     deepestDepthSpan
 } from './constants.js';
 import drawCurve from './drawCurve.js';
@@ -1163,6 +1164,7 @@ class MapGenerator {
 
         this.drawAll();
 
+        highestPeakSpan.innerText = this.highestPeak;
         deepestDepthSpan.innerText = this.deepestDepth;
     }
 
