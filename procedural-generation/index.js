@@ -50,7 +50,8 @@ import {
     displayTileHeightValuesRadioBtn,
     displayTileTemperatureValuesRadioBtn,
     displayTileCurrentPrecipitationValuesRadioBtn,
-    displayTileTotalPrecipitationValuesRadioBtn
+    displayTileTotalPrecipitationValuesRadioBtn,
+    deepestDepthSpan
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -285,7 +286,7 @@ class MapGenerator {
 
         this.initialPeakHeight = 100;
         this.highestPeak = this.initialPeakHeight;
-        this.lowestDepth = -this.initialPeakHeight;
+        this.deepestDepth = -this.initialPeakHeight;
         this.longestRiverLength = 0;
 
         this.showTiles = false;
@@ -361,7 +362,7 @@ class MapGenerator {
                     n.height = Math.round(curHeight * decrement);
                     queue.push(n);
                     if (n.height > this.highestPeak) this.highestPeak = n.height;
-                    if (n.height < this.lowestDepth) this.lowestDepth = n.height;
+                    if (n.height < this.deepestDepth) this.deepestDepth = n.height;
                 }
             }
         }
@@ -451,11 +452,11 @@ class MapGenerator {
     getOceanHeightmapColor = (h) => {
         if (this.grayscaleHeightmap) {
             return (this.showOceanDepth) ?
-                getLerpedColor('#7f7f7f', '#000000', Math.abs(this.lowestDepth), Math.abs(h) - 1) :
+                getLerpedColor('#7f7f7f', '#000000', Math.abs(this.deepestDepth), Math.abs(h) - 1) :
                 '#000000';
         } else {
             return (this.showOceanDepth) ?
-                getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(this.lowestDepth), Math.abs(h) - 1) :
+                getLerpedColor(BIOMES_COLORS['OCEAN'], BIOMES_COLORS['DEEP_OCEAN'], Math.abs(this.deepestDepth), Math.abs(h) - 1) :
                 BIOMES_COLORS['OCEAN'];
         }
     }
@@ -1161,6 +1162,8 @@ class MapGenerator {
         this.defineBiomes();
 
         this.drawAll();
+
+        deepestDepthSpan.innerText = this.deepestDepth;
     }
 
     changeMapTerrain = () => {
