@@ -1165,9 +1165,9 @@ class MapGenerator {
 
         this.drawAll();
 
-        highestPeakSpan.innerText = this.highestPeak;
-        deepestDepthSpan.innerText = this.deepestDepth;
-        longestRiverSpan.innerText = this.longestRiverLength;
+        highestPeakSpan.innerText = this.highestPeak + '0m';
+        deepestDepthSpan.innerText = this.deepestDepth + '0m';
+        longestRiverSpan.innerText = this.longestRiverLength + '0m';
     }
 
     changeMapTerrain = () => {
