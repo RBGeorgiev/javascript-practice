@@ -833,7 +833,7 @@ class MapGenerator {
         riverNodes.forEach(river => {
             let root = river.getRoot();
             let distToRoot = getDistanceBetweenPoints(river.getRoot().tile.centroid, river.tile.centroid);
-            if (distToRoot > this.longestRiverLength) this.longestRiverLength = distToRoot;
+            if (distToRoot > this.longestRiverLength) this.longestRiverLength = Math.round(distToRoot);
             river.distToRoot = distToRoot;
             riverRoots.add(root);
         });
