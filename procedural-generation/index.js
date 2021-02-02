@@ -1164,8 +1164,6 @@ class MapGenerator {
         this.defineBiomes();
 
         this.drawAll();
-
-        this.updateHtmlDisplayedValues();
     }
 
     changeMapTerrain = () => {
@@ -1723,12 +1721,6 @@ class MapGenerator {
             ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
         }
     }
-
-    updateHtmlDisplayedValues = () => {
-        highestPeakSpan.innerText = this.highestPeak + '0m';
-        deepestDepthSpan.innerText = this.deepestDepth + '0m';
-        longestRiverSpan.innerText = this.longestRiverLength + '0m';
-    }
 }
 
 
@@ -1745,6 +1737,11 @@ mapGen.run();
 
 
 
+const updateHtmlDisplayedValues = () => {
+    highestPeakSpan.innerText = mapGen.highestPeak + '0m';
+    deepestDepthSpan.innerText = mapGen.deepestDepth + '0m';
+    longestRiverSpan.innerText = mapGen.longestRiverLength + '0m';
+}
 
 
 precipitationForRiverMinInput.oninput = (e) => {
@@ -1753,6 +1750,8 @@ precipitationForRiverMinInput.oninput = (e) => {
 
     mapGen.precipitationForRiverMin = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 precipitationForRiverMaxInput.oninput = (e) => {
@@ -1761,6 +1760,8 @@ precipitationForRiverMaxInput.oninput = (e) => {
 
     mapGen.precipitationForRiverMax = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 precipitationForLakeMinInput.oninput = (e) => {
@@ -1769,6 +1770,8 @@ precipitationForLakeMinInput.oninput = (e) => {
 
     mapGen.precipitationForLakeMin = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 precipitationForLakeMaxInput.oninput = (e) => {
@@ -1777,6 +1780,8 @@ precipitationForLakeMaxInput.oninput = (e) => {
 
     mapGen.precipitationForLakeMax = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 
@@ -1792,6 +1797,8 @@ seedInput.oninput = (e) => {
     mapGen.rng = sfc32(newSeed, newSeed, newSeed, newSeed);
 
     mapGen.run();
+
+    updateHtmlDisplayedValues();
 }
 
 randomSeedBtn.onclick = () => {
@@ -1801,9 +1808,15 @@ randomSeedBtn.onclick = () => {
     seedInput.value = newSeed;
 
     mapGen.run();
+
+    updateHtmlDisplayedValues();
 }
 
-runMapGenBtn.onclick = () => mapGen.run();
+runMapGenBtn.onclick = () => {
+    mapGen.run();
+
+    updateHtmlDisplayedValues();
+}
 
 numOfTilesInput.onchange = (e) => {
     let val = +e.target.value;
@@ -1812,6 +1825,8 @@ numOfTilesInput.onchange = (e) => {
     numOfTilesSpan.innerText = val;
 
     mapGen.run();
+
+    updateHtmlDisplayedValues();
 }
 
 temperatureInput.oninput = (e) => {
@@ -1826,6 +1841,8 @@ temperatureInput.oninput = (e) => {
     }
 
     mapGen.updateTemperature(newTemp, newRH);
+
+    updateHtmlDisplayedValues();
 }
 
 relativeHumidityInput.oninput = (e) => {
@@ -1833,6 +1850,8 @@ relativeHumidityInput.oninput = (e) => {
     let newDewpoint = Math.round(mapGen.calcDewpoint(mapGen.seaLevelTemperature, mapGen.relativeHumidity));
 
     mapGen.updateRelativeHumidity(newRH, newDewpoint);
+
+    updateHtmlDisplayedValues();
 }
 
 dewpointInput.oninput = (e) => {
@@ -1847,6 +1866,8 @@ dewpointInput.oninput = (e) => {
     }
 
     mapGen.updateDewpoint(newDewpoint, newTemp);
+
+    updateHtmlDisplayedValues();
 }
 
 windSpeedInput.oninput = (e) => {
@@ -1855,9 +1876,15 @@ windSpeedInput.oninput = (e) => {
     windSpeedSpan.innerText = mapGen.windSpeed;
 
     mapGen.changeMapWindSpeed(mapGen.windSpeed);
+
+    updateHtmlDisplayedValues();
 }
 
-changeMapWindDirectionBtn.onclick = () => mapGen.changeMapWindDirection();
+changeMapWindDirectionBtn.onclick = () => {
+    mapGen.changeMapWindDirection();
+
+    updateHtmlDisplayedValues();
+}
 
 heightPrecipitationMultiplierInput.oninput = (e) => {
     let val = +e.target.value / 10;
@@ -1865,6 +1892,8 @@ heightPrecipitationMultiplierInput.oninput = (e) => {
 
     mapGen.heightPrecipitationMultiplier = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 lakeHeightPrecipitationMultiplierInput.oninput = (e) => {
@@ -1889,6 +1918,8 @@ heightDecrementMinInput.oninput = (e) => {
 
     mapGen.heightDecrementMin = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 heightDecrementMaxInput.oninput = (e) => {
@@ -1897,6 +1928,8 @@ heightDecrementMaxInput.oninput = (e) => {
 
     mapGen.heightDecrementMax = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 chanceForLandInput.oninput = (e) => {
@@ -1905,6 +1938,8 @@ chanceForLandInput.oninput = (e) => {
 
     mapGen.chanceForLand = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 numberOfRandomInitialPeaksOrTrenchesMinInput.oninput = (e) => {
@@ -1913,6 +1948,8 @@ numberOfRandomInitialPeaksOrTrenchesMinInput.oninput = (e) => {
 
     mapGen.numberOfRandomInitialPeaksOrTrenchesMin = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
@@ -1921,6 +1958,8 @@ numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
 
     mapGen.numberOfRandomInitialPeaksOrTrenchesMax = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
 }
 
 showHeightmapCheckbox.onchange = (e) => {
