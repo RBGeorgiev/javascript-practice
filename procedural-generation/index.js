@@ -1165,9 +1165,7 @@ class MapGenerator {
 
         this.drawAll();
 
-        highestPeakSpan.innerText = this.highestPeak + '0m';
-        deepestDepthSpan.innerText = this.deepestDepth + '0m';
-        longestRiverSpan.innerText = this.longestRiverLength + '0m';
+        this.updateHtmlDisplayedValues();
     }
 
     changeMapTerrain = () => {
@@ -1724,6 +1722,12 @@ class MapGenerator {
             ctx.strokeText(tile.totalPrecipitationPassedThroughTile, x, y);
             ctx.fillText(tile.totalPrecipitationPassedThroughTile, x, y);
         }
+    }
+
+    updateHtmlDisplayedValues = () => {
+        highestPeakSpan.innerText = this.highestPeak + '0m';
+        deepestDepthSpan.innerText = this.deepestDepth + '0m';
+        longestRiverSpan.innerText = this.longestRiverLength + '0m';
     }
 }
 
