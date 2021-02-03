@@ -341,6 +341,9 @@ class MapGenerator {
     }
 
     setTilesHeight = () => {
+        this.highestPeak = this.initialPeakHeight;
+        this.deepestDepth = -this.initialPeakHeight;
+
         let randTiles = this.getRandomTiles(this.numberOfRandomInitialPeaksOrTrenchesMin, this.numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
             let dir = (this.rng() < this.chanceForLand) ? 1 : -1;
