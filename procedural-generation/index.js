@@ -287,8 +287,8 @@ class MapGenerator {
 
 
         this.initialPeakHeight = 100;
-        this.highestPeak = this.initialPeakHeight;
-        this.deepestDepth = -this.initialPeakHeight;
+        this.highestPeak = 0;
+        this.deepestDepth = 0;
         this.longestRiverLength = 0;
 
         this.showTiles = false;
@@ -533,6 +533,8 @@ class MapGenerator {
         for (let tile of this.tiles) {
             tile.resetHeight();
         }
+        this.highestPeak = 0;
+        this.deepestDepth = 0;
     }
 
     resetTileTypes = () => {
