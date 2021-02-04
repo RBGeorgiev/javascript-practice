@@ -1734,6 +1734,7 @@ let initialNumOfPoints = 1000;
 
 let mapGen = new MapGenerator(initialNumOfPoints, seed);
 mapGen.run();
+updateHtmlDisplayedValues();
 
 
 
@@ -1741,8 +1742,7 @@ mapGen.run();
 
 
 
-
-const updateHtmlDisplayedValues = () => {
+function updateHtmlDisplayedValues() {
     highestPeakSpan.innerText = mapGen.highestPeak + '0m';
     deepestDepthSpan.innerText = mapGen.deepestDepth + '0m';
     longestRiverSpan.innerText = mapGen.longestRiverLength + '0m';
