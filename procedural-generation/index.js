@@ -890,6 +890,7 @@ class MapGenerator {
                 let heightDifference = neighbor.height - lake.height;
 
                 let waterMoved = waterSpreadAverage + ((this.oceanTileWaterVapor - heightDifference) * this.lakeHeightPrecipitationMultiplier) - heightDifference * this.lakeHeightPrecipitationMultiplier;
+                if (waterMoved < 0) waterMoved = 0;
                 if (waterMoved > totalWaterAvailable) waterMoved = totalWaterAvailable;
                 waterMoved = Math.round(waterMoved);
 
