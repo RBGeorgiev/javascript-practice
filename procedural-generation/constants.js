@@ -37,8 +37,6 @@ export const heightPrecipitationMultiplierSpan = id('heightPrecipitationMultipli
 export const heightPrecipitationMultiplierInput = id('heightPrecipitationMultiplierInput');
 export const lakeHeightPrecipitationMultiplierSpan = id('lakeHeightPrecipitationMultiplierSpan');
 export const lakeHeightPrecipitationMultiplierInput = id('lakeHeightPrecipitationMultiplierInput');
-export const riverWidthDistanceStrengthControlSpan = id('riverWidthDistanceStrengthControlSpan');
-export const riverWidthDistanceStrengthControlInput = id('riverWidthDistanceStrengthControlInput');
 
 export const heightDecrementMinSpan = id('heightDecrementMinSpan');
 export const heightDecrementMinInput = id('heightDecrementMinInput');
