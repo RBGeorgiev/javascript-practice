@@ -28,8 +28,6 @@ import {
     heightPrecipitationMultiplierInput,
     lakeHeightPrecipitationMultiplierSpan,
     lakeHeightPrecipitationMultiplierInput,
-    riverWidthDistanceStrengthControlSpan,
-    riverWidthDistanceStrengthControlInput,
     heightDecrementMinSpan,
     heightDecrementMinInput,
     heightDecrementMaxSpan,
@@ -283,7 +281,7 @@ class MapGenerator {
 
         this.riverWidthMax = 10 / (this.numOfPoints / 1000);
         this.riverWidthMin = 1;
-        this.riverWidthDistanceStrengthControl = 10; // important value
+        this.riverWidthDistanceStrengthControl = 10;
 
 
         this.initialPeakHeight = 100;
@@ -1907,14 +1905,6 @@ lakeHeightPrecipitationMultiplierInput.oninput = (e) => {
     lakeHeightPrecipitationMultiplierSpan.innerText = val;
 
     mapGen.lakeHeightPrecipitationMultiplier = val;
-    mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
-}
-
-riverWidthDistanceStrengthControlInput.oninput = (e) => {
-    let val = +e.target.value;
-    riverWidthDistanceStrengthControlSpan.innerText = val;
-
-    mapGen.riverWidthDistanceStrengthControl = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 }
 
