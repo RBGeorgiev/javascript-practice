@@ -7,8 +7,8 @@
 </head>
 
 <body>
+    <h1>Procedurally Generated Polygonal Map</h1>
     <canvas id="canvas" width="800" height="800"></canvas>
-
     <div>
         <div>Highest Peak: <span id="highestPeakSpan">?</span></div>
         <div>Deepest Depth: <span id="deepestDepthSpan">?</span></div>
@@ -16,169 +16,178 @@
     </div>
 
     <div>
-        <button id="randomSeedBtn" type="button">Generate random seed</button>
-        <label id="seedLabel">
-            Seed: <input type="number" id="seedInput" value="2546076188">
-        </label>
-        <button id="runMapGenBtn" type="button">Run</button>
-        <label id="numOfTilesLabel">
-            Number of tiles: <span id="numOfTilesSpan">1000</span>
-            <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
-        </label>
-    </div>
+        <h2>Options</h2>
 
-    <div>
-        <p>Climate controls:</p>
         <div>
-            <label id="temperatureLabel">Sea Level Temperature: <span id="temperatureSpan">14</span>°C
-                <input type="range" id="temperatureInput" min="11" max="55" value="14">
+            <button id="randomSeedBtn" type="button">Generate random seed</button>
+            <label id="seedLabel">
+                Seed: <input type="number" id="seedInput" value="2546076188">
             </label>
-
-            <label id="relativeHumidityLabel">Relative Humidity: <span id="relativeHumiditySpan">80</span>%
-                <input type="range" id="relativeHumidityInput" min="1" max="100" value="80">
-            </label>
-
-            <label id="dewpointLabel">Dew Point: <span id="dewpointSpan">10</span>°C
-                <input type="range" id="dewpointInput" min="-77" max="14" value="10">
+            <button id="runMapGenBtn" type="button">Run</button>
+            <label id="numOfTilesLabel">
+                Number of tiles: <span id="numOfTilesSpan">1000</span>
+                <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
             </label>
         </div>
 
         <div>
-            <label id="windSpeedLabel">Average Wind Speed: <span id="windSpeedSpan">20</span>km/h
-                <input type="range" id="windSpeedInput" min="0" max="50" value="20">
-            </label>
-            <button id="changeMapWindDirectionBtn" type="button">Change Wind Direction</button>
-        </div>
-    </div>
+            <h3>Climate controls:</h3>
+            <div>
+                <label id="temperatureLabel">Sea Level Temperature: <span id="temperatureSpan">14</span>°C
+                    <input type="range" id="temperatureInput" min="11" max="55" value="14">
+                </label>
 
-    <div>
-        <p>
-            Precipitation Options:
-        </p>
-        <div>
-            <label id="precipitationForRiverMinLabel">Minimum Precipitation For River: <span
-                    id="precipitationForRiverMinSpan">20</span>
-                <input type="range" id="precipitationForRiverMinInput" min="0" max="150" value="20">
-            </label>
+                <label id="relativeHumidityLabel">Relative Humidity: <span id="relativeHumiditySpan">80</span>%
+                    <input type="range" id="relativeHumidityInput" min="1" max="100" value="80">
+                </label>
 
-            <label id="precipitationForRiverMaxLabel">Maximum Precipitation For River: <span
-                    id="precipitationForRiverMaxSpan">100</span>
-                <input type="range" id="precipitationForRiverMaxInput" min="0" max="300" value="100">
-            </label>
+                <label id="dewpointLabel">Dew Point: <span id="dewpointSpan">10</span>°C
+                    <input type="range" id="dewpointInput" min="-77" max="14" value="10">
+                </label>
+            </div>
 
-            <label id="precipitationForLakeMinLabel">Minimum Precipitation For Lake: <span
-                    id="precipitationForLakeMinSpan">100</span>
-                <input type="range" id="precipitationForLakeMinInput" min="0" max="1000" value="100">
-            </label>
-
-            <label id="precipitationForLakeMaxLabel">Maximum Precipitation For Lake: <span
-                    id="precipitationForLakeMaxSpan">500</span>
-                <input type="range" id="precipitationForLakeMaxInput" min="0" max="3000" value="500">
-            </label>
+            <div>
+                <label id="windSpeedLabel">Average Wind Speed: <span id="windSpeedSpan">20</span>km/h
+                    <input type="range" id="windSpeedInput" min="0" max="50" value="20">
+                </label>
+                <button id="changeMapWindDirectionBtn" type="button">Change Wind Direction</button>
+            </div>
         </div>
 
         <div>
-            <label id="heightPrecipitationMultiplierLabel">Mountain Precipitation Stopping Power: <span
-                    id="heightPrecipitationMultiplierSpan">0.2</span>
-                <input type="range" id="heightPrecipitationMultiplierInput" min="0" max="30" value="2">
-            </label>
+            <h3>
+                Precipitation Options:
+            </h3>
+            <div>
+                <label id="precipitationForRiverMinLabel">Minimum Precipitation For River: <span
+                        id="precipitationForRiverMinSpan">20</span>
+                    <input type="range" id="precipitationForRiverMinInput" min="0" max="150" value="20">
+                </label>
 
-            <label id="lakeHeightPrecipitationMultiplierLabel">Lake Size Regulation Multiplier: <span
-                    id="lakeHeightPrecipitationMultiplierSpan">7</span>
-                <input type="range" id="lakeHeightPrecipitationMultiplierInput" min="0" max="100" value="7">
-            </label>
+                <label id="precipitationForRiverMaxLabel">Maximum Precipitation For River: <span
+                        id="precipitationForRiverMaxSpan">100</span>
+                    <input type="range" id="precipitationForRiverMaxInput" min="0" max="300" value="100">
+                </label>
+
+                <label id="precipitationForLakeMinLabel">Minimum Precipitation For Lake: <span
+                        id="precipitationForLakeMinSpan">100</span>
+                    <input type="range" id="precipitationForLakeMinInput" min="0" max="1000" value="100">
+                </label>
+
+                <label id="precipitationForLakeMaxLabel">Maximum Precipitation For Lake: <span
+                        id="precipitationForLakeMaxSpan">500</span>
+                    <input type="range" id="precipitationForLakeMaxInput" min="0" max="3000" value="500">
+                </label>
+            </div>
+
+            <div>
+                <label id="heightPrecipitationMultiplierLabel">Mountain Precipitation Stopping Power: <span
+                        id="heightPrecipitationMultiplierSpan">0.2</span>
+                    <input type="range" id="heightPrecipitationMultiplierInput" min="0" max="30" value="2">
+                </label>
+
+                <label id="lakeHeightPrecipitationMultiplierLabel">Lake Size Regulation Multiplier: <span
+                        id="lakeHeightPrecipitationMultiplierSpan">7</span>
+                    <input type="range" id="lakeHeightPrecipitationMultiplierInput" min="0" max="100" value="7">
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div>
-        <p>
-            Extra Options:
-        </p>
         <div>
-            <label id="heightDecrementMinLabel">Minimum Height Decrement: <span id="heightDecrementMinSpan">50</span>
-                <input type="range" id="heightDecrementMinInput" min="0" max="100" value="50">
-            </label>
+            <h3>
+                Extra Options:
+            </h3>
+            <div>
+                <label id="heightDecrementMinLabel">Minimum Height Decrement: <span
+                        id="heightDecrementMinSpan">50</span>
+                    <input type="range" id="heightDecrementMinInput" min="0" max="100" value="50">
+                </label>
 
-            <label id="heightDecrementMaxLabel">Maximum Height Decrement: <span id="heightDecrementMaxSpan">100</span>
-                <input type="range" id="heightDecrementMaxInput" min="0" max="200" value="100">
-            </label>
+                <label id="heightDecrementMaxLabel">Maximum Height Decrement: <span
+                        id="heightDecrementMaxSpan">100</span>
+                    <input type="range" id="heightDecrementMaxInput" min="0" max="200" value="100">
+                </label>
 
-            <label id="chanceForLandLabel">Chance For Land: <span id="chanceForLandSpan">0.5</span>
-                <input type="range" id="chanceForLandInput" min="0" max="10" value="5">
-            </label>
+                <label id="chanceForLandLabel">Chance For Land: <span id="chanceForLandSpan">0.5</span>
+                    <input type="range" id="chanceForLandInput" min="0" max="10" value="5">
+                </label>
 
-            <label id="numberOfRandomInitialPeaksOrTrenchesMinLabel">Minimum Number Of Random Initial Peaks Or Trenches:
-                <span id="numberOfRandomInitialPeaksOrTrenchesMinSpan">5</span>
-                <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMinInput" min="1" max="100" value="5">
-            </label>
+                <label id="numberOfRandomInitialPeaksOrTrenchesMinLabel">Minimum Number Of Random Initial Peaks Or
+                    Trenches:
+                    <span id="numberOfRandomInitialPeaksOrTrenchesMinSpan">5</span>
+                    <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMinInput" min="1" max="100" value="5">
+                </label>
 
-            <label id="numberOfRandomInitialPeaksOrTrenchesMaxLabel">Maximum Number Of Random Initial Peaks Or Trenches:
-                <span id="numberOfRandomInitialPeaksOrTrenchesMaxSpan">15</span>
-                <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMaxInput" min="1" max="200" value="15">
-            </label>
+                <label id="numberOfRandomInitialPeaksOrTrenchesMaxLabel">Maximum Number Of Random Initial Peaks Or
+                    Trenches:
+                    <span id="numberOfRandomInitialPeaksOrTrenchesMaxSpan">15</span>
+                    <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMaxInput" min="1" max="200" value="15">
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div>
-        <p>Draw methods:</p>
         <div>
-            <label id="showHeightmapLabel">
-                Show Heightmap
-                <input type="checkbox" id="showHeightmapCheckbox">
-            </label>
-            <label id="grayscaleHeightmapLabel">
-                Grayscale Heightmap
-                <input type="checkbox" id="grayscaleHeightmapCheckbox">
-            </label>
+            <h3>Draw methods:</h3>
+            <div>
+                <label id="showHeightmapLabel">
+                    Show Heightmap
+                    <input type="checkbox" id="showHeightmapCheckbox">
+                </label>
+                <label id="grayscaleHeightmapLabel">
+                    Grayscale Heightmap
+                    <input type="checkbox" id="grayscaleHeightmapCheckbox">
+                </label>
 
-            <label id="drawBiomesDelaunayStyleLabel">
-                Draw Biomes Delaunay Style
-                <input type="checkbox" id="drawBiomesDelaunayStyleCheckbox">
-            </label>
+                <label id="drawBiomesDelaunayStyleLabel">
+                    Draw Biomes Delaunay Style
+                    <input type="checkbox" id="drawBiomesDelaunayStyleCheckbox">
+                </label>
 
-            <label id="showOceanDepthLabel">
-                Show Ocean Depth
-                <input type="checkbox" id="showOceanDepthCheckbox" checked>
-            </label>
-        </div>
-        <div>
-            <label id="showTilesLabel">
-                Show Tiles
-                <input type="checkbox" id="showTilesCheckbox">
-            </label>
+                <label id="showOceanDepthLabel">
+                    Show Ocean Depth
+                    <input type="checkbox" id="showOceanDepthCheckbox" checked>
+                </label>
+            </div>
+            <div>
+                <label id="showTilesLabel">
+                    Show Tiles
+                    <input type="checkbox" id="showTilesCheckbox">
+                </label>
 
-            <label id="showWindDirectionLabel">
-                Show Wind Direction
-                <input type="checkbox" id="showWindDirectionCheckbox">
-            </label>
-        </div>
+                <label id="showWindDirectionLabel">
+                    Show Wind Direction
+                    <input type="checkbox" id="showWindDirectionCheckbox">
+                </label>
+            </div>
 
-        <div id="displayTileValuesForm">
-            <label id="displayNoTileValuesLabel">
-                None
-                <input type="radio" id="displayNoTileValuesRadioBtn" name="displayTileValues" value="0" checked>
-            </label>
+            <div id="displayTileValuesForm">
+                <label id="displayNoTileValuesLabel">
+                    None
+                    <input type="radio" id="displayNoTileValuesRadioBtn" name="displayTileValues" value="0" checked>
+                </label>
 
-            <label id="displayTileHeightValuesLabel">
-                Display Tile Height Values
-                <input type="radio" id="displayTileHeightValuesRadioBtn" name="displayTileValues" value="1">
-            </label>
+                <label id="displayTileHeightValuesLabel">
+                    Display Tile Height Values
+                    <input type="radio" id="displayTileHeightValuesRadioBtn" name="displayTileValues" value="1">
+                </label>
 
-            <label id="displayTileTemperatureValuesLabel">
-                Display Tile Temperature Values
-                <input type="radio" id="displayTileTemperatureValuesRadioBtn" name="displayTileValues" value="2">
-            </label>
+                <label id="displayTileTemperatureValuesLabel">
+                    Display Tile Temperature Values
+                    <input type="radio" id="displayTileTemperatureValuesRadioBtn" name="displayTileValues" value="2">
+                </label>
 
-            <label id="displayTileCurrentPrecipitationValuesLabel">
-                Display Tile Current Precipitation Values
-                <input type="radio" id="displayTileCurrentPrecipitationValuesRadioBtn" name="displayTileValues"
-                    value="3">
-            </label>
+                <label id="displayTileCurrentPrecipitationValuesLabel">
+                    Display Tile Current Precipitation Values
+                    <input type="radio" id="displayTileCurrentPrecipitationValuesRadioBtn" name="displayTileValues"
+                        value="3">
+                </label>
 
-            <label id="displayTileTotalPrecipitationValuesLabel">
-                Display Tile Total Precipitation Values
-                <input type="radio" id="displayTileTotalPrecipitationValuesRadioBtn" name="displayTileValues" value="4">
-            </label>
+                <label id="displayTileTotalPrecipitationValuesLabel">
+                    Display Tile Total Precipitation Values
+                    <input type="radio" id="displayTileTotalPrecipitationValuesRadioBtn" name="displayTileValues"
+                        value="4">
+                </label>
+            </div>
         </div>
     </div>
 
