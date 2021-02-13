@@ -19,3 +19,7 @@ canvas {
     width: 600px;
     margin: auto;
 }
+
+.optionInputsContainer>label {
+    justify-self: end;
+}
