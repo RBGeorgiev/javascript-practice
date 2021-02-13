@@ -14,9 +14,8 @@ canvas {
 }
 
 .optionInputsContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: 430px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 600px;
     margin: auto;
 }
