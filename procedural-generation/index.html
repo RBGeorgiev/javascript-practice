@@ -33,23 +33,26 @@
         <div>
             <h3>Climate controls:</h3>
             <div class="optionInputsContainer">
-                <label id="temperatureLabel">Sea Level Temperature: <span id="temperatureSpan">14</span>°C
-                    <input type="range" id="temperatureInput" min="11" max="55" value="14">
-                </label>
+                <label id="temperatureLabel" for="temperatureInput">Sea Level Temperature: <span
+                        id="temperatureSpan">14</span>°C</label>
+                <input type="range" id="temperatureInput" min="11" max="55" value="14">
 
-                <label id="relativeHumidityLabel">Relative Humidity: <span id="relativeHumiditySpan">80</span>%
-                    <input type="range" id="relativeHumidityInput" min="1" max="100" value="80">
-                </label>
 
-                <label id="dewpointLabel">Dew Point: <span id="dewpointSpan">10</span>°C
-                    <input type="range" id="dewpointInput" min="-77" max="14" value="10">
-                </label>
+                <label id="relativeHumidityLabel" for="relativeHumidityInput">Relative Humidity: <span
+                        id="relativeHumiditySpan">80</span>%</label>
+                <input type="range" id="relativeHumidityInput" min="1" max="100" value="80">
+
+
+                <label id="dewpointLabel" for="dewpointInput">Dew Point: <span id="dewpointSpan">10</span>°C</label>
+                <input type="range" id="dewpointInput" min="-77" max="14" value="10">
+
             </div>
 
             <div class="optionInputsContainer">
-                <label id="windSpeedLabel">Average Wind Speed: <span id="windSpeedSpan">20</span>km/h
-                    <input type="range" id="windSpeedInput" min="0" max="50" value="20">
-                </label>
+                <label id="windSpeedLabel" for="windSpeedInput">Average Wind Speed: <span
+                        id="windSpeedSpan">20</span>km/h</label>
+                <input type="range" id="windSpeedInput" min="0" max="50" value="20">
+
                 <button id="changeMapWindDirectionBtn" type="button">Change Wind Direction</button>
             </div>
         </div>
@@ -59,37 +62,36 @@
                 Precipitation Options:
             </h3>
             <div class="optionInputsContainer">
-                <label id="precipitationForRiverMinLabel">Minimum Precipitation For River: <span
-                        id="precipitationForRiverMinSpan">20</span>
-                    <input type="range" id="precipitationForRiverMinInput" min="0" max="150" value="20">
-                </label>
+                <label id="precipitationForRiverMinLabel" for="precipitationForRiverMinInput">Minimum Precipitation For
+                    River: <span id="precipitationForRiverMinSpan">20</span></label>
+                <input type="range" id="precipitationForRiverMinInput" min="0" max="150" value="20">
 
-                <label id="precipitationForRiverMaxLabel">Maximum Precipitation For River: <span
-                        id="precipitationForRiverMaxSpan">100</span>
-                    <input type="range" id="precipitationForRiverMaxInput" min="0" max="300" value="100">
-                </label>
 
-                <label id="precipitationForLakeMinLabel">Minimum Precipitation For Lake: <span
-                        id="precipitationForLakeMinSpan">100</span>
-                    <input type="range" id="precipitationForLakeMinInput" min="0" max="1000" value="100">
-                </label>
+                <label id="precipitationForRiverMaxLabel" for="precipitationForRiverMaxInput">Maximum Precipitation For
+                    River: <span id="precipitationForRiverMaxSpan">100</span></label>
+                <input type="range" id="precipitationForRiverMaxInput" min="0" max="300" value="100">
 
-                <label id="precipitationForLakeMaxLabel">Maximum Precipitation For Lake: <span
-                        id="precipitationForLakeMaxSpan">500</span>
-                    <input type="range" id="precipitationForLakeMaxInput" min="0" max="3000" value="500">
-                </label>
+
+                <label id="precipitationForLakeMinLabel" for="precipitationForLakeMinInput">Minimum Precipitation For
+                    Lake: <span id="precipitationForLakeMinSpan">100</span></label>
+                <input type="range" id="precipitationForLakeMinInput" min="0" max="1000" value="100">
+
+
+                <label id="precipitationForLakeMaxLabel" for="precipitationForLakeMaxInput">Maximum Precipitation For
+                    Lake: <span id="precipitationForLakeMaxSpan">500</span></label>
+                <input type="range" id="precipitationForLakeMaxInput" min="0" max="3000" value="500">
             </div>
 
             <div class="optionInputsContainer">
-                <label id="heightPrecipitationMultiplierLabel">Mountain Precipitation Stopping Power: <span
-                        id="heightPrecipitationMultiplierSpan">0.2</span>
-                    <input type="range" id="heightPrecipitationMultiplierInput" min="0" max="30" value="2">
-                </label>
+                <label id="heightPrecipitationMultiplierLabel" for="heightPrecipitationMultiplierInput">Mountain
+                    Precipitation Stopping Power: <span id="heightPrecipitationMultiplierSpan">0.2</span></label>
+                <input type="range" id="heightPrecipitationMultiplierInput" min="0" max="30" value="2">
 
-                <label id="lakeHeightPrecipitationMultiplierLabel">Lake Size Regulation Multiplier: <span
-                        id="lakeHeightPrecipitationMultiplierSpan">7</span>
-                    <input type="range" id="lakeHeightPrecipitationMultiplierInput" min="0" max="100" value="7">
-                </label>
+
+                <label id="lakeHeightPrecipitationMultiplierLabel" for="lakeHeightPrecipitationMultiplierInput">Lake
+                    Size Regulation Multiplier: <span id="lakeHeightPrecipitationMultiplierSpan">7</span></label>
+                <input type="range" id="lakeHeightPrecipitationMultiplierInput" min="0" max="100" value="7">
+
             </div>
         </div>
 
@@ -98,29 +100,32 @@
                 Extra Options:
             </h3>
             <div class="optionInputsContainer">
-                <label id="heightDecrementMinLabel">Minimum Height Decrement: <span
-                        id="heightDecrementMinSpan">50</span>
-                    <input type="range" id="heightDecrementMinInput" min="0" max="100" value="50">
-                </label>
+                <label id="heightDecrementMinLabel" for="heightDecrementMinInput">Minimum Height Decrement: <span
+                        id="heightDecrementMinSpan">50</span></label>
+                <input type="range" id="heightDecrementMinInput" min="0" max="100" value="50">
 
-                <label id="heightDecrementMaxLabel">Maximum Height Decrement: <span
-                        id="heightDecrementMaxSpan">100</span>
-                    <input type="range" id="heightDecrementMaxInput" min="0" max="200" value="100">
-                </label>
 
-                <label id="chanceForLandLabel">Chance For Land: <span id="chanceForLandSpan">0.5</span>
-                    <input type="range" id="chanceForLandInput" min="0" max="10" value="5">
-                </label>
+                <label id="heightDecrementMaxLabel" for="heightDecrementMaxInput">Maximum Height Decrement: <span
+                        id="heightDecrementMaxSpan">100</span></label>
+                <input type="range" id="heightDecrementMaxInput" min="0" max="200" value="100">
 
-                <label id="numberOfRandomInitialPeaksOrTrenchesMinLabel">Minimum Initial Peaks Or Trenches: <span
-                        id="numberOfRandomInitialPeaksOrTrenchesMinSpan">5</span>
-                    <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMinInput" min="1" max="100" value="5">
-                </label>
 
-                <label id="numberOfRandomInitialPeaksOrTrenchesMaxLabel">Maximum Initial Peaks Or Trenches: <span
-                        id="numberOfRandomInitialPeaksOrTrenchesMaxSpan">15</span>
-                    <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMaxInput" min="1" max="200" value="15">
-                </label>
+                <label id="chanceForLandLabel" for="chanceForLandInput">Chance For Land: <span
+                        id="chanceForLandSpan">0.5</span></label>
+                <input type="range" id="chanceForLandInput" min="0" max="10" value="5">
+
+
+                <label id="numberOfRandomInitialPeaksOrTrenchesMinLabel"
+                    for="numberOfRandomInitialPeaksOrTrenchesMinInput">Minimum Initial Peaks Or Trenches: <span
+                        id="numberOfRandomInitialPeaksOrTrenchesMinSpan">5</span></label>
+                <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMinInput" min="1" max="100" value="5">
+
+
+                <label id="numberOfRandomInitialPeaksOrTrenchesMaxLabel"
+                    for="numberOfRandomInitialPeaksOrTrenchesMaxInput">Maximum Initial Peaks Or Trenches: <span
+                        id="numberOfRandomInitialPeaksOrTrenchesMaxSpan">15</span></label>
+                <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMaxInput" min="1" max="200" value="15">
+
             </div>
         </div>
 
