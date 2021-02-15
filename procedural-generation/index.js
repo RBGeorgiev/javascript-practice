@@ -1160,6 +1160,8 @@ class MapGenerator {
     // run methods
 
     run = () => {
+        console.time("run map generation");
+
         this.defineTileset();
         this.defineTerrain();
         this.defineWindLines();
@@ -1168,6 +1170,8 @@ class MapGenerator {
         this.defineBiomes();
 
         this.drawAll();
+
+        console.timeEnd("run map generation");
     }
 
     changeMapTerrain = () => {
@@ -2004,29 +2008,11 @@ displayTileValuesForm.onchange = () => {
 }
 
 canvas.addEventListener("click", (e) => {
-    // let x = e.offsetX;
-    // let y = e.offsetY;
-    // let cell = mapGen.delaunay.find(x, y);
-    // console.log(mapGen.tiles[cell]);
-    // let neighbors = mapGen.voronoi.neighbors(cell);
-
-    console.time("run map generation");
-
-    // mapGen.changeTerrain();
-
-    // mapGen.changeWindSpeed(mapGen.windSpeed);
-    // console.log(mapGen.windSpeed);
-    // mapGen.windSpeed -= 1;
-
-    // mapGen.changeMapWindDirection();
-
-    // mapGen.changeMapHumidity(15);
-
-    // mapGen.changeTemperature(mapGen.seaLevelTemperature);
-    // console.log(mapGen.seaLevelTemperature);
-    // mapGen.seaLevelTemperature += 1;
-
-    console.timeEnd("run map generation");
+    let x = e.offsetX;
+    let y = e.offsetY;
+    let tile = mapGen.delaunay.find(x, y);
+    console.log(mapGen.tiles[tile]);
+    // let neighbors = mapGen.voronoi.neighbors(tile);
 })
 
 // Chaparral = Desert scrub
