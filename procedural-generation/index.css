@@ -3,8 +3,26 @@ body {
     text-align: center;
 }
 
-canvas {
+#canvasContainer {
+    position: relative;
+    width: 800px;
+    height: 810px;
+    margin: auto;
+}
+
+#canvas {
     border: 2px solid black;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#canvas2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    user-select: none;
 }
 
 #mapFeaturesInfoContainer {
