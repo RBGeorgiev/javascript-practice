@@ -2,6 +2,8 @@ import { Delaunay } from "./d3-delaunay/index.js";
 import {
     canvas,
     ctx,
+    canvas2,
+    ctx2,
     randomSeedBtn,
     seedInput,
     runMapGenBtn,
@@ -2006,6 +2008,21 @@ displayTileValuesForm.onchange = () => {
 
     mapGen.drawAll();
 }
+
+canvas.addEventListener("mousemove", (e) => {
+    let x = e.offsetX;
+    let y = e.offsetY;
+    let tile = mapGen.delaunay.find(x, y);
+
+    ctx2.beginPath();
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.closePath();
+
+    mapGen.voronoi.renderCell(tile, ctx2);
+    ctx2.strokeStyle = "#000000";
+    ctx2.lineWidth = 1;
+    ctx2.stroke();
+})
 
 canvas.addEventListener("click", (e) => {
     let x = e.offsetX;

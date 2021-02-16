@@ -3,6 +3,9 @@ const id = (id) => document.getElementById(id);
 export const canvas = id('canvas');
 export const ctx = canvas.getContext('2d');
 
+export const canvas2 = id('canvas2');
+export const ctx2 = canvas2.getContext('2d');
+
 export const highestPeakSpan = id('highestPeakSpan');
 export const deepestDepthSpan = id('deepestDepthSpan');
 export const longestRiverSpan = id('longestRiverSpan');
