@@ -2009,19 +2009,25 @@ displayTileValuesForm.onchange = () => {
     mapGen.drawAll();
 }
 
+let lastTileHovered = null;
+
 canvas.addEventListener("mousemove", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
     let tile = mapGen.delaunay.find(x, y);
 
-    ctx2.beginPath();
-    ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    ctx2.closePath();
+    if (lastTileHovered !== tile) {
+        ctx2.beginPath();
+        ctx2.clearRect(0, 0, canvas.width, canvas.height);
+        ctx2.closePath();
 
-    mapGen.voronoi.renderCell(tile, ctx2);
-    ctx2.strokeStyle = "#000000";
-    ctx2.lineWidth = 1;
-    ctx2.stroke();
+        mapGen.voronoi.renderCell(tile, ctx2);
+        ctx2.strokeStyle = "#000000";
+        ctx2.lineWidth = 1;
+        ctx2.stroke();
+
+        lastTileHovered = tile;
+    }
 })
 
 canvas.addEventListener("click", (e) => {
