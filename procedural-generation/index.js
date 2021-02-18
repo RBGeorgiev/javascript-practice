@@ -2,7 +2,6 @@ import { Delaunay } from "./d3-delaunay/index.js";
 import {
     canvas,
     ctx,
-    canvas2,
     ctx2,
     randomSeedBtn,
     seedInput,
@@ -2033,9 +2032,17 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
-    let tile = mapGen.delaunay.find(x, y);
-    console.log(mapGen.tiles[tile]);
-    // let neighbors = mapGen.voronoi.neighbors(tile);
+    let idx = mapGen.delaunay.find(x, y);
+    let tile = mapGen.tiles[idx]
+
+    console.log("______________________________________");
+    console.log("biome: ", tile.biome);
+    console.log("height: ", tile.height);
+    console.log("numOfRiversOnEdges: ", tile.numOfRiversOnEdges);
+    console.log("precipitation: ", tile.precipitation);
+    console.log("river: ", tile.river);
+    console.log("temperature: ", tile.temperature);
+    console.log("totalPrecipitationPassedThroughTile: ", tile.totalPrecipitationPassedThroughTilе);
 })
 
 // Chaparral = Desert scrub
