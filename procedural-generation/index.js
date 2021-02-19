@@ -1155,6 +1155,16 @@ class MapGenerator {
             let biome = this.getBiomeForTile(tile);
             tile.biome = biome;
         }
+
+        for (let idx in this.oceanTiles) {
+            let tile = this.getTile(+idx);
+            tile.biome = "OCEAN";
+        }
+
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            tile.biome = "LAKE";
+        }
     }
 
     // _________________________________________
