@@ -1163,7 +1163,8 @@ class MapGenerator {
 
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
-            tile.biome = "LAKE";
+            let lakeType = (tile.dryLake) ? "DRY_LAKE" : (tile.frozenLake) ? "FROZEN_LAKE" : "LAKE";
+            tile.biome = lakeType;
         }
     }
 
