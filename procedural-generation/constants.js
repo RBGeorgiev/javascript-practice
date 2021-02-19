@@ -6,6 +6,8 @@ export const ctx = canvas.getContext('2d');
 export const canvas2 = id('canvas2');
 export const ctx2 = canvas2.getContext('2d');
 
+export const tileInfoDiv = id('tileInfoDiv');
+
 export const highestPeakSpan = id('highestPeakSpan');
 export const deepestDepthSpan = id('deepestDepthSpan');
 export const longestRiverSpan = id('longestRiverSpan');
@@ -13,6 +15,7 @@ export const longestRiverSpan = id('longestRiverSpan');
 export const randomSeedBtn = id('randomSeedBtn');
 export const seedInput = id('seedInput');
 export const runMapGenBtn = id('runMapGenBtn');
+export const changeMapTerrainBtn = id('changeMapTerrainBtn');
 export const numOfTilesSpan = id('numOfTilesSpan');
 export const numOfTilesInput = id('numOfTilesInput');
 
