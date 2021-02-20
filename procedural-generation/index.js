@@ -3,6 +3,7 @@ import {
     canvas,
     ctx,
     ctx2,
+    tileInfoDiv,
     randomSeedBtn,
     seedInput,
     runMapGenBtn,
@@ -2052,6 +2053,14 @@ canvas.addEventListener("click", (e) => {
     let y = e.offsetY;
     let idx = mapGen.delaunay.find(x, y);
     let tile = mapGen.tiles[idx]
+
+    tileInfoDiv.innerText = `biome: ${tile.biome}
+    height: ${tile.height}
+    numOfRiversOnEdges: ${tile.numOfRiversOnEdges}
+    precipitation: ${tile.precipitation}
+    river: ${tile.river}
+    temperature: ${tile.temperature}
+    totalPrecipitationPassedThroughTile: ${tile.totalPrecipitationPassedThroughTilе}`
 
     console.log("______________________________________");
     console.log("biome: ", tile.biome);
