@@ -6,6 +6,7 @@ import {
     randomSeedBtn,
     seedInput,
     runMapGenBtn,
+    changeMapTerrainBtn,
     numOfTilesSpan,
     numOfTilesInput,
     temperatureSpan,
@@ -1834,6 +1835,12 @@ randomSeedBtn.onclick = () => {
 
 runMapGenBtn.onclick = () => {
     mapGen.run();
+
+    updateHtmlDisplayedValues();
+}
+
+changeMapTerrainBtn.onclick = () => {
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
