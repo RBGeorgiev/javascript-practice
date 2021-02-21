@@ -2054,13 +2054,13 @@ canvas.addEventListener("click", (e) => {
     let idx = mapGen.delaunay.find(x, y);
     let tile = mapGen.tiles[idx]
 
-    tileInfoDiv.innerText = `biome: ${tile.biome}
-    height: ${tile.height}
-    numOfRiversOnEdges: ${tile.numOfRiversOnEdges}
-    precipitation: ${tile.precipitation}
-    river: ${tile.river}
-    temperature: ${tile.temperature}
-    totalPrecipitationPassedThroughTile: ${tile.totalPrecipitationPassedThroughTile}`
+    tileInfoDiv.innerText = `Biome: ${tile.biome}
+    Height: ${tile.height}
+    River Nearby: ${!!(tile.numOfRiversOnEdges)}
+    Current Precipitation: ${tile.precipitation}
+    River Passing Through Tile: ${tile.river}
+    Temperature: ${tile.temperature}
+    Total Precipitation Passed Through: ${tile.totalPrecipitationPassedThroughTile}`
 
     console.log("______________________________________");
     console.log("biome: ", tile.biome);
