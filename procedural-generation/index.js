@@ -2059,7 +2059,7 @@ canvas.addEventListener("click", (e) => {
     River Nearby: ${!!(tile.numOfRiversOnEdges)}
     Current Precipitation: ${tile.precipitation}
     River Passing Through Tile: ${tile.river}
-    Temperature: ${tile.temperature}
+    Temperature: ${tile.temperature}°C
     Total Precipitation Passed Through: ${tile.totalPrecipitationPassedThroughTile}`
 
     console.log("______________________________________");
