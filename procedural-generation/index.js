@@ -2055,7 +2055,7 @@ canvas.addEventListener("click", (e) => {
     let tile = mapGen.tiles[idx]
 
     tileInfoDiv.innerText = `Biome: ${tile.biome}
-    Height: ${tile.height}
+    Height: ${tile.height}0m
     River Nearby: ${!!(tile.numOfRiversOnEdges)}
     Current Precipitation: ${tile.precipitation}
     River Passing Through Tile: ${tile.river}
