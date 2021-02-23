@@ -1045,22 +1045,28 @@ class MapGenerator {
 
                 tile.numOfRiversOnEdges++;
 
-
+                // find out which is the river are on the edge
                 for (let i = 0; i < tile.neighbors.length; i++) {
                     let neighbor = this.getTile(tile.neighbors[i]);
                     let commonEdge = this.getEdgeBetweenTiles(tile, neighbor);
 
                     let nStr1 = `x${commonEdge[0][0]}y${commonEdge[0][1]}`;
                     let nStr2 = `x${commonEdge[1][0]}y${commonEdge[1][1]}`;
-                    // console.log(nStr1 === p1Str && nStr2 === p2Str)
+
                     let commonEdgeStr = nStr1 + nStr2;
                     if (commonEdgeStr === stepDir1 || commonEdgeStr === stepDir2) {
-                        tile.nearbyRivers.push(neighbor.river);
-                        neighbor.nearbyRivers.push(tile.river);
+                        if (neighbor.river) {
+                            if (!tile.nearbyRivers.find(el => el.idx === neighbor.river.idx)) {
+                                tile.nearbyRivers.push(neighbor.river);
+                            }
+                        }
+                        if (tile.river) {
+                            if (!neighbor.nearbyRivers.find(el => el.idx === tile.river.idx)) {
+                                neighbor.nearbyRivers.push(tile.river);
+                            }
+                        }
                     }
-
                 }
-
 
                 if (numOfEdges === tile.numOfRiversOnEdges) {
                     tilesSurroundedByRivers.push(+idx);
