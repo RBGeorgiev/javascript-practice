@@ -120,6 +120,7 @@ class Tile {
         this.totalPrecipitationPassedThroughTile = 0;
         this.river = null;
         this.numOfRiversOnEdges = 0;
+        this.nearbyRivers = [];
         this.temperature = 0;
         this.biome = null;
     }
@@ -143,6 +144,7 @@ class Tile {
     resetRiver = () => {
         this.river = null;
         this.numOfRiversOnEdges = 0;
+        this.nearbyRivers = [];
     }
 
     resetHeight = () => this.height = null;
@@ -1042,6 +1044,23 @@ class MapGenerator {
                 }
 
                 tile.numOfRiversOnEdges++;
+
+
+                for (let i = 0; i < tile.neighbors.length; i++) {
+                    let neighbor = this.getTile(tile.neighbors[i]);
+                    let commonEdge = this.getEdgeBetweenTiles(tile, neighbor);
+
+                    let nStr1 = `x${commonEdge[0][0]}y${commonEdge[0][1]}`;
+                    let nStr2 = `x${commonEdge[1][0]}y${commonEdge[1][1]}`;
+                    // console.log(nStr1 === p1Str && nStr2 === p2Str)
+                    let commonEdgeStr = nStr1 + nStr2;
+                    if (commonEdgeStr === stepDir1 || commonEdgeStr === stepDir2) {
+                        tile.nearbyRivers.push(neighbor.river);
+                        neighbor.nearbyRivers.push(tile.river);
+                    }
+
+                }
+
 
                 if (numOfEdges === tile.numOfRiversOnEdges) {
                     tilesSurroundedByRivers.push(+idx);
@@ -2057,6 +2076,7 @@ canvas.addEventListener("click", (e) => {
     tileInfoDiv.innerText = `Biome: ${tile.biome}
     Height: ${tile.height}0m
     River Nearby: ${!!(tile.numOfRiversOnEdges)}
+    Nearby Rivers: ${!!(tile.nearbyRivers)}
     Current Precipitation: ${tile.precipitation}
     River Passing Through Tile: ${tile.river}
     Temperature: ${tile.temperature}°C
@@ -2066,6 +2086,7 @@ canvas.addEventListener("click", (e) => {
     console.log("biome: ", tile.biome);
     console.log("height: ", tile.height);
     console.log("numOfRiversOnEdges: ", tile.numOfRiversOnEdges);
+    console.log("nearbyRivers: ", tile.nearbyRivers);
     console.log("precipitation: ", tile.precipitation);
     console.log("river: ", tile.river);
     console.log("temperature: ", tile.temperature);
