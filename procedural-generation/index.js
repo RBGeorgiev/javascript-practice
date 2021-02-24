@@ -1054,16 +1054,11 @@ class MapGenerator {
                     let nStr2 = `x${commonEdge[1][0]}y${commonEdge[1][1]}`;
 
                     let commonEdgeStr = nStr1 + nStr2;
+
+                    // if the common edge is the same edge the river uses
                     if (commonEdgeStr === stepDir1 || commonEdgeStr === stepDir2) {
                         if (neighbor.river) {
-                            if (!tile.nearbyRivers.find(el => el.idx === neighbor.river.idx)) {
-                                tile.nearbyRivers.push(neighbor.river);
-                            }
-                        }
-                        if (tile.river) {
-                            if (!neighbor.nearbyRivers.find(el => el.idx === tile.river.idx)) {
-                                neighbor.nearbyRivers.push(tile.river);
-                            }
+                            tile.nearbyRivers.push(neighbor.river);
                         }
                     }
                 }
