@@ -2072,12 +2072,25 @@ canvas.addEventListener("click", (e) => {
     let x = e.offsetX;
     let y = e.offsetY;
     let idx = mapGen.delaunay.find(x, y);
-    let tile = mapGen.tiles[idx]
+    let tile = mapGen.tiles[idx];
+
+    let riversRootsShown = {};
+    let nearbyRiversRoots = "";
+    for (let i = 0; i < tile.nearbyRivers.length; i++) {
+        let riverRoot = tile.nearbyRivers[i].getRoot();
+
+        if (!riversRootsShown[riverRoot.idx]) {
+            if (nearbyRiversRoots.length > 0) nearbyRiversRoots += ", ";
+            nearbyRiversRoots += riverRoot.idx;
+        }
+        riversRootsShown[riverRoot.idx] = 1;
+    }
 
     tileInfoDiv.innerText = `Biome: ${tile.biome}
     Height: ${tile.height}0m
     River Nearby: ${!!(tile.numOfRiversOnEdges)}
-    Nearby Rivers: ${!!(tile.nearbyRivers)}
+    Nearby Rivers: ${tile.nearbyRivers}
+    Nearby Rivers' Roots: ${nearbyRiversRoots}
     Current Precipitation: ${tile.precipitation}
     River Passing Through Tile: ${tile.river}
     Temperature: ${tile.temperature}°C
@@ -2088,6 +2101,7 @@ canvas.addEventListener("click", (e) => {
     console.log("height: ", tile.height);
     console.log("numOfRiversOnEdges: ", tile.numOfRiversOnEdges);
     console.log("nearbyRivers: ", tile.nearbyRivers);
+    console.log("nearbyRiversRoots: ", tile.nearbyRiversRoots);
     console.log("precipitation: ", tile.precipitation);
     console.log("river: ", tile.river);
     console.log("temperature: ", tile.temperature);
