@@ -2088,23 +2088,22 @@ canvas.addEventListener("click", (e) => {
 
     tileInfoDiv.innerText = `Biome: ${tile.biome}
     Height: ${tile.height}0m
+    Temperature: ${tile.temperature}°C
+    River Passing Through Tile: ${tile.river}
     River Nearby: ${!!(tile.numOfRiversOnEdges)}
-    Nearby Rivers: ${tile.nearbyRivers}
     Nearby Rivers' Roots: ${nearbyRiversRoots}
     Current Precipitation: ${tile.precipitation}
-    River Passing Through Tile: ${tile.river}
-    Temperature: ${tile.temperature}°C
     Total Precipitation Passed Through: ${tile.totalPrecipitationPassedThroughTile}`
 
     console.log("______________________________________");
     console.log("biome: ", tile.biome);
     console.log("height: ", tile.height);
+    console.log("temperature: ", tile.temperature);
+    console.log("river: ", tile.river);
     console.log("numOfRiversOnEdges: ", tile.numOfRiversOnEdges);
     console.log("nearbyRivers: ", tile.nearbyRivers);
     console.log("nearbyRiversRoots: ", tile.nearbyRiversRoots);
     console.log("precipitation: ", tile.precipitation);
-    console.log("river: ", tile.river);
-    console.log("temperature: ", tile.temperature);
     console.log("totalPrecipitationPassedThroughTile: ", tile.totalPrecipitationPassedThroughTile);
 })
 
