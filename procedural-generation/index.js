@@ -2089,7 +2089,8 @@ canvas.addEventListener("click", (e) => {
     tileInfoDiv.innerText = `Biome: ${tile.biome}
     Height: ${tile.height}0m
     Temperature: ${tile.temperature}°C
-    River Passing Through Tile: ${tile.river}
+    River Node Passing Through Tile: ${tile.river.idx}
+    River Node Passing Through Tile Root: ${tile.river.getRoot().idx}
     River Nearby: ${!!(tile.nearbyRivers.length)}
     Nearby Rivers' Roots: ${nearbyRiversRoots}
     Current Precipitation: ${tile.precipitation}
