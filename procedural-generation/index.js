@@ -2090,7 +2090,7 @@ canvas.addEventListener("click", (e) => {
     Height: ${tile.height}0m
     Temperature: ${tile.temperature}°C
     River Passing Through Tile: ${tile.river}
-    River Nearby: ${!!(tile.numOfRiversOnEdges)}
+    River Nearby: ${!!(tile.nearbyRivers.length)}
     Nearby Rivers' Roots: ${nearbyRiversRoots}
     Current Precipitation: ${tile.precipitation}
     Total Precipitation Passed Through: ${tile.totalPrecipitationPassedThroughTile}`
