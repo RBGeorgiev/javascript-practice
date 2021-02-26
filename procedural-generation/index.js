@@ -2074,16 +2074,13 @@ canvas.addEventListener("click", (e) => {
     let idx = mapGen.delaunay.find(x, y);
     let tile = mapGen.tiles[idx];
 
-    let riversRootsShown = {};
-    let nearbyRiversRoots = "";
+    let nearbyRiversRoots = [];
     for (let i = 0; i < tile.nearbyRivers.length; i++) {
         let riverRoot = tile.nearbyRivers[i].getRoot();
 
-        if (!riversRootsShown[riverRoot.idx]) {
-            if (nearbyRiversRoots.length > 0) nearbyRiversRoots += ", ";
-            nearbyRiversRoots += riverRoot.idx;
+        if (!nearbyRiversRoots.includes(riverRoot.idx)) {
+            nearbyRiversRoots.push(riverRoot.idx);
         }
-        riversRootsShown[riverRoot.idx] = 1;
     }
 
     tileInfoDiv.innerText = `Biome: ${tile.biome}
@@ -2091,8 +2088,9 @@ canvas.addEventListener("click", (e) => {
     Temperature: ${tile.temperature}°C
     River Node Passing Through Tile: ${(tile.river) ? tile.river.idx : "None"}
     River Node Passing Through Tile Root: ${(tile.river) ? tile.river.getRoot().idx : "None"}
-    River Nearby: ${!!(tile.nearbyRivers.length)}
+    Rivers Nearby: ${nearbyRiversRoots.length}
     Nearby Rivers' Roots: ${nearbyRiversRoots}
+    Tile Edges Used As Rivers: ${tile.numOfRiversOnEdges}
     Current Precipitation: ${tile.precipitation}
     Total Precipitation Passed Through: ${tile.totalPrecipitationPassedThroughTile}`
 
