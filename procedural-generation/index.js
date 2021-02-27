@@ -2091,6 +2091,7 @@ canvas.addEventListener("click", (e) => {
     Rivers Nearby: ${nearbyRiversRoots.length}
     Nearby Rivers' Roots: ${nearbyRiversRoots}
     Tile Edges Used As Rivers: ${tile.numOfRiversOnEdges}
+    Total Number Of Tile Edges: ${tile.polygon.length - 1}
     Current Precipitation: ${tile.precipitation}
     Total Precipitation Passed Through: ${tile.totalPrecipitationPassedThroughTile}`
 
