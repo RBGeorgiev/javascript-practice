@@ -2074,12 +2074,14 @@ canvas.addEventListener("click", (e) => {
     let idx = mapGen.delaunay.find(x, y);
     let tile = mapGen.tiles[idx];
 
+    let nearbyRiversRootsIndices = [];
     let nearbyRiversRoots = [];
     for (let i = 0; i < tile.nearbyRivers.length; i++) {
         let riverRoot = tile.nearbyRivers[i].getRoot();
 
-        if (!nearbyRiversRoots.includes(riverRoot.idx)) {
-            nearbyRiversRoots.push(riverRoot.idx);
+        if (!nearbyRiversRootsIndices.includes(riverRoot.idx)) {
+            nearbyRiversRootsIndices.push(riverRoot.idx);
+            nearbyRiversRoots.push(riverRoot);
         }
     }
 
@@ -2088,23 +2090,25 @@ canvas.addEventListener("click", (e) => {
     Temperature: ${tile.temperature}°C
     River Node Passing Through Tile: ${(tile.river) ? tile.river.idx : "None"}
     River Node Passing Through Tile Root: ${(tile.river) ? tile.river.getRoot().idx : "None"}
-    Rivers Nearby: ${nearbyRiversRoots.length}
-    Nearby Rivers' Roots: ${nearbyRiversRoots}
+    Rivers Nearby: ${nearbyRiversRootsIndices.length}
+    Nearby Rivers' Roots: ${nearbyRiversRootsIndices}    
     Tile Edges Used As Rivers: ${tile.numOfRiversOnEdges}
     Total Number Of Tile Edges: ${tile.polygon.length - 1}
     Current Precipitation: ${tile.precipitation}
     Total Precipitation Passed Through: ${tile.totalPrecipitationPassedThroughTile}`
 
     console.log("______________________________________");
-    console.log("biome: ", tile.biome);
-    console.log("height: ", tile.height);
-    console.log("temperature: ", tile.temperature);
-    console.log("river: ", tile.river);
-    console.log("numOfRiversOnEdges: ", tile.numOfRiversOnEdges);
-    console.log("nearbyRivers: ", tile.nearbyRivers);
-    console.log("nearbyRiversRoots: ", tile.nearbyRiversRoots);
-    console.log("precipitation: ", tile.precipitation);
-    console.log("totalPrecipitationPassedThroughTile: ", tile.totalPrecipitationPassedThroughTile);
+    console.log("Biome: ", tile.biome);
+    console.log("Height: ", tile.height);
+    console.log("Temperature: ", tile.temperature);
+    console.log("River Node Passing Through Tile: ", tile.river);
+    console.log("River Node Passing Through Tile Root: ", tile.river.getRoot());
+    console.log("Adjacent Neighbor Tile Rivers: ", tile.nearbyRivers);
+    console.log("Nearby Rivers' Roots: ", nearbyRiversRoots);
+    console.log("Tile Edges Used As Rivers:: ", tile.numOfRiversOnEdges);
+    console.log("Total Number Of Tile Edges: ", tile.polygon.length - 1);
+    console.log("Current Precipitation: ", tile.precipitation);
+    console.log("Total Precipitation Passed Through: ", tile.totalPrecipitationPassedThroughTile);
 })
 
 // Chaparral = Desert scrub
