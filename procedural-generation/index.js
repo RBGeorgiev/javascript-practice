@@ -2091,7 +2091,7 @@ canvas.addEventListener("click", (e) => {
     River Node Passing Through Tile: ${(tile.river) ? tile.river.idx : "None"}
     River Node Passing Through Tile Root: ${(tile.river) ? tile.river.getRoot().idx : "None"}
     Rivers Nearby: ${nearbyRiversRootsIndices.length}
-    Nearby Rivers' Roots: ${nearbyRiversRootsIndices}    
+    Nearby Rivers' Roots: ${nearbyRiversRootsIndices}
     Tile Edges Used As Rivers: ${tile.numOfRiversOnEdges}
     Total Number Of Tile Edges: ${tile.polygon.length - 1}
     Current Precipitation: ${tile.precipitation}
@@ -2101,8 +2101,8 @@ canvas.addEventListener("click", (e) => {
     console.log("Biome: ", tile.biome);
     console.log("Height: ", tile.height);
     console.log("Temperature: ", tile.temperature);
-    console.log("River Node Passing Through Tile: ", tile.river);
-    console.log("River Node Passing Through Tile Root: ", tile.river.getRoot());
+    console.log("River Node Passing Through Tile: ", (tile.river) ? tile.river.idx : "None");
+    console.log("River Node Passing Through Tile Root: ", (tile.river) ? tile.river.getRoot().idx : "None");
     console.log("Adjacent Neighbor Tile Rivers: ", tile.nearbyRivers);
     console.log("Nearby Rivers' Roots: ", nearbyRiversRoots);
     console.log("Tile Edges Used As Rivers:: ", tile.numOfRiversOnEdges);
