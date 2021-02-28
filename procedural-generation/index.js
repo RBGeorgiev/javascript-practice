@@ -277,8 +277,8 @@ class MapGenerator {
         this.windSpeed = 20; // km/h // Beaufort wind force scale // important value
         this.heightPrecipitationMultiplier = .2; // important value
 
-        this.precipitationForRiverMin = 20; // important value
-        this.precipitationForRiverMax = 100; // important value
+        this.precipitationForRiverMin = 100; // important value
+        this.precipitationForRiverMax = 200; // important value
 
         this.precipitationForLakeMin = 100; // important value
         this.precipitationForLakeMax = 500; // important value
