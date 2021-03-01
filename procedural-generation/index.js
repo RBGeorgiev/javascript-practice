@@ -803,6 +803,11 @@ class MapGenerator {
             }
 
             if (tile.precipitation > this.precipitationForRiverMin) {
+                // chance to not make a river to simulate poor drainage
+                let shouldMakeRiver = (tile.precipitation > this.precipitationForRiverMax) ? true : (this.randRange() > 0.1);
+                if (!shouldMakeRiver) continue;
+
+                // calculate how much water is moved between tiles and create river
                 let precipitationForRiverUpperBound = (tile.precipitation > this.precipitationForRiverMax) ? this.precipitationForRiverMax : tile.precipitation;
                 let precipitationForRiverLeftInTile = Math.round(this.randRange(this.precipitationForRiverMin, precipitationForRiverUpperBound));
                 let flowAmount = tile.precipitation - precipitationForRiverLeftInTile;
