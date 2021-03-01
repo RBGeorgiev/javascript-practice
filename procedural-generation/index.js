@@ -1117,7 +1117,7 @@ class MapGenerator {
     checkForSpecialBiome = (biome, temp, humidity, tile) => {
         let tilesSurroundedByRivers = this.tilesSurroundedByRivers;
         let specialBiomes = {
-            "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 4 && humidity <= 7)],
+            "BOG": [!tilesSurroundedByRivers.some(el => el === tile.idx), tile.river === null, (temp >= 1 && temp <= 3), (humidity >= 6 && humidity <= 7)],
             "ELFIN_WOODLAND": [tile.height >= 60, (temp >= 5 && temp <= 7), (humidity >= 5 && humidity <= 6), this.rng() < 0.7],
             "FEN": [tilesSurroundedByRivers.some(el => el === tile.idx), (temp >= 1 && temp <= 3), (humidity >= 2 && humidity <= 5)],
             "MARSH": [tile.river, tile.numOfRiversOnEdges >= 3, (temp >= 3 && temp <= 5), (humidity >= 4 && humidity <= 6), this.rng() < 0.5],
