@@ -286,7 +286,7 @@ class MapGenerator {
 
         this.riverWidthMax = 10 / (this.numOfPoints / 1000);
         this.riverWidthMin = 1;
-        this.riverWidthDistanceStrengthControl = 10;
+        this.riverWidthDistanceStrengthControl = 100;
 
 
         this.initialPeakHeight = 100;
@@ -1589,7 +1589,7 @@ class MapGenerator {
                         normalizedDist = 0.9;
                     }
 
-                    let distWidth = this.riverWidthMax - Math.round(normalizedDist * this.riverWidthDistanceStrengthControl);
+                    let distWidth = this.riverWidthMax - Math.round(normalizedDist * (this.numOfPoints / this.riverWidthDistanceStrengthControl));
                     if (distWidth < this.riverWidthMin) distWidth = this.riverWidthMin;
 
                     // get width based on precipitation left in tile
