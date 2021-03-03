@@ -262,9 +262,9 @@ class MapGenerator {
         this.chanceForLand = 0.5; // important value
 
         // the lower the MIN number is, the higher the chance for a sharp drop in height 
-        this.heightDecrementMin = 50; // important value
+        this.heightDecrementMin = 30; // important value
         // if MAX number higher than 100 there is a chance for height increase
-        this.heightDecrementMax = 100; // important value
+        this.heightDecrementMax = 120; // important value
 
         this.minAllowedTemp = -40;
         this.maxAllowedTemp = 55;
@@ -280,8 +280,8 @@ class MapGenerator {
         this.precipitationForRiverMin = 100; // important value
         this.precipitationForRiverMax = 200; // important value
 
-        this.precipitationForLakeMin = 100; // important value
-        this.precipitationForLakeMax = 500; // important value
+        this.precipitationForLakeMin = 200; // important value
+        this.precipitationForLakeMax = 600; // important value
         this.lakeHeightPrecipitationMultiplier = 7; // important value
 
         this.riverWidthMax = 10 / (this.numOfPoints / 1000);
