@@ -280,7 +280,7 @@ class MapGenerator {
         this.precipitationForRiverMin = 100; // important value
         this.precipitationForRiverMax = 200; // important value
 
-        this.precipitationForLakeMin = 200; // important value
+        this.precipitationForLakeMin = 300; // important value
         this.precipitationForLakeMax = 600; // important value
         this.lakeHeightPrecipitationMultiplier = 7; // important value
 
