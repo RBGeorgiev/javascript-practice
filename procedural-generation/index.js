@@ -264,7 +264,7 @@ class MapGenerator {
         this.chanceForLand = 0.5; // important value
 
         this.initialPeakHeight = 100;  // important value
-        this.maxAllowedHeight = 80; // important value
+        this.maxAllowedHeight = 30; // important value
 
         // the lower the MIN number is, the higher the chance for a sharp drop in height 
         this.heightDecrementMin = 30; // important value
@@ -348,15 +348,15 @@ class MapGenerator {
     }
 
     setTilesHeight = () => {
-        this.highestPeak = this.initialPeakHeight;
-        this.deepestDepth = -this.initialPeakHeight;
-
         let randTiles = this.getRandomTiles(this.numberOfRandomInitialPeaksOrTrenchesMin, this.numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
             let dir = (this.rng() < this.chanceForLand) ? 1 : -1;
             let tileHeight = dir * this.initialPeakHeight
             if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
             tile.setHeight(tileHeight);
+
+            if (tile.height > this.highestPeak) this.highestPeak = tile.height;
+            if (tile.height < this.deepestDepth) this.deepestDepth = tile.height;
         });
         let queue = [
             ...randTiles
