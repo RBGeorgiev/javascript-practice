@@ -263,6 +263,9 @@ class MapGenerator {
         this.numberOfRandomInitialPeaksOrTrenchesMax = 15; // important value
         this.chanceForLand = 0.5; // important value
 
+        this.initialPeakHeight = 100;  // important value
+        this.maxAllowedHeight = 80; // important value
+
         // the lower the MIN number is, the higher the chance for a sharp drop in height 
         this.heightDecrementMin = 30; // important value
         // if MAX number higher than 100 there is a chance for height increase
@@ -291,7 +294,6 @@ class MapGenerator {
         this.riverWidthDistanceStrengthControl = 100;
 
 
-        this.initialPeakHeight = 100;  // important value
         this.highestPeak = 0;
         this.deepestDepth = 0;
         this.longestRiverLength = 0;
@@ -352,7 +354,9 @@ class MapGenerator {
         let randTiles = this.getRandomTiles(this.numberOfRandomInitialPeaksOrTrenchesMin, this.numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
             let dir = (this.rng() < this.chanceForLand) ? 1 : -1;
-            tile.setHeight(dir * this.initialPeakHeight)
+            let tileHeight = dir * this.initialPeakHeight
+            if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
+            tile.setHeight(tileHeight);
         });
         let queue = [
             ...randTiles
@@ -369,7 +373,10 @@ class MapGenerator {
             for (let i = 0; i < neighbors.length; i++) {
                 let n = this.getTile(neighbors[i]);
                 if (n.height === null) {
-                    n.height = Math.round(curHeight * decrement);
+                    let tileHeight = Math.round(curHeight * decrement);
+                    if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
+                    n.setHeight(tileHeight);
+
                     queue.push(n);
                     if (n.height > this.highestPeak) this.highestPeak = n.height;
                     if (n.height < this.deepestDepth) this.deepestDepth = n.height;
