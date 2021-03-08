@@ -265,6 +265,7 @@ class MapGenerator {
 
         this.initialPeakHeight = 100;  // important value
         this.maxAllowedHeight = 30; // important value
+        this.maxAllowedDepth = -30; // important value
 
         // the lower the MIN number is, the higher the chance for a sharp drop in height 
         this.heightDecrementMin = 30; // important value
@@ -353,6 +354,7 @@ class MapGenerator {
             let dir = (this.rng() < this.chanceForLand) ? 1 : -1;
             let tileHeight = dir * this.initialPeakHeight
             if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
+            if (tileHeight < this.maxAllowedDepth) tileHeight = this.maxAllowedDepth;
             tile.setHeight(tileHeight);
 
             if (tile.height > this.highestPeak) this.highestPeak = tile.height;
@@ -375,6 +377,7 @@ class MapGenerator {
                 if (n.height === null) {
                     let tileHeight = Math.round(curHeight * decrement);
                     if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
+                    if (tileHeight < this.maxAllowedDepth) tileHeight = this.maxAllowedDepth;
                     n.setHeight(tileHeight);
 
                     queue.push(n);
