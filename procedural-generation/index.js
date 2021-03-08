@@ -348,17 +348,22 @@ class MapGenerator {
         return randTiles;
     }
 
-    setTilesHeight = () => {
+    setTileHeight = (tile, tileHeight) => {
+        if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
+        if (tileHeight < this.maxAllowedDepth) tileHeight = this.maxAllowedDepth;
+
+        tile.setHeight(tileHeight);
+
+        if (tile.height > this.highestPeak) this.highestPeak = tile.height;
+        if (tile.height < this.deepestDepth) this.deepestDepth = tile.height;
+    }
+
+    defineTilesHeight = () => {
         let randTiles = this.getRandomTiles(this.numberOfRandomInitialPeaksOrTrenchesMin, this.numberOfRandomInitialPeaksOrTrenchesMax);
         randTiles.forEach(tile => {
             let dir = (this.rng() < this.chanceForLand) ? 1 : -1;
-            let tileHeight = dir * this.initialPeakHeight
-            if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
-            if (tileHeight < this.maxAllowedDepth) tileHeight = this.maxAllowedDepth;
-            tile.setHeight(tileHeight);
-
-            if (tile.height > this.highestPeak) this.highestPeak = tile.height;
-            if (tile.height < this.deepestDepth) this.deepestDepth = tile.height;
+            let tileHeight = dir * this.initialPeakHeight;
+            this.setTileHeight(tile, tileHeight);
         });
         let queue = [
             ...randTiles
@@ -376,13 +381,8 @@ class MapGenerator {
                 let n = this.getTile(neighbors[i]);
                 if (n.height === null) {
                     let tileHeight = Math.round(curHeight * decrement);
-                    if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
-                    if (tileHeight < this.maxAllowedDepth) tileHeight = this.maxAllowedDepth;
-                    n.setHeight(tileHeight);
-
+                    this.setTileHeight(n, tileHeight);
                     queue.push(n);
-                    if (n.height > this.highestPeak) this.highestPeak = n.height;
-                    if (n.height < this.deepestDepth) this.deepestDepth = n.height;
                 }
             }
         }
@@ -637,7 +637,7 @@ class MapGenerator {
         this.resetTileTypes();
         this.resetCoastline();
 
-        this.setTilesHeight();
+        this.defineTilesHeight();
         this.determineCoastline();
         this.initCanvasPartitions();
     }
