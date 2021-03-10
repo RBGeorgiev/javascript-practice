@@ -33,6 +33,8 @@ import {
     lakeHeightPrecipitationMultiplierInput,
     initialPeakHeightSpan,
     initialPeakHeightInput,
+    maxAllowedHeightSpan,
+    maxAllowedHeightInput,
     heightDecrementMinSpan,
     heightDecrementMinInput,
     heightDecrementMaxSpan,
@@ -1974,6 +1976,16 @@ initialPeakHeightInput.oninput = (e) => {
     initialPeakHeightSpan.innerText = val + '0m';
 
     mapGen.initialPeakHeight = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
+}
+
+maxAllowedHeightInput.oninput = (e) => {
+    let val = +e.target.value;
+    maxAllowedHeightSpan.innerText = val + '0m';
+
+    mapGen.maxAllowedHeight = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
