@@ -35,6 +35,8 @@ import {
     initialPeakHeightInput,
     maxAllowedHeightSpan,
     maxAllowedHeightInput,
+    maxAllowedDepthSpan,
+    maxAllowedDepthInput,
     heightDecrementMinSpan,
     heightDecrementMinInput,
     heightDecrementMaxSpan,
@@ -1986,6 +1988,16 @@ maxAllowedHeightInput.oninput = (e) => {
     maxAllowedHeightSpan.innerText = val + '0m';
 
     mapGen.maxAllowedHeight = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
+}
+
+maxAllowedDepthInput.oninput = (e) => {
+    let val = +e.target.value;
+    maxAllowedDepthSpan.innerText = val + '0m';
+
+    mapGen.maxAllowedDepth = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
