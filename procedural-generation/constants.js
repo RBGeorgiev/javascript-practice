@@ -46,6 +46,7 @@ export const lakeHeightPrecipitationMultiplierInput = id('lakeHeightPrecipitatio
 
 export const initialPeakHeightSpan = id('initialPeakHeightSpan');
 export const initialPeakHeightInput = id('initialPeakHeightInput');
+export const limitHeightCheckbox = id('limitHeightCheckbox');
 export const maxAllowedHeightSpan = id('maxAllowedHeightSpan');
 export const maxAllowedHeightInput = id('maxAllowedHeightInput');
 export const maxAllowedDepthSpan = id('maxAllowedDepthSpan');
