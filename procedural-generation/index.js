@@ -33,6 +33,7 @@ import {
     lakeHeightPrecipitationMultiplierInput,
     initialPeakHeightSpan,
     initialPeakHeightInput,
+    limitHeightCheckbox,
     maxAllowedHeightSpan,
     maxAllowedHeightInput,
     maxAllowedDepthSpan,
@@ -1981,6 +1982,14 @@ initialPeakHeightInput.oninput = (e) => {
     initialPeakHeightSpan.innerText = val + '0m';
 
     mapGen.initialPeakHeight = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
+}
+
+limitHeightCheckbox.oninput = (e) => {
+    mapGen.limitHeightAndDepth = e.target.checked;
+
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
