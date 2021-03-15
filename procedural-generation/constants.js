@@ -49,6 +49,7 @@ export const initialPeakHeightInput = id('initialPeakHeightInput');
 export const limitHeightCheckbox = id('limitHeightCheckbox');
 export const maxAllowedHeightSpan = id('maxAllowedHeightSpan');
 export const maxAllowedHeightInput = id('maxAllowedHeightInput');
+export const limitDepthCheckbox = id('limitHeightCheckbox');
 export const maxAllowedDepthSpan = id('maxAllowedDepthSpan');
 export const maxAllowedDepthInput = id('maxAllowedDepthInput');
 
