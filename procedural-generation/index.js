@@ -269,7 +269,8 @@ class MapGenerator {
         this.chanceForLand = 0.5; // important value
 
         this.initialPeakHeight = 100;  // important value
-        this.limitHeightAndDepth = false; // important value
+        this.limitHeight = false; // important value
+        this.limitDepth = false // important value
         this.maxAllowedHeight = 30; // important value
         this.maxAllowedDepth = -30; // important value
 
@@ -355,8 +356,10 @@ class MapGenerator {
     }
 
     setTileHeight = (tile, tileHeight) => {
-        if (this.limitHeightAndDepth) {
+        if (this.limitHeight) {
             if (tileHeight > this.maxAllowedHeight) tileHeight = this.maxAllowedHeight;
+        }
+        if (this.limitDepth) {
             if (tileHeight < this.maxAllowedDepth) tileHeight = this.maxAllowedDepth;
         }
 
