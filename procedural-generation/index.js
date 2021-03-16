@@ -36,6 +36,7 @@ import {
     limitHeightCheckbox,
     maxAllowedHeightSpan,
     maxAllowedHeightInput,
+    limitDepthCheckbox,
     maxAllowedDepthSpan,
     maxAllowedDepthInput,
     heightDecrementMinSpan,
@@ -1991,7 +1992,7 @@ initialPeakHeightInput.oninput = (e) => {
 }
 
 limitHeightCheckbox.oninput = (e) => {
-    mapGen.limitHeightAndDepth = e.target.checked;
+    mapGen.limitHeight = e.target.checked;
 
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 
@@ -2003,6 +2004,14 @@ maxAllowedHeightInput.oninput = (e) => {
     maxAllowedHeightSpan.innerText = val + '0m';
 
     mapGen.maxAllowedHeight = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
+}
+
+limitDepthCheckbox.oninput = (e) => {
+    mapGen.limitDepth = e.target.checked;
+
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
