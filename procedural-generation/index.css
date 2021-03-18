@@ -46,4 +46,6 @@ body {
 .dropdown {
     grid-column-start: 1;
     grid-column-end: 3;
+    height: 0px;
+    overflow: hidden;
 }
