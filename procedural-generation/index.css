@@ -42,3 +42,8 @@ body {
 .optionInputsContainer>label {
     justify-self: end;
 }
+
+.dropdown {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
