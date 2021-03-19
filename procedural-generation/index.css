@@ -49,3 +49,7 @@ body {
     height: 0px;
     overflow: hidden;
 }
+
+.dropdown-expanded {
+    height: 100%;
+}
