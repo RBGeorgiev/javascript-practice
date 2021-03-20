@@ -33,6 +33,7 @@ import {
     lakeHeightPrecipitationMultiplierInput,
     initialPeakHeightSpan,
     initialPeakHeightInput,
+    maxAllowedHeightExpandContainer,
     limitHeightCheckbox,
     maxAllowedHeightSpan,
     maxAllowedHeightInput,
@@ -1995,6 +1996,7 @@ limitHeightCheckbox.oninput = (e) => {
     mapGen.limitHeight = e.target.checked;
 
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    maxAllowedHeightExpandContainer.classList.toggle("dropdown-expanded");
 
     updateHtmlDisplayedValues();
 }
