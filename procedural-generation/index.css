@@ -48,6 +48,7 @@ body {
     grid-column-end: 3;
     height: 0px;
     overflow: hidden;
+    transition: all .3s;
 }
 
 .dropdown-expanded {
