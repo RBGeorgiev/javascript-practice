@@ -37,6 +37,7 @@ import {
     limitHeightCheckbox,
     maxAllowedHeightSpan,
     maxAllowedHeightInput,
+    maxAllowedDepthExpandContainer,
     limitDepthCheckbox,
     maxAllowedDepthSpan,
     maxAllowedDepthInput,
@@ -2015,6 +2016,7 @@ limitDepthCheckbox.oninput = (e) => {
     mapGen.limitDepth = e.target.checked;
 
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    maxAllowedDepthExpandContainer.classList.toggle("dropdown-expanded");
 
     updateHtmlDisplayedValues();
 }
