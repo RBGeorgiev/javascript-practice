@@ -259,6 +259,7 @@ class MapGenerator {
         this.allPoints;
         this.delaunay;
         this.voronoi;
+        this.lloydRelaxationTimes = 5;
         this.allVoronoiPolygonPoints;
         this.tiles = [];
         this.landTiles = {};
@@ -523,8 +524,7 @@ class MapGenerator {
 
     defineTileset = () => {
         this.allPoints = this.generateRandomPoints(this.numOfPoints);
-        let lloydRelaxationTimes = 5;
-        this.initVoronoi(this.allPoints, lloydRelaxationTimes);
+        this.initVoronoi(this.allPoints, this.lloydRelaxationTimes);
         this.initTiles(this.allPoints);
     }
 
