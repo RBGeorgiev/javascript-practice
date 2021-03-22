@@ -508,9 +508,9 @@ class MapGenerator {
         return points;
     }
 
-    initVoronoi = (points) => {
+    initVoronoi = (points, lloydRelaxationTimes = 5) => {
         this.createVoronoi(points);
-        this.relaxVoronoi(5);
+        this.relaxVoronoi(lloydRelaxationTimes);
     }
 
     initTiles = (points) => {
@@ -523,7 +523,8 @@ class MapGenerator {
 
     defineTileset = () => {
         this.allPoints = this.generateRandomPoints(this.numOfPoints);
-        this.initVoronoi(this.allPoints);
+        let lloydRelaxationTimes = 5;
+        this.initVoronoi(this.allPoints, lloydRelaxationTimes);
         this.initTiles(this.allPoints);
     }
 
