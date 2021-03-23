@@ -67,6 +67,8 @@ export const numberOfRandomInitialPeaksOrTrenchesMinSpan = id('numberOfRandomIni
 export const numberOfRandomInitialPeaksOrTrenchesMinInput = id('numberOfRandomInitialPeaksOrTrenchesMinInput');
 export const numberOfRandomInitialPeaksOrTrenchesMaxSpan = id('numberOfRandomInitialPeaksOrTrenchesMaxSpan');
 export const numberOfRandomInitialPeaksOrTrenchesMaxInput = id('numberOfRandomInitialPeaksOrTrenchesMaxInput');
+export const lloydRelaxationTimesSpan = id('lloydRelaxationTimesSpan');
+export const lloydRelaxationTimesInput = id('lloydRelaxationTimesInput');
 
 export const showHeightmapCheckbox = id('showHeightmapCheckbox');
 export const grayscaleHeightmapCheckbox = id('grayscaleHeightmapCheckbox');
