@@ -51,6 +51,8 @@ import {
     numberOfRandomInitialPeaksOrTrenchesMinInput,
     numberOfRandomInitialPeaksOrTrenchesMaxSpan,
     numberOfRandomInitialPeaksOrTrenchesMaxInput,
+    lloydRelaxationTimesSpan,
+    lloydRelaxationTimesInput,
     showHeightmapCheckbox,
     grayscaleHeightmapCheckbox,
     drawBiomesDelaunayStyleCheckbox,
@@ -2077,6 +2079,16 @@ numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
     numberOfRandomInitialPeaksOrTrenchesMaxSpan.innerText = val;
 
     mapGen.numberOfRandomInitialPeaksOrTrenchesMax = val;
+    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+
+    updateHtmlDisplayedValues();
+}
+
+lloydRelaxationTimesInput.oninput = (e) => {
+    let val = +e.target.value;
+    lloydRelaxationTimesSpan.innerText = val;
+
+    mapGen.lloydRelaxationTimes = val;
     mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
