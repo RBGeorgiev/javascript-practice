@@ -2089,7 +2089,7 @@ lloydRelaxationTimesInput.oninput = (e) => {
     lloydRelaxationTimesSpan.innerText = val;
 
     mapGen.lloydRelaxationTimes = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.run();
 
     updateHtmlDisplayedValues();
 }
