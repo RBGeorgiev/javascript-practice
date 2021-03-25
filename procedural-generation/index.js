@@ -1991,7 +1991,7 @@ initialPeakHeightInput.oninput = (e) => {
     initialPeakHeightSpan.innerText = val + '0m';
 
     mapGen.initialPeakHeight = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
@@ -1999,7 +1999,7 @@ initialPeakHeightInput.oninput = (e) => {
 limitHeightCheckbox.oninput = (e) => {
     mapGen.limitHeight = e.target.checked;
 
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
     maxAllowedHeightExpandContainer.classList.toggle("dropdown-expanded");
 
     updateHtmlDisplayedValues();
@@ -2010,7 +2010,7 @@ maxAllowedHeightInput.oninput = (e) => {
     maxAllowedHeightSpan.innerText = val + '0m';
 
     mapGen.maxAllowedHeight = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
@@ -2018,7 +2018,7 @@ maxAllowedHeightInput.oninput = (e) => {
 limitDepthCheckbox.oninput = (e) => {
     mapGen.limitDepth = e.target.checked;
 
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
     maxAllowedDepthExpandContainer.classList.toggle("dropdown-expanded");
 
     updateHtmlDisplayedValues();
@@ -2029,7 +2029,7 @@ maxAllowedDepthInput.oninput = (e) => {
     maxAllowedDepthSpan.innerText = val + '0m';
 
     mapGen.maxAllowedDepth = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
@@ -2039,7 +2039,7 @@ heightDecrementMinInput.oninput = (e) => {
     heightDecrementMinSpan.innerText = val;
 
     mapGen.heightDecrementMin = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
@@ -2049,7 +2049,7 @@ heightDecrementMaxInput.oninput = (e) => {
     heightDecrementMaxSpan.innerText = val;
 
     mapGen.heightDecrementMax = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
@@ -2059,7 +2059,7 @@ chanceForLandInput.oninput = (e) => {
     chanceForLandSpan.innerText = val;
 
     mapGen.chanceForLand = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
@@ -2069,7 +2069,7 @@ numberOfRandomInitialPeaksOrTrenchesMinInput.oninput = (e) => {
     numberOfRandomInitialPeaksOrTrenchesMinSpan.innerText = val;
 
     mapGen.numberOfRandomInitialPeaksOrTrenchesMin = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
@@ -2079,7 +2079,7 @@ numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
     numberOfRandomInitialPeaksOrTrenchesMaxSpan.innerText = val;
 
     mapGen.numberOfRandomInitialPeaksOrTrenchesMax = val;
-    mapGen.changeMapTerrain(mapGen.oceanTileWaterVapor);
+    mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
 }
