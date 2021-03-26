@@ -83,3 +83,6 @@ export const displayTileHeightValuesRadioBtn = id('displayTileHeightValuesRadioB
 export const displayTileTemperatureValuesRadioBtn = id('displayTileTemperatureValuesRadioBtn');
 export const displayTileCurrentPrecipitationValuesRadioBtn = id('displayTileCurrentPrecipitationValuesRadioBtn');
 export const displayTileTotalPrecipitationValuesRadioBtn = id('displayTileTotalPrecipitationValuesRadioBtn');
+
+
+export const drawMethodsOptionsContainer = id('drawMethodsOptionsContainer');
