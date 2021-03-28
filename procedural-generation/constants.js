@@ -86,3 +86,4 @@ export const displayTileTotalPrecipitationValuesRadioBtn = id('displayTileTotalP
 
 
 export const drawMethodsContainer = id('drawMethodsContainer');
+export const extraOptionsContainer = id('extraOptionsContainer');
