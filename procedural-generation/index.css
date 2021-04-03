@@ -32,18 +32,14 @@ body {
     margin: auto;
 }
 
-.optionInputsContainer {
+.optionsInputsContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 600px;
     margin: auto;
 }
 
-.optionInputsContainer>label {
-    justify-self: end;
-}
-
-.dropdown {
+.optionsContainer.dropdown>div {
     grid-column-start: 1;
     grid-column-end: 3;
     height: 0px;
@@ -51,6 +47,10 @@ body {
     transition: all .3s;
 }
 
-.dropdown-expanded {
+.optionsContainer.dropdown-expanded>div {
     height: 100%;
+}
+
+.optionInputsContainer>label {
+    justify-self: end;
 }

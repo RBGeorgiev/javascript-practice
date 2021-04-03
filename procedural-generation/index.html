@@ -26,23 +26,25 @@
     <div>
         <h2>Options</h2>
 
-        <h3>Map Options</h3>
-        <div id="mapOptionsContainer" class="dropdown">
-            <button id="randomSeedBtn" type="button">Generate random seed</button>
-            <label id="seedLabel">
-                Seed: <input type="number" id="seedInput" value="2546076188">
-            </label>
-            <button id="runMapGenBtn" type="button">Run</button>
-            <button id="changeMapTerrainBtn" type="button">Change Map Terrain</button>
-            <label id="numOfTilesLabel">
-                Number of tiles: <span id="numOfTilesSpan">1000</span>
-                <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
-            </label>
+        <div class="optionsContainer dropdown">
+            <h3>Map Options</h3>
+            <div id="mapOptionsContainer">
+                <button id="randomSeedBtn" type="button">Generate random seed</button>
+                <label id="seedLabel">
+                    Seed: <input type="number" id="seedInput" value="2546076188">
+                </label>
+                <button id="runMapGenBtn" type="button">Run</button>
+                <button id="changeMapTerrainBtn" type="button">Change Map Terrain</button>
+                <label id="numOfTilesLabel">
+                    Number of tiles: <span id="numOfTilesSpan">1000</span>
+                    <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
+                </label>
+            </div>
         </div>
 
-        <div>
+        <div class="optionsContainer dropdown">
             <h3>Climate Controls</h3>
-            <div id="climateOptionsContainer" class="optionInputsContainer dropdown">
+            <div id="climateOptionsContainer" class="optionsInputsContainer">
                 <label id="temperatureLabel" for="temperatureInput">Sea Level Temperature: <span
                         id="temperatureSpan">14</span>°C</label>
                 <input type="range" id="temperatureInput" min="11" max="55" value="14">
@@ -65,11 +67,11 @@
             </div>
         </div>
 
-        <div>
+        <div class="optionsContainer dropdown">
             <h3>
                 Precipitation Options
             </h3>
-            <div id="precipitationOptionsContainer" class="optionInputsContainer dropdown">
+            <div id="precipitationOptionsContainer" class="optionsInputsContainer">
                 <label id="precipitationForRiverMinLabel" for="precipitationForRiverMinInput">Minimum Precipitation For
                     River: <span id="precipitationForRiverMinSpan">100</span></label>
                 <input type="range" id="precipitationForRiverMinInput" min="20" max="200" value="100">
@@ -91,11 +93,11 @@
             </div>
         </div>
 
-        <div>
+        <div class="optionsContainer dropdown">
             <h3>
                 Extra Options
             </h3>
-            <div id="extraOptionsContainer" class="optionInputsContainer dropdown">
+            <div id="extraOptionsContainer" class="optionsInputsContainer">
                 <label id="initialPeakHeightLabel" for="initialPeakHeightInput">Initial Peak Height: <span
                         id="initialPeakHeightSpan">1000m</span></label>
                 <input type="range" id="initialPeakHeightInput" min="0" max="1000" value="100">
@@ -103,7 +105,7 @@
                 <label id="limitHeightLabel" for="limitHeightCheckbox">Limit Height</label>
                 <input type="checkbox" id="limitHeightCheckbox">
 
-                <div id="maxAllowedHeightExpandContainer" class="dropdown optionInputsContainer">
+                <div id="maxAllowedHeightExpandContainer" class="optionsInputsContainer">
                     <label id="maxAllowedHeightLabel" for="maxAllowedHeightInput">Maximum Allowed Height: <span
                             id="maxAllowedHeightSpan">300m</span></label>
                     <input type="range" id="maxAllowedHeightInput" min="1" max="1000" value="30">
@@ -112,7 +114,7 @@
                 <label id="limitDepthLabel" for="limitDepthCheckbox">Limit Depth</label>
                 <input type="checkbox" id="limitDepthCheckbox">
 
-                <div id="maxAllowedDepthExpandContainer" class="dropdown optionInputsContainer">
+                <div id="maxAllowedDepthExpandContainer" class="optionsInputsContainer">
                     <label id="maxAllowedDepthLabel" for="maxAllowedDepthInput">Maximum Allowed Depth: <span
                             id="maxAllowedDepthSpan">-300m</span></label>
                     <input type="range" id="maxAllowedDepthInput" min="-1000" max="-1" value="-30">
@@ -120,11 +122,11 @@
             </div>
         </div>
 
-        <div>
+        <div class="optionsContainer dropdown">
             <h3>
                 Advanced Options
             </h3>
-            <div id="advancedOptionsContainer" class="optionInputsContainer dropdown">
+            <div id="advancedOptionsContainer" class="optionsInputsContainer">
                 <label id="heightDecrementMinLabel" for="heightDecrementMinInput">Minimum Height Decrement: <span
                         id="heightDecrementMinSpan">30</span></label>
                 <input type="range" id="heightDecrementMinInput" min="0" max="100" value="30">
@@ -167,9 +169,9 @@
             </div>
         </div>
 
-        <div>
+        <div class="optionsContainer dropdown">
             <h3>Draw methods</h3>
-            <div id="drawMethodsContainer" class="optionInputsContainer dropdown">
+            <div id="drawMethodsContainer" class="optionsInputsContainer">
                 <label id="showHeightmapLabel" for="showHeightmapCheckbox"> Show Heightmap</label>
                 <input type="checkbox" id="showHeightmapCheckbox">
 
@@ -191,9 +193,9 @@
             </div>
         </div>
 
-        <div>
+        <div class="optionsContainer dropdown">
             <h3>Display values</h3>
-            <div id="displayTileValuesForm" class="optionInputsContainer dropdown">
+            <div id="displayTileValuesForm" class="optionsInputsContainer">
                 <label id="displayNoTileValuesLabel" for="displayNoTileValuesRadioBtn"> Hide Values</label>
                 <input type="radio" id="displayNoTileValuesRadioBtn" name="displayTileValues" value="0" checked>
 
