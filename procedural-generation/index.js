@@ -1812,8 +1812,9 @@ updateHtmlDisplayedValues();
 
 
 
-for (let el of htmlDropdowns) {
-    el.onclick = () => el.classList.toggle("dropdown-expanded");
+for (let div of htmlDropdowns) {
+    let h3 = div.getElementsByTagName("h3")[0];
+    h3.onclick = () => div.classList.toggle("dropdown-expanded");
 }
 
 
