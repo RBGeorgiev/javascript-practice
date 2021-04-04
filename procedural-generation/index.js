@@ -4,6 +4,7 @@ import {
     ctx,
     ctx2,
     tileInfoDiv,
+    htmlDropdowns,
     randomSeedBtn,
     seedInput,
     runMapGenBtn,
@@ -1809,6 +1810,11 @@ updateHtmlDisplayedValues();
 
 
 
+
+
+for (let el of htmlDropdowns) {
+    el.onclick = () => el.classList.toggle("dropdown-expanded");
+}
 
 
 

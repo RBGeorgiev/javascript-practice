@@ -8,6 +8,8 @@ export const ctx2 = canvas2.getContext('2d');
 
 export const tileInfoDiv = id('tileInfoDiv');
 
+export const htmlDropdowns = document.getElementsByClassName("dropdown");
+
 export const highestPeakSpan = id('highestPeakSpan');
 export const deepestDepthSpan = id('deepestDepthSpan');
 export const longestRiverSpan = id('longestRiverSpan');
