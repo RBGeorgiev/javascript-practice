@@ -47,6 +47,11 @@ body {
     transition: all .3s;
 }
 
+.optionsContainer.dropdown>h3 {
+    cursor: pointer;
+    user-select: none;
+}
+
 .optionsContainer.dropdown-expanded>div {
     height: 100%;
 }
