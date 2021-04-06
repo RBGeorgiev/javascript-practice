@@ -67,7 +67,13 @@ import {
     displayTileTotalPrecipitationValuesRadioBtn,
     highestPeakSpan,
     deepestDepthSpan,
-    longestRiverSpan
+    longestRiverSpan,
+    mapOptionsContainer,
+    climateOptionsContainer,
+    precipitationOptionsContainer,
+    extraOptionsContainer,
+    advancedOptionsContainer,
+    drawMethodsContainer
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1814,6 +1820,7 @@ updateHtmlDisplayedValues();
 
 for (let div of htmlDropdowns) {
     let h3 = div.getElementsByTagName("h3")[0];
+    if (!h3) continue;
     h3.onclick = () => div.classList.toggle("dropdown-expanded");
 }
 
