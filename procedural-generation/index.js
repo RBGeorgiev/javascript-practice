@@ -67,13 +67,7 @@ import {
     displayTileTotalPrecipitationValuesRadioBtn,
     highestPeakSpan,
     deepestDepthSpan,
-    longestRiverSpan,
-    mapOptionsContainer,
-    climateOptionsContainer,
-    precipitationOptionsContainer,
-    extraOptionsContainer,
-    advancedOptionsContainer,
-    drawMethodsContainer
+    longestRiverSpan
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';

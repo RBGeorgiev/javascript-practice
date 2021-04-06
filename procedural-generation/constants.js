@@ -85,11 +85,3 @@ export const displayTileHeightValuesRadioBtn = id('displayTileHeightValuesRadioB
 export const displayTileTemperatureValuesRadioBtn = id('displayTileTemperatureValuesRadioBtn');
 export const displayTileCurrentPrecipitationValuesRadioBtn = id('displayTileCurrentPrecipitationValuesRadioBtn');
 export const displayTileTotalPrecipitationValuesRadioBtn = id('displayTileTotalPrecipitationValuesRadioBtn');
-
-
-export const mapOptionsContainer = id('mapOptionsContainer');
-export const climateOptionsContainer = id('climateOptionsContainer');
-export const precipitationOptionsContainer = id('precipitationOptionsContainer');
-export const extraOptionsContainer = id('extraOptionsContainer');
-export const advancedOptionsContainer = id('advancedOptionsContainer');
-export const drawMethodsContainer = id('drawMethodsContainer');
