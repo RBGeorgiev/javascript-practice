@@ -32,19 +32,11 @@ body {
     margin: auto;
 }
 
-.optionsInputsContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 600px;
-    margin: auto;
-}
-
 .optionsContainer.dropdown>div {
     grid-column-start: 1;
     grid-column-end: 3;
     height: 0px;
     overflow: hidden;
-    transition: all .3s;
 }
 
 .optionsContainer.dropdown>h3 {
@@ -54,6 +46,13 @@ body {
 
 .optionsContainer.dropdown-expanded>div {
     height: 100%;
+}
+
+.optionsInputsContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 600px;
+    margin: auto;
 }
 
 .optionsInputsContainer.dropdown {
