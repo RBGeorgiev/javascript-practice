@@ -55,18 +55,6 @@ body {
     margin: auto;
 }
 
-.optionsInputsContainer.dropdown {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    height: 0px;
-    overflow: hidden;
-    transition: all .3s;
-}
-
-.optionsInputsContainer.dropdown-expanded {
-    height: 100%;
-}
-
 .optionInputsContainer>label {
     justify-self: end;
 }
