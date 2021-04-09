@@ -34,11 +34,9 @@ import {
     lakeHeightPrecipitationMultiplierInput,
     initialPeakHeightSpan,
     initialPeakHeightInput,
-    maxAllowedHeightExpandContainer,
     limitHeightCheckbox,
     maxAllowedHeightSpan,
     maxAllowedHeightInput,
-    maxAllowedDepthExpandContainer,
     limitDepthCheckbox,
     maxAllowedDepthSpan,
     maxAllowedDepthInput,
@@ -2005,10 +2003,11 @@ initialPeakHeightInput.oninput = (e) => {
 }
 
 limitHeightCheckbox.oninput = (e) => {
-    mapGen.limitHeight = e.target.checked;
+    let limitHeight = e.target.checked;
+    mapGen.limitHeight = limitHeight;
 
     mapGen.changeMapTerrain();
-    maxAllowedHeightExpandContainer.classList.toggle("dropdown-expanded");
+    maxAllowedHeightInput.disabled = !limitHeight
 
     updateHtmlDisplayedValues();
 }
@@ -2024,10 +2023,11 @@ maxAllowedHeightInput.oninput = (e) => {
 }
 
 limitDepthCheckbox.oninput = (e) => {
-    mapGen.limitDepth = e.target.checked;
+    let limitDepth = e.target.checked;
+    mapGen.limitDepth = limitDepth;
 
     mapGen.changeMapTerrain();
-    maxAllowedDepthExpandContainer.classList.toggle("dropdown-expanded");
+    maxAllowedDepthInput.disabled = !limitDepth;
 
     updateHtmlDisplayedValues();
 }
