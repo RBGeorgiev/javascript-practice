@@ -1812,8 +1812,14 @@ updateHtmlDisplayedValues();
 
 for (let div of htmlDropdowns) {
     let h3 = div.getElementsByTagName("h3")[0];
+    let i = div.getElementsByTagName("i")[0];
     if (!h3) continue;
-    h3.onclick = () => div.classList.toggle("dropdown-expanded");
+
+    h3.onclick = () => {
+        div.classList.toggle("dropdown-expanded");
+        i.classList.toggle("down");
+        i.classList.toggle("up");
+    }
 }
 
 
