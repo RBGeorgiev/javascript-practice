@@ -32,6 +32,12 @@ body {
     margin: auto;
 }
 
+.optionsContainer.dropdown {
+    background: lightblue;
+    padding: 1px 0;
+    margin: 5px 0;
+}
+
 .optionsContainer.dropdown>div {
     grid-column-start: 1;
     grid-column-end: 3;
