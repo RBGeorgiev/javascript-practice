@@ -35,13 +35,14 @@ body {
 .optionsContainer {
     width: 800px;
     margin: auto;
-    border: 1px solid black;
+    background: #eeeeee;
+    border: 2px solid black;
 }
 
 .optionsContainer>h2 {
     margin: 0;
     padding: 15px;
-    border: 1px solid black;
+    background: #FFFFFF;
     border-bottom: 2px solid black;
 }
 
@@ -49,7 +50,7 @@ body {
     background: #ADD8E6;
     padding: 1px 0;
     margin: 5px;
-    border: 1px solid #BABABA;
+    border: 1px solid #7e7e7e;
 }
 
 .optionsSubContainer.dropdown-expanded {
