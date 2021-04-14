@@ -32,19 +32,19 @@ body {
     margin: auto;
 }
 
-.tileInfoContainer {
+#tileInfoContainer {
     width: 800px;
     position: absolute;
 }
 
-.optionsContainer {
+#optionsContainer {
     width: 800px;
     margin: auto;
     background: #eeeeee;
     border: 2px solid black;
 }
 
-.optionsContainer>h2 {
+#optionsContainer>h2 {
     margin: 0;
     padding: 15px;
     background: #FFFFFF;
