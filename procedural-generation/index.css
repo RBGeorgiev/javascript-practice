@@ -32,6 +32,11 @@ body {
     margin: auto;
 }
 
+.tileInfoContainer {
+    width: 800px;
+    position: absolute;
+}
+
 .optionsContainer {
     width: 800px;
     margin: auto;
