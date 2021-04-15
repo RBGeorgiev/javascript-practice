@@ -33,14 +33,10 @@ body {
 }
 
 #tileInfoContainer {
+    text-align: start;
     width: 800px;
     position: absolute;
-}
-
-#tileInfoDiv {
-    text-align: start;
-    margin: auto;
-    width: 400px;
+    margin-left: 1700px;
 }
 
 #optionsContainer {
