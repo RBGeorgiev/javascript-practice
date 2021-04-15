@@ -37,6 +37,12 @@ body {
     position: absolute;
 }
 
+#tileInfoDiv {
+    text-align: start;
+    margin: auto;
+    width: 400px;
+}
+
 #optionsContainer {
     width: 800px;
     margin: auto;
