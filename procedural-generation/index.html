@@ -9,21 +9,6 @@
 <body>
     <h1>Procedurally Generated Polygonal Map</h1>
 
-    <div id="tileInfoContainer">
-        <h2>Tile Info</h2>
-        <div id="tileInfoDiv"></div>
-    </div>
-
-    <div id="canvasContainer">
-        <canvas id="canvas" width="800" height="800"></canvas>
-        <canvas id="canvas2" width="800" height="800"></canvas>
-    </div>
-    <div id="mapFeaturesInfoContainer">
-        <div>Highest Peak: <span id="highestPeakSpan">?</span></div>
-        <div>Deepest Depth: <span id="deepestDepthSpan">?</span></div>
-        <div>Longest River: <span id="longestRiverSpan">?</span></div>
-    </div>
-
     <div id="optionsContainer">
         <h2>Options</h2>
 
@@ -217,6 +202,21 @@
                 <input type="radio" id="displayTileTotalPrecipitationValuesRadioBtn" name="displayTileValues" value="4">
             </div>
         </div>
+    </div>
+
+    <div id="tileInfoContainer">
+        <h2>Tile Info</h2>
+        <div id="tileInfoDiv"></div>
+    </div>
+
+    <div id="canvasContainer">
+        <canvas id="canvas" width="800" height="800"></canvas>
+        <canvas id="canvas2" width="800" height="800"></canvas>
+    </div>
+    <div id="mapFeaturesInfoContainer">
+        <div>Highest Peak: <span id="highestPeakSpan">?</span></div>
+        <div>Deepest Depth: <span id="deepestDepthSpan">?</span></div>
+        <div>Longest River: <span id="longestRiverSpan">?</span></div>
     </div>
 
     <script type="module" src="index.js" async defer></script>

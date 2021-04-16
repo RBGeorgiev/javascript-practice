@@ -40,8 +40,8 @@ body {
 }
 
 #optionsContainer {
+    position: absolute;
     width: 800px;
-    margin: auto;
     background: #eeeeee;
     border: 2px solid black;
 }
