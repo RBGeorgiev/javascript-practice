@@ -1347,7 +1347,7 @@ class MapGenerator {
     drawAll = () => {
         this.clearCanvas();
 
-        if (this.showHeightmap) {
+        if (this.showHeightmap || this.grayscaleHeightmap) {
             this.drawHeightmap();
         } else {
             if (this.drawBiomesDelaunayStyle) {
