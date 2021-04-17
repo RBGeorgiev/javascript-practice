@@ -71,7 +71,7 @@ export const lloydRelaxationTimesSpan = id('lloydRelaxationTimesSpan');
 export const lloydRelaxationTimesInput = id('lloydRelaxationTimesInput');
 
 export const showHeightmapCheckbox = id('showHeightmapCheckbox');
-export const grayscaleHeightmapCheckbox = id('grayscaleHeightmapCheckbox');
+export const showGrayscaleHeightmapCheckbox = id('showGrayscaleHeightmapCheckbox');
 export const drawBiomesDelaunayStyleCheckbox = id('drawBiomesDelaunayStyleCheckbox');
 export const showOceanDepthCheckbox = id('showOceanDepthCheckbox');
 

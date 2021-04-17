@@ -53,7 +53,7 @@ import {
     lloydRelaxationTimesSpan,
     lloydRelaxationTimesInput,
     showHeightmapCheckbox,
-    grayscaleHeightmapCheckbox,
+    showGrayscaleHeightmapCheckbox,
     drawBiomesDelaunayStyleCheckbox,
     showOceanDepthCheckbox,
     showTilesCheckbox,
@@ -314,7 +314,7 @@ class MapGenerator {
         this.showTiles = false;
         this.showOceanDepth = true;
         this.showHeightmap = false;
-        this.grayscaleHeightmap = false;
+        this.showGrayscaleHeightmap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
 
@@ -481,12 +481,12 @@ class MapGenerator {
     }
 
     getLandHeightmapColor = (h) =>
-        (this.grayscaleHeightmap) ?
+        (this.showGrayscaleHeightmap) ?
             getLerpedColor('#7f7f7f', '#ffffff', this.highestPeak, h - 1) :
             getLerpedColor('#7DC9A6', '#9b0101', this.highestPeak, h - 1, true);
 
     getOceanHeightmapColor = (h) => {
-        if (this.grayscaleHeightmap) {
+        if (this.showGrayscaleHeightmap) {
             return (this.showOceanDepth) ?
                 getLerpedColor('#7f7f7f', '#000000', Math.abs(this.deepestDepth), Math.abs(h) - 1) :
                 '#000000';
@@ -1347,7 +1347,7 @@ class MapGenerator {
     drawAll = () => {
         this.clearCanvas();
 
-        if (this.showHeightmap || this.grayscaleHeightmap) {
+        if (this.showHeightmap || this.showGrayscaleHeightmap) {
             this.drawHeightmap();
         } else {
             if (this.drawBiomesDelaunayStyle) {
@@ -2114,8 +2114,8 @@ showHeightmapCheckbox.onchange = (e) => {
     mapGen.drawAll();
 }
 
-grayscaleHeightmapCheckbox.onchange = (e) => {
-    mapGen.grayscaleHeightmap = e.target.checked;
+showGrayscaleHeightmapCheckbox.onchange = (e) => {
+    mapGen.showGrayscaleHeightmap = e.target.checked;
 
     mapGen.drawAll();
 }
