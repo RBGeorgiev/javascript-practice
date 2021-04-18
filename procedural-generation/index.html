@@ -16,16 +16,15 @@
             <h3>Map Options<i class="arrow down"></i></h3>
 
             <div class="optionsInputsContainer">
-                <button id="runMapGenBtn" type="button">Run</button>
-                <button id="changeMapTerrainBtn" type="button">Change Map Terrain</button>
-                <button id="randomSeedBtn" type="button">Generate random seed</button>
+                <button id="runMapGenBtn" class="wideButton" type="button">Run</button>
+                <button id="changeMapTerrainBtn" class="wideButton" type="button">Change Map Terrain</button>
                 <label id="seedLabel">
                     Seed: <input type="number" id="seedInput" value="2546076188">
                 </label>
-                <label id="numOfTilesLabel">
-                    Number of tiles: <span id="numOfTilesSpan">1000</span>
-                    <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
-                </label>
+                <button id="randomSeedBtn" type="button">Generate random seed</button>
+                <label id="numOfTilesLabel" for="numOfTilesInput"> Number of tiles: <span
+                        id="numOfTilesSpan">1000</span></label>
+                <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
             </div>
         </div>
 
@@ -51,7 +50,7 @@
                         id="windSpeedSpan">20</span>km/h</label>
                 <input type="range" id="windSpeedInput" min="0" max="50" value="20">
 
-                <button id="changeMapWindDirectionBtn" type="button">Change Wind Direction</button>
+                <button id="changeMapWindDirectionBtn" class="wideButton" type="button">Change Wind Direction</button>
             </div>
         </div>
 
