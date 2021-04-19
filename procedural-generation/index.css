@@ -102,6 +102,10 @@ body {
     grid-column-end: 3;
 }
 
+.tallButton {
+    padding: 6px 0;
+}
+
 .arrow {
     border: solid black;
     border-width: 0 3px 3px 0;
