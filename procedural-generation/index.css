@@ -89,6 +89,10 @@ body {
     margin: auto;
 }
 
+.optionsInputsContainer>* {
+    margin-bottom: 7px;
+}
+
 .optionsInputsContainer>label {
     justify-self: end;
 }
