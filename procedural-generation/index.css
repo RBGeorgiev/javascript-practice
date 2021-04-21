@@ -106,6 +106,12 @@ body {
     padding: 6px 0;
 }
 
+button:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    margin: -30px -100px;
+}
+
 .arrow {
     border: solid black;
     border-width: 0 3px 3px 0;
