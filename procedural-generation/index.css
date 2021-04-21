@@ -109,7 +109,10 @@ body {
 button:hover::after {
     content: attr(data-tooltip);
     position: absolute;
-    margin: -30px -100px;
+    margin: -35px -110px;
+    background: #FFFFFF;
+    padding: 5px 8px;
+    border: 1px solid black;
 }
 
 .arrow {
