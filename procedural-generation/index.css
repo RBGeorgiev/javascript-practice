@@ -106,7 +106,7 @@ body {
     padding: 6px 0;
 }
 
-button:hover::after {
+button[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
     margin: -35px -110px;
