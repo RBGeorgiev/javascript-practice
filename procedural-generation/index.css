@@ -78,8 +78,9 @@ body {
     user-select: none;
 }
 
-.optionsSubContainer.dropdown-expanded>div {
+.optionsSubContainer.dropdown-expanded>.optionsInputsContainer {
     height: 100%;
+    overflow: visible;
 }
 
 .optionsInputsContainer {
@@ -95,6 +96,10 @@ body {
 
 .optionsInputsContainer>label {
     justify-self: end;
+}
+
+.optionsInputsContainer>button {
+    position: relative;
 }
 
 .wideButton {
