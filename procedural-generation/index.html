@@ -9,207 +9,215 @@
 <body>
     <h1>Procedurally Generated Polygonal Map</h1>
 
-    <div id="optionsContainer">
-        <h2>Options</h2>
+    <div id="uiContainer">
+        <div id="optionsContainer">
+            <h2>Options</h2>
 
-        <div class="optionsSubContainer dropdown">
-            <h3>Map Options<i class="arrow down"></i></h3>
+            <div class="optionsSubContainer dropdown">
+                <h3>Map Options<i class="arrow down"></i></h3>
 
-            <div class="optionsInputsContainer">
-                <button id="runMapGenBtn" class="wideButton tallButton" type="button"
-                    data-tooltip="Create new Tilemap and Terrain">Run</button>
-                <button id="changeMapTerrainBtn" class="wideButton" type="button"
-                    data-tooltip="Keep Tilemap and create new Terrain">Change Map Terrain</button>
-                <label id="seedLabel">
-                    Seed: <input type="number" id="seedInput" value="2546076188">
-                </label>
-                <button id="randomSeedBtn" type="button">Generate random seed</button>
-                <label id="numOfTilesLabel" for="numOfTilesInput"> Number of tiles: <span
-                        id="numOfTilesSpan">1000</span></label>
-                <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
+                <div class="optionsInputsContainer">
+                    <button id="runMapGenBtn" class="wideButton tallButton" type="button"
+                        data-tooltip="Create new Tilemap and Terrain">Run</button>
+                    <button id="changeMapTerrainBtn" class="wideButton" type="button"
+                        data-tooltip="Keep Tilemap and create new Terrain">Change Map Terrain</button>
+                    <label id="seedLabel">
+                        Seed: <input type="number" id="seedInput" value="2546076188">
+                    </label>
+                    <button id="randomSeedBtn" type="button">Generate random seed</button>
+                    <label id="numOfTilesLabel" for="numOfTilesInput"> Number of tiles: <span
+                            id="numOfTilesSpan">1000</span></label>
+                    <input type="range" id="numOfTilesInput" min="1" max="3000" value="1000">
+                </div>
+            </div>
+
+            <div class="optionsSubContainer dropdown">
+                <h3>Climate Controls<i class="arrow down"></i></h3>
+
+                <div class="optionsInputsContainer">
+                    <label id="temperatureLabel" for="temperatureInput">Sea Level Temperature: <span
+                            id="temperatureSpan">14</span>°C</label>
+                    <input type="range" id="temperatureInput" min="11" max="55" value="14">
+
+
+                    <label id="relativeHumidityLabel" for="relativeHumidityInput">Relative Humidity: <span
+                            id="relativeHumiditySpan">80</span>%</label>
+                    <input type="range" id="relativeHumidityInput" min="1" max="100" value="80">
+
+
+                    <label id="dewpointLabel" for="dewpointInput">Dew Point: <span id="dewpointSpan">10</span>°C</label>
+                    <input type="range" id="dewpointInput" min="-77" max="14" value="10">
+
+
+                    <label id="windSpeedLabel" for="windSpeedInput">Average Wind Speed: <span
+                            id="windSpeedSpan">20</span>km/h</label>
+                    <input type="range" id="windSpeedInput" min="0" max="50" value="20">
+
+                    <button id="changeMapWindDirectionBtn" class="wideButton tallButton" type="button">Change Wind
+                        Direction</button>
+                </div>
+            </div>
+
+            <div class="optionsSubContainer dropdown">
+                <h3>Precipitation Options<i class="arrow down"></i> </h3>
+
+                <div class="optionsInputsContainer">
+                    <label id="precipitationForRiverMinLabel" for="precipitationForRiverMinInput">Minimum Precipitation
+                        For
+                        River: <span id="precipitationForRiverMinSpan">100</span></label>
+                    <input type="range" id="precipitationForRiverMinInput" min="20" max="200" value="100">
+
+
+                    <label id="precipitationForRiverMaxLabel" for="precipitationForRiverMaxInput">Maximum Precipitation
+                        For
+                        River: <span id="precipitationForRiverMaxSpan">200</span></label>
+                    <input type="range" id="precipitationForRiverMaxInput" min="100" max="300" value="200">
+
+
+                    <label id="precipitationForLakeMinLabel" for="precipitationForLakeMinInput">Minimum Precipitation
+                        For
+                        Lake: <span id="precipitationForLakeMinSpan">300</span></label>
+                    <input type="range" id="precipitationForLakeMinInput" min="200" max="600" value="300">
+
+
+                    <label id="precipitationForLakeMaxLabel" for="precipitationForLakeMaxInput">Maximum Precipitation
+                        For
+                        Lake: <span id="precipitationForLakeMaxSpan">600</span></label>
+                    <input type="range" id="precipitationForLakeMaxInput" min="400" max="1000" value="600">
+                </div>
+            </div>
+
+            <div class="optionsSubContainer dropdown">
+                <h3>Extra Options<i class="arrow down"></i> </h3>
+
+                <div class="optionsInputsContainer">
+                    <label id="initialPeakHeightLabel" for="initialPeakHeightInput">Initial Peak Height: <span
+                            id="initialPeakHeightSpan">1000m</span></label>
+                    <input type="range" id="initialPeakHeightInput" min="0" max="1000" value="100">
+
+
+                    <label id="limitHeightLabel" for="limitHeightCheckbox">Limit Height</label>
+                    <input type="checkbox" id="limitHeightCheckbox">
+
+                    <label id="maxAllowedHeightLabel" for="maxAllowedHeightInput">Maximum Allowed Height: <span
+                            id="maxAllowedHeightSpan">300m</span></label>
+                    <input type="range" id="maxAllowedHeightInput" min="1" max="1000" value="30" disabled>
+
+
+                    <label id="limitDepthLabel" for="limitDepthCheckbox">Limit Depth</label>
+                    <input type="checkbox" id="limitDepthCheckbox">
+
+                    <label id="maxAllowedDepthLabel" for="maxAllowedDepthInput">Maximum Allowed Depth: <span
+                            id="maxAllowedDepthSpan">-300m</span></label>
+                    <input type="range" id="maxAllowedDepthInput" min="-1000" max="-1" value="-30" disabled>
+                </div>
+            </div>
+
+            <div class="optionsSubContainer dropdown">
+                <h3>Advanced Options<i class="arrow down"></i> </h3>
+
+                <div class="optionsInputsContainer">
+                    <label id="heightDecrementMinLabel" for="heightDecrementMinInput">Minimum Height Decrement: <span
+                            id="heightDecrementMinSpan">30</span></label>
+                    <input type="range" id="heightDecrementMinInput" min="0" max="100" value="30">
+
+
+                    <label id="heightDecrementMaxLabel" for="heightDecrementMaxInput">Maximum Height Decrement: <span
+                            id="heightDecrementMaxSpan">120</span></label>
+                    <input type="range" id="heightDecrementMaxInput" min="0" max="200" value="120">
+
+
+                    <label id="chanceForLandLabel" for="chanceForLandInput">Chance For Land: <span
+                            id="chanceForLandSpan">0.5</span></label>
+                    <input type="range" id="chanceForLandInput" min="0" max="10" value="5">
+
+                    <label id="numberOfRandomInitialPeaksOrTrenchesMinLabel"
+                        for="numberOfRandomInitialPeaksOrTrenchesMinInput">Minimum Initial Peaks Or Trenches: <span
+                            id="numberOfRandomInitialPeaksOrTrenchesMinSpan">5</span></label>
+                    <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMinInput" min="1" max="100" value="5">
+
+
+                    <label id="numberOfRandomInitialPeaksOrTrenchesMaxLabel"
+                        for="numberOfRandomInitialPeaksOrTrenchesMaxInput">Maximum Initial Peaks Or Trenches: <span
+                            id="numberOfRandomInitialPeaksOrTrenchesMaxSpan">15</span></label>
+                    <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMaxInput" min="1" max="100" value="15">
+
+
+                    <label id="lloydRelaxationTimesLabel" for="lloydRelaxationTimesInput">Number of Lloyd Relaxations:
+                        <span id="lloydRelaxationTimesSpan">5</span></label>
+                    <input type="range" id="lloydRelaxationTimesInput" min="0" max="20" value="5">
+
+
+                    <label id="heightPrecipitationMultiplierLabel" for="heightPrecipitationMultiplierInput">Mountain
+                        Precipitation Stopping Power: <span id="heightPrecipitationMultiplierSpan">0.2</span></label>
+                    <input type="range" id="heightPrecipitationMultiplierInput" min="0" max="15" value="2">
+
+
+                    <label id="lakeHeightPrecipitationMultiplierLabel" for="lakeHeightPrecipitationMultiplierInput">Lake
+                        Size Regulation Multiplier: <span id="lakeHeightPrecipitationMultiplierSpan">7</span></label>
+                    <input type="range" id="lakeHeightPrecipitationMultiplierInput" min="0" max="100" value="7">
+                </div>
+            </div>
+
+            <div class="optionsSubContainer dropdown">
+                <h3>Draw methods<i class="arrow down"></i></h3>
+
+                <div class="optionsInputsContainer">
+                    <label id="showHeightmapLabel" for="showHeightmapCheckbox">Show Heightmap</label>
+                    <input type="checkbox" id="showHeightmapCheckbox">
+
+                    <label id="grayscaleHeightmapLabel" for="showGrayscaleHeightmapCheckbox">Show Grayscale
+                        Heightmap</label>
+                    <input type="checkbox" id="showGrayscaleHeightmapCheckbox">
+
+                    <label id="drawBiomesDelaunayStyleLabel" for="drawBiomesDelaunayStyleCheckbox">Draw Biomes Delaunay
+                        Style</label>
+                    <input type="checkbox" id="drawBiomesDelaunayStyleCheckbox">
+
+                    <label id="showOceanDepthLabel" for="showOceanDepthCheckbox">Show Ocean Depth</label>
+                    <input type="checkbox" id="showOceanDepthCheckbox" checked>
+
+                    <label id="showTilesLabel" for="showTilesCheckbox">Show Tiles</label>
+                    <input type="checkbox" id="showTilesCheckbox">
+
+                    <label id="showWindDirectionLabel" for="showWindDirectionCheckbox">Show Wind Direction</label>
+                    <input type="checkbox" id="showWindDirectionCheckbox">
+                </div>
+            </div>
+
+            <div class="optionsSubContainer dropdown">
+                <h3>Display values<i class="arrow down"></i></h3>
+
+                <div id="displayTileValuesForm" class="optionsInputsContainer">
+                    <label id="displayNoTileValuesLabel" for="displayNoTileValuesRadioBtn"> Hide Values</label>
+                    <input type="radio" id="displayNoTileValuesRadioBtn" name="displayTileValues" value="0" checked>
+
+                    <label id="displayTileHeightValuesLabel" for="displayTileHeightValuesRadioBtn">
+                        Show Height Values</label>
+                    <input type="radio" id="displayTileHeightValuesRadioBtn" name="displayTileValues" value="1">
+
+                    <label id="displayTileTemperatureValuesLabel" for="displayTileTemperatureValuesRadioBtn">
+                        Show Temperature Values</label>
+                    <input type="radio" id="displayTileTemperatureValuesRadioBtn" name="displayTileValues" value="2">
+
+                    <label id="displayTileCurrentPrecipitationValuesLabel"
+                        for="displayTileCurrentPrecipitationValuesRadioBtn">Show Current Precipitation Values</label>
+                    <input type="radio" id="displayTileCurrentPrecipitationValuesRadioBtn" name="displayTileValues"
+                        value="3">
+
+                    <label id="displayTileTotalPrecipitationValuesLabel"
+                        for="displayTileTotalPrecipitationValuesRadioBtn">
+                        Show Total Precipitation Values</label>
+                    <input type="radio" id="displayTileTotalPrecipitationValuesRadioBtn" name="displayTileValues"
+                        value="4">
+                </div>
             </div>
         </div>
 
-        <div class="optionsSubContainer dropdown">
-            <h3>Climate Controls<i class="arrow down"></i></h3>
-
-            <div class="optionsInputsContainer">
-                <label id="temperatureLabel" for="temperatureInput">Sea Level Temperature: <span
-                        id="temperatureSpan">14</span>°C</label>
-                <input type="range" id="temperatureInput" min="11" max="55" value="14">
-
-
-                <label id="relativeHumidityLabel" for="relativeHumidityInput">Relative Humidity: <span
-                        id="relativeHumiditySpan">80</span>%</label>
-                <input type="range" id="relativeHumidityInput" min="1" max="100" value="80">
-
-
-                <label id="dewpointLabel" for="dewpointInput">Dew Point: <span id="dewpointSpan">10</span>°C</label>
-                <input type="range" id="dewpointInput" min="-77" max="14" value="10">
-
-
-                <label id="windSpeedLabel" for="windSpeedInput">Average Wind Speed: <span
-                        id="windSpeedSpan">20</span>km/h</label>
-                <input type="range" id="windSpeedInput" min="0" max="50" value="20">
-
-                <button id="changeMapWindDirectionBtn" class="wideButton tallButton" type="button">Change Wind
-                    Direction</button>
-            </div>
+        <div id="tileInfoContainer">
+            <h2>Tile Info</h2>
+            <div id="tileInfoDiv"></div>
         </div>
-
-        <div class="optionsSubContainer dropdown">
-            <h3>Precipitation Options<i class="arrow down"></i> </h3>
-
-            <div class="optionsInputsContainer">
-                <label id="precipitationForRiverMinLabel" for="precipitationForRiverMinInput">Minimum Precipitation For
-                    River: <span id="precipitationForRiverMinSpan">100</span></label>
-                <input type="range" id="precipitationForRiverMinInput" min="20" max="200" value="100">
-
-
-                <label id="precipitationForRiverMaxLabel" for="precipitationForRiverMaxInput">Maximum Precipitation For
-                    River: <span id="precipitationForRiverMaxSpan">200</span></label>
-                <input type="range" id="precipitationForRiverMaxInput" min="100" max="300" value="200">
-
-
-                <label id="precipitationForLakeMinLabel" for="precipitationForLakeMinInput">Minimum Precipitation For
-                    Lake: <span id="precipitationForLakeMinSpan">300</span></label>
-                <input type="range" id="precipitationForLakeMinInput" min="200" max="600" value="300">
-
-
-                <label id="precipitationForLakeMaxLabel" for="precipitationForLakeMaxInput">Maximum Precipitation For
-                    Lake: <span id="precipitationForLakeMaxSpan">600</span></label>
-                <input type="range" id="precipitationForLakeMaxInput" min="400" max="1000" value="600">
-            </div>
-        </div>
-
-        <div class="optionsSubContainer dropdown">
-            <h3>Extra Options<i class="arrow down"></i> </h3>
-
-            <div class="optionsInputsContainer">
-                <label id="initialPeakHeightLabel" for="initialPeakHeightInput">Initial Peak Height: <span
-                        id="initialPeakHeightSpan">1000m</span></label>
-                <input type="range" id="initialPeakHeightInput" min="0" max="1000" value="100">
-
-
-                <label id="limitHeightLabel" for="limitHeightCheckbox">Limit Height</label>
-                <input type="checkbox" id="limitHeightCheckbox">
-
-                <label id="maxAllowedHeightLabel" for="maxAllowedHeightInput">Maximum Allowed Height: <span
-                        id="maxAllowedHeightSpan">300m</span></label>
-                <input type="range" id="maxAllowedHeightInput" min="1" max="1000" value="30" disabled>
-
-
-                <label id="limitDepthLabel" for="limitDepthCheckbox">Limit Depth</label>
-                <input type="checkbox" id="limitDepthCheckbox">
-
-                <label id="maxAllowedDepthLabel" for="maxAllowedDepthInput">Maximum Allowed Depth: <span
-                        id="maxAllowedDepthSpan">-300m</span></label>
-                <input type="range" id="maxAllowedDepthInput" min="-1000" max="-1" value="-30" disabled>
-            </div>
-        </div>
-
-        <div class="optionsSubContainer dropdown">
-            <h3>Advanced Options<i class="arrow down"></i> </h3>
-
-            <div class="optionsInputsContainer">
-                <label id="heightDecrementMinLabel" for="heightDecrementMinInput">Minimum Height Decrement: <span
-                        id="heightDecrementMinSpan">30</span></label>
-                <input type="range" id="heightDecrementMinInput" min="0" max="100" value="30">
-
-
-                <label id="heightDecrementMaxLabel" for="heightDecrementMaxInput">Maximum Height Decrement: <span
-                        id="heightDecrementMaxSpan">120</span></label>
-                <input type="range" id="heightDecrementMaxInput" min="0" max="200" value="120">
-
-
-                <label id="chanceForLandLabel" for="chanceForLandInput">Chance For Land: <span
-                        id="chanceForLandSpan">0.5</span></label>
-                <input type="range" id="chanceForLandInput" min="0" max="10" value="5">
-
-                <label id="numberOfRandomInitialPeaksOrTrenchesMinLabel"
-                    for="numberOfRandomInitialPeaksOrTrenchesMinInput">Minimum Initial Peaks Or Trenches: <span
-                        id="numberOfRandomInitialPeaksOrTrenchesMinSpan">5</span></label>
-                <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMinInput" min="1" max="100" value="5">
-
-
-                <label id="numberOfRandomInitialPeaksOrTrenchesMaxLabel"
-                    for="numberOfRandomInitialPeaksOrTrenchesMaxInput">Maximum Initial Peaks Or Trenches: <span
-                        id="numberOfRandomInitialPeaksOrTrenchesMaxSpan">15</span></label>
-                <input type="range" id="numberOfRandomInitialPeaksOrTrenchesMaxInput" min="1" max="100" value="15">
-
-
-                <label id="lloydRelaxationTimesLabel" for="lloydRelaxationTimesInput">Number of Lloyd Relaxations: <span
-                        id="lloydRelaxationTimesSpan">5</span></label>
-                <input type="range" id="lloydRelaxationTimesInput" min="0" max="20" value="5">
-
-
-                <label id="heightPrecipitationMultiplierLabel" for="heightPrecipitationMultiplierInput">Mountain
-                    Precipitation Stopping Power: <span id="heightPrecipitationMultiplierSpan">0.2</span></label>
-                <input type="range" id="heightPrecipitationMultiplierInput" min="0" max="15" value="2">
-
-
-                <label id="lakeHeightPrecipitationMultiplierLabel" for="lakeHeightPrecipitationMultiplierInput">Lake
-                    Size Regulation Multiplier: <span id="lakeHeightPrecipitationMultiplierSpan">7</span></label>
-                <input type="range" id="lakeHeightPrecipitationMultiplierInput" min="0" max="100" value="7">
-            </div>
-        </div>
-
-        <div class="optionsSubContainer dropdown">
-            <h3>Draw methods<i class="arrow down"></i></h3>
-
-            <div class="optionsInputsContainer">
-                <label id="showHeightmapLabel" for="showHeightmapCheckbox">Show Heightmap</label>
-                <input type="checkbox" id="showHeightmapCheckbox">
-
-                <label id="grayscaleHeightmapLabel" for="showGrayscaleHeightmapCheckbox">Show Grayscale
-                    Heightmap</label>
-                <input type="checkbox" id="showGrayscaleHeightmapCheckbox">
-
-                <label id="drawBiomesDelaunayStyleLabel" for="drawBiomesDelaunayStyleCheckbox">Draw Biomes Delaunay
-                    Style</label>
-                <input type="checkbox" id="drawBiomesDelaunayStyleCheckbox">
-
-                <label id="showOceanDepthLabel" for="showOceanDepthCheckbox">Show Ocean Depth</label>
-                <input type="checkbox" id="showOceanDepthCheckbox" checked>
-
-                <label id="showTilesLabel" for="showTilesCheckbox">Show Tiles</label>
-                <input type="checkbox" id="showTilesCheckbox">
-
-                <label id="showWindDirectionLabel" for="showWindDirectionCheckbox">Show Wind Direction</label>
-                <input type="checkbox" id="showWindDirectionCheckbox">
-            </div>
-        </div>
-
-        <div class="optionsSubContainer dropdown">
-            <h3>Display values<i class="arrow down"></i></h3>
-
-            <div id="displayTileValuesForm" class="optionsInputsContainer">
-                <label id="displayNoTileValuesLabel" for="displayNoTileValuesRadioBtn"> Hide Values</label>
-                <input type="radio" id="displayNoTileValuesRadioBtn" name="displayTileValues" value="0" checked>
-
-                <label id="displayTileHeightValuesLabel" for="displayTileHeightValuesRadioBtn">
-                    Show Height Values</label>
-                <input type="radio" id="displayTileHeightValuesRadioBtn" name="displayTileValues" value="1">
-
-                <label id="displayTileTemperatureValuesLabel" for="displayTileTemperatureValuesRadioBtn">
-                    Show Temperature Values</label>
-                <input type="radio" id="displayTileTemperatureValuesRadioBtn" name="displayTileValues" value="2">
-
-                <label id="displayTileCurrentPrecipitationValuesLabel"
-                    for="displayTileCurrentPrecipitationValuesRadioBtn">Show Current Precipitation Values</label>
-                <input type="radio" id="displayTileCurrentPrecipitationValuesRadioBtn" name="displayTileValues"
-                    value="3">
-
-                <label id="displayTileTotalPrecipitationValuesLabel" for="displayTileTotalPrecipitationValuesRadioBtn">
-                    Show Total Precipitation Values</label>
-                <input type="radio" id="displayTileTotalPrecipitationValuesRadioBtn" name="displayTileValues" value="4">
-            </div>
-        </div>
-    </div>
-
-    <div id="tileInfoContainer">
-        <h2>Tile Info</h2>
-        <div id="tileInfoDiv"></div>
     </div>
 
     <div id="canvasContainer">
