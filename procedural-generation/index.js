@@ -2192,27 +2192,17 @@ canvas.addEventListener("click", (e) => {
     }
 
     tileInfoDiv.innerHTML = `
-    <i>Biome:</i> ${tile.biome}
-    <br>
-    <i>Height:</i> ${tile.height}0m
-    <br>
-    <i>Temperature:</i> ${tile.temperature}°C
-    <br>
-    <i>River Node Passing Through Tile:</i> ${(tile.river) ? tile.river.idx : "None"}
-    <br>
-    <i>River Node Passing Through Tile Root:</i> ${(tile.river) ? tile.river.getRoot().idx : "None"}
-    <br>
-    <i>Rivers Nearby:</i> ${nearbyRiversRootsIndices.length}
-    <br>
-    <i> Nearby Rivers' Roots:</i> ${nearbyRiversRootsIndices}
-    <br>
-    <i> Tile Edges Used As Rivers:</i> ${tile.numOfRiversOnEdges}
-    <br>
-    <i> Total Number Of Tile Edges:</i> ${tile.polygon.length - 1}
-    <br>
-    <i> Current Precipitation:</i> ${tile.precipitation}
-    <br>
-    <i> Total Precipitation Passed Through:</i> ${tile.totalPrecipitationPassedThroughTile}
+    <span>Biome:</span> <span>${tile.biome}</span>
+    <span>Height:</span> <span>${tile.height}0m</span>
+    <span>Temperature:</span> <span>${tile.temperature}°C</span>
+    <span>River Node Passing Through Tile:</span> <span>${(tile.river) ? tile.river.idx : "None"}</span>
+    <span>River Node Passing Through Tile Root:</span> <span>${(tile.river) ? tile.river.getRoot().idx : "None"}</span>
+    <span>Rivers Nearby:</span> <span>${nearbyRiversRootsIndices.length}</span>
+    <span> Nearby Rivers' Roots:</span> <span>${nearbyRiversRootsIndices}</span>
+    <span> Tile Edges Used As Rivers:</span> <span>${tile.numOfRiversOnEdges}</span>
+    <span> Total Number Of Tile Edges:</span> <span>${tile.polygon.length - 1}</span>
+    <span> Current Precipitation:</span> <span>${tile.precipitation}</span>
+    <span> Total Precipitation Passed Through:</span> <span>${tile.totalPrecipitationPassedThroughTile}</span>
     `
 
     console.log("______________________________________");
