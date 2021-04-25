@@ -52,6 +52,14 @@ body {
     margin: auto;
 }
 
+.tileInfoLabel {
+    justify-self: end;
+}
+
+.tileInfoValue {
+    justify-self: start;
+}
+
 #optionsContainer {
     width: 800px;
     background: #eeeeee;

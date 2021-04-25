@@ -2192,17 +2192,17 @@ canvas.addEventListener("click", (e) => {
     }
 
     tileInfoDiv.innerHTML = `
-    <span>Biome:</span> <span>${tile.biome}</span>
-    <span>Height:</span> <span>${tile.height}0m</span>
-    <span>Temperature:</span> <span>${tile.temperature}°C</span>
-    <span>River Node Passing Through Tile:</span> <span>${(tile.river) ? tile.river.idx : "None"}</span>
-    <span>River Node Passing Through Tile Root:</span> <span>${(tile.river) ? tile.river.getRoot().idx : "None"}</span>
-    <span>Rivers Nearby:</span> <span>${nearbyRiversRootsIndices.length}</span>
-    <span> Nearby Rivers' Roots:</span> <span>${nearbyRiversRootsIndices}</span>
-    <span> Tile Edges Used As Rivers:</span> <span>${tile.numOfRiversOnEdges}</span>
-    <span> Total Number Of Tile Edges:</span> <span>${tile.polygon.length - 1}</span>
-    <span> Current Precipitation:</span> <span>${tile.precipitation}</span>
-    <span> Total Precipitation Passed Through:</span> <span>${tile.totalPrecipitationPassedThroughTile}</span>
+    <span class="tileInfoLabel">Biome:</span> <span class="tileInfoValue">${tile.biome}</span>
+    <span class="tileInfoLabel">Height:</span> <span class="tileInfoValue">${tile.height}0m</span>
+    <span class="tileInfoLabel">Temperature:</span> <span class="tileInfoValue">${tile.temperature}°C</span>
+    <span class="tileInfoLabel">River Node Passing Through Tile:</span> <span class="tileInfoValue">${(tile.river) ? tile.river.idx : "None"}</span>
+    <span class="tileInfoLabel">River Node Passing Through Tile Root:</span> <span class="tileInfoValue">${(tile.river) ? tile.river.getRoot().idx : "None"}</span>
+    <span class="tileInfoLabel">Rivers Nearby:</span> <span class="tileInfoValue">${nearbyRiversRootsIndices.length}</span>
+    <span class="tileInfoLabel">Nearby Rivers' Roots:</span> <span class="tileInfoValue">${nearbyRiversRootsIndices}</span>
+    <span class="tileInfoLabel">Tile Edges Used As Rivers:</span> <span class="tileInfoValue">${tile.numOfRiversOnEdges}</span>
+    <span class="tileInfoLabel">Total Number Of Tile Edges:</span> <span class="tileInfoValue">${tile.polygon.length - 1}</span>
+    <span class="tileInfoLabel">Current Precipitation:</span> <span class="tileInfoValue">${tile.precipitation}</span>
+    <span class="tileInfoLabel">Total Precipitation Passed Through:</span> <span class="tileInfoValue">${tile.totalPrecipitationPassedThroughTile}</span>
     `
 
     console.log("______________________________________");
