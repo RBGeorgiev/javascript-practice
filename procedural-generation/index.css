@@ -109,7 +109,7 @@ body {
 .optionsInputsContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 600px;
+    width: 85%;
     margin: auto;
 }
 
