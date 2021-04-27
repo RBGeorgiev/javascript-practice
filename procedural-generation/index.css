@@ -53,6 +53,10 @@ body {
     margin: auto;
 }
 
+#tileInfoDiv>* {
+    margin-bottom: 7px;
+}
+
 .tileInfoLabel {
     justify-self: end;
 }
