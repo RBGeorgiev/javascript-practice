@@ -42,7 +42,13 @@ body {
 
 #tileInfoContainer {
     width: 800px;
-    border-top: 2px solid black;
+}
+
+#tileInfoContainer>h2 {
+    margin: 0;
+    padding: 15px;
+    background: #FFFFFF;
+    border: 2px solid black;
 }
 
 #tileInfoDiv {
