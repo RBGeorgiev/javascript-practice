@@ -1829,6 +1829,7 @@ function updateHtmlDisplayedValues() {
     highestPeakSpan.innerText = mapGen.highestPeak + '0m';
     deepestDepthSpan.innerText = mapGen.deepestDepth + '0m';
     longestRiverSpan.innerText = mapGen.longestRiverLength + '0m';
+    tileInfoDiv.innerHTML = '';
 }
 
 
