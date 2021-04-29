@@ -3,6 +3,7 @@ body {
     text-align: center;
     position: relative;
     max-width: 2480px;
+    margin: auto;
 }
 
 #canvasContainer {
