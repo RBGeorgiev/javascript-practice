@@ -8,9 +8,10 @@ body {
 
 #canvasContainer {
     position: relative;
-    width: 800px;
-    height: 810px;
+    width: 804px;
+    height: 804px;
     margin: auto;
+    margin-bottom: 10px;
 }
 
 #canvas {
