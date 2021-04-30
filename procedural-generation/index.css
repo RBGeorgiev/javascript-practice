@@ -32,6 +32,7 @@ body {
 #mapFeaturesInfoContainer {
     display: flex;
     justify-content: space-between;
+    font-size: 21px;
     width: 800px;
     margin: auto;
 }
