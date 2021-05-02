@@ -195,3 +195,13 @@ button[data-tooltip]:hover::after {
         width: 27%;
     }
 }
+
+@media only screen and (max-width: 1800px) {
+    #optionsContainer {
+        width: 23%;
+    }
+
+    #tileInfoContainer {
+        width: 23%;
+    }
+}
