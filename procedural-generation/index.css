@@ -69,6 +69,7 @@ body {
 
 .tileInfoLabel {
     justify-self: end;
+    text-align: end;
 }
 
 .tileInfoValue {
