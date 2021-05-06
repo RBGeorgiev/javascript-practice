@@ -206,3 +206,11 @@ button[data-tooltip]:hover::after {
         width: 23%;
     }
 }
+
+@media only screen and (max-width: 1530px) {
+    #menuContainer {
+        flex-direction: column-reverse;
+        align-items: center;
+        top: 920px;
+    }
+}
