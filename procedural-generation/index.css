@@ -213,4 +213,12 @@ button[data-tooltip]:hover::after {
         align-items: center;
         top: 920px;
     }
+
+    #optionsContainer {
+        width: 800px;
+    }
+
+    #tileInfoContainer {
+        width: 800px;
+    }
 }
