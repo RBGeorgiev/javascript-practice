@@ -211,6 +211,7 @@ button[data-tooltip]:hover::after {
     #menuContainer {
         flex-direction: column-reverse;
         align-items: center;
+        gap: 20px;
         top: 920px;
     }
 
