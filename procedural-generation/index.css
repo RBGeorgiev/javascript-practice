@@ -150,6 +150,7 @@ button[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
     width: fit-content;
+    pointer-events: none;
     top: -35px;
     left: 50%;
     transform: translate(-50%, 0px);
