@@ -2196,7 +2196,7 @@ canvas.addEventListener("click", (e) => {
     <span class="tileInfoLabel">Biome:</span> <span class="tileInfoValue">${tile.biome}</span>
     <span class="tileInfoLabel">Height:</span> <span class="tileInfoValue">${tile.height}0m</span>
     <span class="tileInfoLabel">Temperature:</span> <span class="tileInfoValue">${tile.temperature}°C</span>
-    <span class="tileInfoLabel">Tile Edges Used As Rivers:</span> <span class="tileInfoValue">${tile.numOfRiversOnEdges}</span>
+    <span class="tileInfoLabel">Number Of Edges Used As Rivers:</span> <span class="tileInfoValue">${tile.numOfRiversOnEdges}</span>
     <span class="tileInfoLabel">Total Number Of Tile Edges:</span> <span class="tileInfoValue">${tile.polygon.length - 1}</span>
     <span class="tileInfoLabel">Current Precipitation:</span> <span class="tileInfoValue">${tile.precipitation}</span>
     <span class="tileInfoLabel">Total Precipitation Passed Through:</span> <span class="tileInfoValue">${tile.totalPrecipitationPassedThroughTile}</span>
@@ -2210,7 +2210,7 @@ canvas.addEventListener("click", (e) => {
     console.log("River Node Passing Through Tile Root: ", (tile.river) ? tile.river.getRoot() : "None");
     console.log("Adjacent Neighbor Tile Rivers: ", tile.nearbyRivers);
     console.log("Adjacent Neighbor Tile Rivers' Roots: ", nearbyRiversRoots);
-    console.log("Tile Edges Used As Rivers:: ", tile.numOfRiversOnEdges);
+    console.log("Number Of Edges Used As Rivers: ", tile.numOfRiversOnEdges);
     console.log("Total Number Of Tile Edges: ", tile.polygon.length - 1);
     console.log("Current Precipitation: ", tile.precipitation);
     console.log("Total Precipitation Passed Through: ", tile.totalPrecipitationPassedThroughTile);
