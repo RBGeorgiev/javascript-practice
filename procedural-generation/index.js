@@ -1470,9 +1470,7 @@ class MapGenerator {
         }
     }
 
-    getTemperatureColor = (temp) => {
-        return getLerpedColor('#0000FF', '#FF0000', 95, 40 + temp);
-    }
+    getTemperatureColor = (t) => getLerpedColor('#0000FF', '#FF0000', Math.abs(this.minAllowedTemp) + Math.abs(this.maxAllowedTemp), Math.abs(this.minAllowedTemp) + t);
 
     drawCoastline = () => {
         let coastline = this.coastline;
