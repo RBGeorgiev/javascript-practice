@@ -1356,6 +1356,7 @@ class MapGenerator {
                 this.drawBiomes();
             }
         }
+        this.drawTemperatureMap();
         this.drawOceanHeightmap();
         this.drawCoastline();
         this.drawRivers(this.allRiverPaths, 0.4);
@@ -1454,6 +1455,23 @@ class MapGenerator {
             ctx.strokeStyle = color;
             ctx.stroke();
         }
+    }
+
+    drawTemperatureMap = () => {
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
+            let t = tile.temperature;
+            let color = this.getTemperatureColor(t);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+    }
+
+    getTemperatureColor = (temp) => {
+        return getLerpedColor('#0000FF', '#FF0000', 95, 40 + temp);
     }
 
     drawCoastline = () => {
