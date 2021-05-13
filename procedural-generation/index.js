@@ -1472,7 +1472,7 @@ class MapGenerator {
         }
     }
 
-    getTemperatureColor = (t) => getLerpedColor('#0000FF', '#FF0000', Math.abs(this.minAllowedTemp) + Math.abs(this.maxAllowedTemp), Math.abs(this.minAllowedTemp) + t);
+    getTemperatureColor = (t) => getLerpedColor('#0000FF', '#FF0000', Math.abs(this.minAllowedTemp) + Math.abs(this.maxAllowedTemp) - 15, Math.abs(this.minAllowedTemp) + t);
 
     drawCoastline = () => {
         let coastline = this.coastline;
