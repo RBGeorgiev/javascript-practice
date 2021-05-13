@@ -315,6 +315,7 @@ class MapGenerator {
         this.showOceanDepth = true;
         this.showHeightmap = false;
         this.showGrayscaleHeightmap = false;
+        this.showTemperatureMap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
 
@@ -1349,6 +1350,8 @@ class MapGenerator {
 
         if (this.showHeightmap || this.showGrayscaleHeightmap) {
             this.drawHeightmap();
+        } else if (this.showTemperatureMap) {
+            this.drawTemperatureMap();
         } else {
             if (this.drawBiomesDelaunayStyle) {
                 this.drawBiomesAsTriangles();
@@ -1356,7 +1359,6 @@ class MapGenerator {
                 this.drawBiomes();
             }
         }
-        this.drawTemperatureMap();
         this.drawOceanHeightmap();
         this.drawCoastline();
         this.drawRivers(this.allRiverPaths, 0.4);
