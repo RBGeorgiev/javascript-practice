@@ -54,6 +54,7 @@ import {
     lloydRelaxationTimesInput,
     showHeightmapCheckbox,
     showGrayscaleHeightmapCheckbox,
+    showTemperatureMapCheckbox,
     drawBiomesDelaunayStyleCheckbox,
     showOceanDepthCheckbox,
     showTilesCheckbox,
@@ -315,7 +316,7 @@ class MapGenerator {
         this.showOceanDepth = true;
         this.showHeightmap = false;
         this.showGrayscaleHeightmap = false;
-        this.showTemperatureMap = false;
+        this.showTemperatureMap = true;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
 
@@ -2135,6 +2136,12 @@ showHeightmapCheckbox.onchange = (e) => {
 
 showGrayscaleHeightmapCheckbox.onchange = (e) => {
     mapGen.showGrayscaleHeightmap = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+showTemperatureMapCheckbox.onchange = (e) => {
+    mapGen.showTemperatureMap = e.target.checked;
 
     mapGen.drawAll();
 }
