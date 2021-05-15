@@ -316,7 +316,7 @@ class MapGenerator {
         this.showOceanDepth = true;
         this.showHeightmap = false;
         this.showGrayscaleHeightmap = false;
-        this.showTemperatureMap = true;
+        this.showTemperatureMap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
 
