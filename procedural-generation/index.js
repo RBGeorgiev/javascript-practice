@@ -1477,10 +1477,17 @@ class MapGenerator {
     getTemperatureColor = (t) => getLerpedColor('#0000FF', '#FF0000', Math.abs(this.minAllowedTemp) + Math.abs(this.maxAllowedTemp) - 15, Math.abs(this.minAllowedTemp) + t);
 
     drawHumidityMap = () => {
+        let highestLandHumidity = 0;
+
+        for (let idx in this.landTiles) {
+            let tile = this.getTile(+idx);
+            if (highestLandHumidity < tile.precipitation) highestLandHumidity = tile.precipitation;
+        }
+
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let h = tile.precipitation;
-            let color = getLerpedColor('#0000FF', '#FF0000', 200, h);
+            let color = getLerpedColor('#0000FF', '#FF0000', highestLandHumidity, h);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
