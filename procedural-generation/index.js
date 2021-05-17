@@ -1494,6 +1494,17 @@ class MapGenerator {
             ctx.strokeStyle = color;
             ctx.stroke();
         }
+
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            let h = tile.precipitation;
+            let color = getLerpedColor('#0000FF', '#FF0000', highestLandHumidity, h);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
     }
 
     drawCoastline = () => {
