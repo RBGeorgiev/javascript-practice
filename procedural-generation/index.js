@@ -2260,6 +2260,7 @@ canvas.addEventListener("click", (e) => {
     `
 
     console.log("______________________________________");
+    console.log("Index: ", tile.idx);
     console.log("Biome: ", tile.biome);
     console.log("Height: ", tile.height);
     console.log("Temperature: ", tile.temperature);
