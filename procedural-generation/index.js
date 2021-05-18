@@ -766,10 +766,9 @@ class MapGenerator {
             let tile = this.getTile(idx);
             tilesArr.push(tile);
         }
+
         return tilesArr.sort((a, b) => {
-            if (b.height - a.height) {
-                return b.height - a.height;
-            } else {
+            if (b.height - a.height === 0) {
                 let neighborsA = a.neighbors;
                 let lowestNeighborA;
 
@@ -787,6 +786,8 @@ class MapGenerator {
                 }
 
                 return lowestNeighborB.height - lowestNeighborA.height;
+            } else {
+                return b.height - a.height;
             }
         });
     }
