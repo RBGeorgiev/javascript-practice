@@ -856,6 +856,9 @@ class MapGenerator {
             }
 
             if (tile.precipitation > this.precipitationForRiverMin) {
+                // prevent water from flowing up
+                if (lowestNeighbor.height > tile.height) continue;
+
                 // chance to not make a river to simulate poor drainage
                 let shouldMakeRiver = (tile.precipitation > this.precipitationForRiverMax) ? true : (this.randRange() > 0.1);
                 if (!shouldMakeRiver) continue;
