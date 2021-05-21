@@ -318,7 +318,7 @@ class MapGenerator {
         this.showHeightmap = false;
         this.showGrayscaleHeightmap = false;
         this.showTemperatureMap = false;
-        this.showHumidityMap = true;
+        this.showHumidityMap = false;
         this.drawBiomesDelaunayStyle = false;
         this.showWindDirection = false;
 
