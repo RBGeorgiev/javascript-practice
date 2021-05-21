@@ -55,6 +55,7 @@ import {
     showHeightmapCheckbox,
     showGrayscaleHeightmapCheckbox,
     showTemperatureMapCheckbox,
+    showHumidityMapCheckbox,
     drawBiomesDelaunayStyleCheckbox,
     showOceanDepthCheckbox,
     showTilesCheckbox,
@@ -2202,6 +2203,12 @@ showGrayscaleHeightmapCheckbox.onchange = (e) => {
 
 showTemperatureMapCheckbox.onchange = (e) => {
     mapGen.showTemperatureMap = e.target.checked;
+
+    mapGen.drawAll();
+}
+
+showHumidityMapCheckbox.onchange = (e) => {
+    mapGen.showHumidityMap = e.target.checked;
 
     mapGen.drawAll();
 }
