@@ -1501,6 +1501,17 @@ class MapGenerator {
             ctx.strokeStyle = color;
             ctx.stroke();
         }
+
+        for (let idx in this.lakeTiles) {
+            let tile = this.getTile(+idx);
+            let t = tile.temperature;
+            let color = this.getTemperatureColor(t);
+
+            ctx.beginPath();
+            this.fillTile(+idx, color);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
     }
 
     getTemperatureColor = (t) => getLerpedColor('#0000FF', '#FF0000', Math.abs(this.minAllowedTemp) + Math.abs(this.maxAllowedTemp) - 15, Math.abs(this.minAllowedTemp) + t);
