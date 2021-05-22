@@ -1527,7 +1527,7 @@ class MapGenerator {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let h = tile.precipitation;
-            let color = getLerpedColor('#0000FF', '#FF0000', highestLandHumidity, h);
+            let color = this.getHumidityColor(h, highestLandHumidity);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
@@ -1538,7 +1538,7 @@ class MapGenerator {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let h = tile.precipitation;
-            let color = getLerpedColor('#0000FF', '#FF0000', highestLandHumidity, h);
+            let color = this.getHumidityColor(h, highestLandHumidity);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
@@ -1546,6 +1546,8 @@ class MapGenerator {
             ctx.stroke();
         }
     }
+
+    getHumidityColor = (h, highestLandHumidity) => getLerpedColor('#0000FF', '#FF0000', highestLandHumidity, h);
 
     drawCoastline = () => {
         let coastline = this.coastline;
