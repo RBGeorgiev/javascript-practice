@@ -1389,11 +1389,11 @@ class MapGenerator {
             } else {
                 this.drawBiomes();
             }
+            this.drawRivers(this.allRiverPaths, 0.4);
+            this.drawLakes();
         }
         this.drawOceanHeightmap();
         this.drawCoastline();
-        this.drawRivers(this.allRiverPaths, 0.4);
-        this.drawLakes();
 
         if (this.showTiles) {
             this.drawVoronoi();
