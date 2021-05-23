@@ -1494,7 +1494,7 @@ class MapGenerator {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let t = tile.temperature;
-            let color = this.getTemperatureColor(t);
+            let color = this.getTileTemperatureColor(t);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
@@ -1505,7 +1505,7 @@ class MapGenerator {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let t = tile.temperature;
-            let color = this.getTemperatureColor(t);
+            let color = this.getTileTemperatureColor(t);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
@@ -1514,7 +1514,7 @@ class MapGenerator {
         }
     }
 
-    getTemperatureColor = (t) => getLerpedColor('#0000FF', '#FF0000', Math.abs(this.minAllowedTemp) + Math.abs(this.maxAllowedTemp) - 15, Math.abs(this.minAllowedTemp) + t);
+    getTileTemperatureColor = (t) => getLerpedColor('#0000FF', '#FF0000', Math.abs(this.minAllowedTemp) + Math.abs(this.maxAllowedTemp) - 15, Math.abs(this.minAllowedTemp) + t);
 
     drawHumidityMap = () => {
         let highestLandHumidity = 0;
@@ -1527,7 +1527,7 @@ class MapGenerator {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let h = tile.precipitation;
-            let color = this.getHumidityColor(h, highestLandHumidity);
+            let color = this.getTileHumidityColor(h, highestLandHumidity);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
@@ -1538,7 +1538,7 @@ class MapGenerator {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let h = tile.precipitation;
-            let color = this.getHumidityColor(h, highestLandHumidity);
+            let color = this.getTileHumidityColor(h, highestLandHumidity);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
@@ -1547,7 +1547,7 @@ class MapGenerator {
         }
     }
 
-    getHumidityColor = (h, highestLandHumidity) => getLerpedColor('#0000FF', '#FF0000', highestLandHumidity, h);
+    getTileHumidityColor = (h, highestLandHumidity) => getLerpedColor('#0000FF', '#FF0000', highestLandHumidity, h);
 
     drawCoastline = () => {
         let coastline = this.coastline;
