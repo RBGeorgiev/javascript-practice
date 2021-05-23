@@ -1377,12 +1377,12 @@ class MapGenerator {
     drawAll = () => {
         this.clearCanvas();
 
-        if (this.showHeightmap || this.showGrayscaleHeightmap) {
-            this.drawHeightmap();
+        if (this.showHumidityMap) {
+            this.drawHumidityMap();
         } else if (this.showTemperatureMap) {
             this.drawTemperatureMap();
-        } else if (this.showHumidityMap) {
-            this.drawHumidityMap();
+        } else if (this.showHeightmap || this.showGrayscaleHeightmap) {
+            this.drawHeightmap();
         } else {
             if (this.drawBiomesDelaunayStyle) {
                 this.drawBiomesAsTriangles();
