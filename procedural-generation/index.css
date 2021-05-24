@@ -131,6 +131,7 @@ body {
 
 .optionsInputsContainer>label {
     justify-self: end;
+    user-select: none;
 }
 
 .optionsInputsContainer>button {
