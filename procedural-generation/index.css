@@ -147,7 +147,7 @@ body {
     padding: 6px 0;
 }
 
-button[data-tooltip]:hover::after {
+[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
     width: fit-content;
