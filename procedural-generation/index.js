@@ -302,7 +302,7 @@ class MapGenerator {
 
         this.precipitationForLakeMin = 300; // important value
         this.precipitationForLakeMax = 600; // important value
-        this.lakeHeightPrecipitationMultiplier = 7; // important value
+        this.lakeHeightPrecipitationMultiplier = 7; //higher values restrict lake size more // important value
 
         this.riverWidthMax = 10 / (this.numOfPoints / 1000);
         this.riverWidthMin = 1;
@@ -1538,7 +1538,7 @@ class MapGenerator {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let h = tile.precipitation;
-            let color = this.getTileHumidityColor(h, highestLandHumidity);
+            let color = (h > highestLandHumidity) ? '#FF0000' : this.getTileHumidityColor(h, highestLandHumidity);
 
             ctx.beginPath();
             this.fillTile(+idx, color);
