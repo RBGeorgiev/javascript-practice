@@ -1165,6 +1165,14 @@ class MapGenerator {
     }
 
     getBiomeForTile = (tile) => {
+        // in some rare cases, due to how precipitation moves between tiles, the order of which the tiles are looked at, and how lakes are formed, it is possible to get tiles that have the precipitation necessary for a lake but are not lakes
+        // The solution creates small isolated lakes comparable to real life high altitude mountain lakes.
+        if (tile.precipitation > this.precipitationForLakeMin) {
+            this.lakeTiles[tile.idx] = tile;
+            delete this.landTiles[tile.idx];
+            return;
+        }
+
         let t = this.getTemperatureTypeIdx(tile.temperature);
         let h = this.getHumidityTypeIdx(tile.totalPrecipitationPassedThroughTile);
         let biome = BIOMES[t][h];
