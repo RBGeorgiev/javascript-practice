@@ -2172,10 +2172,10 @@ heightDecrementMaxInput.oninput = (e) => {
 }
 
 chanceForLandInput.oninput = (e) => {
-    let val = +e.target.value / 10;
-    chanceForLandSpan.innerText = val;
+    let val = +e.target.value;
+    chanceForLandSpan.innerText = `${val * 10}%`;
 
-    mapGen.chanceForLand = val;
+    mapGen.chanceForLand = val / 10;
     mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
