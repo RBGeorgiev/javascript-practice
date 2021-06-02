@@ -400,8 +400,9 @@ class MapGenerator {
             for (let i = 0; i < neighbors.length; i++) {
                 let n = this.getTile(neighbors[i]);
                 if (n.height === null) {
-                    let tileHeight = Math.round(curHeight * decrement);
-                    this.setTileHeight(n, tileHeight);
+                    let neighborTileHeight = Math.round(curHeight * decrement);
+                    if (curHeight < 0 && neighborTileHeight === 0) neighborTileHeight = -0.1
+                    this.setTileHeight(n, neighborTileHeight);
                     queue.push(n);
                 }
             }
