@@ -396,7 +396,7 @@ class MapGenerator {
             let cur = queue.shift();
             let curHeight = cur.height;
             (curHeight >= 0) ? this.landTiles[cur.idx] = cur : this.oceanTiles[cur.idx] = cur;
-            if (curHeight === -0.1) curHeight = 0; // for ground level ocean tiles, reset elevation back to 0
+            if (curHeight === -0.1) cur.height = 0; // for ground level ocean tiles, reset elevation back to 0
 
             let neighbors = cur.neighbors;
             for (let i = 0; i < neighbors.length; i++) {
