@@ -1935,8 +1935,8 @@ for (let div of htmlDropdowns) {
 
 
 function updateHtmlDisplayedValues() {
-    highestPeakSpan.innerText = `${mapGen.highestPeak * 10}m`;
-    deepestDepthSpan.innerText = `${mapGen.deepestDepth * 10}m`;
+    highestPeakSpan.innerText = `${mapGen.unitsToMeters(mapGen.highestPeak)}m`;
+    deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
     longestRiverSpan.innerText = mapGen.longestRiverLength + '0m';
     tileInfoDiv.innerHTML = '';
 }
