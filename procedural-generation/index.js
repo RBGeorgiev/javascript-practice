@@ -1384,6 +1384,8 @@ class MapGenerator {
         this.changeMapHumidity(newOceanTileWaterVapor);
     }
 
+    unitsToMeters = (units) => units * 10;
+
 
     // _________________________________________
     // draw methods
