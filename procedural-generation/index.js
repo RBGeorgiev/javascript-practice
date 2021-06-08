@@ -2150,8 +2150,7 @@ limitDepthCheckbox.oninput = (e) => {
 
 maxAllowedDepthInput.oninput = (e) => {
     let val = +e.target.value;
-    maxAllowedDepthSpan.innerText = val + '0m';
-
+    maxAllowedDepthSpan.innerText = `${mapGen.unitsToMeters(val)}m`;
     mapGen.maxAllowedDepth = val;
     mapGen.changeMapTerrain();
 
