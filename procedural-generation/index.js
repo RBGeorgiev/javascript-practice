@@ -1937,7 +1937,7 @@ for (let div of htmlDropdowns) {
 function updateHtmlDisplayedValues() {
     highestPeakSpan.innerText = `${mapGen.unitsToMeters(mapGen.highestPeak)}m`;
     deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
-    longestRiverSpan.innerText = mapGen.longestRiverLength + '0m';
+    longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
     tileInfoDiv.innerHTML = '';
 }
 
