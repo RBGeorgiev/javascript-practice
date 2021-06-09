@@ -2130,7 +2130,7 @@ limitHeightCheckbox.oninput = (e) => {
 
 maxAllowedHeightInput.oninput = (e) => {
     let val = +e.target.value;
-    maxAllowedHeightSpan.innerText = val + '0m';
+    maxAllowedHeightSpan.innerText = `${mapGen.unitsToMeters(val)}m`;
 
     mapGen.maxAllowedHeight = val;
     mapGen.changeMapTerrain();
