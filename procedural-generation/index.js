@@ -2110,7 +2110,7 @@ lakeHeightPrecipitationMultiplierInput.oninput = (e) => {
 
 initialPeakHeightInput.oninput = (e) => {
     let val = +e.target.value;
-    initialPeakHeightSpan.innerText = val + '0m';
+    initialPeakHeightSpan.innerText = `${mapGen.unitsToMeters(val)}m`;
 
     mapGen.initialPeakHeight = val;
     mapGen.changeMapTerrain();
