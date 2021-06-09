@@ -2314,7 +2314,7 @@ canvas.addEventListener("click", (e) => {
 
     tileInfoDiv.innerHTML = `
     <span class="tileInfoLabel">Biome:</span> <span class="tileInfoValue">${tile.biome}</span>
-    <span class="tileInfoLabel">Height:</span> <span class="tileInfoValue">${tile.height * 10}m</span>
+    <span class="tileInfoLabel">Height:</span> <span class="tileInfoValue">${mapGen.unitsToMeters(tile.height)}m</span>
     <span class="tileInfoLabel">Temperature:</span> <span class="tileInfoValue">${tile.temperature}°C</span>
     <span class="tileInfoLabel">Number Of Edges Used As Rivers:</span> <span class="tileInfoValue">${tile.numOfRiversOnEdges}</span>
     <span class="tileInfoLabel">Total Number Of Tile Edges:</span> <span class="tileInfoValue">${tile.polygon.length - 1}</span>
