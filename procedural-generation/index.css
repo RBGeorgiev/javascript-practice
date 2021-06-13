@@ -120,8 +120,6 @@ body {
 }
 
 .optionsInputsContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     width: 85%;
     margin: auto;
 }
@@ -130,17 +128,17 @@ body {
     margin-bottom: 7px;
 }
 
-.optionsInputsContainer>label {
-    justify-self: end;
-    user-select: none;
-}
-
 .option {
     position: relative;
-    display: inherit;
-    grid-template-columns: inherit;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     grid-column-start: 1;
     grid-column-end: 3;
+}
+
+.option>label {
+    justify-self: end;
+    user-select: none;
 }
 
 .wideButton {
