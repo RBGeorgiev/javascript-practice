@@ -1861,7 +1861,7 @@ class MapGenerator {
             ctx.fillStyle = "#FFFFFF";
             ctx.strokeStyle = "#000000";
             ctx.textAlign = "center";
-            let heightInMeters = tile.height * 10;
+            let heightInMeters = mapGen.unitsToMeters(tileHeight);
             ctx.strokeText(heightInMeters, x, y);
             ctx.fillText(heightInMeters, x, y);
         }
