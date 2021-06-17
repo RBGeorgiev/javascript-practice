@@ -20,8 +20,8 @@ import {
     windSpeedSpan,
     windSpeedInput,
     changeMapWindDirectionBtn,
-    precipitationForRiverMinSpan,
-    precipitationForRiverMinInput,
+    riverVolumeMinSpan,
+    riverVolumeMinInput,
     precipitationForRiverMaxSpan,
     precipitationForRiverMaxInput,
     precipitationForLakeMinSpan,
@@ -297,7 +297,7 @@ class MapGenerator {
         this.windSpeed = 20; // km/h // Beaufort wind force scale // important value
         this.heightPrecipitationMultiplier = .2; // important value
 
-        this.precipitationForRiverMin = 100; // important value
+        this.riverVolumeMin = 100; // important value
         this.precipitationForRiverMax = 200; // important value
 
         this.precipitationForLakeMin = 300; // important value
@@ -863,7 +863,7 @@ class MapGenerator {
                 if (!lowestNeighbor || n.height < lowestNeighbor.height) lowestNeighbor = n;
             }
 
-            if (tile.precipitation > this.precipitationForRiverMin) {
+            if (tile.precipitation > this.riverVolumeMin) {
                 // prevent water from flowing up
                 if (lowestNeighbor.height > tile.height) continue;
 
@@ -873,7 +873,7 @@ class MapGenerator {
 
                 // calculate how much water is moved between tiles and create river
                 let precipitationForRiverUpperBound = (tile.precipitation > this.precipitationForRiverMax) ? this.precipitationForRiverMax : tile.precipitation;
-                let precipitationForRiverLeftInTile = Math.round(this.randRange(this.precipitationForRiverMin, precipitationForRiverUpperBound));
+                let precipitationForRiverLeftInTile = Math.round(this.randRange(this.riverVolumeMin, precipitationForRiverUpperBound));
                 let flowAmount = tile.precipitation - precipitationForRiverLeftInTile;
 
                 lowestNeighbor.precipitation += flowAmount;
@@ -921,7 +921,7 @@ class MapGenerator {
     defineLakes = (rivers) => {
         let possibleLakes = [];
         // find possible lakes from lowest river tile on land
-        rivers.forEach(river => (!this.oceanTiles[river.tile.idx] && river.tile.precipitation > this.precipitationForRiverMin) ? possibleLakes.push(river.tile) : false);
+        rivers.forEach(river => (!this.oceanTiles[river.tile.idx] && river.tile.precipitation > this.riverVolumeMin) ? possibleLakes.push(river.tile) : false);
 
         // define lakes
         for (let i = 0; i < possibleLakes.length; i++) {
@@ -1232,7 +1232,7 @@ class MapGenerator {
                 river.children.forEach(c => queue.push(c));
             }
 
-            river.dry = !!(tile.precipitation < this.precipitationForRiverMin + Math.exp((tile.temperature - 14) / 5));
+            river.dry = !!(tile.precipitation < this.riverVolumeMin + Math.exp((tile.temperature - 14) / 5));
             river.frozen = !!(tile.temperature < 0);
         }
     }
@@ -1730,14 +1730,14 @@ class MapGenerator {
                     if (distWidth < this.riverWidthMin) distWidth = this.riverWidthMin;
 
                     // get width based on precipitation left in tile
-                    let thirdOfPrecipitationRange = Math.round((this.precipitationForRiverMax - this.precipitationForRiverMin) / 3);
+                    let thirdOfPrecipitationRange = Math.round((this.precipitationForRiverMax - this.riverVolumeMin) / 3);
                     let precipitationWidth;
 
-                    if (riverNode.tile.precipitation <= this.precipitationForRiverMin + thirdOfPrecipitationRange) {
+                    if (riverNode.tile.precipitation <= this.riverVolumeMin + thirdOfPrecipitationRange) {
                         precipitationWidth = 1;
-                    } else if (riverNode.tile.precipitation <= this.precipitationForRiverMin + thirdOfPrecipitationRange * 2) {
+                    } else if (riverNode.tile.precipitation <= this.riverVolumeMin + thirdOfPrecipitationRange * 2) {
                         precipitationWidth = 2;
-                    } else if (riverNode.tile.precipitation <= this.precipitationForRiverMin + thirdOfPrecipitationRange * 3) {
+                    } else if (riverNode.tile.precipitation <= this.riverVolumeMin + thirdOfPrecipitationRange * 3) {
                         precipitationWidth = 3;
                     } else {
                         precipitationWidth = 4;
@@ -1942,11 +1942,11 @@ function updateHtmlDisplayedValues() {
 }
 
 
-precipitationForRiverMinInput.oninput = (e) => {
+riverVolumeMinInput.oninput = (e) => {
     let val = +e.target.value;
-    precipitationForRiverMinSpan.innerText = val;
+    riverVolumeMinSpan.innerText = val;
 
-    mapGen.precipitationForRiverMin = val;
+    mapGen.riverVolumeMin = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
