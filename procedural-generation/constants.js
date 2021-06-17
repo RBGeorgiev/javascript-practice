@@ -34,8 +34,8 @@ export const changeMapWindDirectionBtn = id('changeMapWindDirectionBtn');
 
 export const riverVolumeMinSpan = id('riverVolumeMinSpan');
 export const riverVolumeMinInput = id('riverVolumeMinInput');
-export const precipitationForRiverMaxSpan = id('precipitationForRiverMaxSpan');
-export const precipitationForRiverMaxInput = id('precipitationForRiverMaxInput');
+export const riverVolumeMaxSpan = id('riverVolumeMaxSpan');
+export const riverVolumeMaxInput = id('riverVolumeMaxInput');
 export const precipitationForLakeMinSpan = id('precipitationForLakeMinSpan');
 export const precipitationForLakeMinInput = id('precipitationForLakeMinInput');
 export const precipitationForLakeMaxSpan = id('precipitationForLakeMaxSpan');
