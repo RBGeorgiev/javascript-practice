@@ -22,8 +22,8 @@ import {
     changeMapWindDirectionBtn,
     riverVolumeMinSpan,
     riverVolumeMinInput,
-    precipitationForRiverMaxSpan,
-    precipitationForRiverMaxInput,
+    riverVolumeMaxSpan,
+    riverVolumeMaxInput,
     precipitationForLakeMinSpan,
     precipitationForLakeMinInput,
     precipitationForLakeMaxSpan,
@@ -298,7 +298,7 @@ class MapGenerator {
         this.heightPrecipitationMultiplier = .2; // important value
 
         this.riverVolumeMin = 100; // important value
-        this.precipitationForRiverMax = 200; // important value
+        this.riverVolumeMax = 200; // important value
 
         this.precipitationForLakeMin = 300; // important value
         this.precipitationForLakeMax = 600; // important value
@@ -868,11 +868,11 @@ class MapGenerator {
                 if (lowestNeighbor.height > tile.height) continue;
 
                 // chance to not make a river to simulate poor drainage
-                let shouldMakeRiver = (tile.precipitation > this.precipitationForRiverMax) ? true : (this.randRange() > 0.1);
+                let shouldMakeRiver = (tile.precipitation > this.riverVolumeMax) ? true : (this.randRange() > 0.1);
                 if (!shouldMakeRiver) continue;
 
                 // calculate how much water is moved between tiles and create river
-                let precipitationForRiverUpperBound = (tile.precipitation > this.precipitationForRiverMax) ? this.precipitationForRiverMax : tile.precipitation;
+                let precipitationForRiverUpperBound = (tile.precipitation > this.riverVolumeMax) ? this.riverVolumeMax : tile.precipitation;
                 let precipitationForRiverLeftInTile = Math.round(this.randRange(this.riverVolumeMin, precipitationForRiverUpperBound));
                 let flowAmount = tile.precipitation - precipitationForRiverLeftInTile;
 
@@ -1730,7 +1730,7 @@ class MapGenerator {
                     if (distWidth < this.riverWidthMin) distWidth = this.riverWidthMin;
 
                     // get width based on precipitation left in tile
-                    let thirdOfPrecipitationRange = Math.round((this.precipitationForRiverMax - this.riverVolumeMin) / 3);
+                    let thirdOfPrecipitationRange = Math.round((this.riverVolumeMax - this.riverVolumeMin) / 3);
                     let precipitationWidth;
 
                     if (riverNode.tile.precipitation <= this.riverVolumeMin + thirdOfPrecipitationRange) {
@@ -1952,11 +1952,11 @@ riverVolumeMinInput.oninput = (e) => {
     updateHtmlDisplayedValues();
 }
 
-precipitationForRiverMaxInput.oninput = (e) => {
+riverVolumeMaxInput.oninput = (e) => {
     let val = +e.target.value;
-    precipitationForRiverMaxSpan.innerText = val;
+    riverVolumeMaxSpan.innerText = val;
 
-    mapGen.precipitationForRiverMax = val;
+    mapGen.riverVolumeMax = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
