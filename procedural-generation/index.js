@@ -24,8 +24,8 @@ import {
     riverVolumeMinInput,
     riverVolumeMaxSpan,
     riverVolumeMaxInput,
-    precipitationForLakeMinSpan,
-    precipitationForLakeMinInput,
+    lakeVolumeMinSpan,
+    lakeVolumeMinInput,
     precipitationForLakeMaxSpan,
     precipitationForLakeMaxInput,
     heightPrecipitationMultiplierSpan,
@@ -300,7 +300,7 @@ class MapGenerator {
         this.riverVolumeMin = 100; // important value
         this.riverVolumeMax = 200; // important value
 
-        this.precipitationForLakeMin = 300; // important value
+        this.lakeVolumeMin = 300; // important value
         this.precipitationForLakeMax = 600; // important value
         this.lakeHeightPrecipitationMultiplier = 7; //higher values restrict lake size more // important value
 
@@ -926,7 +926,7 @@ class MapGenerator {
         // define lakes
         for (let i = 0; i < possibleLakes.length; i++) {
             let mbLake = possibleLakes[i];
-            if (mbLake.precipitation >= this.precipitationForLakeMin) {
+            if (mbLake.precipitation >= this.lakeVolumeMin) {
                 this.lakeTiles[mbLake.idx] = mbLake;
                 delete this.landTiles[mbLake.idx];
                 possibleLakes.splice(i, 1);
@@ -971,7 +971,7 @@ class MapGenerator {
                 lake.precipitation -= waterMoved;
                 totalWaterAvailable -= waterMoved;
 
-                if (neighbor.precipitation >= this.precipitationForLakeMin) {
+                if (neighbor.precipitation >= this.lakeVolumeMin) {
                     this.lakeTiles[neighbor.idx] = neighbor;
                     delete this.landTiles[neighbor.idx];
 
@@ -1173,7 +1173,7 @@ class MapGenerator {
     getBiomeForTile = (tile) => {
         // in some rare cases, due to how precipitation moves between tiles, the order of which the tiles are looked at, and how lakes are formed, it is possible to get tiles that have the precipitation necessary for a lake but are not lakes
         // The solution creates small isolated lakes comparable to real life high altitude mountain lakes.
-        if (tile.precipitation > this.precipitationForLakeMin) {
+        if (tile.precipitation >= this.lakeVolumeMin) {
             this.lakeTiles[tile.idx] = tile;
             delete this.landTiles[tile.idx];
             return;
@@ -1240,7 +1240,7 @@ class MapGenerator {
     checkForLakesModifiers = () => {
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
-            tile.dryLake = !!(tile.precipitation < this.precipitationForLakeMin + Math.exp((tile.temperature - 14) / 5));
+            tile.dryLake = !!(tile.precipitation < this.lakeVolumeMin + Math.exp((tile.temperature - 14) / 5));
             tile.frozenLake = !!(tile.temperature < 0);
         }
     }
@@ -1962,11 +1962,11 @@ riverVolumeMaxInput.oninput = (e) => {
     updateHtmlDisplayedValues();
 }
 
-precipitationForLakeMinInput.oninput = (e) => {
+lakeVolumeMinInput.oninput = (e) => {
     let val = +e.target.value;
-    precipitationForLakeMinSpan.innerText = val;
+    lakeVolumeMinSpan.innerText = val;
 
-    mapGen.precipitationForLakeMin = val;
+    mapGen.lakeVolumeMin = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
