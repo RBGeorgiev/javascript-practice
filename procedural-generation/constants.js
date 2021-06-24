@@ -38,8 +38,8 @@ export const riverVolumeMaxSpan = id('riverVolumeMaxSpan');
 export const riverVolumeMaxInput = id('riverVolumeMaxInput');
 export const lakeVolumeMinSpan = id('lakeVolumeMinSpan');
 export const lakeVolumeMinInput = id('lakeVolumeMinInput');
-export const precipitationForLakeMaxSpan = id('precipitationForLakeMaxSpan');
-export const precipitationForLakeMaxInput = id('precipitationForLakeMaxInput');
+export const lakeExpansionThresholdSpan = id('lakeExpansionThresholdSpan');
+export const lakeExpansionThresholdInput = id('lakeExpansionThresholdInput');
 
 export const heightPrecipitationMultiplierSpan = id('heightPrecipitationMultiplierSpan');
 export const heightPrecipitationMultiplierInput = id('heightPrecipitationMultiplierInput');
