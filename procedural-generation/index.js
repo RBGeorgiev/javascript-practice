@@ -1983,12 +1983,6 @@ lakeExpansionThresholdInput.oninput = (e) => {
 }
 
 
-// changing temp -> RH
-// changing RH -> dewpoint
-// changing dewpoint -> temp
-// ... -> temp -> RH -> dewpoint -> temp -> ...
-
-
 seedInput.oninput = (e) => {
     let newSeed = +e.target.value;
     mapGen.seed = newSeed;
@@ -2032,6 +2026,12 @@ numOfTilesInput.onchange = (e) => {
 
     updateHtmlDisplayedValues();
 }
+
+
+// changing temp -> RH
+// changing RH -> dewpoint
+// changing dewpoint -> temp
+// ... -> temp -> RH -> dewpoint -> temp -> ...
 
 temperatureInput.oninput = (e) => {
     let newTemp = +e.target.value;
