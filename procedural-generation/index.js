@@ -26,8 +26,8 @@ import {
     riverVolumeMaxInput,
     lakeVolumeMinSpan,
     lakeVolumeMinInput,
-    precipitationForLakeMaxSpan,
-    precipitationForLakeMaxInput,
+    lakeExpansionThresholdSpan,
+    lakeExpansionThresholdInput,
     heightPrecipitationMultiplierSpan,
     heightPrecipitationMultiplierInput,
     lakeHeightPrecipitationMultiplierSpan,
@@ -301,7 +301,7 @@ class MapGenerator {
         this.riverVolumeMax = 200; // important value
 
         this.lakeVolumeMin = 300; // important value
-        this.precipitationForLakeMax = 600; // important value
+        this.lakeExpansionThreshold = 600; // important value
         this.lakeHeightPrecipitationMultiplier = 7; //higher values restrict lake size more // important value
 
         this.riverWidthMax = 10 / (this.numOfPoints / 1000);
@@ -952,7 +952,7 @@ class MapGenerator {
             }
             neighborsByHeight.sort((a, b) => a.height - b.height);
             let waterSpreadAverage = Math.round(lake.precipitation / neighbors.length);
-            let totalWaterAvailable = lake.precipitation - this.precipitationForLakeMax;
+            let totalWaterAvailable = lake.precipitation - this.lakeExpansionThreshold;
 
             for (let neighbor of neighborsByHeight) {
                 if (totalWaterAvailable <= 0) break;
@@ -1972,11 +1972,11 @@ lakeVolumeMinInput.oninput = (e) => {
     updateHtmlDisplayedValues();
 }
 
-precipitationForLakeMaxInput.oninput = (e) => {
+lakeExpansionThresholdInput.oninput = (e) => {
     let val = +e.target.value;
-    precipitationForLakeMaxSpan.innerText = val;
+    lakeExpansionThresholdSpan.innerText = val;
 
-    mapGen.precipitationForLakeMax = val;
+    mapGen.lakeExpansionThreshold = val;
     mapGen.changeMapHumidity(mapGen.oceanTileWaterVapor);
 
     updateHtmlDisplayedValues();
