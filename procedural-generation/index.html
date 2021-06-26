@@ -124,14 +124,6 @@
 
                 <div class="optionsInputsContainer">
                     <div class="option">
-                        <label id="initialPeakHeightLabel" for="initialPeakHeightInput"
-                            data-tooltip="When initializing terrain, random tiles are given this value as their height/depth. Neighboring tiles use the value to calculate their own height.">Initial
-                            Peak Height: <span id="initialPeakHeightSpan">1000m</span></label>
-                        <input type="range" id="initialPeakHeightInput" min="0" max="1000" value="100">
-                    </div>
-
-
-                    <div class="option">
                         <label id="limitHeightLabel" for="limitHeightCheckbox">Limit Height</label>
                         <input type="checkbox" id="limitHeightCheckbox">
                     </div>
@@ -160,6 +152,14 @@
                 <h3>Advanced Options<i class="arrow down"></i> </h3>
 
                 <div class="optionsInputsContainer">
+                    <div class="option">
+                        <label id="initialPeakHeightLabel" for="initialPeakHeightInput"
+                            data-tooltip="When initializing terrain, random tiles are given this value as their height/depth. Neighboring tiles use the value to calculate their own height.">Initial
+                            Peak Height: <span id="initialPeakHeightSpan">1000m</span></label>
+                        <input type="range" id="initialPeakHeightInput" min="0" max="1000" value="100">
+                    </div>
+
+
                     <div class="option">
                         <label id="heightDecrementMinLabel" for="heightDecrementMinInput"
                             data-tooltip="The lower the number is, the greater the chance for a sharp change in height.">Minimum
