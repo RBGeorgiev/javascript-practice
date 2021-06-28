@@ -1856,6 +1856,7 @@ class MapGenerator {
     displayHeightValues = (tiles) => {
         for (let idx in tiles) {
             let tile = this.getTile(+idx);
+            let tileHeight = tile.height;
             let x = tile.centroid[0];
             let y = tile.centroid[1];
             ctx.fillStyle = "#FFFFFF";
