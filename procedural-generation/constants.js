@@ -55,8 +55,8 @@ export const limitDepthCheckbox = id('limitDepthCheckbox');
 export const maxAllowedDepthSpan = id('maxAllowedDepthSpan');
 export const maxAllowedDepthInput = id('maxAllowedDepthInput');
 
-export const heightDecrementMinSpan = id('heightDecrementMinSpan');
-export const heightDecrementMinInput = id('heightDecrementMinInput');
+export const terrainHeightUniformitySpan = id('terrainHeightUniformitySpan');
+export const terrainHeightUniformityInput = id('terrainHeightUniformityInput');
 export const heightDecrementMaxSpan = id('heightDecrementMaxSpan');
 export const heightDecrementMaxInput = id('heightDecrementMaxInput');
 
