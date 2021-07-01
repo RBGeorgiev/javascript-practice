@@ -40,8 +40,8 @@ import {
     limitDepthCheckbox,
     maxAllowedDepthSpan,
     maxAllowedDepthInput,
-    heightDecrementMinSpan,
-    heightDecrementMinInput,
+    terrainHeightUniformitySpan,
+    terrainHeightUniformityInput,
     heightDecrementMaxSpan,
     heightDecrementMaxInput,
     chanceForLandSpan,
@@ -282,7 +282,7 @@ class MapGenerator {
         this.maxAllowedDepth = -30; // important value
 
         // the lower the MIN number is, the higher the chance for a sharp drop in height 
-        this.heightDecrementMin = 30; // important value
+        this.terrainHeightUniformity = 30; // important value
         // if MAX number higher than 100 there is a chance for height increase
         this.heightDecrementMax = 120; // important value
 
@@ -391,7 +391,7 @@ class MapGenerator {
         let decrement;
 
         while (queue.length) {
-            decrement = this.randRange(this.heightDecrementMin, this.heightDecrementMax) / 100;
+            decrement = this.randRange(this.terrainHeightUniformity, this.heightDecrementMax) / 100;
 
             let cur = queue.shift();
             let curHeight = cur.height;
@@ -2158,11 +2158,11 @@ maxAllowedDepthInput.oninput = (e) => {
     updateHtmlDisplayedValues();
 }
 
-heightDecrementMinInput.oninput = (e) => {
+terrainHeightUniformityInput.oninput = (e) => {
     let val = +e.target.value;
-    heightDecrementMinSpan.innerText = val;
+    terrainHeightUniformitySpan.innerText = val;
 
-    mapGen.heightDecrementMin = val;
+    mapGen.terrainHeightUniformity = val;
     mapGen.changeMapTerrain();
 
     updateHtmlDisplayedValues();
