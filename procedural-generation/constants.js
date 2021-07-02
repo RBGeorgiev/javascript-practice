@@ -57,8 +57,8 @@ export const maxAllowedDepthInput = id('maxAllowedDepthInput');
 
 export const terrainHeightUniformitySpan = id('terrainHeightUniformitySpan');
 export const terrainHeightUniformityInput = id('terrainHeightUniformityInput');
-export const heightDecrementMaxSpan = id('heightDecrementMaxSpan');
-export const heightDecrementMaxInput = id('heightDecrementMaxInput');
+export const terrainHeightIncreaseWeightSpan = id('terrainHeightIncreaseWeightSpan');
+export const terrainHeightIncreaseWeightInput = id('terrainHeightIncreaseWeightInput');
 
 export const chanceForLandSpan = id('chanceForLandSpan');
 export const chanceForLandInput = id('chanceForLandInput');
