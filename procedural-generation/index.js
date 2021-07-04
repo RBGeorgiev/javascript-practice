@@ -562,7 +562,7 @@ class MapGenerator {
         let totalY = 0;
         let len = polygonPoints.length;
 
-        for (let i = 0; i < len; i++) {
+        for (let i = 0; i < len - 1; i++) {
             let x = polygonPoints[i][0];
             let y = polygonPoints[i][1];
 
@@ -570,7 +570,7 @@ class MapGenerator {
             totalY += y;
         }
 
-        return [totalX / len, totalY / len];
+        return [totalX / (len - 1), totalY / (len - 1)];
     }
 
     resetTerrainHeight = () => {
