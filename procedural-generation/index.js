@@ -560,9 +560,9 @@ class MapGenerator {
     getCentroid = (polygonPoints) => {
         let totalX = 0;
         let totalY = 0;
-        let len = polygonPoints.length;
+        let len = polygonPoints.length - 1; // first and last point are the same
 
-        for (let i = 0; i < len - 1; i++) {
+        for (let i = 0; i < len; i++) {
             let x = polygonPoints[i][0];
             let y = polygonPoints[i][1];
 
@@ -570,7 +570,7 @@ class MapGenerator {
             totalY += y;
         }
 
-        return [totalX / (len - 1), totalY / (len - 1)];
+        return [totalX / len, totalY / len];
     }
 
     resetTerrainHeight = () => {
