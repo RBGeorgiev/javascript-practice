@@ -2208,7 +2208,7 @@ numberOfRandomInitialPeaksOrTrenchesMaxInput.oninput = (e) => {
     updateHtmlDisplayedValues();
 }
 
-lloydRelaxationTimesInput.oninput = (e) => {
+lloydRelaxationTimesInput.onchange = (e) => {
     let val = +e.target.value;
     lloydRelaxationTimesSpan.innerText = val;
 
