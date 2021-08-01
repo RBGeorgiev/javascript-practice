@@ -2297,6 +2297,18 @@ canvas.addEventListener("mousemove", (e) => {
 })
 
 canvas.addEventListener("click", (e) => {
+    function formatString(s) {
+        let a = s.split("_");
+
+        for (let i = 0; i < a.length; i++) {
+            a[i] = a[i].toLowerCase();
+        }
+        a[0] = a[0][0].toUpperCase() + a[0].slice(1);
+
+        return a.join(" ");
+    }
+
+
     let x = e.offsetX;
     let y = e.offsetY;
     let idx = mapGen.delaunay.find(x, y);
@@ -2314,7 +2326,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     tileInfoDiv.innerHTML = `
-    <span class="tileInfoLabel">Biome:</span> <span class="tileInfoValue">${tile.biome}</span>
+    <span class="tileInfoLabel">Biome:</span> <span class="tileInfoValue">${formatString(tile.biome)}</span>
     <span class="tileInfoLabel">Height:</span> <span class="tileInfoValue">${mapGen.unitsToMeters(tile.height)}m</span>
     <span class="tileInfoLabel">Temperature:</span> <span class="tileInfoValue">${tile.temperature}°C</span>
     <span class="tileInfoLabel">Number Of Edges Used As Rivers:</span> <span class="tileInfoValue">${tile.numOfRiversOnEdges}</span>
