@@ -2297,7 +2297,7 @@ canvas.addEventListener("mousemove", (e) => {
 })
 
 canvas.addEventListener("click", (e) => {
-    function formatBiomeString(s) {
+    const formatBiomeString = (s) => {
         let a = s.split("_");
 
         for (let i = 0; i < a.length; i++) {
