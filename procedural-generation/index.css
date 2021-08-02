@@ -50,7 +50,6 @@ body {
 
 #tileInfoContainer>h2 {
     margin: 0;
-    margin-bottom: 31px;
     padding: 15px;
     background: #FFFFFF;
     border: 2px solid black;
@@ -61,6 +60,9 @@ body {
     grid-template-columns: 1fr 1fr;
     column-gap: 5px;
     margin: auto;
+    min-height: 175px;
+    padding: 31px 0 25px;
+    border: 1px black solid;
 }
 
 #tileInfoDiv>* {
