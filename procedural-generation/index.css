@@ -63,6 +63,7 @@ body {
     min-height: 175px;
     padding: 31px 0 25px;
     border: 2px black solid;
+    border-top: none;
 }
 
 #tileInfoDiv>* {
