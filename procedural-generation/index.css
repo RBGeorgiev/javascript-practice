@@ -61,7 +61,7 @@ body {
     column-gap: 5px;
     margin: auto;
     min-height: 175px;
-    padding: 31px 0 25px;
+    padding: 31px 0;
     border: 2px black solid;
     border-top: none;
 }
