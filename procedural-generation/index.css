@@ -46,6 +46,7 @@ body {
 
 #tileInfoContainer {
     width: 800px;
+    background: #eeeeee;
 }
 
 #tileInfoContainer>h2 {
@@ -62,7 +63,6 @@ body {
     margin: auto;
     min-height: 175px;
     padding: 31px 0;
-    background: #eeeeee;
     border: 2px black solid;
     border-top: none;
 }
