@@ -47,6 +47,7 @@ body {
 #tileInfoContainer {
     width: 800px;
     background: #eeeeee;
+    height: fit-content;
 }
 
 #tileInfoContainer>h2 {
