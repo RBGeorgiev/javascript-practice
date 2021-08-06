@@ -61,7 +61,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 5px;
-    margin: auto;
+    margin: 5px;
     min-height: 175px;
     padding: 31px 0;
     background: #ADD8E6;
