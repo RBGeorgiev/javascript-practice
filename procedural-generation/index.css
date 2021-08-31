@@ -69,6 +69,11 @@ body {
     border: 1px solid #7e7e7e;
 }
 
+#tileInfoDivIntroText {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
 #tileInfoDiv>* {
     margin-bottom: 7px;
 }
