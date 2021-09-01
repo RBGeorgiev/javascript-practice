@@ -1939,7 +1939,7 @@ function updateHtmlDisplayedValues() {
     highestPeakSpan.innerText = `${mapGen.unitsToMeters(mapGen.highestPeak)}m`;
     deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
-    tileInfoDiv.innerHTML = `<div>Click on a tile to display information about it.</div>`;
+    tileInfoDiv.innerHTML = `<div id="tileInfoDivIntroText">Click on a tile to display information about it.</div>`;
 }
 
 
