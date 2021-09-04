@@ -2329,8 +2329,8 @@ canvas.addEventListener("click", (e) => {
     <span class="tileInfoLabel">Biome:</span> <span class="tileInfoValue">${formatBiomeString(tile.biome)}</span>
     <span class="tileInfoLabel">Height:</span> <span class="tileInfoValue">${mapGen.unitsToMeters(tile.height)}m</span>
     <span class="tileInfoLabel">Temperature:</span> <span class="tileInfoValue">${tile.temperature}°C</span>
-    <span class="tileInfoLabel">Number Of Edges Used As Rivers:</span> <span class="tileInfoValue">${tile.numOfRiversOnEdges}</span>
     <span class="tileInfoLabel">Total Number Of Tile Edges:</span> <span class="tileInfoValue">${tile.polygon.length - 1}</span>
+    <span class="tileInfoLabel">Number Of Edges Used As Rivers:</span> <span class="tileInfoValue">${tile.numOfRiversOnEdges}</span>
     <span class="tileInfoLabel">Current Precipitation:</span> <span class="tileInfoValue">${tile.precipitation}</span>
     <span class="tileInfoLabel">Total Precipitation Passed Through:</span> <span class="tileInfoValue">${tile.totalPrecipitationPassedThroughTile}</span>
     `
