@@ -2340,10 +2340,10 @@ canvas.addEventListener("click", (e) => {
     console.log("Biome: ", tile.biome);
     console.log("Height: ", tile.height);
     console.log("Temperature: ", tile.temperature);
-    console.log("River Node Passing Through Tile: ", (tile.river) ? tile.river : "None");
-    console.log("River Node Passing Through Tile Root: ", (tile.river) ? tile.river.getRoot() : "None");
     console.log("Total Number Of Tile Edges: ", tile.polygon.length - 1);
     console.log("Number Of Edges Used As Rivers: ", tile.numOfRiversOnEdges);
+    console.log("River Node Passing Through Tile: ", (tile.river) ? tile.river : "None");
+    console.log("River Node Passing Through Tile Root: ", (tile.river) ? tile.river.getRoot() : "None");
     console.log("Adjacent Neighbor Tile Rivers: ", tile.nearbyRivers);
     console.log("Adjacent Neighbor Tile Rivers' Roots: ", nearbyRiversRoots);
     console.log("Current Precipitation: ", tile.precipitation);
