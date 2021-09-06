@@ -1250,6 +1250,8 @@ class MapGenerator {
         this.checkForRiversModifiers(this.riverRoots);
         this.checkForLakesModifiers();
 
+        this.allBiomesCount = [];
+
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let biome = this.getBiomeForTile(tile);
