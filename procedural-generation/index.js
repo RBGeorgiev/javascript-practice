@@ -269,6 +269,7 @@ class MapGenerator {
         this.oceanTiles = {};
         this.lakeTiles = {};
         this.coastline = [];
+        this.allBiomesCount = [];
 
 
         this.numberOfRandomInitialPeaksOrTrenchesMin = 5; // important value
@@ -1253,17 +1254,20 @@ class MapGenerator {
             let tile = this.getTile(+idx);
             let biome = this.getBiomeForTile(tile);
             tile.biome = biome;
+            this.allBiomesCount.push(tile.biome);
         }
 
         for (let idx in this.oceanTiles) {
             let tile = this.getTile(+idx);
             tile.biome = "OCEAN";
+            this.allBiomesCount.push(tile.biome);
         }
 
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let lakeType = (tile.dryLake) ? "DRY_LAKE" : (tile.frozenLake) ? "FROZEN_LAKE" : "LAKE";
             tile.biome = lakeType;
+            this.allBiomesCount.push(tile.biome);
         }
     }
 
