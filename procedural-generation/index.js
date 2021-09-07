@@ -1255,8 +1255,11 @@ class MapGenerator {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let biome = this.getBiomeForTile(tile);
-            tile.biome = biome;
-            this.allBiomesCount.push(tile.biome);
+            if (biome) {
+                // if biome doesn't change to lake
+                tile.biome = biome;
+                this.allBiomesCount.push(tile.biome);
+            }
         }
 
         for (let idx in this.oceanTiles) {
