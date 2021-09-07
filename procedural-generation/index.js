@@ -1255,7 +1255,7 @@ class MapGenerator {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let biome = this.getBiomeForTile(tile);
-            if (biome) {
+            if (biome !== undefined) {
                 // if biome doesn't change to lake
                 tile.biome = biome;
                 this.allBiomesCount.push(tile.biome);
