@@ -1284,11 +1284,8 @@ class MapGenerator {
 
         for (let i = 0; i < this.allBiomesCount.length; i++) {
             let biome = this.allBiomesCount[i];
-            if (biomeCount.hasOwnProperty(biome)) {
-                biomeCount[biome] += 1;
-            } else {
-                biomeCount[biome] = 1;
-            }
+
+            (biomeCount.hasOwnProperty(biome)) ? biomeCount[biome]++ : biomeCount[biome] = 1;
         }
 
         console.log(biomeCount);
