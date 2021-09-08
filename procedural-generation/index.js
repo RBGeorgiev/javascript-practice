@@ -1274,6 +1274,24 @@ class MapGenerator {
             tile.biome = lakeType;
             this.allBiomesCount.push(tile.biome);
         }
+
+        console.log(this.allBiomesCount);
+        this.getBiomeCount();
+    }
+
+    getBiomeCount = () => {
+        let biomeCount = {};
+
+        for (let i = 0; i < this.allBiomesCount.length; i++) {
+            let biome = this.allBiomesCount[i];
+            if (biomeCount.hasOwnProperty(biome)) {
+                biomeCount[biome] += 1;
+            } else {
+                biomeCount[biome] = 1;
+            }
+        }
+
+        console.log(biomeCount);
     }
 
     // _________________________________________
