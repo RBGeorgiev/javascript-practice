@@ -1258,40 +1258,27 @@ class MapGenerator {
             if (biome !== undefined) {
                 // if biome doesn't change to lake
                 tile.biome = biome;
-                this.addBiomeToCount(biome);
+                this.addBiomeToBiomeCount(tile.biome);
             }
         }
 
         for (let idx in this.oceanTiles) {
             let tile = this.getTile(+idx);
             tile.biome = "OCEAN";
-            this.addBiomeToCount(tile.biome);
+            this.addBiomeToBiomeCount(tile.biome);
         }
 
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let lakeType = (tile.dryLake) ? "DRY_LAKE" : (tile.frozenLake) ? "FROZEN_LAKE" : "LAKE";
             tile.biome = lakeType;
-            this.addBiomeToCount(tile.biome);
+            this.addBiomeToBiomeCount(tile.biome);
         }
 
         console.log(this.biomeCount);
-        // this.getBiomeCount();
     }
 
-    addBiomeToCount = (biome) => (this.biomeCount.hasOwnProperty(biome)) ? this.biomeCount[biome]++ : this.biomeCount[biome] = 1;
-
-    getBiomeCount = () => {
-        let biomeCount = {};
-
-        for (let i = 0; i < this.allBiomesCount.length; i++) {
-            let biome = this.allBiomesCount[i];
-
-            (biomeCount.hasOwnProperty(biome)) ? biomeCount[biome]++ : biomeCount[biome] = 1;
-        }
-
-        console.log(biomeCount);
-    }
+    addBiomeToBiomeCount = (biome) => (this.biomeCount.hasOwnProperty(biome)) ? this.biomeCount[biome]++ : this.biomeCount[biome] = 1;
 
     // _________________________________________
     // run methods
