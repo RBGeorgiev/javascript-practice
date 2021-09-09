@@ -269,7 +269,7 @@ class MapGenerator {
         this.oceanTiles = {};
         this.lakeTiles = {};
         this.coastline = [];
-        this.allBiomesCount = [];
+        this.biomeCount = {};
 
 
         this.numberOfRandomInitialPeaksOrTrenchesMin = 5; // important value
@@ -1250,7 +1250,7 @@ class MapGenerator {
         this.checkForRiversModifiers(this.riverRoots);
         this.checkForLakesModifiers();
 
-        this.allBiomesCount = [];
+        this.biomeCount = {};
 
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
@@ -1258,25 +1258,26 @@ class MapGenerator {
             if (biome !== undefined) {
                 // if biome doesn't change to lake
                 tile.biome = biome;
-                this.allBiomesCount.push(tile.biome);
+
+                (this.biomeCount.hasOwnProperty(biome)) ? this.biomeCount[biome]++ : this.biomeCount[biome] = 1;
             }
         }
 
         for (let idx in this.oceanTiles) {
             let tile = this.getTile(+idx);
             tile.biome = "OCEAN";
-            this.allBiomesCount.push(tile.biome);
+            (this.biomeCount.hasOwnProperty(tile.biome)) ? this.biomeCount[tile.biome]++ : this.biomeCount[tile.biome] = 1;
         }
 
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let lakeType = (tile.dryLake) ? "DRY_LAKE" : (tile.frozenLake) ? "FROZEN_LAKE" : "LAKE";
             tile.biome = lakeType;
-            this.allBiomesCount.push(tile.biome);
+            (this.biomeCount.hasOwnProperty(tile.biome)) ? this.biomeCount[tile.biome]++ : this.biomeCount[tile.biome] = 1;
         }
 
-        console.log(this.allBiomesCount);
-        this.getBiomeCount();
+        console.log(this.biomeCount);
+        // this.getBiomeCount();
     }
 
     getBiomeCount = () => {
