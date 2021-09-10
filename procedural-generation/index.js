@@ -660,6 +660,7 @@ class MapGenerator {
     initCanvasPartitions = () => this.canvasPartitions = this.addTilesToCanvasPartitions(this.createCanvasPartitions());
 
     defineTerrain = () => {
+        this.biomeCount = {};
         this.resetTerrainHeight();
         this.resetTileTypes();
         this.resetCoastline();
@@ -1250,8 +1251,6 @@ class MapGenerator {
         this.checkForRiversModifiers(this.riverRoots);
         this.checkForLakesModifiers();
 
-        this.biomeCount = {};
-
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let biome = this.getBiomeForTile(tile);
@@ -1274,8 +1273,6 @@ class MapGenerator {
             tile.biome = lakeType;
             this.addBiomeToBiomeCount(tile.biome);
         }
-
-        console.log(this.biomeCount);
     }
 
     addBiomeToBiomeCount = (biome) => (this.biomeCount.hasOwnProperty(biome)) ? this.biomeCount[biome]++ : this.biomeCount[biome] = 1;
