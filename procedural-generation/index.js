@@ -574,6 +574,8 @@ class MapGenerator {
         return [totalX / len, totalY / len];
     }
 
+    resetBiomeCount = () => this.biomeCount = {};
+
     resetTerrainHeight = () => {
         for (let tile of this.tiles) {
             tile.resetHeight();
@@ -660,7 +662,7 @@ class MapGenerator {
     initCanvasPartitions = () => this.canvasPartitions = this.addTilesToCanvasPartitions(this.createCanvasPartitions());
 
     defineTerrain = () => {
-        this.biomeCount = {};
+        this.resetBiomeCount();
         this.resetTerrainHeight();
         this.resetTileTypes();
         this.resetCoastline();
