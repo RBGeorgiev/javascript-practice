@@ -1295,6 +1295,7 @@ class MapGenerator {
         this.drawAll();
 
         console.timeEnd("run map generation");
+        console.log('Biome count: ', mapGen.biomeCount);
     }
 
     changeMapTerrain = () => {
