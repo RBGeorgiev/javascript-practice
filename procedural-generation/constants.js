@@ -10,12 +10,6 @@ export const tileInfoDiv = id('tileInfoDiv');
 
 export const htmlDropdowns = document.getElementsByClassName("dropdown");
 
-export const highestPeakSpan = id('highestPeakSpan');
-export const deepestDepthSpan = id('deepestDepthSpan');
-export const longestRiverSpan = id('longestRiverSpan');
-
-export const biomeCountContainer = id('biomeCountContainer');
-
 export const randomSeedBtn = id('randomSeedBtn');
 export const seedInput = id('seedInput');
 export const runMapGenBtn = id('runMapGenBtn');
@@ -87,3 +81,9 @@ export const displayTileHeightValuesRadioBtn = id('displayTileHeightValuesRadioB
 export const displayTileTemperatureValuesRadioBtn = id('displayTileTemperatureValuesRadioBtn');
 export const displayTileCurrentPrecipitationValuesRadioBtn = id('displayTileCurrentPrecipitationValuesRadioBtn');
 export const displayTileTotalPrecipitationValuesRadioBtn = id('displayTileTotalPrecipitationValuesRadioBtn');
+
+export const highestPeakSpan = id('highestPeakSpan');
+export const deepestDepthSpan = id('deepestDepthSpan');
+export const longestRiverSpan = id('longestRiverSpan');
+
+export const biomeCountContainer = id('biomeCountContainer');
