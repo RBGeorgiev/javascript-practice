@@ -14,6 +14,8 @@ export const highestPeakSpan = id('highestPeakSpan');
 export const deepestDepthSpan = id('deepestDepthSpan');
 export const longestRiverSpan = id('longestRiverSpan');
 
+export const biomeCountContainer = id('biomeCountContainer');
+
 export const randomSeedBtn = id('randomSeedBtn');
 export const seedInput = id('seedInput');
 export const runMapGenBtn = id('runMapGenBtn');
