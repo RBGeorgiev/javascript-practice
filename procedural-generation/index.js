@@ -1950,11 +1950,16 @@ for (let div of htmlDropdowns) {
 
 
 function updateHtmlDisplayedValues() {
-    tileInfoDiv.innerHTML = `<div id="tileInfoDivIntroText">Click on a tile to display information about it.</div>`;
+    tileInfoDiv.innerHTML = '<div id="tileInfoDivIntroText">Click on a tile to display information about it.</div>';
     highestPeakSpan.innerText = `${mapGen.unitsToMeters(mapGen.highestPeak)}m`;
     deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
-    biomeCountContainer.innerText = mapGen.biomeCount;
+
+    let biomeCountStr = '';
+    for (let b in mapGen.biomeCount) {
+        biomeCountStr += `${b}: ${mapGen.biomeCount[b]}\n`;
+    }
+    biomeCountContainer.innerText = biomeCountStr;
 }
 
 
