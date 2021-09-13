@@ -67,7 +67,8 @@ import {
     displayTileTotalPrecipitationValuesRadioBtn,
     highestPeakSpan,
     deepestDepthSpan,
-    longestRiverSpan
+    longestRiverSpan,
+    biomeCountContainer
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1949,10 +1950,11 @@ for (let div of htmlDropdowns) {
 
 
 function updateHtmlDisplayedValues() {
+    tileInfoDiv.innerHTML = `<div id="tileInfoDivIntroText">Click on a tile to display information about it.</div>`;
     highestPeakSpan.innerText = `${mapGen.unitsToMeters(mapGen.highestPeak)}m`;
     deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
-    tileInfoDiv.innerHTML = `<div id="tileInfoDivIntroText">Click on a tile to display information about it.</div>`;
+    biomeCountContainer.innerText = mapGen.biomeCount;
 }
 
 
