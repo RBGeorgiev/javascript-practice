@@ -88,6 +88,10 @@ body {
     align-self: center;
 }
 
+#biomeCountContainer {
+    border: 2px solid black;
+}
+
 #optionsContainer {
     width: 800px;
     background: #eeeeee;
