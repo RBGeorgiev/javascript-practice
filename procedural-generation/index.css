@@ -89,6 +89,7 @@ body {
 }
 
 #biomeCountContainer {
+    background: #eeeeee;
     margin-top: 11px;
     padding: 31px 0;
     border: 2px solid black;
