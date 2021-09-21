@@ -68,7 +68,7 @@ import {
     highestPeakSpan,
     deepestDepthSpan,
     longestRiverSpan,
-    biomeCountContainer
+    biomeCountDiv
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -1956,8 +1956,8 @@ function updateHtmlDisplayedValues() {
     deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
 
-    biomeCountContainer.innerText = '';
-    for (let b in mapGen.biomeCount) biomeCountContainer.innerText += `${b}: ${mapGen.biomeCount[b]}\n`; // display biome count in html
+    biomeCountDiv.innerText = '';
+    for (let b in mapGen.biomeCount) biomeCountDiv.innerText += `${b}: ${mapGen.biomeCount[b]}\n`; // display biome count in html
 }
 
 
