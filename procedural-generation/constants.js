@@ -87,3 +87,4 @@ export const deepestDepthSpan = id('deepestDepthSpan');
 export const longestRiverSpan = id('longestRiverSpan');
 
 export const biomeCountContainer = id('biomeCountContainer');
+export const biomeCountDiv = id('biomeCountDiv');
