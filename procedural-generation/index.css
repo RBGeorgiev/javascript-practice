@@ -97,6 +97,10 @@ body {
     max-height: 414px;
 }
 
+#biomeCountContainer>h2 {
+    margin: 0;
+}
+
 #optionsContainer {
     width: 800px;
     background: #eeeeee;
