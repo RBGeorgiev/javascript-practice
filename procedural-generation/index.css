@@ -91,7 +91,6 @@ body {
 #biomeCountContainer {
     background: #eeeeee;
     margin-top: 11px;
-    padding: 31px 0;
     border: 2px solid black;
     min-height: 414px;
     max-height: 414px;
@@ -99,6 +98,10 @@ body {
 
 #biomeCountContainer>h2 {
     margin: 0;
+}
+
+#biomeCountDiv {
+    padding: 31px 0;
 }
 
 #optionsContainer {
