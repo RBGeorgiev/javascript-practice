@@ -109,6 +109,7 @@ body {
 
 #optionsContainer {
     width: 800px;
+    height: fit-content;
     background: #eeeeee;
     border: 2px solid black;
 }
