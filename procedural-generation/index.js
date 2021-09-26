@@ -1956,8 +1956,8 @@ function updateHtmlDisplayedValues() {
     deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
 
-    biomeCountDiv.innerText = '';
-    for (let b in mapGen.biomeCount) biomeCountDiv.innerText += `<span class="biomeCountBiome">${b}</span> <span class="biomeCountValue">${mapGen.biomeCount[b]}</span>`; // display biome count in
+    biomeCountDiv.innerHTML = '';
+    for (let b in mapGen.biomeCount) biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${b}</span> <span class="biomeCountValue">${mapGen.biomeCount[b]}</span>`; // display biome count in
 }
 
 
