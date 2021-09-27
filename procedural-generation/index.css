@@ -102,6 +102,7 @@ body {
 }
 
 #biomeCountDiv {
+    display: grid;
     padding: 31px 0;
 }
 
