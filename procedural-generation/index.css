@@ -103,6 +103,7 @@ body {
 
 #biomeCountDiv {
     display: grid;
+    grid-template-columns: 1fr 1fr;
     padding: 31px 0;
 }
 
