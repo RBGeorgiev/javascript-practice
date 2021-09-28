@@ -44,8 +44,11 @@ body {
     width: 100%;
 }
 
-#tileInfoContainer {
+#mapInfoContainer {
     width: 800px;
+}
+
+#tileInfoContainer {
     background: #eeeeee;
     height: fit-content;
     border: 2px solid black;
