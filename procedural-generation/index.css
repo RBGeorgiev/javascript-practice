@@ -227,7 +227,7 @@ body {
         width: 30%;
     }
 
-    #tileInfoContainer {
+    #mapInfoContainer {
         width: 30%;
 
     }
@@ -238,7 +238,7 @@ body {
         width: 27%;
     }
 
-    #tileInfoContainer {
+    #mapInfoContainer {
         width: 27%;
     }
 }
@@ -248,7 +248,7 @@ body {
         width: 23%;
     }
 
-    #tileInfoContainer {
+    #mapInfoContainer {
         width: 23%;
     }
 }
@@ -265,7 +265,7 @@ body {
         width: 800px;
     }
 
-    #tileInfoContainer {
+    #mapInfoContainer {
         width: 800px;
     }
 }
