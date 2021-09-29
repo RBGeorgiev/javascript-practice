@@ -50,7 +50,6 @@ body {
 
 #tileInfoContainer {
     background: #eeeeee;
-    height: fit-content;
     border: 2px solid black;
 }
 
@@ -92,8 +91,8 @@ body {
 }
 
 #biomeCountContainer {
-    background: #eeeeee;
     margin-top: 11px;
+    background: #eeeeee;
     border: 2px solid black;
 }
 
