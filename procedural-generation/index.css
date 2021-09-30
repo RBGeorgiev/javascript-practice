@@ -109,6 +109,10 @@ body {
     padding: 31px 0;
 }
 
+.biomeCountBiome {
+    justify-self: end;
+}
+
 #optionsContainer {
     width: 800px;
     height: fit-content;
