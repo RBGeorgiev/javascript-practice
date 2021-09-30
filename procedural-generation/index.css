@@ -113,6 +113,10 @@ body {
     justify-self: end;
 }
 
+.biomeCountValue {
+    justify-self: start;
+}
+
 #optionsContainer {
     width: 800px;
     height: fit-content;
