@@ -108,6 +108,7 @@ body {
     grid-template-columns: 1fr 1fr;
     column-gap: 5px;
     padding: 31px 0;
+    background: #ADD8E6;
 }
 
 .biomeCountBiome {
