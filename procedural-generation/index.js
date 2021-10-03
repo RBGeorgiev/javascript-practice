@@ -1251,6 +1251,8 @@ class MapGenerator {
     }
 
     defineBiomes = () => {
+        this.resetBiomeCount();
+
         this.checkForRiversModifiers(this.riverRoots);
         this.checkForLakesModifiers();
 
