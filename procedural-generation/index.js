@@ -663,7 +663,6 @@ class MapGenerator {
     initCanvasPartitions = () => this.canvasPartitions = this.addTilesToCanvasPartitions(this.createCanvasPartitions());
 
     defineTerrain = () => {
-        this.resetBiomeCount();
         this.resetTerrainHeight();
         this.resetTileTypes();
         this.resetCoastline();
