@@ -1968,7 +1968,7 @@ function updateHtmlDisplayedValues() {
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
 
     biomeCountDiv.innerHTML = '';
-    for (let biome in mapGen.biomeCount) biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${biome}:</span> <span class="biomeCountValue">${mapGen.biomeCount[biome]}</span>`; // display biome count in
+    for (let biome in mapGen.biomeCount) biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${formatBiomeString(biome)}:</span> <span class="biomeCountValue">${mapGen.biomeCount[biome]}</span>`; // display biome count in
 }
 
 
