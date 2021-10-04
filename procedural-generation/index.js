@@ -1947,6 +1947,16 @@ for (let div of htmlDropdowns) {
     }
 }
 
+const formatBiomeString = (s) => {
+    let a = s.split("_");
+
+    for (let i = 0; i < a.length; i++) {
+        a[i] = a[i].toLowerCase();
+    }
+    a[0] = a[0][0].toUpperCase() + a[0].slice(1);
+
+    return a.join(" ");
+}
 
 
 
@@ -2316,18 +2326,6 @@ canvas.addEventListener("mousemove", (e) => {
 })
 
 canvas.addEventListener("click", (e) => {
-    const formatBiomeString = (s) => {
-        let a = s.split("_");
-
-        for (let i = 0; i < a.length; i++) {
-            a[i] = a[i].toLowerCase();
-        }
-        a[0] = a[0][0].toUpperCase() + a[0].slice(1);
-
-        return a.join(" ");
-    }
-
-
     let x = e.offsetX;
     let y = e.offsetY;
     let idx = mapGen.delaunay.find(x, y);
