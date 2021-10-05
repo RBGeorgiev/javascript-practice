@@ -1297,7 +1297,6 @@ class MapGenerator {
         this.drawAll();
 
         console.timeEnd("run map generation");
-        console.log('Biome count: ', mapGen.biomeCount);
     }
 
     changeMapTerrain = () => {
@@ -1967,6 +1966,7 @@ function updateHtmlDisplayedValues() {
     deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
 
+    console.log('Biome count: ', mapGen.biomeCount);
     biomeCountDiv.innerHTML = '';
     for (let biome in mapGen.biomeCount) biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${formatBiomeString(biome)}:</span> <span class="biomeCountValue">${mapGen.biomeCount[biome]}</span>`; // display biome count in
 }
