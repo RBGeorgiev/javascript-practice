@@ -1947,7 +1947,7 @@ for (let div of htmlDropdowns) {
     }
 }
 
-const formatBiomeString = (s) => {
+function formatBiomeString(s) {
     let a = s.split("_");
 
     for (let i = 0; i < a.length; i++) {
