@@ -1972,7 +1972,8 @@ function updateHtmlDisplayedValues() {
     for (let biome in mapGen.biomeCount) {
         sortedBiomes.push([biome, mapGen.biomeCount[biome]]);
     }
-    sortedBiomes.sort((a, b) => a[1] - b[1]);
+    sortedBiomes.sort((a, b) => a[1] - b[1]).forEach((biome => biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${biome[0]}:</span> <span class="biomeCountValue">${biome[1]}</span>`)); // display biome count in
+    console.log(sortedBiomes);
 }
 
 
