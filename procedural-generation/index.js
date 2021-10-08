@@ -1959,13 +1959,7 @@ function formatBiomeString(s) {
 
 
 
-function updateHtmlDisplayedValues() {
-    tileInfoDiv.innerHTML = '<div id="tileInfoDivIntroText">Click on a tile to display information about it.</div>';
-
-    highestPeakSpan.innerText = `${mapGen.unitsToMeters(mapGen.highestPeak)}m`;
-    deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
-    longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
-
+const displayBiomeCountInHtml = () => {
     console.log('Biome count: ', mapGen.biomeCount);
     let sortedBiomes = [];
     biomeCountDiv.innerHTML = '';
@@ -1974,6 +1968,16 @@ function updateHtmlDisplayedValues() {
     }
     sortedBiomes.sort((a, b) => b[1] - a[1]).forEach((biome => biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${formatBiomeString(biome[0])}:</span> <span class="biomeCountValue">${biome[1]}</span>`)); // sort and display biome count in html
     console.log(sortedBiomes);
+}
+
+function updateHtmlDisplayedValues() {
+    tileInfoDiv.innerHTML = '<div id="tileInfoDivIntroText">Click on a tile to display information about it.</div>';
+
+    highestPeakSpan.innerText = `${mapGen.unitsToMeters(mapGen.highestPeak)}m`;
+    deepestDepthSpan.innerText = `${mapGen.unitsToMeters(mapGen.deepestDepth)}m`;
+    longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
+
+    displayBiomeCountInHtml();
 }
 
 
