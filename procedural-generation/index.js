@@ -1960,14 +1960,20 @@ function formatBiomeString(s) {
 
 
 function displayBiomeCountInHtml() {
-    console.log('Biome count: ', mapGen.biomeCount);
-    let sortedBiomes = [];
     biomeCountDiv.innerHTML = '';
+    let sortedBiomes = [];
+
     for (let biome in mapGen.biomeCount) {
         sortedBiomes.push([biome, mapGen.biomeCount[biome]]);
     }
-    sortedBiomes.sort((a, b) => b[1] - a[1]).forEach((biome => biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${formatBiomeString(biome[0])}:</span> <span class="biomeCountValue">${biome[1]}</span>`)); // sort and display biome count in html
-    console.log(sortedBiomes);
+
+    sortedBiomes
+        .sort((a, b) => b[1] - a[1])
+        .forEach((biome =>
+            biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${formatBiomeString(biome[0])}:</span> <span class="biomeCountValue">${biome[1]}</span>`
+        )); // sort and display biome count in html
+
+    console.log('Biome count: ', mapGen.biomeCount);
 }
 
 function updateHtmlDisplayedValues() {
