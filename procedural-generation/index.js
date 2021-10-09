@@ -1959,7 +1959,7 @@ function formatBiomeString(s) {
 
 
 
-const displayBiomeCountInHtml = () => {
+function displayBiomeCountInHtml() {
     console.log('Biome count: ', mapGen.biomeCount);
     let sortedBiomes = [];
     biomeCountDiv.innerHTML = '';
