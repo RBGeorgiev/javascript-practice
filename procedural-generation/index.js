@@ -1279,7 +1279,15 @@ class MapGenerator {
         }
     }
 
-    addBiomeToBiomeCount = (tile) => (this.biomeCount.hasOwnProperty(tile.biome)) ? this.biomeCount[tile.biome].push(tile.idx) : this.biomeCount[tile.biome] = [tile.idx];
+    addBiomeToBiomeCount = (tile) => {
+        let biome = tile.biome;
+        let idx = tile.idx;
+        (this.biomeCount.hasOwnProperty(biome))
+            ?
+            this.biomeCount[biome].push(idx)
+            :
+            this.biomeCount[biome] = [idx];
+    }
 
     // _________________________________________
     // run methods
