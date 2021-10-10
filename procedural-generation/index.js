@@ -1261,25 +1261,25 @@ class MapGenerator {
             if (biome !== undefined) {
                 // if biome doesn't change to lake
                 tile.biome = biome;
-                this.addBiomeToBiomeCount(tile.biome);
+                this.addBiomeToBiomeCount(tile);
             }
         }
 
         for (let idx in this.oceanTiles) {
             let tile = this.getTile(+idx);
             tile.biome = "OCEAN";
-            this.addBiomeToBiomeCount(tile.biome);
+            this.addBiomeToBiomeCount(tile);
         }
 
         for (let idx in this.lakeTiles) {
             let tile = this.getTile(+idx);
             let lakeType = (tile.dryLake) ? "DRY_LAKE" : (tile.frozenLake) ? "FROZEN_LAKE" : "LAKE";
             tile.biome = lakeType;
-            this.addBiomeToBiomeCount(tile.biome);
+            this.addBiomeToBiomeCount(tile);
         }
     }
 
-    addBiomeToBiomeCount = (biome) => (this.biomeCount.hasOwnProperty(biome)) ? this.biomeCount[biome]++ : this.biomeCount[biome] = 1;
+    addBiomeToBiomeCount = (tile) => (this.biomeCount.hasOwnProperty(tile.biome)) ? this.biomeCount[tile.biome].push(tile.idx) : this.biomeCount[tile.biome] = [tile.idx];
 
     // _________________________________________
     // run methods
