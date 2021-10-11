@@ -1976,7 +1976,7 @@ function displayBiomeCountInHtml() {
     }
 
     sortedBiomes
-        .sort((a, b) => b[1] - a[1])
+        .sort((a, b) => b[1].length - a[1].length)
         .forEach((biome =>
             biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${formatBiomeString(biome[0])}:</span> <span class="biomeCountValue">${biome[1].length}</span>`
         )); // sort and display biome count in html
