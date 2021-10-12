@@ -1978,7 +1978,7 @@ function displayBiomeCountInHtml() {
     sortedBiomes
         .sort((a, b) => b[1].length - a[1].length)
         .forEach((biome =>
-            biomeCountDiv.innerHTML += `<span class="biomeCountBiome">${formatBiomeString(biome[0])}:</span> <span class="biomeCountValue">${biome[1].length}</span>`
+            biomeCountDiv.innerHTML += `<span class="biomeCountEntry"><span class="biomeCountBiome">${formatBiomeString(biome[0])}:</span> <span class="biomeCountValue">${biome[1].length}</span></span>`
         )); // sort and display biome count in html
 
     console.log('Biome count: ', mapGen.biomeCount);
