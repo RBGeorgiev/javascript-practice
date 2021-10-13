@@ -109,6 +109,11 @@ body {
     border: 1px solid #7e7e7e;
 }
 
+.biomeCountEntry {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 .biomeCountBiome {
     justify-self: end;
 }
