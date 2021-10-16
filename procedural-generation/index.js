@@ -68,7 +68,8 @@ import {
     highestPeakSpan,
     deepestDepthSpan,
     longestRiverSpan,
-    biomeCountDiv
+    biomeCountDiv,
+    biomeCountEntry
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
