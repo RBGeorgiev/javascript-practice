@@ -2328,6 +2328,12 @@ displayTileValuesForm.onchange = () => {
     mapGen.drawAll();
 }
 
+
+biomeCountEntry.onclick = () => {
+    console.log('biomeCountEntry');
+}
+
+
 let lastTileHovered = null;
 
 canvas.addEventListener("mousemove", (e) => {
