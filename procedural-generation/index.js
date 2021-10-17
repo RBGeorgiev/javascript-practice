@@ -68,8 +68,7 @@ import {
     highestPeakSpan,
     deepestDepthSpan,
     longestRiverSpan,
-    biomeCountDiv,
-    biomeCountEntry
+    biomeCountDiv
 } from './constants.js';
 import drawCurve from './drawCurve.js';
 import { getLerpedColor } from './lerpColor.js';
@@ -2329,9 +2328,6 @@ displayTileValuesForm.onchange = () => {
 }
 
 
-biomeCountEntry.onclick = () => {
-    console.log('biomeCountEntry');
-}
 
 
 let lastTileHovered = null;
