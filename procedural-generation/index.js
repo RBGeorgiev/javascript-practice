@@ -1994,11 +1994,14 @@ function updateHtmlDisplayedValues() {
     displayBiomeCountInHtml();
 
     let biomeCountEntries = document.getElementsByClassName("biomeCountEntry");
-    biomeCountEntries.forEach(entry =>
+
+    for (let entry of biomeCountEntries) {
         entry.onclick = () => {
             console.log('biomeCountEntry');
         }
-    )
+    }
+
+
 }
 
 
@@ -2333,7 +2336,6 @@ displayTileValuesForm.onchange = () => {
 
     mapGen.drawAll();
 }
-
 
 
 
