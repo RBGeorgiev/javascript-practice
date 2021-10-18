@@ -1992,6 +1992,13 @@ function updateHtmlDisplayedValues() {
     longestRiverSpan.innerText = `${mapGen.unitsToMeters(mapGen.longestRiverLength)}m`;
 
     displayBiomeCountInHtml();
+
+    let biomeCountEntries = document.getElementsByClassName("biomeCountEntry");
+    biomeCountEntries.forEach(entry =>
+        entry.onclick = () => {
+            console.log('biomeCountEntry');
+        }
+    )
 }
 
 
