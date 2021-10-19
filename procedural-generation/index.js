@@ -1997,11 +1997,9 @@ function updateHtmlDisplayedValues() {
 
     for (let entry of biomeCountEntries) {
         entry.onclick = () => {
-            console.log('biomeCountEntry');
+            console.log(entry);
         }
     }
-
-
 }
 
 
