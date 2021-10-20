@@ -1997,7 +1997,7 @@ function updateHtmlDisplayedValues() {
 
     for (let entry of biomeCountEntries) {
         entry.onclick = () => {
-            console.log(entry.getElementsByClassName('biomeCountBiome')[0]);
+            console.log(entry.dataset.biome);
         }
     }
 }
