@@ -1999,6 +1999,15 @@ function updateHtmlDisplayedValues() {
         entry.onclick = () => {
             let biome = entry.dataset.biome;
             console.log(mapGen.biomeCount[biome]);
+
+            ctx2.beginPath();
+            ctx2.clearRect(0, 0, canvas.width, canvas.height);
+            ctx2.closePath();
+
+            mapGen.voronoi.renderCell(mapGen.biomeCount[biome][0], ctx2);
+            ctx2.strokeStyle = "#000000";
+            ctx2.lineWidth = 1;
+            ctx2.stroke();
         }
     }
 }
