@@ -2000,10 +2000,10 @@ function updateHtmlDisplayedValues() {
             let biome = entry.dataset.biome;
             console.log(mapGen.biomeCount[biome]);
 
+            ctx2.beginPath();
+            ctx2.clearRect(0, 0, canvas.width, canvas.height);
+            ctx2.closePath();
             for (let i = 0; i < mapGen.biomeCount[biome].length; i++) {
-                ctx2.beginPath();
-                ctx2.clearRect(0, 0, canvas.width, canvas.height);
-                ctx2.closePath();
                 let tileIdx = mapGen.biomeCount[biome][i];
 
                 mapGen.voronoi.renderCell(tileIdx, ctx2);
