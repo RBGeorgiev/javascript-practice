@@ -2005,13 +2005,11 @@ function updateHtmlDisplayedValues() {
             ctx2.closePath();
             for (let i = 0; i < mapGen.biomeCount[biome].length; i++) {
                 let tileIdx = mapGen.biomeCount[biome][i];
-
                 mapGen.voronoi.renderCell(tileIdx, ctx2);
                 ctx2.strokeStyle = "#000000";
                 ctx2.lineWidth = 1;
                 ctx2.stroke();
             }
-
         }
     }
 }
