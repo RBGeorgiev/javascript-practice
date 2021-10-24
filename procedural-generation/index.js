@@ -2000,9 +2000,7 @@ function updateHtmlDisplayedValues() {
             let biome = entry.dataset.biome;
             console.log(mapGen.biomeCount[biome]);
 
-            ctx2.beginPath();
-            ctx2.clearRect(0, 0, canvas.width, canvas.height);
-            ctx2.closePath();
+            clearCanvas2();
             for (let i = 0; i < mapGen.biomeCount[biome].length; i++) {
                 let tileIdx = mapGen.biomeCount[biome][i];
                 mapGen.voronoi.renderCell(tileIdx, ctx2);
@@ -2012,6 +2010,12 @@ function updateHtmlDisplayedValues() {
             }
         }
     }
+}
+
+function clearCanvas2() {
+    ctx2.beginPath();
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.closePath();
 }
 
 
@@ -2357,9 +2361,7 @@ canvas.addEventListener("mousemove", (e) => {
     let tileIdx = mapGen.delaunay.find(x, y);
 
     if (lastTileHovered !== tileIdx) {
-        ctx2.beginPath();
-        ctx2.clearRect(0, 0, canvas.width, canvas.height);
-        ctx2.closePath();
+        clearCanvas2();
 
         mapGen.voronoi.renderCell(tileIdx, ctx2);
         ctx2.strokeStyle = "#000000";
