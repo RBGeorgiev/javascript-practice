@@ -430,7 +430,7 @@ class MapGenerator {
         return coords;
     }
 
-    clearCanvas = () => {
+    clearCanvas = (canvas, ctx) => {
         ctx.beginPath();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.closePath();
@@ -1413,7 +1413,7 @@ class MapGenerator {
     // draw methods
 
     drawAll = () => {
-        this.clearCanvas();
+        this.clearCanvas(canvas, ctx);
 
         if (this.showHumidityMap) {
             this.drawHumidityMap();
