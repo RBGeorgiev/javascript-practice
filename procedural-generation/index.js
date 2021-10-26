@@ -1997,7 +1997,7 @@ function updateHtmlDisplayedValues() {
 
     for (let entry of biomeCountEntries) {
         entry.onclick = () => {
-            clearOverlayCanvas();
+            clearCanvas(canvas, ctx2);
 
             let biome = entry.dataset.biome;
 
@@ -2361,7 +2361,7 @@ canvas.addEventListener("mousemove", (e) => {
     let tileIdx = mapGen.delaunay.find(x, y);
 
     if (lastTileHovered !== tileIdx) {
-        clearOverlayCanvas();
+        mapGen.clearCanvas(canvas, ctx2);
 
         mapGen.voronoi.renderCell(tileIdx, ctx2);
         ctx2.strokeStyle = "#000000";
