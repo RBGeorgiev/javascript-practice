@@ -2012,12 +2012,6 @@ function updateHtmlDisplayedValues() {
     }
 }
 
-function clearOverlayCanvas() {
-    ctx2.beginPath();
-    ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    ctx2.closePath();
-}
-
 
 riverVolumeMinInput.oninput = (e) => {
     let val = +e.target.value;
