@@ -2,6 +2,7 @@ import { Delaunay } from "./d3-delaunay/index.js";
 import {
     canvas,
     ctx,
+    canvas2,
     ctx2,
     tileInfoDiv,
     htmlDropdowns,
@@ -1997,7 +1998,7 @@ function updateHtmlDisplayedValues() {
 
     for (let entry of biomeCountEntries) {
         entry.onclick = () => {
-            clearCanvas(canvas, ctx2);
+            clearCanvas(canvas2, ctx2);
 
             let biome = entry.dataset.biome;
 
@@ -2355,7 +2356,7 @@ canvas.addEventListener("mousemove", (e) => {
     let tileIdx = mapGen.delaunay.find(x, y);
 
     if (lastTileHovered !== tileIdx) {
-        mapGen.clearCanvas(canvas, ctx2);
+        mapGen.clearCanvas(canvas2, ctx2);
 
         mapGen.voronoi.renderCell(tileIdx, ctx2);
         ctx2.strokeStyle = "#000000";
