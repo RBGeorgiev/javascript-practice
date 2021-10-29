@@ -494,6 +494,7 @@ class MapGenerator {
     }
 
     outlineTile = (idx, color = '#000000', lineWidth = 1) => {
+        ctx.beginPath();
         this.voronoi.renderCell(idx, ctx);
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
