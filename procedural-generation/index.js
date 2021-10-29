@@ -2006,7 +2006,7 @@ function updateHtmlDisplayedValues() {
 
     for (let entry of biomeCountEntries) {
         entry.onclick = () => {
-            clearCanvas(canvas2, ctx2);
+            mapGen.clearCanvas(canvas2, ctx2);
 
             let biome = entry.dataset.biome;
 
