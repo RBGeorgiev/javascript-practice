@@ -2012,10 +2012,7 @@ function updateHtmlDisplayedValues() {
 
             for (let i = 0; i < mapGen.biomeCount[biome].length; i++) {
                 let tileIdx = mapGen.biomeCount[biome][i];
-                mapGen.voronoi.renderCell(tileIdx, ctx2);
-                ctx2.strokeStyle = "#000000";
-                ctx2.lineWidth = 1;
-                ctx2.stroke();
+                mapGen.outlineTile(tileIdx, "#000000", 1, ctx2);
             }
         }
     }
@@ -2366,10 +2363,7 @@ canvas.addEventListener("mousemove", (e) => {
     if (lastTileHovered !== tileIdx) {
         mapGen.clearCanvas(canvas2, ctx2);
 
-        mapGen.voronoi.renderCell(tileIdx, ctx2);
-        ctx2.strokeStyle = "#000000";
-        ctx2.lineWidth = 1;
-        ctx2.stroke();
+        mapGen.outlineTile(tileIdx, "#000000", 1, ctx2);
 
         lastTileHovered = tileIdx;
     }
