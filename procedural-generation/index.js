@@ -486,7 +486,7 @@ class MapGenerator {
         this.coastline = coastline;
     }
 
-    fillTile = (idx, color = '#FFC0CB') => {
+    fillTile = (idx, color = '#FFC0CB', ctx) => {
         ctx.beginPath();
         this.voronoi.renderCell(idx, ctx);
         ctx.fillStyle = color;
