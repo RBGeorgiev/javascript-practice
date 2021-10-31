@@ -1507,7 +1507,7 @@ class MapGenerator {
             let color = this.getLandHeightmapColor(h);
 
             ctx.beginPath();
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1518,7 +1518,7 @@ class MapGenerator {
             let color = this.getLandHeightmapColor(h);
 
             ctx.beginPath();
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1531,7 +1531,7 @@ class MapGenerator {
             let color = this.getOceanHeightmapColor(h);
 
             ctx.beginPath();
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1544,7 +1544,7 @@ class MapGenerator {
             let color = this.getTileTemperatureColor(t);
 
             ctx.beginPath();
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1555,7 +1555,7 @@ class MapGenerator {
             let color = this.getTileTemperatureColor(t);
 
             ctx.beginPath();
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1577,7 +1577,7 @@ class MapGenerator {
             let color = this.getTileHumidityColor(h, highestLandHumidity);
 
             ctx.beginPath();
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1588,7 +1588,7 @@ class MapGenerator {
             let color = (h > highestLandHumidity) ? '#FF0000' : this.getTileHumidityColor(h, highestLandHumidity);
 
             ctx.beginPath();
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1619,7 +1619,7 @@ class MapGenerator {
 
     drawTilesSurroundedByRivers = (tilesSurroundedByRivers) => {
         for (let idx of tilesSurroundedByRivers) {
-            this.fillTile(+idx, "#FFC0CBaa");
+            this.fillTile(+idx, "#FFC0CBaa", ctx);
         }
     }
 
@@ -1627,7 +1627,7 @@ class MapGenerator {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let color = BIOMES_COLORS[tile.biome];
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1809,7 +1809,7 @@ class MapGenerator {
                 color = BIOMES_COLORS['LAKE'];
             }
 
-            this.fillTile(+idx, color);
+            this.fillTile(+idx, color, ctx);
             ctx.strokeStyle = color;
             ctx.stroke();
         }
@@ -1879,7 +1879,7 @@ class MapGenerator {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
             for (let idx of tiles) {
-                this.fillTile(idx);
+                this.fillTile(idx, '#FFC0CB', ctx);
             }
         }
     }
