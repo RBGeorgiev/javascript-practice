@@ -10,15 +10,15 @@ body {
 
 #optionsContainer {
     display: grid;
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 1fr 1fr;
     width: 1600px;
     height: 114px;
-    margin: auto;
+    margin: 20px auto;
 }
 
 #options {
     display: grid;
-    grid-template-columns: 275px 200px 200px;
+    grid-template-columns: 275px 200px 275px;
 }
 
 #infoContainer {
