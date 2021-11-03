@@ -14,3 +14,7 @@ button {
     padding: 7px 24px;
     margin: 7px 5px;
 }
+
+#sortBtn {
+    background: linear-gradient(#f6c88f, #ed9220);
+}
