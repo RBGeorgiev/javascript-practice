@@ -8,7 +8,7 @@ const Product = (props) => {
                 <div className="shelf-item-shipping">Free shipping</div>
             )}
 
-            <img src={require(`../../media/img/${props.product.sku}.jpg`)} alt={props.product.name} />
+            <img src={`/images/${props.product.sku}.jpg`} alt={props.product.name} />
 
             <div className="shelf-item-name">{props.product.name}</div>
             <div className="shelf-item-price">{props.product.currencyFormat}{props.product.price.toFixed(2)}</div>
