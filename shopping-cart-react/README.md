@@ -1,6 +1,6 @@
 # Shopping cart - React
 
-Try it out on codesandbox: https://f8rxn.codesandbox.io/
+Try it out on codesandbox: https://f8rxn.csb.app/
 
 A simple mock-up of an online clothes shop with a floating shopping cart. Made using React & React-Redux with the help of React-Bootstrap. 
 
