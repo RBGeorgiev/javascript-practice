@@ -12,6 +12,8 @@ h1 {
   background: rgb(20, 20, 20);
   padding: 20px 0px 5px;
   overflow: auto;
+  width: 1920px;
+  margin: auto;
 }
 
 .octave {
@@ -53,6 +55,8 @@ h1 {
   padding: 0 15px;
   justify-content: space-between;
   align-items: center;
+  width: 1920px;
+  margin: auto;
 }
 
 /* custom checkbox */
