@@ -31,11 +31,18 @@ h1 {
     left: 0;
     top: 0;
     pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
 #mapFeaturesInfoContainer {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
     font-size: 21px;
     width: 800px;
@@ -43,7 +50,11 @@ h1 {
 }
 
 #menuContainer {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
     position: absolute;
     width: 100%;
@@ -66,8 +77,12 @@ h1 {
 }
 
 #tileInfoDiv {
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: 1fr 5px 1fr;
     grid-template-columns: 1fr 1fr;
+    -webkit-column-gap: 5px;
+    -moz-column-gap: 5px;
     column-gap: 5px;
     margin: 5px;
     min-height: 175px;
@@ -78,7 +93,9 @@ h1 {
 }
 
 #tileInfoDivIntroText {
+    -ms-grid-column: 1;
     grid-column-start: 1;
+    -ms-grid-column-span: 2;
     grid-column-end: 3;
 }
 
@@ -87,12 +104,16 @@ h1 {
 }
 
 .tileInfoLabel {
+    -ms-grid-column-align: end;
     justify-self: end;
     text-align: end;
 }
 
 .tileInfoValue {
+    -ms-grid-column-align: start;
     justify-self: start;
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
     align-self: center;
 }
 
@@ -116,8 +137,12 @@ h1 {
 }
 
 .biomeCountEntry {
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: 1fr 5px 1fr;
     grid-template-columns: 1fr 1fr;
+    -webkit-column-gap: 5px;
+    -moz-column-gap: 5px;
     column-gap: 5px;
     margin: 5px;
     cursor: pointer;
@@ -128,15 +153,19 @@ h1 {
 }
 
 .biomeCountBiome {
+    -ms-grid-column-align: end;
     justify-self: end;
 }
 
 .biomeCountValue {
+    -ms-grid-column-align: start;
     justify-self: start;
 }
 
 #optionsContainer {
     width: 800px;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
     background: #eeeeee;
     border: 2px solid black;
@@ -161,7 +190,9 @@ h1 {
 }
 
 .optionsSubContainer.dropdown>div {
+    -ms-grid-column: 1;
     grid-column-start: 1;
+    -ms-grid-column-span: 2;
     grid-column-end: 3;
     height: 0px;
     overflow: hidden;
@@ -169,6 +200,9 @@ h1 {
 
 .optionsSubContainer.dropdown>h3 {
     cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
@@ -189,24 +223,38 @@ h1 {
 
 .option {
     position: relative;
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: 1fr 1fr;
     grid-template-columns: 1fr 1fr;
+    -ms-grid-column: 1;
     grid-column-start: 1;
+    -ms-grid-column-span: 2;
     grid-column-end: 3;
 }
 
 .option>label {
+    -ms-grid-column-align: end;
     justify-self: end;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
 .option>#seedOptionContainer {
+    -ms-grid-column-align: end;
     justify-self: end;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
 .wideButton {
+    -ms-grid-column: 1;
     grid-column-start: 1;
+    -ms-grid-column-span: 2;
     grid-column-end: 3;
 }
 
@@ -217,10 +265,14 @@ h1 {
 [data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
     width: fit-content;
     pointer-events: none;
     top: -35px;
     left: 50%;
+    -webkit-transform: translate(-50%, 0px);
+    -ms-transform: translate(-50%, 0px);
     transform: translate(-50%, 0px);
     background: #FFFFFF;
     padding: 5px 8px;
@@ -235,12 +287,14 @@ h1 {
 }
 
 .arrow.up {
+    -ms-transform: rotate(-135deg);
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
     margin: 0 6px;
 }
 
 .arrow.down {
+    -ms-transform: rotate(45deg);
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
     margin: 3px 6px;
@@ -280,7 +334,12 @@ h1 {
 
 @media only screen and (max-width: 1530px) {
     #menuContainer {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
         flex-direction: column-reverse;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
         align-items: center;
         gap: 20px;
         top: 920px;
