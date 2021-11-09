@@ -26,5 +26,7 @@ body {
 }
 
 #runAlgorithmBtn {
+    background: -webkit-gradient(linear, left top, left bottom, from(#f6c88f), to(#ed9220));
+    background: -o-linear-gradient(#f6c88f, #ed9220);
     background: linear-gradient(#f6c88f, #ed9220);
 }
