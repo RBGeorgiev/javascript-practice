@@ -24,3 +24,7 @@ body {
 #infoContainer {
     overflow: auto;
 }
+
+#runAlgorithmBtn {
+    background: linear-gradient(#f6c88f, #ed9220);
+}
