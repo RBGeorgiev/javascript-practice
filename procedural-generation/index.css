@@ -270,7 +270,7 @@ h1 {
     width: fit-content;
     min-width: 700px;
     pointer-events: none;
-    top: -35px;
+    top: -45px;
     left: 50%;
     -webkit-transform: translate(-50%, 0px);
     -ms-transform: translate(-50%, 0px);
