@@ -493,12 +493,12 @@ class MapGenerator {
         ctx.fill();
     }
 
-    outlineTile = (idx, color = '#000000', lineWidth = 1, ctx) => {
-        ctx.beginPath();
-        this.voronoi.renderCell(idx, ctx);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.stroke();
+    outlineTile = (idx, color = '#000000', lineWidth = 1, context = ctx) => {
+        context.beginPath();
+        this.voronoi.renderCell(idx, context);
+        context.strokeStyle = color;
+        context.lineWidth = lineWidth;
+        context.stroke();
     }
 
     getLandHeightmapColor = (h) =>
