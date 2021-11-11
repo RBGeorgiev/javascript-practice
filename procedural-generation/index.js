@@ -486,11 +486,11 @@ class MapGenerator {
         this.coastline = coastline;
     }
 
-    fillTile = (idx, color = '#FFC0CB', ctx) => {
-        ctx.beginPath();
-        this.voronoi.renderCell(idx, ctx);
-        ctx.fillStyle = color;
-        ctx.fill();
+    fillTile = (idx, color = '#FFC0CB', context = ctx) => {
+        context.beginPath();
+        this.voronoi.renderCell(idx, context);
+        context.fillStyle = color;
+        context.fill();
     }
 
     outlineTile = (idx, color = '#000000', lineWidth = 1, context = ctx) => {
