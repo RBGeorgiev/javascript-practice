@@ -1506,10 +1506,8 @@ class MapGenerator {
             let h = tile.height;
             let color = this.getLandHeightmapColor(h);
 
-            ctx.beginPath();
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
 
         for (let idx in this.lakeTiles) {
@@ -1517,10 +1515,8 @@ class MapGenerator {
             let h = tile.height;
             let color = this.getLandHeightmapColor(h);
 
-            ctx.beginPath();
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
     }
 
@@ -1530,10 +1526,8 @@ class MapGenerator {
             let h = tile.height;
             let color = this.getOceanHeightmapColor(h);
 
-            ctx.beginPath();
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
     }
 
@@ -1543,10 +1537,8 @@ class MapGenerator {
             let t = tile.temperature;
             let color = this.getTileTemperatureColor(t);
 
-            ctx.beginPath();
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
 
         for (let idx in this.lakeTiles) {
@@ -1554,10 +1546,8 @@ class MapGenerator {
             let t = tile.temperature;
             let color = this.getTileTemperatureColor(t);
 
-            ctx.beginPath();
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
     }
 
@@ -1576,10 +1566,8 @@ class MapGenerator {
             let h = tile.precipitation;
             let color = this.getTileHumidityColor(h, highestLandHumidity);
 
-            ctx.beginPath();
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
 
         for (let idx in this.lakeTiles) {
@@ -1587,10 +1575,8 @@ class MapGenerator {
             let h = tile.precipitation;
             let color = (h > highestLandHumidity) ? '#FF0000' : this.getTileHumidityColor(h, highestLandHumidity);
 
-            ctx.beginPath();
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
     }
 
@@ -1627,9 +1613,9 @@ class MapGenerator {
         for (let idx in this.landTiles) {
             let tile = this.getTile(+idx);
             let color = BIOMES_COLORS[tile.biome];
-            this.fillTile(+idx, color, ctx);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+
+            this.fillTile(+idx, color);
+            this.outlineTile(+idx, color);
         }
     }
 
@@ -1810,8 +1796,7 @@ class MapGenerator {
             }
 
             this.fillTile(+idx, color);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            this.outlineTile(+idx, color);
         }
     }
 
