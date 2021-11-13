@@ -1,5 +1,5 @@
 # Brick Breaker
-You can try the game out here: https://ezzp4.codesandbox.io/
+You can try the game out here: https://ezzp4.csb.app/
 
 A Brick Breaker/Breakout/Arkanoid clone made using plain JavaScript.
 
