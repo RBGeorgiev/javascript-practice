@@ -1864,7 +1864,7 @@ class MapGenerator {
         for (let line of windLines) {
             let tiles = line.intersectedTiles;
             for (let idx of tiles) {
-                this.fillTile(idx, '#FFC0CB');
+                this.fillTile(idx);
             }
         }
     }
