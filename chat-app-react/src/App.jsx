@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
+import { ChatContainer } from './components/ChatContainer.jsx';
 
 function App() {
   return (
-    <p>
-      Cleanedup React App
-    </p>
+    <div>
+      <ChatContainer />
+    </div>
   );
 }
 
