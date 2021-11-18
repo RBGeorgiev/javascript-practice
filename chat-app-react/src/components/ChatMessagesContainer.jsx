@@ -1,5 +1,10 @@
-export const MessagesContainer = () => {
+import { Message } from "./Message"
+
+export const MessagesContainer = (props) => {
+    console.log(props.messages)
     return (
-        <div className="messagesContainer"></div>
+        <div className="messagesContainer">
+            {props.messages.map((text, idx) => <Message key={idx} text={text} />)}
+        </div>
     )
 }

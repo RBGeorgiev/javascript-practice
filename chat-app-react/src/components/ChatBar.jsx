@@ -1,9 +1,24 @@
 import { useState } from 'react';
 
-export const ChatBar = () => {
+export const ChatBar = (props) => {
     const [input, setInput] = useState('');
-    return (        
-        <input className="chatBar" value={input} onInput={e => setInput(e.target.value)}/>
+
+    const resetBar = (e) => {
+        setInput('');
+        e.target.value = input;
+    }
+
+    const submitMessage = (e) => {
+        e.preventDefault();
+        props.addMessage(input);
+        resetBar(e);
+    }
+
+    return (
+        <form onSubmit={e => submitMessage(e)}>
+            <input id="chatBar" value={input} onInput={e => setInput(e.target.value)} />
+            <input type="submit" htmlFor="chatBar" value="Submit" />
+        </form>
     )
 }
 

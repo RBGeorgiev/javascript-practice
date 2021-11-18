@@ -1,11 +1,18 @@
+import { useState } from "react";
 import { ChatBar } from "./ChatBar";
 import { MessagesContainer } from "./ChatMessagesContainer";
 
 export const ChatContainer = () => {
+    const [messages, setMessages] = useState([]);
+
+    const addMessage = (newMessage) => {
+        setMessages([...messages, ...newMessage]);
+    }
+
     return (
         <div className="chatContainer">
-            <MessagesContainer />
-            <ChatBar />
+            <MessagesContainer messages={messages} />
+            <ChatBar addMessage={addMessage} />
         </div>
     )
 }
