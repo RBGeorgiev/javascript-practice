@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChatBar } from "./ChatBar";
-import { MessagesContainer } from "./ChatMessagesContainer";
+import { MessagesContainer } from "./MessagesContainer";
 
 export const ChatContainer = () => {
     const [messages, setMessages] = useState([]);
