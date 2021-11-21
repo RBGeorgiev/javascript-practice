@@ -10,3 +10,8 @@ body {
 	min-height: 540px;
 	border: 1px solid black;
 }
+
+.chatBarContainer {
+	margin: auto;
+	width: 920px;
+}
