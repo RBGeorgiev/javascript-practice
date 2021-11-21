@@ -6,7 +6,7 @@ export const ChatContainer = () => {
     const [messages, setMessages] = useState([]);
 
     const addMessage = (newMessage) => {
-        setMessages([...messages, ...newMessage]);
+        setMessages([...messages, newMessage]);
     }
 
     return (
