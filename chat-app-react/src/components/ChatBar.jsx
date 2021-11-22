@@ -15,7 +15,7 @@ export const ChatBar = (props) => {
     }
 
     return (
-        <form onSubmit={e => submitMessage(e)}>
+        <form className="chatBarContainer" onSubmit={e => submitMessage(e)}>
             <input id="chatBar" value={input} onInput={e => setInput(e.target.value)} />
             <input type="submit" htmlFor="chatBar" value="Submit" />
         </form>

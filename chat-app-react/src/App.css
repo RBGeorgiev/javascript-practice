@@ -1,12 +1,8 @@
-body {
-	text-align: center;
-}
-
 .messagesContainer {
 	display: flex;
 	flex-direction: column;
 	margin: auto;
-	max-width: 920px;
+	width: 920px;
 	min-height: 540px;
 	border: 1px solid black;
 }
