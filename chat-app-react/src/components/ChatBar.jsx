@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export const ChatBar = (props) => {
     const [input, setInput] = useState('');
+    const chatBarInput = useRef(null);
 
     const resetBar = (e) => {
         setInput('');
         e.target.value = input;
+        chatBarInput.current.focus();
     }
 
     const submitMessage = (e) => {
@@ -16,7 +18,7 @@ export const ChatBar = (props) => {
 
     return (
         <form className="chatBarContainer" onSubmit={e => submitMessage(e)}>
-            <input id="chatBar" value={input} onInput={e => setInput(e.target.value)} />
+            <input id="chatBar" ref={chatBarInput} value={input} onInput={e => setInput(e.target.value)} />
             <input type="submit" htmlFor="chatBar" value="Submit" />
         </form>
     )
