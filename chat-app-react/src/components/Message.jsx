@@ -1,1 +1,1 @@
-export const Message = (props) => <span>{props.text}</span>
+export const Message = (props) => <span>{props.text}</span>;
