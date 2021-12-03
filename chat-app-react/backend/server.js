@@ -1,6 +1,17 @@
 const express = require("express");
 const app = express();
-const port = 3001;
+const port = 5000;
 
-app.get("/", (req, res) => {});
-app.listen(port, () => console.log(`Express running on port ${port}`));
+// Create a GET route
+app.get("/test", (req, res) => {
+	const test = [
+		{ id: 1, nickname: "Joe" },
+		{ id: 2, nickname: "Matt" },
+		{ id: 3, nickname: "Jenny" },
+	];
+
+	res.json(test);
+});
+
+// Display message that the server running and listening to specified port
+app.listen(port, () => console.log(`Listening on port ${port}`));
