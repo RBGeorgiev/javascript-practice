@@ -23,6 +23,13 @@ class App extends Component {
 		return (
 			<div>
 				<h1>Backend call test</h1>
+				<div>
+					{this.state.test.map((el) => (
+						<p key={el.id}>
+							{el.id}: {el.nickname}
+						</p>
+					))}
+				</div>
 			</div>
 		);
 	}
