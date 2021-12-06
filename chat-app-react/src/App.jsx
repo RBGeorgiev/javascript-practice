@@ -1,38 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import "./sanitize.css";
 import "./App.css";
+import { ChatContainer } from "./components/ChatContainer.jsx";
 
-class App extends Component {
-	constructor() {
-		super();
-		this.state = {
-			test: [],
-		};
-	}
-
-	componentDidMount() {
-		fetch("/test")
-			.then((res) => res.json())
-			.then((test) =>
-				this.setState({ test: test }, () => console.log("test working", test))
-			)
-			.catch((err) => console.log(err));
-	}
-
-	render() {
-		return (
-			<div>
-				<h1>Backend call test</h1>
-				<div>
-					{this.state.test.map((el) => (
-						<p key={el.id}>
-							{el.id}: {el.nickname}
-						</p>
-					))}
-				</div>
-			</div>
-		);
-	}
+function App() {
+	return (
+		<div>
+			<ChatContainer />
+		</div>
+	);
 }
 
 export default App;
