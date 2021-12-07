@@ -6,7 +6,13 @@ import { ChatContainer } from "./components/ChatContainer.jsx";
 function App() {
 	const [test, setTest] = useState("test");
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		async function getTest() {
+			let response = await fetch("/test").then((res) => res.json());
+			console.log(response);
+		}
+		getTest();
+	}, []);
 
 	return (
 		<div>
