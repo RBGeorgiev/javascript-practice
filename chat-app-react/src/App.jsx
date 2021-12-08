@@ -8,7 +8,10 @@ function App() {
 
 	useEffect(() => {
 		async function getTest() {
-			let response = await fetch("/test").then((res) => res.json());
+			let response = await fetch("/test")
+				.then((res) => res.json())
+				.then((t) => setTest(t))
+				.catch((err) => console.log(err));
 			console.log(response);
 		}
 		getTest();
