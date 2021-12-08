@@ -20,7 +20,13 @@ function App() {
 	return (
 		<div>
 			<ChatContainer />
-			<div>{test}</div>
+			<div>
+				{test.map((el) => (
+					<p key={el.id}>
+						{el.id}: {el.nickname}
+					</p>
+				))}
+			</div>
 		</div>
 	);
 }
