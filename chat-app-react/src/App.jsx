@@ -4,7 +4,7 @@ import "./App.css";
 import { ChatContainer } from "./components/ChatContainer.jsx";
 
 function App() {
-	const [test, setTest] = useState("test");
+	const [test, setTest] = useState([]);
 
 	useEffect(() => {
 		async function getTest() {
