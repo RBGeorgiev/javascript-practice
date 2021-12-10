@@ -13,9 +13,7 @@ function App() {
 			.catch((err) => console.log(err));
 	}
 
-	useEffect(() => {
-		getTest();
-	}, []);
+	useEffect(() => getTest(), []);
 
 	return (
 		<div>
