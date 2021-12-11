@@ -6,12 +6,11 @@ import { ChatContainer } from "./components/ChatContainer.jsx";
 function App() {
 	const [test, setTest] = useState([]);
 
-	const getTest = async () => {
+	const getTest = async () =>
 		await fetch("/test")
 			.then((res) => res.json())
 			.then((t) => setTest(t))
 			.catch((err) => console.log(err));
-	};
 
 	useEffect(() => getTest(), []);
 
