@@ -7,7 +7,7 @@ function App() {
 	const [test, setTest] = useState([]);
 
 	const getTest = async () =>
-		await fetch("/test")
+		await fetch("http://localhost:5000/")
 			.then((res) => res.json())
 			.then((t) => setTest(t))
 			.catch((err) => console.log(err));

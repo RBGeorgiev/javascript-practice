@@ -3,7 +3,7 @@ const app = express();
 const port = 5000;
 
 // Create a GET route
-app.get("/test", (req, res) => {
+app.get("/", (req, res) => {
 	const test = [
 		{ id: 1, nickname: "Joe" },
 		{ id: 2, nickname: "Matt" },
