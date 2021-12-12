@@ -16,6 +16,7 @@ function App() {
 
 	return (
 		<div>
+			<div>Chat App React</div>
 			<ChatContainer />
 			<div>
 				{test.map((el) => (
