@@ -1,3 +1,7 @@
+body {
+	text-align: center;
+}
+
 .messagesContainer {
 	display: flex;
 	flex-direction: column;
