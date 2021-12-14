@@ -23,6 +23,7 @@ export const ChatBar = (props) => {
 				ref={chatBarInput}
 				value={input}
 				onInput={(e) => setInput(e.target.value)}
+				placeholder="Message"
 			/>
 			<input type="submit" htmlFor="chatBar" value="Submit" />
 		</form>
