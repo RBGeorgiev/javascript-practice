@@ -1,19 +1,19 @@
 h1 {
-	text-align: center;
+    text-align: center;
 }
 
 .messagesContainer {
-	display: flex;
-	flex-direction: column;
-	margin: auto;
-	width: 920px;
-	min-height: 540px;
-	border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 920px;
+    min-height: 540px;
+    border: 1px solid black;
 }
 
 .chatBarContainer {
-	margin: auto;
-	width: 920px;
-	display: grid;
-	grid-template-columns: 1fr auto;
+    margin: auto;
+    width: 920px;
+    display: grid;
+    grid-template-columns: 1fr auto;
 }
