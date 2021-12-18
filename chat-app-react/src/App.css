@@ -12,7 +12,7 @@ h1 {
 }
 
 .chatBarContainer {
-    margin: auto;
+    margin: 5px auto;
     width: 920px;
     height: 36px;
     display: grid;
