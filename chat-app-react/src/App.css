@@ -18,3 +18,7 @@ h1 {
     display: grid;
     grid-template-columns: 1fr auto;
 }
+
+#chatBar {
+    padding: 5px;
+}
