@@ -4,13 +4,13 @@ const port = 5000;
 
 // Create a GET route
 app.get("/", (req, res) => {
-	const test = [
-		{ id: 1, nickname: "Joe" },
-		{ id: 2, nickname: "Matt" },
-		{ id: 3, nickname: "Jenny" },
-	];
+    const test = [
+        { id: 1, nickname: "Joe" },
+        { id: 2, nickname: "Matt" },
+        { id: 3, nickname: "Jenny" },
+    ];
 
-	res.json(test);
+    res.json(test);
 });
 
 // Display message that the server running and listening to specified port
