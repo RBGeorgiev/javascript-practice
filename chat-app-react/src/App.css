@@ -11,6 +11,10 @@ h1 {
     border: 1px solid black;
 }
 
+.message {
+    margin: 5px;
+}
+
 .chatBarContainer {
     margin: 5px auto;
     width: 920px;
