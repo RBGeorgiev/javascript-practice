@@ -12,7 +12,7 @@ export const ChatBar = (props) => {
 
     const submitMessage = (e) => {
         e.preventDefault();
-        props.addMessage(input);
+        if (input !== "") props.addMessage(input);
         resetBar(e);
     };
 
