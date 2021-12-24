@@ -26,3 +26,7 @@ h1 {
 #chatBar {
     padding: 5px;
 }
+
+#chatBar:focus {
+    outline: none;
+}
