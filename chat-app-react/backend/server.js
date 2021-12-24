@@ -2,6 +2,12 @@ const express = require("express");
 const app = express();
 const port = 5000;
 
+// Add headers
+app.use(function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    next();
+});
+
 // Create a GET route
 app.get("/", (req, res) => {
     const test = [
